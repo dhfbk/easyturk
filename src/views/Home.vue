@@ -1,15 +1,15 @@
 <template>
-    <div class="home mx-32">
+    <div class="home sm:mx-8 md:mx-16">
         <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
         <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-        <div class="grid grid-cols-5">
-            <div class="rounded  shadow-lg m-4 p-4">
-                <div class="font-bold text-xl  m-1">Balance</div>
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center ">
+            <div class="rounded shadow-lg m-4 p-2">
+                <div class="font-bold text-xl  m-1">Saldo account</div>
                 <p class="text-gray-700 text-base m-1">
                     54$
                 </p>
             </div>
-            <div class="rounded  shadow-lg m-4 p-4">
+            <div class="rounded  shadow-lg m-4 p-2">
                 <div class="font-bold text-xl  m-1">Reviewable results</div>
                 <p class="text-gray-700 text-base m-1">
                     93
