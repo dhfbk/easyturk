@@ -86,7 +86,7 @@
         <div class="block sm:hidden">
             <button
                 @click="toggle()"
-                class="flex items-center px-3 py-2 border rounded text-black border-black hover:text-white hover:border-white"
+                class="flex items-center px-3 py-2 border rounded transition duration-150 ease-in-out text-black border-black hover:text-white hover:border-white"
             >
                 <svg
                     class="fill-current h-3 w-3"
@@ -105,15 +105,15 @@
             <div>
                 <a
                     href="#responsive-header"
-                    class="block mt-4 sm:inline-block sm:mt-0 text-black hover:text-white sm:mr-4"
+                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-black hover:text-white sm:mr-4"
                 >Home</a>
                 <a
                     href="#responsive-header"
-                    class="block mt-4 sm:inline-block sm:mt-0 text-black hover:text-white sm:mr-4"
+                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-black hover:text-white sm:mr-4"
                 >Workers</a>
                 <a
                     href="#responsive-header"
-                    class="block mt-4 sm:inline-block sm:mt-0 text-black hover:text-white"
+                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-black hover:text-white"
                 >Create Project</a>
             </div>
         </div>
