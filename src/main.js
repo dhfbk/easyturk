@@ -4,6 +4,11 @@ import router from "./router";
 
 import './assets/styles/index.css';
 
+import VueEllipseProgress from 'vue-ellipse-progress';
+
+Vue.use(VueEllipseProgress);
+
+
 Vue.config.productionTip = false;
 
 new Vue({

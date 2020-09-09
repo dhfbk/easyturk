@@ -1,6 +1,6 @@
 <template>
-    <nav class="flex items-center justify-between flex-wrap bg-orange-400 p-6">
-        <div class="flex items-center flex-no-shrink text-white mr-6">
+    <nav class="bg-orange-400 p-6">
+        <div class="text-white mr-6">
             <svg
                 width="225px"
                 height="28px"
@@ -9,6 +9,7 @@
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+                class="float-left"
             >
                 <g
                     id="Slices"
@@ -83,10 +84,10 @@
                 </g>
             </svg>
         </div>
-        <div class="block sm:hidden">
+        <div class="block sm:hidden float-right ml-2">
             <button
                 @click="toggle()"
-                class="flex items-center px-3 py-2 border rounded transition duration-150 ease-in-out text-black border-black hover:text-white hover:border-white"
+                class="flex items-center mx-0 px-3 py-2 border rounded transition duration-150 ease-in-out text-black border-black hover:text-white hover:border-white focus:outline-none"
             >
                 <svg
                     class="fill-current h-3 w-3"
@@ -98,6 +99,7 @@
                 </svg>
             </button>
         </div>
+        <div class="clearfix sm:hidden"></div>
         <div
             :class="open ? 'block': 'hidden'"
             class="w-full flex-grow sm:flex sm:items-center sm:w-auto justify-end text-right sm:text-justify"

@@ -11,6 +11,7 @@
     "core-js": "^3.6.5",
     "tailwindcss": "^1.8.5",
     "vue": "^2.6.11",
+    "vue-ellipse-progress": "^1.2.0",
     "vue-router": "^3.2.0"
   },
   "devDependencies": {
