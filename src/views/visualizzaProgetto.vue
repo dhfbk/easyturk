@@ -1,5 +1,5 @@
 <template>
-    <div class="lg:w-5/6 px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
+    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
         <div class="flex justify-between flex-wrap">
             <h1 class="text-2xl mb-4 text-orange-400">{{datiProgetto.nome}}</h1>
             <div class="flex relative">
@@ -17,22 +17,23 @@
                     @click="dropdownOpen = !dropdownOpen"
                     class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 focus:outline-none"
                 >
-                    <svg
-                        class="h-6 w-6 text-gray-800"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                    >
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="!dropdownOpen">
                         <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
+                            fill="currentColor"
+                            d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+                        />
+                    </svg>
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else>
+                        <path
+                            fill="currentColor"
+                            d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"
                         />
                     </svg>
                 </button>
 
                 <div
                     v-show="dropdownOpen"
+                    v-click-outside="hide"
                     class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"
                 >
                     <a
@@ -162,7 +163,7 @@
                     <div class="w-full flex justify-start mt-4">
                         <button
                             type="submit"
-                            class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400"
+                            class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 focus:outline-none"
                         >Vai alle HIT</button>
                     </div>
                 </div>
@@ -192,12 +193,6 @@
                             <p slot="legend-caption">NO</p>
                         </vue-ellipse-progress>
                     </div>
-                    <div class="w-full flex justify-start mt-4">
-                        <button
-                            type="submit"
-                            class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 focus:outline-none"
-                        >Vai alle HIT</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -205,8 +200,12 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside'
 export default {
     name: 'visualizzaProgetto',
+    directives: {
+        ClickOutside,
+    },
     data() {
         return {
             datiProgetto: {
@@ -249,7 +248,13 @@ export default {
         this.displayWindowSize()
         window.onresize = this.displayWindowSize
     },
+    mounted() {
+        this.popupItem = this.$el
+    },
     methods: {
+        hide() {
+            this.dropdownOpen = false
+        },
         setPieSize() {
             if (this.myWidth < 640) {
                 this.pieSize = 120
