@@ -103,18 +103,18 @@
             class="w-full flex-grow sm:flex sm:items-center sm:w-auto justify-end text-right sm:text-justify"
         >
             <div>
-                <a
-                    href="#responsive-header"
+                <router-link
+                    to="/"
                     class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-black hover:text-white sm:mr-4"
-                >Home</a>
+                >Home</router-link>
                 <a
                     href="#responsive-header"
                     class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-black hover:text-white sm:mr-4"
                 >Workers</a>
-                <a
-                    href="#responsive-header"
+                <router-link
+                    to="create"
                     class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-black hover:text-white"
-                >Create Project</a>
+                >Create Project</router-link>
             </div>
         </div>
     </nav>
