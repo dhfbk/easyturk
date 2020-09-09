@@ -1,22 +1,15 @@
 <template>
     <div id="app">
-        <navBar />
+        <navbar />
         <router-view />
     </div>
 </template>
 
 <script>
-import navBar from './components/navBar'
+import navbar from './components/navBar'
 export default {
     components: {
-        navBar,
+        navbar,
     },
 }
 </script>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap');
-* {
-    font-family: 'Work Sans', sans-serif;
-}
-</style>
