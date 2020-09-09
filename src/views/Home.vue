@@ -3,7 +3,7 @@
         <div class="mb-10">
             <h2 class="text-2xl">Progetti</h2>
             <div class="">
-                <div class="w-full lg:w-11/12 mx-auto">
+                <div class="w-full mx-auto">
                     <div class="rounded mx-5 my-2 flex items-center text-lg">
                         <span class="w-1/6">Project Id</span>
                         <span class="w-1/4">Title</span>
@@ -11,7 +11,7 @@
                         <span class="flex-grow flex justify-end w-1/3"> </span>
                     </div>
                 </div>
-                <div v-for="i in projects" :key="i.id" class="w-full lg:w-11/12 mx-auto">
+                <div v-for="i in projects" :key="i.id" class="w-full mx-auto">
                     <projectListItem :projectData="i" />
                 </div>
             </div>
