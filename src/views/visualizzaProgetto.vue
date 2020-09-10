@@ -1,5 +1,42 @@
 <template>
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
+        <transition name="fade" v-if="modal">
+            <div
+                class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
+            >
+                <div class="bg-white rounded-lg w-1/2">
+                    <div class="flex flex-col p-4">
+                        <div class="flex w-full">
+                            <div class="text-gray-900 font-bold text-lg">Conferma azione</div>
+                            <svg
+                                class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 18 18"
+                                @click="toggleModal()"
+                            >
+                                <path
+                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+                                />
+                            </svg>
+                        </div>
+                        <div
+                            class="py-2"
+                        >Sicuro di voler eliminare il progetto? Questa azione è irreversibile.</div>
+
+                        <div class="ml-auto">
+                            <button
+                                class="transition duration-150 ease-in-out bg-orange-400 hover:bg-orange-700 text-black hover:text-white font-bold py-2 px-4 rounded focus:outline-none"
+                                @click="toggleModal()"
+                            >Elimina</button>
+                            <button
+                                class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-400 focus:outline-none ml-2 bg-transparent text-black font-semibold py-2 px-4 rounded"
+                                @click="toggleModal()"
+                            >Annulla</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
         <div class="flex justify-between flex-wrap">
             <h1 class="text-2xl mb-4 text-orange-400">{{datiProgetto.nome}}</h1>
             <div class="flex relative">
@@ -15,6 +52,7 @@
                 >Risultati</button>
                 <button
                     @click="dropdownOpen = !dropdownOpen"
+                    v-click-outside="hide"
                     class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 focus:outline-none"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="!dropdownOpen">
@@ -30,39 +68,34 @@
                         />
                     </svg>
                 </button>
-
-                <div
-                    v-show="dropdownOpen"
-                    v-click-outside="hide"
-                    class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"
-                >
-                    <a
-                        v-show="mini"
-                        href="#"
-                        class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"
-                    >Pubblica</a>
-                    <a
-                        v-show="mini"
-                        href="#"
-                        class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
-                    >Risultati</a>
-                    <a
-                        href="#"
-                        class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"
-                    >Elimina</a>
-                    <a
-                        href="#"
-                        class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
-                    >Modifica</a>
-                    <a
-                        href="#"
-                        class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
-                    >Carica dati</a>
-                    <a
-                        href="#"
-                        class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-b-md"
-                    >Carica gold</a>
-                </div>
+                <transition name="fade">
+                    <div
+                        v-show="dropdownOpen"
+                        class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"
+                    >
+                        <a
+                            v-show="mini"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"
+                        >Pubblica</a>
+                        <a
+                            v-show="mini"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
+                        >Risultati</a>
+                        <a
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"
+                            @click="toggleModal()"
+                        >Elimina</a>
+                        <a
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
+                        >Modifica</a>
+                        <a
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
+                        >Carica dati</a>
+                        <a
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-b-md"
+                        >Carica gold</a>
+                    </div>
+                </transition>
             </div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2">
@@ -134,6 +167,8 @@
                             :legend-value="datiProgetto.HITcompletate"
                             :color="'#f6ad55'"
                             :size="pieSize"
+                            :half="true"
+                            :angle="0"
                             class="mx-2 mb-2"
                         >
                             <span slot="legend-value">/{{datiProgetto.totaleHIT}}</span>
@@ -144,6 +179,8 @@
                             :legend-value="datiProgetto.HITdisponibili"
                             :color="'#f6ad55'"
                             :size="pieSize"
+                            :half="true"
+                            :angle="0"
                             class="mx-2 mb-2"
                         >
                             <span slot="legend-value">/{{datiProgetto.totaleHIT}}</span>
@@ -154,13 +191,15 @@
                             :legend-value="datiProgetto.HITinCorso"
                             :color="'#f6ad55'"
                             :size="pieSize"
+                            :half="true"
+                            :angle="0"
                             class="mx-2"
                         >
                             <span slot="legend-value">/{{datiProgetto.totaleHIT}}</span>
                             <p slot="legend-caption">In corso</p>
                         </vue-ellipse-progress>
                     </div>
-                    <div class="w-full flex justify-start mt-4">
+                    <div class="w-full flex justify-start -mt-4">
                         <button
                             type="submit"
                             class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 focus:outline-none"
@@ -239,6 +278,7 @@ export default {
             myWidth: 0,
             dropdownOpen: false,
             mini: false,
+            modal: false,
         }
     },
     created() {
@@ -252,6 +292,10 @@ export default {
         this.popupItem = this.$el
     },
     methods: {
+        toggleModal() {
+            this.modal = !this.modal
+            this.hide()
+        },
         hide() {
             this.dropdownOpen = false
         },
@@ -305,4 +349,12 @@ export default {
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.25s;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
 </style>

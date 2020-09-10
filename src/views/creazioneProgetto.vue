@@ -66,7 +66,7 @@
                 >Fornisci keywords che aiuteranno i lavoratori a trovare i tuoi compiti.</p>
             </div>
         </div>
-        <hr class="solid" />
+        <hr class="solid mb-4" />
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
                 <label
@@ -234,7 +234,7 @@
                 >Questo è il tempo che hai per rifiutare un assignment di un lavoratore dopo che è stato inviato.</p>
             </div>
         </div>
-        <hr class="solid" />
+        <hr class="solid mb-4" />
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
                 <label
