@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="rounded shadow-lg m-1 p-4 flex items-center flex-wrap overflow-hidden">
-            <span class="w-1/6">{{ projectData.id }}</span>
+            <router-link to="view"><span class="w-1/6">{{ projectData.id }}</span></router-link>
             <span class="w-1/4">{{ projectData.title }}</span>
             <span class="">{{ projectData.date }}</span>
             <span class="flex-grow flex justify-end w-1/3">
