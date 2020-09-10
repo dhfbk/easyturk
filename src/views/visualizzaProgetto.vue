@@ -11,6 +11,7 @@
                 >Pubblica</button>
                 <button
                     v-show="!mini"
+                    @click="open('results')"
                     type="submit"
                     class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 mr-2 focus:outline-none"
                 >Risultati</button>
@@ -41,10 +42,11 @@
                             v-show="mini"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"
                         >Pubblica</a>
-                        <a
+                        <router-link
+                            to="results"
                             v-show="mini"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
-                        >Risultati</a>
+                        >Risultati</router-link>
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"
                             @click="toggleModal()"
@@ -133,6 +135,7 @@ export default {
             },
             datiCardAnalytics: {},
             dropdownOpen: false,
+            myWidth: 0,
             mini: false,
             modal: false,
         }
@@ -142,11 +145,31 @@ export default {
         this.elaboraTempo(this.datiProgetto.autoApproval)
         this.calcolaProgress()
         this.impostaDatiCard()
+        this.displayWindowSize()
+        window.onresize = this.displayWindowSize
     },
     mounted() {
         this.popupItem = this.$el
     },
     methods: {
+        open(mode) {
+            if (mode == 'results') {
+                this.$router.push({
+                    name: 'reviewResults',
+                })
+            }
+        },
+        setMini() {
+            if (this.myWidth < 640) {
+                this.mini = true
+            } else {
+                this.mini = false
+            }
+        },
+        displayWindowSize() {
+            this.myWidth = window.innerWidth
+            this.setMini()
+        },
         impostaDatiCard() {
             this.titoliCard.titoli1 = [
                 'Titolo',
