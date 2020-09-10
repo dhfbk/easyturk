@@ -1,6 +1,6 @@
 <template>
     <div class="md:w-5/6 bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
-        <p class="text-2xl mb-4 text-orange-400">Crea un nuovo progetto</p>
+        <p class="text-2xl mb-4 text-orange-400">{{pageTitle}}</p>
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
                 <label
@@ -282,8 +282,17 @@ export default {
     data() {
         return {
             errorTitolo: false,
+            pageTitle: ""
         }
     },
+    created(){
+        if(this.$route.path == "/create"){
+            this.pageTitle = "Crea un nuovo progetto"
+        }
+        else{
+            this.pageTitle = "Modifica progetto"
+        }
+    }
 }
 </script>
 

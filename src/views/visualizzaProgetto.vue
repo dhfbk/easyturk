@@ -1,42 +1,6 @@
 <template>
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
-        <transition name="fade" v-if="modal">
-            <div
-                class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
-            >
-                <div class="bg-white rounded-lg w-1/2">
-                    <div class="flex flex-col p-4">
-                        <div class="flex w-full">
-                            <div class="text-gray-900 font-bold text-lg">Conferma azione</div>
-                            <svg
-                                class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 18 18"
-                                @click="toggleModal()"
-                            >
-                                <path
-                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
-                                />
-                            </svg>
-                        </div>
-                        <div
-                            class="py-2"
-                        >Sicuro di voler eliminare il progetto? Questa azione è irreversibile.</div>
-
-                        <div class="ml-auto">
-                            <button
-                                class="transition duration-150 ease-in-out bg-orange-400 hover:bg-orange-700 text-black hover:text-white font-bold py-2 px-4 rounded focus:outline-none"
-                                @click="toggleModal()"
-                            >Elimina</button>
-                            <button
-                                class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-400 focus:outline-none ml-2 bg-transparent text-black font-semibold py-2 px-4 rounded"
-                                @click="toggleModal()"
-                            >Annulla</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </transition>
+        <modalEliminazione v-if="modal" @hideModal="toggleModal" />
         <div class="flex justify-between flex-wrap">
             <h1 class="text-2xl mb-4 text-orange-400">{{datiProgetto.nome}}</h1>
             <div class="flex relative">
@@ -100,139 +64,13 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2">
             <div class="mx-0 sm:mx-2">
-                <div class="bg-white rounded-md shadow-lg p-4 mb-4">
-                    <div>
-                        <span class="font-bold">Titolo:&nbsp;</span>
-                        <span>{{datiProgetto.titolo}}</span>
-                    </div>
-                    <div>
-                        <span class="font-bold">Descrizione:&nbsp;</span>
-                        <span>{{datiProgetto.descrizione}}</span>
-                    </div>
-                    <div>
-                        <span class="font-bold">Keywords:&nbsp;</span>
-                        <span>{{datiProgetto.keywords}}</span>
-                    </div>
-                    <div>
-                        <span class="font-bold">Data creazione:&nbsp;</span>
-                        <span>{{datiProgetto.creazione}}</span>
-                    </div>
-                    <div>
-                        <span class="font-bold">Stato:&nbsp;</span>
-                        <span>{{datiProgetto.stato}}</span>
-                    </div>
-                </div>
-                <div class="bg-white rounded-md shadow-lg p-4 mb-4">
-                    <div>
-                        <span class="font-bold">Ricompensa per ogni assignment:&nbsp;</span>
-                        <span>{{datiProgetto.ricompensa}}&nbsp;$</span>
-                    </div>
-                    <div>
-                        <span class="font-bold">Numero di lavoratori/assignment per task:&nbsp;</span>
-                        <span>{{datiProgetto.numLavoratori}}</span>
-                    </div>
-                    <div>
-                        <span class="font-bold">Tempo massimo:&nbsp;</span>
-                        <span>{{datiProgetto.tempoMax}}</span>
-                    </div>
-                    <div>
-                        <span class="font-bold">Scadenza:&nbsp;</span>
-                        <span>{{datiProgetto.scadenza}}</span>
-                    </div>
-                    <div>
-                        <span class="font-bold">Auto approva e paga lavoratori in:&nbsp;</span>
-                        <span>{{datiProgetto.autoApproval}}</span>
-                    </div>
-                </div>
-                <div class="bg-white rounded-md shadow-lg p-4 mb-4">
-                    <div>
-                        <span class="font-bold">Layout ID:&nbsp;</span>
-                        <span>{{datiProgetto.layoutID}}&nbsp;</span>
-                    </div>
-                    <div>
-                        <span class="font-bold">Numero parametri:&nbsp;</span>
-                        <span>{{datiProgetto.parametri}}</span>
-                    </div>
-                </div>
+                <cardInfo :titoli="titoliCard.titoli1" :dati="datiCard.dati1" />
+                <cardInfo :titoli="titoliCard.titoli2" :dati="datiCard.dati2" />
+                <cardInfo :titoli="titoliCard.titoli3" :dati="datiCard.dati3" />
             </div>
             <div class="mx-0 sm:mx-2">
-                <div class="bg-white rounded-md shadow-lg p-4 mb-4">
-                    <div class="text-lg mb-4">
-                        <span class="font-bold">Totale HIT:&nbsp;</span>
-                        <span>{{datiProgetto.totaleHIT}}</span>
-                    </div>
-                    <div class="flex justify-evenly flex-wrap">
-                        <vue-ellipse-progress
-                            :progress="datiProgetto.completateProgress"
-                            :legend-value="datiProgetto.HITcompletate"
-                            :color="'#f6ad55'"
-                            :size="pieSize"
-                            :half="true"
-                            :angle="0"
-                            class="mx-2 mb-2"
-                        >
-                            <span slot="legend-value">/{{datiProgetto.totaleHIT}}</span>
-                            <p slot="legend-caption">Completate</p>
-                        </vue-ellipse-progress>
-                        <vue-ellipse-progress
-                            :progress="datiProgetto.disponibiliProgress"
-                            :legend-value="datiProgetto.HITdisponibili"
-                            :color="'#f6ad55'"
-                            :size="pieSize"
-                            :half="true"
-                            :angle="0"
-                            class="mx-2 mb-2"
-                        >
-                            <span slot="legend-value">/{{datiProgetto.totaleHIT}}</span>
-                            <p slot="legend-caption">Disponibili</p>
-                        </vue-ellipse-progress>
-                        <vue-ellipse-progress
-                            :progress="datiProgetto.incorsoProgress"
-                            :legend-value="datiProgetto.HITinCorso"
-                            :color="'#f6ad55'"
-                            :size="pieSize"
-                            :half="true"
-                            :angle="0"
-                            class="mx-2"
-                        >
-                            <span slot="legend-value">/{{datiProgetto.totaleHIT}}</span>
-                            <p slot="legend-caption">In corso</p>
-                        </vue-ellipse-progress>
-                    </div>
-                    <div class="w-full flex justify-start -mt-4">
-                        <button
-                            type="submit"
-                            class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 focus:outline-none"
-                        >Vai alle HIT</button>
-                    </div>
-                </div>
-                <div class="bg-white rounded-md shadow-lg p-4 mb-4">
-                    <div class="text-lg mb-4">
-                        <span class="font-bold">Risposte aggregate:</span>
-                    </div>
-                    <div class="flex justify-evenly flex-wrap">
-                        <vue-ellipse-progress
-                            :progress="datiProgetto.siProgress"
-                            :legend-value="datiProgetto.risposteSI"
-                            :color="'#f6ad55'"
-                            :size="pieSize"
-                            class="mx-2 mb-2"
-                        >
-                            <span slot="legend-value">/{{datiProgetto.HITcompletate}}</span>
-                            <p slot="legend-caption">SI</p>
-                        </vue-ellipse-progress>
-                        <vue-ellipse-progress
-                            :progress="datiProgetto.noProgress"
-                            :legend-value="datiProgetto.risposteNO"
-                            :color="'#f6ad55'"
-                            :size="pieSize"
-                            class="mx-2 mb-2"
-                        >
-                            <span slot="legend-value">/{{datiProgetto.HITcompletate}}</span>
-                            <p slot="legend-caption">NO</p>
-                        </vue-ellipse-progress>
-                    </div>
-                </div>
+                <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
+                <cardAnalytics :dati="datiCardAnalytics.cardAggregate" />
             </div>
         </div>
     </div>
@@ -240,10 +78,19 @@
 
 <script>
 import ClickOutside from 'vue-click-outside'
+import modalEliminazione from '../components/modalEliminazione.vue'
+import cardInfo from '../components/cardInfo.vue'
+import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
+
 export default {
     name: 'visualizzaProgetto',
     directives: {
         ClickOutside,
+    },
+    components: {
+        modalEliminazione,
+        cardInfo,
+        cardAnalytics,
     },
     data() {
         return {
@@ -274,8 +121,17 @@ export default {
                 siProgress: 0,
                 noProgress: 0,
             },
-            pieSize: 150,
-            myWidth: 0,
+            titoliCard: {
+                titoli1: [],
+                titoli2: [],
+                titoli3: [],
+            },
+            datiCard: {
+                dati1: [],
+                dati2: [],
+                dati3: [],
+            },
+            datiCardAnalytics: {},
             dropdownOpen: false,
             mini: false,
             modal: false,
@@ -285,35 +141,106 @@ export default {
         this.elaboraTempo(this.datiProgetto.tempoMax)
         this.elaboraTempo(this.datiProgetto.autoApproval)
         this.calcolaProgress()
-        this.displayWindowSize()
-        window.onresize = this.displayWindowSize
+        this.impostaDatiCard()
     },
     mounted() {
         this.popupItem = this.$el
     },
     methods: {
+        impostaDatiCard() {
+            this.titoliCard.titoli1 = [
+                'Titolo',
+                'Descrizione',
+                'Keywords',
+                'Data creazione',
+                'Stato',
+            ]
+            this.datiCard.dati1 = [
+                this.datiProgetto.titolo,
+                this.datiProgetto.descrizione,
+                this.datiProgetto.keywords,
+                this.datiProgetto.creazione,
+                this.datiProgetto.stato,
+            ]
+            this.titoliCard.titoli2 = [
+                'Ricompensa per ogni assignment',
+                'Numero di lavoratori/assignment per task',
+                'Tempo massimo',
+                'Scadenza',
+                'Auto approva e paga lavoratori in',
+            ]
+            this.datiCard.dati2 = [
+                this.datiProgetto.ricompensa,
+                this.datiProgetto.numLavoratori,
+                this.datiProgetto.tempoMax,
+                this.datiProgetto.scadenza,
+                this.datiProgetto.autoApproval,
+            ]
+            this.titoliCard.titoli3 = ['Layout ID', 'Numero parametri']
+            this.datiCard.dati3 = [this.datiProgetto.layoutID, this.datiProgetto.parametri]
+            this.datiCardAnalytics = {
+                cardHIT: {
+                    titolo: 'Totale HIT',
+                    totale: this.datiProgetto.totaleHIT,
+                    type: 'HIT',
+                    ellipse_progress: {
+                        progress1: {
+                            progress: this.datiProgetto.completateProgress,
+                            legend_value: this.datiProgetto.HITcompletate,
+                            color: '#f6ad55',
+                            half: true,
+                            angle: 0,
+                            caption: 'Completate',
+                        },
+                        progress2: {
+                            progress: this.datiProgetto.disponibiliProgress,
+                            legend_value: this.datiProgetto.HITdisponibili,
+                            color: '#f6ad55',
+                            half: true,
+                            angle: 0,
+                            caption: 'Disponibili',
+                        },
+                        progress3: {
+                            progress: this.datiProgetto.incorsoProgress,
+                            legend_value: this.datiProgetto.HITinCorso,
+                            color: '#f6ad55',
+                            half: true,
+                            angle: 0,
+                            caption: 'In corso',
+                        },
+                    },
+                },
+                cardAggregate: {
+                    titolo: 'Risposte aggregate',
+                    totale: this.datiProgetto.HITcompletate,
+                    type: 'aggregate',
+                    ellipse_progress: {
+                        progress1: {
+                            progress: this.datiProgetto.siProgress,
+                            legend_value: this.datiProgetto.risposteSI,
+                            color: '#f6ad55',
+                            half: false,
+                            angle: 0,
+                            caption: 'SI',
+                        },
+                        progress2: {
+                            progress: this.datiProgetto.noProgress,
+                            legend_value: this.datiProgetto.risposteNO,
+                            color: '#f6ad55',
+                            half: false,
+                            angle: 0,
+                            caption: 'NO',
+                        },
+                    },
+                },
+            }
+        },
         toggleModal() {
             this.modal = !this.modal
             this.hide()
         },
         hide() {
             this.dropdownOpen = false
-        },
-        setPieSize() {
-            if (this.myWidth < 640) {
-                this.pieSize = 120
-            } else {
-                this.pieSize = 150
-            }
-        },
-        displayWindowSize() {
-            this.myWidth = window.innerWidth
-            this.setPieSize()
-            if (this.myWidth < 700) {
-                this.mini = true
-            } else {
-                this.mini = false
-            }
         },
         calcolaProgress() {
             this.datiProgetto.completateProgress =

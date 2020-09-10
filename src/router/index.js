@@ -18,6 +18,11 @@ const routes = [
     component: creazioneProgetto
   },
   {
+    path: "/edit",
+    name: "modificaProgetto",
+    component: creazioneProgetto
+  },
+  {
     path: "/view",
     name: "visualizzaProgetto",
     component: visualizzaProgetto
