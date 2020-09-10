@@ -5,23 +5,33 @@
             <span class="w-1/4">{{ projectData.title }}</span>
             <span class="">{{ projectData.date }}</span>
             <span class="flex-grow flex justify-end w-1/3">
-                <button class="bg-orange-500 hover:bg-orange-700 text-white  py-2 px-4 rounded m-1">
+                <button
+                    class="bg-orange-500 hover:bg-orange-700 text-white  py-2 px-4 rounded m-1 focus:outline-none"
+                >
                     Publish Batch
                 </button>
-                <button class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1">
+                <button
+                    class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none"
+                >
                     Edit
                 </button>
-                <button class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1">
+                <button
+                    class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none"
+                >
                     Upload Data
                 </button>
-                <button class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1">
+                <button
+                    class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none"
+                >
                     Upload Gold
                 </button>
-                <button class="bg-red-600 hover:bg-red-700 text-white  py-2 px-4 rounded m-1">
+                <button
+                    class="bg-red-600 hover:bg-red-700 text-white  py-2 px-4 rounded m-1 focus:outline-none"
+                >
                     Delete
                 </button>
                 <button
-                    class="bg-white hover:bg-gray-300 py-2 px-2 m-1 rounded"
+                    class="bg-white hover:bg-gray-300 py-2 px-2 m-1 rounded focus:outline-none"
                     @click="isOpen = !isOpen"
                 >
                     <svg
