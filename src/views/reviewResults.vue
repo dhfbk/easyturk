@@ -1,8 +1,9 @@
 <template>
     <div class="md:w-5/6 bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
         <p class="text-2xl mb-4 text-orange-400">Review results</p>
+        <p class="text-lg mb-4">Filters</p>
 
-        <p class="text-lg mb-4">Results per page</p>
+        <p class="text-lg mb-4">Results per page:</p>
         <input
             class="w-12"
             type="number"
@@ -14,7 +15,15 @@
             v-model="numPerPage"
         />
 
-        <p class="text-lg mb-4">Filter</p>
+        <!-- <p class="text-lg mb-4">Show:</p>
+        <form>
+            <select name="choice">
+                <option value="All" @click="trim('All')">All</option>
+                <option value="Pending" @click="trim('Pending')">Only Pending Review</option>
+                <option value="Approved" @click="trim('Approved')">Only Approved</option>
+                <option value="Rejected" @click="trim('Rejected')">Only Rejected</option>
+            </select>
+        </form> -->
 
         <table class="">
             <thead>
@@ -29,8 +38,19 @@
                     <th class="px-4 py-2"></th>
                 </tr> -->
                 <tr class="text-center bg-orange-300 border-b border-grey uppercase">
-                    <th class="px-2 py-6">
-                        <input type="checkbox" v-model="all" />
+                    <th class="px-2 py-6" @click="selectAll(), (all = !all)">
+                        <span
+                            class="bg-white border-2 ml-1 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                        >
+                            <input type="checkbox" class="opacity-0 absolute" />
+                            <svg
+                                :class="!all ? '' : 'hidden'"
+                                class="fill-current w-4 h-4 text-green-500 pointer-events-none"
+                                viewBox="0 0 20 20"
+                            >
+                                <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                            </svg>
+                        </span>
                     </th>
                     <th class="text-sm text-gray-700">HIT ID</th>
                     <th class="text-sm text-gray-700">Worker ID</th>
@@ -38,13 +58,37 @@
                         Lifetime Approval Rate
                     </th>
                     <th class="hidden md:table-cell text-sm text-gray-700">Date</th>
-                    <th class="hidden md:table-cell text-sm text-gray-700">Status</th>
+                    <th class="hidden md:table-cell text-sm text-gray-700" @click="sort('status')">
+                        Status
+                        <svg
+                            class="inline"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="#4a5568"
+                            width="24px"
+                            height="24px"
+                        >
+                            <path d="M0 0h24v24H0V0z" fill="none" />
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                        </svg>
+                    </th>
                 </tr>
             </thead>
             <tbody class="text-center ">
                 <tr v-for="i in current" :key="i.HITId" class=" border-b">
-                    <td class="border">
-                        <input type="checkbox" v-if="i.status == 'Pending'" />
+                    <td class="px-3 py-4" @click="i.selected = !i.selected">
+                        <span
+                            class="bg-white border-2 ml-1 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                        >
+                            <input type="checkbox" class="opacity-0 absolute" />
+                            <svg
+                                :class="i.selected ? '' : 'hidden'"
+                                class="fill-current w-4 h-4 text-green-500 pointer-events-none"
+                                viewBox="0 0 20 20"
+                            >
+                                <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                            </svg>
+                        </span>
                     </td>
                     <td class="border px-4 py-2">{{ i.HITId }}</td>
                     <td class="border px-4 py-2">{{ i.workerId }}</td>
@@ -54,10 +98,10 @@
                 </tr>
             </tbody>
         </table>
-        <div class="grid grid-cols-3" v-if="results.length > numPerPage">
+        <div class="grid grid-cols-3" v-if="data.length > numPerPage">
             <button
                 @click="page--"
-                v-if="results.length > numPerPage && page >= 1"
+                v-if="data.length > numPerPage && page >= 1"
                 class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
             >
                 Previous
@@ -66,7 +110,7 @@
             <p class="text-center">Page {{ page + 1 }} of {{ pageNum + 1 }}</p>
             <button
                 @click="page++"
-                v-if="results.length > numPerPage && page < pageNum"
+                v-if="data.length > numPerPage && page < pageNum"
                 class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none  place-self-end"
             >
                 Next
@@ -80,12 +124,12 @@
 export default {
     watch: {
         page: function() {
-            this.pageNum = Math.ceil(this.results.length / this.numPerPage) - 1
+            this.pageNum = Math.ceil(this.data.length / this.numPerPage) - 1
             this.current = []
             this.currentPage()
         },
         numPerPage: function() {
-            this.pageNum = Math.ceil(this.results.length / this.numPerPage) - 1
+            this.pageNum = Math.ceil(this.data.length / this.numPerPage) - 1
             this.current = []
             this.currentPage()
         },
@@ -98,8 +142,8 @@ export default {
                 i < this.page * this.numPerPage + parseInt(this.numPerPage);
                 i++
             ) {
-                if (this.results[i]) {
-                    this.current.push(this.results[i])
+                if (this.data[i]) {
+                    this.current.push(this.data[i])
                 }
                 // console.log(i)
                 // console.log(
@@ -110,8 +154,35 @@ export default {
                 // )
             }
         },
+        trim(mode) {
+            if (mode == 'All') {
+                this.data = this.results
+            } else {
+                for (let i = 0; this.results.length; i++) {
+                    if (this.results[i].status == mode) {
+                        this.data.push(this.results[i])
+                        console.log(this.data.length)
+                    }
+                }
+            }
+        },
+        selectAll() {
+            for (let i = 0; i < this.data.length; i++) {
+                if (this.all == false) {
+                    this.data[i].selected = false
+                } else {
+                    this.data[i].selected = true
+                }
+            }
+        },
+        // sort(mode){
+        //     for(let i = 0; i < this.results.length; i++){
+
+        //     }
+        // }
     },
     created() {
+        this.data = this.results
         this.pageNum = Math.ceil(this.results.length / this.numPerPage) - 1
         this.currentPage()
     },
@@ -122,6 +193,7 @@ export default {
             numPerPage: 50,
             current: [],
             pageNum: 1,
+            data: null,
             results: [
                 {
                     HITId: 's8duh33k3hbs',
@@ -129,6 +201,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: '56h6g4g353gt',
@@ -136,6 +209,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'gj450k059kj0',
@@ -143,6 +217,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'gr49iv9t20coek',
@@ -150,14 +225,15 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
-
                 {
                     HITId: 'fj40tgk95jy',
                     workerId: 'hi4984u3fj903',
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'hf49tgj58j50p',
@@ -165,6 +241,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'jf04jf3499',
@@ -172,6 +249,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'fkek3838fu8ugj',
@@ -179,6 +257,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: '3rf448tj84jg8',
@@ -186,6 +265,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: '4f48j8jg0gk',
@@ -193,6 +273,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'f4jfjg9ijg949',
@@ -200,6 +281,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'skrdl0s3jr940',
@@ -207,6 +289,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'mxwmi98e9i0',
@@ -214,6 +297,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'xakir3802kdk',
@@ -221,6 +305,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'fn4nunfnf83q',
@@ -228,6 +313,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'aaakea8490',
@@ -235,6 +321,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'jweofjcirjjoi90',
@@ -242,6 +329,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'adoiejvn38h0w',
@@ -249,6 +337,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'jncuorj9320ef',
@@ -256,6 +345,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: '498tjfgjos94',
@@ -263,6 +353,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'oi6jfir843e9i',
@@ -270,6 +361,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: '48tu4ifkm9w0',
@@ -277,6 +369,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'eji93dkm20',
@@ -284,6 +377,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'eacoem4492dko',
@@ -291,6 +385,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'aklma9k4990',
@@ -298,6 +393,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'jfjfje9t4',
@@ -305,6 +401,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'foifj9k05l0tk',
@@ -312,6 +409,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'f4u940kg5',
@@ -319,6 +417,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 's8duh33k3hb',
@@ -326,6 +425,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: '56h6g4g353g',
@@ -333,6 +433,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'gj450k059kj',
@@ -340,6 +441,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'gr49iv9t20cok',
@@ -347,14 +449,15 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
-
                 {
                     HITId: 'fj40tgk9jy',
                     workerId: 'hi4984u3fj903',
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'hf49tgj5850p',
@@ -362,6 +465,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'jf04jf499',
@@ -369,6 +473,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'fkek388fu8ugj',
@@ -376,6 +481,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: '3rf448j84jg8',
@@ -383,6 +489,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: '4f48j8g0gk',
@@ -390,6 +497,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'f4jfjg9jg949',
@@ -397,6 +505,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'skrdls3jr940',
@@ -404,6 +513,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'mxwmi989i0',
@@ -411,6 +521,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'xakir302kdk',
@@ -418,6 +529,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'fn4nnfnf83q',
@@ -425,6 +537,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'aaakea890',
@@ -432,6 +545,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'jweofcirjjoi90',
@@ -439,6 +553,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'adoievn38h0w',
@@ -446,6 +561,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'jncurj9320ef',
@@ -453,6 +569,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: '498tfgjos94',
@@ -460,6 +577,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'oi6jir843e9i',
@@ -467,6 +585,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: '48t4ifkm9w0',
@@ -474,6 +593,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'eji3dkm20',
@@ -481,6 +601,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'eacom4492dko',
@@ -488,6 +609,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'akma9k4990',
@@ -495,6 +617,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'jfjfe9t4',
@@ -502,6 +625,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'foif9k05l0tk',
@@ -509,6 +633,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'f4u90kg5',
@@ -516,6 +641,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: '8duh33k3hb',
@@ -523,6 +649,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: '6h6g4g353g',
@@ -530,6 +657,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'g450k059kj',
@@ -537,6 +665,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'g49iv9t20cok',
@@ -544,14 +673,15 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
-
                 {
                     HITId: 'j40tgk9jy',
                     workerId: 'hi4984u3fj903',
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'f49tgj5850p',
@@ -559,6 +689,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'f04jf499',
@@ -566,6 +697,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'kek388fu8ugj',
@@ -573,6 +705,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'rf448j84jg8',
@@ -580,6 +713,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: '448j8g0gk',
@@ -587,6 +721,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'fjfjg9jg949',
@@ -594,6 +729,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: true,
                 },
                 {
                     HITId: 'krdls3jr940',
@@ -601,6 +737,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '30/30',
+                    selected: false,
                 },
                 {
                     HITId: 'mwmi989i0',
@@ -608,6 +745,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'xair302kdk',
@@ -615,6 +753,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'f4nnfnf83q',
@@ -622,6 +761,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'aakea890',
@@ -629,6 +769,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'weofcirjjoi90',
@@ -636,6 +777,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'doievn38h0w',
@@ -643,6 +785,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'jcurj9320ef',
@@ -650,6 +793,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: '48tfgjos94',
@@ -657,6 +801,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'o6jir843e9i',
@@ -664,6 +809,7 @@ export default {
                     status: 'Rejected',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: '4t4ifkm9w0',
@@ -671,6 +817,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'i3dkm20',
@@ -678,6 +825,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'ecom4492dko',
@@ -685,6 +833,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'ama9k4990',
@@ -692,6 +841,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: 'jffe9t4',
@@ -699,6 +849,7 @@ export default {
                     status: 'Approved',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
                 {
                     HITId: 'fif9k05l0tk',
@@ -706,6 +857,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: true,
                 },
                 {
                     HITId: '4u90kg5',
@@ -713,6 +865,7 @@ export default {
                     status: 'Pending',
                     date: '27/08/2020',
                     approvalRate: '48/50',
+                    selected: false,
                 },
             ],
         }
