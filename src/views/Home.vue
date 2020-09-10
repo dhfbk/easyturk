@@ -53,6 +53,10 @@ export default {
                     date: '27/08/2018',
                     hasGold: true,
                     hasData: true,
+                    totalHITs: 350,
+                    pendingReviewHITs: 100,
+                    completedHITs: 200,
+                    inProgressHITs: 50,
                 },
                 {
                     id: 'G7Q5EOBNDG',
@@ -60,6 +64,10 @@ export default {
                     date: '19/06/2018',
                     hasGold: false,
                     hasData: true,
+                    totalHITs: 200,
+                    pendingReviewHITs: 62,
+                    completedHITs: 38,
+                    inProgressHITs: 100,
                 },
                 {
                     id: 'YQOKWUAP6A',
@@ -67,6 +75,10 @@ export default {
                     date: '04/12/2019',
                     hasGold: false,
                     hasData: true,
+                    totalHITs: 400,
+                    pendingReviewHITs: 15,
+                    completedHITs: 360,
+                    inProgressHITs: 25,
                 },
                 {
                     id: '8GIS78FLI2',
@@ -74,6 +86,10 @@ export default {
                     date: '30/05/2020',
                     hasGold: false,
                     hasData: false,
+                    totalHITs: 250,
+                    pendingReviewHITs: 0,
+                    completedHITs: 250,
+                    inProgressHITs: 0,
                 },
             ],
         }
