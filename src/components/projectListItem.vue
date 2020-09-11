@@ -1,32 +1,38 @@
 <template>
-    <div class="rounded shadow-lg my-1 mx-4 p-4 flex items-center flex-wrap">
-        <div class="w-full md:w-2/3 flex contenutoPrj justify-around items-center flex-wrap">
-            <div class="flex flex-col widthElem justify-center text-center flex-wrap my-1 sm:my-0">
+    <div class="rounded shadow-lg my-1 mx-2 p-2 pl-0 flex items-center flex-wrap">
+        <div class="w-full md:w-3/5 flex contenutoPrj text-center items-center flex-wrap">
+            <div class="flex flex-col w-1/3 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold">Project Id:</p>
-                <router-link to="view" class="mx-1">
+                <router-link to="view" class="">
                     <p>{{ projectData.id }}</p>
                 </router-link>
             </div>
-            <div class="flex flex-col widthElem justify-center text-center flex-wrap my-1 sm:my-0">
+            <div class="flex flex-col  w-1/3 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold">Title:</p>
-                <p class="mx-1">{{ projectData.title }}</p>
+                <p class="">{{ projectData.title }}</p>
             </div>
-            <div class="flex flex-col widthElem justify-center text-center flex-wrap my-1 sm:my-0">
+            <div class="flex flex-col  w-1/3 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold">Date:</p>
-                <p class="mx-1">{{ projectData.date }}</p>
+                <p class="">{{ projectData.date }}</p>
             </div>
         </div>
-        <span class="flex-grow flex justify-end w-1/3">
+        <span class="flex-grow flex justify-end w-2/5">
             <button
                 class="bg-orange-500 hover:bg-orange-700 text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:inline-block"
-            >Publish Batch</button>
+            >
+                Publish Batch
+            </button>
 
             <button
                 class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
-            >Upload Data</button>
+            >
+                Upload Data
+            </button>
             <button
                 class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
-            >Upload Gold</button>
+            >
+                Upload Gold
+            </button>
             <span v-click-outside="hide" class="flex align-center">
                 <button
                     class="py-2 px-2 m-1 focus:outline-none hover:bg-gray-300 bg-white rounded"
@@ -51,19 +57,24 @@
                     >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-orange-400 rounded-t-md sm:hidden"
-                        >Publish batch</a>
+                            >Publish batch</a
+                        >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-orange-400 rounded-t-md xl:hidden"
-                        >Upload data</a>
+                            >Upload data</a
+                        >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-orange-400 rounded-b-md xl:hidden"
-                        >Upload Gold</a>
+                            >Upload Gold</a
+                        >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-orange-400 rounded-t-md"
-                        >Edit</a>
+                            >Edit</a
+                        >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-orange-400 rounded-b-md"
-                        >Delete</a>
+                            >Delete</a
+                        >
                     </div>
                 </transition>
             </span>
