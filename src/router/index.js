@@ -4,8 +4,9 @@ import Home from '../views/Home.vue'
 import creazioneProgetto from '../views/creazioneProgetto.vue'
 import visualizzaProgetto from '../views/visualizzaProgetto.vue'
 import reviewResults from '../views/reviewResults.vue'
-import HITList from "../views/HITList.vue";
+import HITList from "../views/HITList.vue"
 import viewHIT from "../views/viewHIT.vue"
+import workerList from '../views/workerList.vue'
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,11 @@ const routes = [
     path: '/hit',
     name: 'viewHIT',
     component: viewHIT,
+  },
+  {
+    path: '/workers',
+    name: 'workerList',
+    component: workerList,
   },
 ]
 
