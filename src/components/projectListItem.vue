@@ -1,7 +1,9 @@
 <template>
     <div>
         <div class="rounded shadow-lg m-1 p-4 flex items-center flex-wrap overflow-hidden">
-            <router-link to="view"><span class="w-1/6">{{ projectData.id }}</span></router-link>
+            <router-link to="view" class="w-1/6">
+                <span>{{ projectData.id }}</span>
+            </router-link>
             <span class="w-1/4">{{ projectData.title }}</span>
             <span class="">{{ projectData.date }}</span>
             <span class="flex-grow flex justify-end w-1/3">
@@ -16,12 +18,12 @@
                     Edit
                 </button>
                 <button
-                    class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none"
+                    class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
                 >
                     Upload Data
                 </button>
                 <button
-                    class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none"
+                    class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
                 >
                     Upload Gold
                 </button>
@@ -30,6 +32,38 @@
                 >
                     Delete
                 </button>
+                <button
+                    class="py-2 px-2 m-1 xl:hidden focus:outline-none hover:bg-gray-300 bg-white"
+                    @click="dropdown = !dropdown"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                    >
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+                        />
+                    </svg>
+                </button>
+                <transition name="slide-toggle">
+                    <div
+                        v-show="dropdown"
+                        v-click-outside="hide"
+                        class="absolute right-auto mt-16 w-56 bg-white rounded-md shadow-xl"
+                    >
+                        <a
+                            class="block px-4 py-2 text-sm capitalize text-gray-700  hover:bg-orange-400 rounded-t-md"
+                            >Upload data</a
+                        >
+                        <a
+                            class="block px-4 py-2 text-sm capitalize text-gray-700  hover:bg-orange-400 rounded-b-md"
+                            >Upload Gold</a
+                        >
+                    </div>
+                </transition>
                 <button
                     class="bg-white hover:bg-gray-300 py-2 px-2 m-1 rounded focus:outline-none"
                     @click="isOpen = !isOpen"
@@ -49,7 +83,7 @@
                 </button>
             </span>
             <transition name="slide-toggle">
-                <div v-if="isOpen" class="content w-full flex justify-center">
+                <div v-if="isOpen" class="content w-full flex flex-wrap justify-center">
                     <vue-ellipse-progress
                         :progress="(projectData.pendingReviewHITs * 100) / projectData.totalHITs"
                         :legend-value="projectData.pendingReviewHITs"
@@ -93,15 +127,21 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside'
+
 export default {
     props: {
         projectData: Object,
+    },
+    directives: {
+        ClickOutside,
     },
     data() {
         return {
             isOpen: false,
             pieSize: 150,
             myWidth: 0,
+            dropdown: false,
         }
     },
     created() {
@@ -120,6 +160,9 @@ export default {
             this.myWidth = window.innerWidth
             this.setPieSize()
         },
+        hide() {
+            this.dropdown = false
+        },
     },
 }
 </script>
@@ -131,6 +174,7 @@ export default {
 }
 .slide-toggle-enter-active {
     max-height: 200px;
+    overflow: hidden;
 }
 .slide-toggle-enter,
 .slide-toggle-leave-active {

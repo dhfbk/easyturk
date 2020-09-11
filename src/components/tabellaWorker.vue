@@ -9,9 +9,9 @@
                         v-for="n in 10"
                         :key="n"
                     >
-                        <th class="p-3 text-left">workerId</th>
-                        <th class="p-3 text-left">approvalRate</th>
-                        <th class="p-3 text-left">status</th>
+                        <th class="p-3 text-left">Worker ID</th>
+                        <th class="p-3 text-left">Approval Rate</th>
+                        <th class="p-3 text-left">Status</th>
                     </tr>
                 </thead>
                 <tbody class="flex-1 sm:flex-none">
@@ -22,20 +22,28 @@
                     >
                         <td
                             class="transition duration-200 ease-in-out border-grey-light border hover:bg-gray-100 p-3"
-                        >workerId</td>
+                        >
+                            workerId
+                        </td>
                         <td
                             class="transition duration-200 ease-in-out border-grey-light border hover:bg-gray-100 p-3"
-                        >approvalRate</td>
+                        >
+                            approvalRate
+                        </td>
                         <td
                             class="transition duration-200 ease-in-out border-grey-light border hover:bg-gray-100 p-3"
-                        >status</td>
+                        >
+                            status
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <button
             class="transition duration-200 ease-in-out bg-white hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-4"
-        >View all</button>
+        >
+            View all
+        </button>
     </div>
 </template>
 
