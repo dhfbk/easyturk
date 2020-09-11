@@ -12,11 +12,7 @@
                 >
                     Publish Batch
                 </button>
-                <button
-                    class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none"
-                >
-                    Edit
-                </button>
+
                 <button
                     class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
                 >
@@ -27,43 +23,49 @@
                 >
                     Upload Gold
                 </button>
-                <button
-                    class="bg-red-600 hover:bg-red-700 text-white  py-2 px-4 rounded m-1 focus:outline-none"
-                >
-                    Delete
-                </button>
-                <button
-                    class="py-2 px-2 m-1 xl:hidden focus:outline-none hover:bg-gray-300 bg-white"
-                    @click="dropdown = !dropdown"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        width="24"
+                <span v-click-outside="hide">
+                    <button
+                        class="py-2 px-2 m-1 focus:outline-none hover:bg-gray-300 bg-white rounded"
+                        @click="dropdown = !dropdown"
                     >
-                        <path d="M0 0h24v24H0z" fill="none" />
-                        <path
-                            d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
-                        />
-                    </svg>
-                </button>
-                <transition name="slide-toggle">
-                    <div
-                        v-show="dropdown"
-                        v-click-outside="hide"
-                        class="absolute right-auto mt-16 w-56 bg-white rounded-md shadow-xl"
-                    >
-                        <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700  hover:bg-orange-400 rounded-t-md"
-                            >Upload data</a
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
                         >
-                        <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700  hover:bg-orange-400 rounded-b-md"
-                            >Upload Gold</a
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+                            />
+                        </svg>
+                    </button>
+                    <transition name="slide-toggle">
+                        <div
+                            v-show="dropdown"
+                            class="absolute  w-56 bg-white rounded-md  shadow-xl"
                         >
-                    </div>
-                </transition>
+                            <a
+                                class="block px-4 py-2 text-sm capitalize text-gray-700  hover:bg-orange-400 rounded-t-md xl:hidden"
+                                >Upload data</a
+                            >
+                            <a
+                                class="block px-4 py-2 text-sm capitalize text-gray-700  hover:bg-orange-400 rounded-b-md xl:hidden"
+                                >Upload Gold</a
+                            >
+                            <a
+                                class="block px-4 py-2 text-sm capitalize text-gray-700  hover:bg-orange-400 rounded-t-md"
+                            >
+                                Edit
+                            </a>
+                            <a
+                                class="block px-4 py-2 text-sm capitalize text-gray-700  hover:bg-orange-400 rounded-b-md"
+                            >
+                                Delete
+                            </a>
+                        </div>
+                    </transition>
+                </span>
                 <button
                     class="bg-white hover:bg-gray-300 py-2 px-2 m-1 rounded focus:outline-none"
                     @click="isOpen = !isOpen"
@@ -170,7 +172,7 @@ export default {
 <style scoped>
 .slide-toggle-enter-active,
 .slide-toggle-leave-active {
-    transition: max-height 0.4s;
+    transition: max-height 0.3s;
 }
 .slide-toggle-enter-active {
     max-height: 200px;
