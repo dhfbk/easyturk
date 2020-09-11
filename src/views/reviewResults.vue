@@ -1,124 +1,134 @@
 <template>
-    <div class="container mx-auto">
+    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
         <p class="text-2xl mb-4 text-orange-400">Review results</p>
-        <div class="shadow-xl rounded p-2 mb-2">
-            <p class="text-lg mb-2">Filters</p>
-
-            <p class="text-md inline">Results per page:</p>
-            <input
-                class="w-12 m-2"
-                type="number"
-                id="quantity"
-                name="quantity"
-                min="10"
-                max="50"
-                step="10"
-                v-model="numPerPage"
-            />
-            <p class="text-md inline">Show:</p>
-            <form class="inline m-2">
-                <select name="choice" @change="onlyShow(sortType)" v-model="sortType">
-                    <option v-for="i in types" :value="i" :key="i">{{ i }}</option>
-                </select>
-            </form>
-        </div>
-
-        <table class="w-full shadow-lg rounded">
-            <thead>
-                <tr class="text-center bg-orange-300 border-b border-grey uppercase">
-                    <th class="px-2 py-2" @click="selectAll(), (all = !all)">
-                        <span
-                            class="bg-white border-2 mx-auto rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+        <div class="container mx-auto">
+            <div class="mb-2">
+                <p class="text-lg mb-2">Filters</p>
+                <div class="flex flex-row justify-start">
+                    <p class="text-md my-auto mr-1">Results per page:</p>
+                    <input
+                        class="appearance-none h-full w-20 rounded border block appearance-none bg-white border-gray-400 text-gray-700 pl-2 pr-1 py-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3"
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        min="10"
+                        max="50"
+                        step="10"
+                        v-model="numPerPage"
+                    />
+                    <p class="text-md my-auto mr-1">Show:</p>
+                    <div class="relative">
+                        <select
+                            class="appearance-none h-full rounded border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 pl-2 pr-12 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            name="choice"
+                            id="choice"
+                            @change="onlyShow(sortType)"
+                            v-model="sortType"
                         >
-                            <input type="checkbox" class="opacity-0 absolute" />
+                            <option v-for="i in types" :value="i" :key="i">{{ i }}</option>
+                        </select>
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                        >
                             <svg
-                                :class="!all ? '' : 'hidden'"
-                                class="fill-current w-4 h-4 text-green-500 pointer-events-none"
+                                class="fill-current h-4 w-4"
+                                xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 20 20"
                             >
-                                <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                <path
+                                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                />
                             </svg>
-                        </span>
-                    </th>
-                    <th class="text-sm text-gray-700">HIT ID</th>
-                    <th class="text-sm text-gray-700">Worker ID</th>
-                    <th class="hidden sm:table-cell text-sm text-gray-700">
-                        Lifetime Approval Rate
-                    </th>
-                    <th class="hidden sm:table-cell text-sm text-gray-700">Date</th>
-                    <th class="hidden sm:table-cell text-sm text-gray-700" @click="sort(mode)">
-                        Status
-                        <svg
-                            class="inline"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="#4a5568"
-                            width="24px"
-                            height="24px"
-                        >
-                            <path d="M0 0h24v24H0V0z" fill="none" />
-                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
-                        </svg>
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="text-center ">
-                <tr v-for="i in current" :key="i.HITId" class="border-b">
-                    <td
-                        class=" py-2 hover:bg-gray-100 border-r"
-                        @click="i.selected = !i.selected"
-                        v-if="i.status == 'Submitted'"
-                    >
-                        <span
-                            class="bg-white border-2 mx-auto rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
-                        >
-                            <input type="checkbox" class="opacity-0 absolute" />
-                            <svg
-                                :class="i.selected ? '' : 'hidden'"
-                                class="fill-current w-4 h-4 text-green-500 pointer-events-none"
-                                viewBox="0 0 20 20"
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table class="w-full shadow-lg rounded">
+                <thead>
+                    <tr class="text-center bg-orange-300 border-b border-grey uppercase">
+                        <th class="px-2 py-2" @click="selectAll(), (all = !all)">
+                            <span
+                                class="bg-white border-2 mx-auto rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
                             >
-                                <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                <input type="checkbox" class="opacity-0 absolute" />
+                                <svg
+                                    :class="!all ? '' : 'hidden'"
+                                    class="fill-current w-4 h-4 text-green-500 pointer-events-none"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                </svg>
+                            </span>
+                        </th>
+                        <th class="text-sm text-gray-700">HIT ID</th>
+                        <th class="text-sm text-gray-700">Worker ID</th>
+                        <th
+                            class="hidden sm:table-cell text-sm text-gray-700"
+                        >Lifetime Approval Rate</th>
+                        <th class="hidden sm:table-cell text-sm text-gray-700">Date</th>
+                        <th class="hidden sm:table-cell text-sm text-gray-700" @click="sort(mode)">
+                            Status
+                            <svg
+                                class="inline"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="#4a5568"
+                                width="24px"
+                                height="24px"
+                            >
+                                <path d="M0 0h24v24H0V0z" fill="none" />
+                                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
                             </svg>
-                        </span>
-                    </td>
-                    <td class=" py-2 hover:bg-gray-100 border-r" v-else></td>
-                    <td class="border-r py-2 hover:bg-gray-100 text-sm text-gray-700 font-medium">
-                        {{ i.HITId }}
-                    </td>
-                    <td class="border-r py-2 hover:bg-gray-100 text-sm text-gray-700 font-medium">
-                        {{ i.workerId }}
-                    </td>
-                    <td class="border-r py-2 hover:bg-gray-100 text-sm text-gray-700 font-medium">
-                        {{ i.approvalRate }}
-                    </td>
-                    <td class="border-r py-2 hover:bg-gray-100 text-sm text-gray-700 font-medium">
-                        {{ i.date }}
-                    </td>
-                    <td class=" py-2 hover:bg-gray-100 text-sm text-gray-700 font-medium">
-                        {{ i.status }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="grid grid-cols-3 mt-2" v-if="data.length > numPerPage">
-            <button
-                @click="page--"
-                v-if="data.length > numPerPage && page >= 1"
-                class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
-            >
-                Previous
-            </button>
-            <div v-else></div>
-            <p class="text-center">Page {{ page + 1 }} of {{ pageNum + 1 }}</p>
-            <button
-                @click="page++"
-                v-if="data.length > numPerPage && page < pageNum"
-                class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none  place-self-end"
-            >
-                Next
-            </button>
-            <div v-else></div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr v-for="i in current" :key="i.HITId" class="border-b hover:bg-gray-100">
+                        <td
+                            class="py-2 border-r"
+                            @click="i.selected = !i.selected"
+                            v-if="i.status == 'Submitted'"
+                        >
+                            <span
+                                class="bg-white border-2 mx-auto rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                            >
+                                <input type="checkbox" class="opacity-0 absolute" />
+                                <svg
+                                    :class="i.selected ? '' : 'hidden'"
+                                    class="fill-current w-4 h-4 text-green-500 pointer-events-none"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                </svg>
+                            </span>
+                        </td>
+                        <td class="py-2 border-r" v-else></td>
+                        <td class="border-r py-2 text-sm text-gray-700 font-medium">{{ i.HITId }}</td>
+                        <td class="border-r py-2 text-sm text-gray-700 font-medium">{{ i.workerId }}</td>
+                        <td
+                            class="border-r py-2 text-sm text-gray-700 font-medium"
+                        >{{ i.approvalRate }}</td>
+                        <td class="border-r py-2 text-sm text-gray-700 font-medium">{{ i.date }}</td>
+                        <td class="py-2 text-sm text-gray-700 font-medium">{{ i.status }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="grid grid-cols-3 mt-2" v-if="data.length > numPerPage">
+                <button
+                    @click="page--"
+                    v-if="data.length > numPerPage && page >= 1"
+                    class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
+                >Previous</button>
+                <div v-else></div>
+                <p class="text-center">Page {{ page + 1 }} of {{ pageNum + 1 }}</p>
+                <button
+                    @click="page++"
+                    v-if="data.length > numPerPage && page < pageNum"
+                    class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
+                >Next</button>
+                <div v-else></div>
+            </div>
         </div>
     </div>
 </template>
