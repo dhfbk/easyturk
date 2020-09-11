@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="rounded shadow-lg m-1 p-4 flex items-center flex-wrap overflow-hidden">
+        <div class="rounded shadow-lg my-1 mx-4 p-4 flex items-center flex-wrap overflow-hidden">
             <router-link to="view" class="w-1/6">
                 <span>{{ projectData.id }}</span>
             </router-link>
