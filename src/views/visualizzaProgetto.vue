@@ -5,15 +5,13 @@
             <h1 class="text-2xl mb-4 text-orange-400">{{datiProgetto.nome}}</h1>
             <div class="flex relative">
                 <button
-                    v-show="!mini"
                     type="submit"
-                    class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-green-400 hover:bg-green-400 mr-2 focus:outline-none"
+                    class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-green-400 hover:bg-green-400 mr-2 focus:outline-none"
                 >Pubblica</button>
                 <button
-                    v-show="!mini"
                     @click="open('results')"
                     type="submit"
-                    class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 mr-2 focus:outline-none"
+                    class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 mr-2 focus:outline-none"
                 >Risultati</button>
                 <button
                     @click="dropdownOpen = !dropdownOpen"
@@ -39,13 +37,11 @@
                         class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"
                     >
                         <a
-                            v-show="mini"
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"
+                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"
                         >Pubblica</a>
                         <router-link
                             to="results"
-                            v-show="mini"
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
+                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
                         >Risultati</router-link>
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"

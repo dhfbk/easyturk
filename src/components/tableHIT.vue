@@ -49,10 +49,14 @@
                     v-for="hit in hitDaMostrare"
                     :key="hit.HITId"
                 >
-                    <td class="table-cell py-2">
-                        <p class="text-sm text-gray-700 font-medium">{{hit.HITId}}</p>
+                    <td class="table-cell py-2 border-r border-grey-light">
+                        <router-link to="/hit">
+                            <p class="text-sm text-gray-700 font-medium">{{hit.HITId}}</p>
+                        </router-link>
                     </td>
-                    <td class="table-cell py-2 whitespace-no-wrap text-blue-900 text-sm leading-5">
+                    <td
+                        class="table-cell py-2 border-r border-grey-light whitespace-no-wrap text-blue-900 text-sm leading-5"
+                    >
                         <span class="relative inline-block px-3 py-1 italic text-green-900">
                             <span
                                 aria-hidden
@@ -72,18 +76,18 @@
                             <span class="relative text-xs">{{hit.HITStatus}}</span>
                         </span>
                     </td>
-                    <td class="hidden sm:table-cell py-2">
+                    <td class="hidden sm:table-cell py-2 border-r border-grey-light">
                         <p class="text-sm text-gray-700 font-medium">{{hit.CreationTime}}</p>
                     </td>
-                    <td class="hidden md:table-cell py-2">
+                    <td class="hidden md:table-cell py-2 border-r border-grey-light">
                         <p class="text-sm text-gray-700 font-medium">{{hit.MaxAssignments}}</p>
                     </td>
-                    <td class="hidden md:table-cell py-2">
+                    <td class="hidden md:table-cell py-2 border-r border-grey-light">
                         <p
                             class="text-sm text-gray-700 font-medium"
                         >{{hit.NumberOfAssignmentsCompleted}}</p>
                     </td>
-                    <td class="hidden lg:table-cell py-2">
+                    <td class="hidden lg:table-cell py-2 border-r border-grey-light">
                         <p
                             class="text-sm text-gray-700 font-medium"
                         >{{hit.NumberOfAssignmentsPending}}</p>

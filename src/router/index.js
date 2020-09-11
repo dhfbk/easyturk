@@ -5,6 +5,7 @@ import creazioneProgetto from '../views/creazioneProgetto.vue'
 import visualizzaProgetto from '../views/visualizzaProgetto.vue'
 import reviewResults from '../views/reviewResults.vue'
 import HITList from "../views/HITList.vue";
+import viewHIT from "../views/viewHIT.vue"
 
 Vue.use(VueRouter)
 
@@ -38,6 +39,11 @@ const routes = [
     path: '/results',
     name: 'reviewResults',
     component: reviewResults,
+  },
+  {
+    path: '/hit',
+    name: 'viewHIT',
+    component: viewHIT,
   },
 ]
 
