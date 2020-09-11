@@ -16,7 +16,7 @@
                 </tr>
             </tbody>
         </table>
-        <router-link to="/workers">
+        <router-link to="/workers" v-if="showBtn">
             <button
                 type="submit"
                 class="py-2 px-4 bg-white mt-4 rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 focus:outline-none"
@@ -28,6 +28,16 @@
 <script>
 export default {
     name: 'tabellaWorker',
+    data() {
+        return {
+            showBtn: false,
+        }
+    },
+    created() {
+        if (this.$route.path != '/workers') {
+            this.showBtn = true
+        }
+    },
 }
 </script>
 
