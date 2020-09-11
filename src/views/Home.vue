@@ -2,18 +2,17 @@
     <div class="home mx-8 my-4 sm:my-6 md:mx-16">
         <div class="mb-10">
             <h2 class="text-2xl">Progetti</h2>
-            <div class>
-                <div class="w-full mx-auto">
-                    <div class="rounded mx-5 my-2 flex items-center text-lg">
-                        <span class="w-1/6">Project Id</span>
-                        <span class="w-1/4">Title</span>
-                        <span class>Date</span>
-                        <span class="flex-grow flex justify-end w-1/3"></span>
-                    </div>
+            <div class="w-full mx-auto">
+                <div
+                    class="hidden w-2/3 md:flex justify-around items-center flex-wrap text-lg my-2 mx-4 p-4"
+                >
+                    <span class="mx-1">Project Id</span>
+                    <span class="mx-1">Title</span>
+                    <span class="mx-1">Date</span>
                 </div>
-                <div v-for="i in projects" :key="i.id" class="w-full mx-auto">
-                    <projectListItem :projectData="i" />
-                </div>
+            </div>
+            <div v-for="i in projects" :key="i.id" class="w-full mx-auto relative">
+                <projectListItem :projectData="i" />
             </div>
         </div>
         <div

@@ -31,7 +31,7 @@
                         />
                     </svg>
                 </button>
-                <transition name="fade">
+                <transition name="slide-toggle">
                     <div
                         v-show="dropdownOpen"
                         class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"

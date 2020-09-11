@@ -8,3 +8,20 @@
 * {
     font-family: 'Work Sans', sans-serif !important;
 }
+.slide-toggle-enter-active,
+.slide-toggle-leave-active {
+    transition: max-height 0.3s;
+}
+.slide-toggle-enter-active {
+    max-height: 200px;
+    overflow: hidden;
+}
+.slide-toggle-enter,
+.slide-toggle-leave-active {
+    max-height: 0;
+    overflow: hidden;
+}
+.slide-toggle-leave {
+    max-height: 200px;
+    overflow: hidden;
+}
