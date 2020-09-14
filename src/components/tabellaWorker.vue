@@ -1,11 +1,11 @@
 <template>
     <div class="container mx-auto">
         <table class="w-full sm:w-5/6 mx-auto shadow-lg rounded">
-            <thead>
-                <tr class="text-center bg-orange-300 border-b border-grey uppercase">
-                    <th class="py-2 px-2 text-sm text-gray-700">Worker ID</th>
-                    <th class="py-2 px-2 text-sm text-gray-700">Approval Rate</th>
-                    <th class="py-2 px-2 hidden sm:table-cell text-sm text-gray-700">Status</th>
+            <thead class="bg-primary">
+                <tr class="text-center border-b text-white border-grey uppercase">
+                    <th class="py-2 px-2 text-sm ">Worker ID</th>
+                    <th class="py-2 px-2 text-sm ">Approval Rate</th>
+                    <th class="py-2 px-2 hidden sm:table-cell text-sm ">Status</th>
                 </tr>
             </thead>
             <tbody class="bg-white text-center">
@@ -19,8 +19,10 @@
         <router-link to="/workers" v-if="showBtn">
             <button
                 type="submit"
-                class="py-2 px-4 bg-white mt-4 rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 focus:outline-none"
-            >View all</button>
+                class="py-2 px-4 bg-white mt-4 rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white hover:bg-primary focus:outline-none"
+            >
+                View all
+            </button>
         </router-link>
     </div>
 </template>
@@ -41,5 +43,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,6 +1,6 @@
 <template>
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
-        <p class="text-2xl mb-4 text-orange-400">Review results</p>
+        <p class="text-2xl mb-4 text-primary">Review results</p>
         <div class="container mx-auto">
             <div class="mb-2">
                 <p class="text-lg mb-2">Filters</p>
@@ -49,14 +49,18 @@
                     @click="page--"
                     v-if="data.length > numPerPage && page >= 1"
                     class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
-                >Previous</button>
+                >
+                    Previous
+                </button>
                 <div v-else></div>
                 <p class="text-center">Page {{ page + 1 }} of {{ pageNum + 1 }}</p>
                 <button
                     @click="page++"
                     v-if="data.length > numPerPage && page < pageNum"
                     class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
-                >Next</button>
+                >
+                    Next
+                </button>
                 <div v-else></div>
             </div>
         </div>

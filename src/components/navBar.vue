@@ -1,5 +1,5 @@
 <template>
-    <nav class="bg-orange-400 p-6">
+    <nav class="bg-primary p-6">
         <div class="text-white mr-6">
             <svg
                 width="225px"
@@ -101,22 +101,25 @@
         </div>
         <div class="clearfix sm:hidden"></div>
         <div
-            :class="open ? 'block': 'hidden'"
+            :class="open ? 'block' : 'hidden'"
             class="w-full flex-grow sm:flex sm:items-center sm:w-auto justify-end text-right sm:text-justify"
         >
             <div>
                 <router-link
                     to="/"
                     class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-black hover:text-white sm:mr-4"
-                >Home</router-link>
-                <a
-                    href="#responsive-header"
+                    >Home</router-link
+                >
+                <router-link
+                    to="workers"
                     class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-black hover:text-white sm:mr-4"
-                >Workers</a>
+                    >Workers</router-link
+                >
                 <router-link
                     to="create"
                     class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-black hover:text-white"
-                >Create Project</router-link>
+                    >Create Project</router-link
+                >
             </div>
         </div>
     </nav>

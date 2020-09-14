@@ -18,7 +18,7 @@
         </div>
         <span class="flex-grow flex justify-end w-2/5">
             <button
-                class="bg-orange-500 hover:bg-orange-700 text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:inline-block"
+                class="bg-primary hover:bg-orange-500 text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:inline-block"
             >
                 Publish Batch
             </button>
@@ -56,23 +56,23 @@
                         class="absolute right-0 w-40 sm:w-56 bg-white rounded-md shadow-xl z-20 mr-4 mt-12 sm:mr-20"
                     >
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-orange-400 rounded-t-md sm:hidden"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md sm:hidden"
                             >Publish batch</a
                         >
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-orange-400 rounded-t-md xl:hidden"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md xl:hidden"
                             >Upload data</a
                         >
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-orange-400 rounded-b-md xl:hidden"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md xl:hidden"
                             >Upload Gold</a
                         >
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-orange-400 rounded-t-md"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md"
                             >Edit</a
                         >
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-orange-400 rounded-b-md"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
                             >Delete</a
                         >
                     </div>
@@ -101,7 +101,7 @@
                 <vue-ellipse-progress
                     :progress="(projectData.pendingReviewHITs * 100) / projectData.totalHITs"
                     :legend-value="projectData.pendingReviewHITs"
-                    :color="'#f6ad55'"
+                    :color="'#0091FF'"
                     :size="pieSize"
                     :half="true"
                     :angle="0"
@@ -113,7 +113,7 @@
                 <vue-ellipse-progress
                     :progress="(projectData.inProgressHITs * 100) / projectData.totalHITs"
                     :legend-value="projectData.inProgressHITs"
-                    :color="'#f6ad55'"
+                    :color="'#0091FF'"
                     :size="pieSize"
                     :half="true"
                     :angle="0"
@@ -125,7 +125,7 @@
                 <vue-ellipse-progress
                     :progress="(projectData.completedHITs * 100) / projectData.totalHITs"
                     :legend-value="projectData.completedHITs"
-                    :color="'#f6ad55'"
+                    :color="'#0091FF'"
                     :size="pieSize"
                     :half="true"
                     :angle="0"

@@ -2,16 +2,18 @@
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
         <modalEliminazione v-if="modal" @hideModal="toggleModal" />
         <div class="flex justify-between flex-wrap">
-            <h1 class="text-2xl mb-4 text-orange-400">HIT {{datiProgetto.hitID}}</h1>
+            <h1 class="text-2xl mb-4 text-primary">HIT {{ datiProgetto.hitID }}</h1>
             <div class="flex relative">
                 <button
                     type="submit"
-                    class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 mr-2 focus:outline-none"
-                >Aggiungi assignment</button>
+                    class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary mr-2 focus:outline-none"
+                >
+                    Aggiungi assignment
+                </button>
                 <button
                     @click="dropdownOpen = !dropdownOpen"
                     v-click-outside="hide"
-                    class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 focus:outline-none"
+                    class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="!dropdownOpen">
                         <path
@@ -33,11 +35,13 @@
                     >
                         <router-link
                             to="results"
-                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"
-                        >Aggiungi assignment</router-link>
+                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
+                            >Aggiungi assignment</router-link
+                        >
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-b-md sm:rounded-md"
-                        >Modifica</a>
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md sm:rounded-md"
+                            >Modifica</a
+                        >
                     </div>
                 </transition>
             </div>

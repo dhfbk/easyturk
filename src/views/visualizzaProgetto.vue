@@ -2,21 +2,25 @@
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
         <modalEliminazione v-if="modal" @hideModal="toggleModal" />
         <div class="flex justify-between flex-wrap">
-            <h1 class="text-2xl mb-4 text-orange-400">{{datiProgetto.nome}}</h1>
+            <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="flex relative">
                 <button
                     type="submit"
-                    class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-green-400 hover:bg-green-400 mr-2 focus:outline-none"
-                >Pubblica</button>
+                    class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary hover:text-white mr-2 focus:outline-none"
+                >
+                    Pubblica
+                </button>
                 <button
                     @click="open('results')"
                     type="submit"
-                    class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 mr-2 focus:outline-none"
-                >Risultati</button>
+                    class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary hover:text-white mr-2 focus:outline-none"
+                >
+                    Risultati
+                </button>
                 <button
                     @click="dropdownOpen = !dropdownOpen"
                     v-click-outside="hide"
-                    class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-orange-400 hover:bg-orange-400 focus:outline-none"
+                    class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="!dropdownOpen">
                         <path
@@ -37,25 +41,31 @@
                         class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"
                     >
                         <a
-                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"
-                        >Pubblica</a>
+                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white rounded-t-md"
+                            >Pubblica</a
+                        >
                         <router-link
                             to="results"
-                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
-                        >Risultati</router-link>
+                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white"
+                            >Risultati</router-link
+                        >
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-t-md"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white rounded-t-md"
                             @click="toggleModal()"
-                        >Elimina</a>
+                            >Elimina</a
+                        >
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
-                        >Modifica</a>
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white"
+                            >Modifica</a
+                        >
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400"
-                        >Carica dati</a>
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white"
+                            >Carica dati</a
+                        >
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-orange-400 rounded-b-md"
-                        >Carica gold</a>
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-white"
+                            >Carica gold</a
+                        >
                     </div>
                 </transition>
             </div>

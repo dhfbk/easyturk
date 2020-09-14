@@ -31,16 +31,16 @@
         </div>
         <table class="w-full shadow-lg rounded">
             <thead>
-                <tr class="text-center bg-orange-300 border-b border-grey uppercase">
-                    <th class="py-2 px-2 text-sm text-gray-700">HIT ID</th>
-                    <th class="py-2 px-2 text-sm text-gray-700">Stato</th>
-                    <th class="py-2 px-2 hidden sm:table-cell text-sm text-gray-700">Creazione</th>
-                    <th class="py-2 px-2 hidden md:table-cell text-sm text-gray-700">
+                <tr class="text-center bg-primary border-b border-grey uppercase">
+                    <th class="py-2 px-2 text-sm text-white">HIT ID</th>
+                    <th class="py-2 px-2 text-sm text-white">Stato</th>
+                    <th class="py-2 px-2 hidden sm:table-cell text-sm text-white">Creazione</th>
+                    <th class="py-2 px-2 hidden md:table-cell text-sm text-white">
                         Tot. assignment
                     </th>
-                    <th class="py-2 px-2 hidden md:table-cell text-sm text-gray-700">Completati</th>
-                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-gray-700">In sospeso</th>
-                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-gray-700">
+                    <th class="py-2 px-2 hidden md:table-cell text-sm text-white">Completati</th>
+                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-white">In sospeso</th>
+                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-white">
                         Disponibili
                     </th>
                 </tr>

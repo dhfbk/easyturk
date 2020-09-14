@@ -18,19 +18,23 @@
                             />
                         </svg>
                     </div>
-                    <div
-                        class="py-2"
-                    >Sicuro di voler eliminare il progetto? Questa azione è irreversibile.</div>
+                    <div class="py-2">
+                        Sicuro di voler eliminare il progetto? Questa azione è irreversibile.
+                    </div>
 
                     <div class="ml-auto">
                         <button
-                            class="transition duration-150 ease-in-out bg-orange-400 hover:bg-orange-700 text-black hover:text-white font-bold py-2 px-4 rounded focus:outline-none"
+                            class="transition duration-150 ease-in-out bg-primary hover:bg-orange-600 text-black hover:text-white font-bold py-2 px-4 rounded focus:outline-none"
                             @click="toggleModal()"
-                        >Elimina</button>
+                        >
+                            Elimina
+                        </button>
                         <button
                             class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-400 focus:outline-none ml-2 bg-transparent text-black font-semibold py-2 px-4 rounded"
                             @click="toggleModal()"
-                        >Annulla</button>
+                        >
+                            Annulla
+                        </button>
                     </div>
                 </div>
             </div>
@@ -49,5 +53,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

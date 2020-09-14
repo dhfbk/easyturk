@@ -1,7 +1,7 @@
 <template>
     <table class="w-full shadow-lg rounded">
         <thead>
-            <tr class="text-center bg-orange-300 border-b border-grey uppercase">
+            <tr class="text-center bg-primary border-b border-grey uppercase">
                 <th class="px-2 py-2" @click="$emit('selectAll')">
                     <span
                         class="bg-white border-2 mx-auto rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
@@ -16,13 +16,13 @@
                         </svg>
                     </span>
                 </th>
-                <th class="text-sm text-gray-700">HIT ID</th>
-                <th class="text-sm text-gray-700">Worker ID</th>
-                <th class="hidden sm:table-cell text-sm text-gray-700">
+                <th class="text-sm text-white">HIT ID</th>
+                <th class="text-sm text-white">Worker ID</th>
+                <th class="hidden sm:table-cell text-sm text-white">
                     Lifetime Approval Rate
                 </th>
-                <th class="hidden sm:table-cell text-sm text-gray-700">Date</th>
-                <th class="hidden sm:table-cell text-sm text-gray-700" @click="$emit('sort')">
+                <th class="hidden sm:table-cell text-sm text-white">Date</th>
+                <th class="hidden sm:table-cell text-sm text-white" @click="$emit('sort')">
                     Status
                     <svg
                         class="inline"

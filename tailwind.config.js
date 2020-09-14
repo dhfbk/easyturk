@@ -5,6 +5,11 @@ module.exports = {
             transitionProperty: {
                 height: 'height',
             },
+            colors: {
+                primary: '#FF9900',
+                secondary: '#0091FF',
+                // ...
+            },
         },
     },
 }
