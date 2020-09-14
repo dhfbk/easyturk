@@ -127,6 +127,7 @@ export default {
         this.popupItem = this.$el
     },
     methods: {
+        //metodo che imposta i titoli e i dati da inserire nelle card della pagina
         impostaDatiCard() {
             this.titoliCard.titoli1 = [
                 'Titolo',
@@ -196,13 +197,16 @@ export default {
                 },
             }
         },
+        //metodo che mostra o nasconde il dialog
         toggleModal() {
             this.modal = !this.modal
             this.hide()
         },
+        //nasconde il dropdown
         hide() {
             this.dropdownOpen = false
         },
+        //calcola il numero da utilizzare nei grafici delle analytics
         calcolaProgress() {
             this.datiProgetto.completateProgress =
                 (100 * this.datiProgetto.assignmentCompletati) / this.datiProgetto.totaleAssignment
@@ -211,6 +215,7 @@ export default {
             this.datiProgetto.incorsoProgress =
                 (100 * this.datiProgetto.assignmentInCorso) / this.datiProgetto.totaleAssignment
         },
+        //modifica il tempo da secondi a minuti/ore/giorni
         elaboraTempo(tempo) {
             var tmp = 0
             if (tempo < 60) {
