@@ -6,60 +6,75 @@
             <div class="flex relative">
                 <button
                     type="submit"
-                    class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary hover:text-white mr-2 focus:outline-none"
-                >Pubblica</button>
+                    class="hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary mr-2 focus:outline-none"
+                >
+                    <svg style="width:24px;" viewBox="0 0 24 24">
+                        <path
+                            d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"
+                        />
+                    </svg>
+                    <span class="ml-1">Pubblica</span>
+                </button>
                 <button
                     @click="open('results')"
                     type="submit"
-                    class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary hover:text-white mr-2 focus:outline-none"
-                >Risultati</button>
-                <button
-                    @click="dropdownOpen = !dropdownOpen"
-                    v-click-outside="hide"
-                    class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
+                    class="hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary mr-2 focus:outline-none"
                 >
-                    <svg
-                        class="transition duration-300 ease-in-out"
-                        :class="{ 'transform  rotate-180': dropdownOpen }"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="black"
-                        width="24px"
-                        height="24px"
-                    >
+                    <svg style="width:24px;" viewBox="0 0 24 24">
                         <path
-                            fill="currentColor"
-                            d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+                            d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
                         />
                     </svg>
+                    <span class="ml-1">Risultati</span>
                 </button>
-                <transition name="slide-toggle">
-                    <div
-                        v-show="dropdownOpen"
-                        class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"
+                <span v-click-outside="hide" class="flex align-center">
+                    <button
+                        @click="dropdownOpen = !dropdownOpen"
+                        class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                     >
-                        <a
-                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white rounded-t-md"
-                        >Pubblica</a>
-                        <router-link
-                            to="results"
-                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white"
-                        >Risultati</router-link>
-                        <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white rounded-t-md"
-                            @click="toggleModal()"
-                        >Elimina</a>
-                        <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white"
-                        >Modifica</a>
-                        <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white"
-                        >Carica dati</a>
-                        <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-white"
-                        >Carica gold</a>
-                    </div>
-                </transition>
+                        <svg
+                            class="transition duration-300 ease-in-out"
+                            :class="{ 'transform  rotate-180': dropdownOpen }"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="black"
+                            width="24px"
+                            height="24px"
+                        >
+                            <path
+                                fill="currentColor"
+                                d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+                            />
+                        </svg>
+                    </button>
+                    <transition name="slide-toggle">
+                        <div
+                            v-show="dropdownOpen"
+                            class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"
+                        >
+                            <a
+                                class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
+                            >Pubblica</a>
+                            <router-link
+                                to="results"
+                                class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
+                            >Risultati</router-link>
+                            <a
+                                class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
+                                @click="toggleModal()"
+                            >Elimina</a>
+                            <a
+                                class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
+                            >Modifica</a>
+                            <a
+                                class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
+                            >Carica dati</a>
+                            <a
+                                class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md"
+                            >Carica gold</a>
+                        </div>
+                    </transition>
+                </span>
             </div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 mt-2">
