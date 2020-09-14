@@ -10,11 +10,9 @@
                     @change="sortBy(sortType)"
                     v-model="sortType"
                 >
-                    <option
-                        v-for="item in sortOptions"
-                        :key="item.value"
-                        :value="item.value"
-                    >{{item.text}}</option>
+                    <option v-for="item in sortOptions" :key="item.value" :value="item.value">{{
+                        item.text
+                    }}</option>
                 </select>
                 <div
                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
@@ -37,10 +35,14 @@
                     <th class="py-2 px-2 text-sm text-gray-700">HIT ID</th>
                     <th class="py-2 px-2 text-sm text-gray-700">Stato</th>
                     <th class="py-2 px-2 hidden sm:table-cell text-sm text-gray-700">Creazione</th>
-                    <th class="py-2 px-2 hidden md:table-cell text-sm text-gray-700">Tot. assignment</th>
+                    <th class="py-2 px-2 hidden md:table-cell text-sm text-gray-700">
+                        Tot. assignment
+                    </th>
                     <th class="py-2 px-2 hidden md:table-cell text-sm text-gray-700">Completati</th>
                     <th class="py-2 px-2 hidden lg:table-cell text-sm text-gray-700">In sospeso</th>
-                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-gray-700">Disponibili</th>
+                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-gray-700">
+                        Disponibili
+                    </th>
                 </tr>
             </thead>
             <tbody class="bg-white text-center">
@@ -51,7 +53,7 @@
                 >
                     <td class="table-cell py-2 border-r border-grey-light">
                         <router-link to="/hit">
-                            <p class="text-sm text-gray-700 font-medium">{{hit.HITId}}</p>
+                            <p class="text-sm text-gray-700 font-medium">{{ hit.HITId }}</p>
                         </router-link>
                     </td>
                     <td
@@ -73,29 +75,29 @@
                                 v-if="hit.HITStatus == 'Disposed'"
                                 class="absolute inset-0 bg-red-400 opacity-50 rounded-full"
                             ></span>
-                            <span class="relative text-xs">{{hit.HITStatus}}</span>
+                            <span class="relative text-xs">{{ hit.HITStatus }}</span>
                         </span>
                     </td>
                     <td class="hidden sm:table-cell py-2 border-r border-grey-light">
-                        <p class="text-sm text-gray-700 font-medium">{{hit.CreationTime}}</p>
+                        <p class="text-sm text-gray-700 font-medium">{{ hit.CreationTime }}</p>
                     </td>
                     <td class="hidden md:table-cell py-2 border-r border-grey-light">
-                        <p class="text-sm text-gray-700 font-medium">{{hit.MaxAssignments}}</p>
+                        <p class="text-sm text-gray-700 font-medium">{{ hit.MaxAssignments }}</p>
                     </td>
                     <td class="hidden md:table-cell py-2 border-r border-grey-light">
-                        <p
-                            class="text-sm text-gray-700 font-medium"
-                        >{{hit.NumberOfAssignmentsCompleted}}</p>
+                        <p class="text-sm text-gray-700 font-medium">
+                            {{ hit.NumberOfAssignmentsCompleted }}
+                        </p>
                     </td>
                     <td class="hidden lg:table-cell py-2 border-r border-grey-light">
-                        <p
-                            class="text-sm text-gray-700 font-medium"
-                        >{{hit.NumberOfAssignmentsPending}}</p>
+                        <p class="text-sm text-gray-700 font-medium">
+                            {{ hit.NumberOfAssignmentsPending }}
+                        </p>
                     </td>
                     <td class="hidden lg:table-cell py-2">
-                        <p
-                            class="text-sm text-gray-700 font-medium"
-                        >{{hit.NumberOfAssignmentsAvailable}}</p>
+                        <p class="text-sm text-gray-700 font-medium">
+                            {{ hit.NumberOfAssignmentsAvailable }}
+                        </p>
                     </td>
                 </tr>
             </tbody>
@@ -135,6 +137,7 @@ export default {
                 this.filtraHIT()
             }
         },
+        // mostra solo le HIT di una categoria (quella passata nell funzione filtraHIT)
         filtraHIT() {
             if (this.filtri.stato == 'all') {
                 this.hitDaMostrare = JSON.parse(JSON.stringify(this.datiHIT))
@@ -155,5 +158,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>
