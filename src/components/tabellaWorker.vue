@@ -2,7 +2,7 @@
     <div class="container mx-auto">
         <table class="w-full sm:w-5/6 mx-auto shadow-lg rounded">
             <thead class="bg-primary">
-                <tr class="text-center border-b text-white border-grey uppercase">
+                <tr class="text-center border-b text-white border-grey uppercase tracking-tight">
                     <th class="py-2 px-2 text-sm ">Worker ID</th>
                     <th class="py-2 px-2 text-sm ">Approval Rate</th>
                     <th class="py-2 px-2 hidden sm:table-cell text-sm ">Status</th>

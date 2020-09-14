@@ -31,7 +31,7 @@
         </div>
         <table class="w-full shadow-lg rounded">
             <thead>
-                <tr class="text-center bg-primary border-b border-grey uppercase">
+                <tr class="text-center bg-primary border-b border-grey uppercase tracking-tight">
                     <th class="py-2 px-2 text-sm text-white">HIT ID</th>
                     <th class="py-2 px-2 text-sm text-white">Stato</th>
                     <th class="py-2 px-2 hidden sm:table-cell text-sm text-white">Creazione</th>

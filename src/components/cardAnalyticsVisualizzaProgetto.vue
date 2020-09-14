@@ -1,9 +1,9 @@
 <template>
     <div class="bg-white rounded-md shadow-lg p-4 mb-4">
         <div class="text-lg mb-4">
-            <span class="font-bold" v-if="dati.type == 'HIT'">Totale HIT:&nbsp;</span>
-            <span class="font-bold" v-if="dati.type == 'aggregate'">Hit completate:&nbsp;</span>
-            <span class="font-bold" v-if="dati.type == 'assignment'">Totale assignment:&nbsp;</span>
+            <span class="font-bold tracking-tight" v-if="dati.type == 'HIT'">Totale HIT:&nbsp;</span>
+            <span class="font-bold tracking-tight" v-if="dati.type == 'aggregate'">Hit completate:&nbsp;</span>
+            <span class="font-bold tracking-tight" v-if="dati.type == 'assignment'">Totale assignment:&nbsp;</span>
             <span>{{ dati.totale }}</span>
         </div>
         <div class="flex justify-evenly flex-wrap">

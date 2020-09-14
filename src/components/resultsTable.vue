@@ -1,7 +1,7 @@
 <template>
     <table class="w-full shadow-lg rounded">
         <thead>
-            <tr class="text-center bg-primary border-b border-grey uppercase">
+            <tr class="text-center bg-primary border-b border-grey uppercase tracking-tight">
                 <th class="px-2 py-2" @click="$emit('selectAll')">
                     <span
                         class="bg-white border-2 mx-auto rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"

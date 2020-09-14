@@ -7,31 +7,29 @@
                 <button
                     type="submit"
                     class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary hover:text-white mr-2 focus:outline-none"
-                >
-                    Pubblica
-                </button>
+                >Pubblica</button>
                 <button
                     @click="open('results')"
                     type="submit"
                     class="hidden sm:block py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary hover:text-white mr-2 focus:outline-none"
-                >
-                    Risultati
-                </button>
+                >Risultati</button>
                 <button
                     @click="dropdownOpen = !dropdownOpen"
                     v-click-outside="hide"
                     class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                 >
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="!dropdownOpen">
+                    <svg
+                        class="transition duration-300 ease-in-out"
+                        :class="{ 'transform  rotate-180': dropdownOpen }"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="black"
+                        width="24px"
+                        height="24px"
+                    >
                         <path
                             fill="currentColor"
                             d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
-                        />
-                    </svg>
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else>
-                        <path
-                            fill="currentColor"
-                            d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"
                         />
                     </svg>
                 </button>
@@ -42,30 +40,24 @@
                     >
                         <a
                             class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white rounded-t-md"
-                            >Pubblica</a
-                        >
+                        >Pubblica</a>
                         <router-link
                             to="results"
                             class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white"
-                            >Risultati</router-link
-                        >
+                        >Risultati</router-link>
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white rounded-t-md"
                             @click="toggleModal()"
-                            >Elimina</a
-                        >
+                        >Elimina</a>
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white"
-                            >Modifica</a
-                        >
+                        >Modifica</a>
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary hover:text-white"
-                            >Carica dati</a
-                        >
+                        >Carica dati</a>
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-white"
-                            >Carica gold</a
-                        >
+                        >Carica gold</a>
                     </div>
                 </transition>
             </div>

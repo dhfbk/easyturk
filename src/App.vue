@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" class="antialiased">
         <navbar />
         <transition name="fade" mode="out-in">
             <router-view />
