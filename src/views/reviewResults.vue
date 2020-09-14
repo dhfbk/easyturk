@@ -49,18 +49,14 @@
                     @click="page--"
                     v-if="data.length > numPerPage && page >= 1"
                     class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
-                >
-                    Previous
-                </button>
+                >Previous</button>
                 <div v-else></div>
                 <p class="text-center">Page {{ page + 1 }} of {{ pageNum + 1 }}</p>
                 <button
                     @click="page++"
                     v-if="data.length > numPerPage && page < pageNum"
                     class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
-                >
-                    Next
-                </button>
+                >Next</button>
                 <div v-else></div>
             </div>
         </div>
@@ -88,6 +84,7 @@ export default {
     },
 
     methods: {
+        //preleva i dati da mostrare nella pagina corrente
         currentPage() {
             for (
                 let i = this.page * this.numPerPage;
@@ -99,6 +96,7 @@ export default {
                 }
             }
         },
+        //usato per mostrare solamente i dati che hanno un certo stato
         onlyShow(x) {
             this.data = []
             if (x != 'All') {
@@ -116,7 +114,7 @@ export default {
             this.current = []
             this.currentPage()
         },
-
+        //seleziona tutte le checkbox nella pagina corrente
         selectAll() {
             this.all = !this.all
             for (let i = 0; i < this.data.length; i++) {
@@ -127,6 +125,7 @@ export default {
                 }
             }
         },
+        //effettua il sorting per il parametro che viene ricevuto
         sort(mode) {
             this.data.sort((x, y) => {
                 return x.status == mode ? -1 : y.status == mode ? 1 : 0

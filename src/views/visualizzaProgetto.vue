@@ -131,8 +131,6 @@ export default {
             },
             datiCardAnalytics: {},
             dropdownOpen: false,
-            myWidth: 0,
-            mini: false,
             modal: false,
         }
     },
@@ -141,13 +139,12 @@ export default {
         this.elaboraTempo(this.datiProgetto.autoApproval)
         this.calcolaProgress()
         this.impostaDatiCard()
-        this.displayWindowSize()
-        window.onresize = this.displayWindowSize
     },
     mounted() {
         this.popupItem = this.$el
     },
     methods: {
+        //metodo per aprire il link dei vari button
         open(mode) {
             if (mode == 'results') {
                 this.$router.push({
@@ -155,17 +152,7 @@ export default {
                 })
             }
         },
-        setMini() {
-            if (this.myWidth < 640) {
-                this.mini = true
-            } else {
-                this.mini = false
-            }
-        },
-        displayWindowSize() {
-            this.myWidth = window.innerWidth
-            this.setMini()
-        },
+        //metodo che imposta i titoli e i dati da inserire nelle card della pagina
         impostaDatiCard() {
             this.titoliCard.titoli1 = [
                 'Titolo',
@@ -254,13 +241,16 @@ export default {
                 },
             }
         },
+        //metodo che mostra o nasconde il dialog
         toggleModal() {
             this.modal = !this.modal
             this.hide()
         },
+        //nasconde il dropdown
         hide() {
             this.dropdownOpen = false
         },
+        //calcola il numero da utilizzare nei grafici delle analytics
         calcolaProgress() {
             this.datiProgetto.completateProgress =
                 (100 * this.datiProgetto.HITcompletate) / this.datiProgetto.totaleHIT
@@ -273,6 +263,7 @@ export default {
             this.datiProgetto.noProgress =
                 (100 * this.datiProgetto.risposteNO) / this.datiProgetto.HITcompletate
         },
+        //modifica il tempo da secondi a minuti/ore/giorni
         elaboraTempo(tempo) {
             var tmp = 0
             if (tempo < 60) {
