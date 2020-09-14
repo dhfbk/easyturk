@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white rounded-md shadow-lg p-4 mb-4">
+    <div class="bg-white rounded-md shadow-md p-4 mb-4">
         <div v-for="(n, i) in length" :key="n">
             <span class="font-bold tracking-tight">{{titoli[i]}}:&nbsp;</span>
             <span>{{dati[i]}}</span>

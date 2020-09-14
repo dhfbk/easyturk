@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded shadow-lg my-1 mx-2 p-2 pl-0 flex items-center flex-wrap">
+    <div class="rounded shadow-md my-1 mx-2 p-2 pl-0 flex items-center flex-wrap bg-white">
         <div class="w-full md:w-3/5 flex contenutoPrj text-center items-center flex-wrap">
             <div class="flex flex-col w-1/3 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold tracking-tight">Project Id:</p>

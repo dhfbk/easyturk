@@ -1,5 +1,5 @@
 <template>
-    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
+    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
         <modalEliminazione v-if="modal" @hideModal="toggleModal" />
         <div class="flex justify-between flex-wrap">
             <h1 class="text-2xl mb-4 text-primary">HIT {{ datiProgetto.hitID }}</h1>
@@ -46,7 +46,7 @@
                 </transition>
             </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 mt-2">
             <div class="mx-0 sm:mx-2">
                 <cardInfo :titoli="titoliCard.titoli1" :dati="datiCard.dati1" />
                 <cardInfo :titoli="titoliCard.titoli2" :dati="datiCard.dati2" />

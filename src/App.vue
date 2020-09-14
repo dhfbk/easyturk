@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class="antialiased">
+    <div id="app" class="antialiased pb-6">
         <navbar />
         <transition name="fade" mode="out-in">
             <router-view />

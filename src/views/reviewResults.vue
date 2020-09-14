@@ -1,5 +1,5 @@
 <template>
-    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 mb-4 flex flex-col my-4 mx-auto">
+    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
         <p class="text-2xl mb-4 text-primary">Review results</p>
         <div class="container mx-auto">
             <div class="mb-2">
