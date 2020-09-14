@@ -9,7 +9,7 @@
                         <input type="checkbox" class="opacity-0 absolute" />
                         <svg
                             :class="!all ? '' : 'hidden'"
-                            class="fill-current w-4 h-4 text-green-500 pointer-events-none"
+                            class="fill-current w-4 h-4 text-secondary pointer-events-none"
                             viewBox="0 0 20 20"
                         >
                             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
@@ -28,12 +28,12 @@
                         class="inline"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
-                        fill="#4a5568"
+                        fill="white"
                         width="24px"
                         height="24px"
                     >
-                        <path d="M0 0h24v24H0V0z" fill="none" />
-                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z" />
                     </svg>
                 </th>
             </tr>
@@ -51,7 +51,7 @@
                         <input type="checkbox" class="opacity-0 absolute" />
                         <svg
                             :class="i.selected ? '' : 'hidden'"
-                            class="fill-current w-4 h-4 text-green-500 pointer-events-none"
+                            class="fill-current w-4 h-4 text-secondary pointer-events-none"
                             viewBox="0 0 20 20"
                         >
                             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
