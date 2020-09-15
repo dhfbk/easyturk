@@ -1,6 +1,8 @@
 <template>
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
-        <modalEliminazione v-if="modal" @toggleModal="toggleModal" />
+        <modalEliminazione v-if="modalElim" @toggleModal="toggleModal" />
+        <modalUpload v-if="modalStd" @upload="toggleModal" :type="'std'" />
+        <modalUpload v-if="modalGld" @upload="toggleModal" :type="'gld'" />
         <div class="flex justify-between flex-wrap">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="flex relative">
@@ -9,9 +11,7 @@
                     class="hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary mr-2 focus:outline-none"
                 >
                     <svg style="width:24px;" viewBox="0 0 24 24">
-                        <path
-                            d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"
-                        />
+                        <path d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                     </svg>
                     <span class="ml-1">Pubblica</span>
                 </button>
@@ -61,15 +61,17 @@
                             >Risultati</router-link>
                             <a
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
-                                @click="toggleModal()"
+                                @click="toggleModal('elim')"
                             >Elimina</a>
                             <a
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
                             >Modifica</a>
                             <a
+                                @click="toggleModal('std')"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
                             >Carica dati</a>
                             <a
+                                @click="toggleModal('gld')"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md"
                             >Carica gold</a>
                         </div>
@@ -96,6 +98,7 @@ import ClickOutside from 'vue-click-outside'
 import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
+import modalUpload from '../components/modalUpload.vue'
 
 export default {
     name: 'visualizzaProgetto',
@@ -106,6 +109,7 @@ export default {
         modalEliminazione,
         cardInfo,
         cardAnalytics,
+        modalUpload,
     },
     data() {
         return {
@@ -148,7 +152,9 @@ export default {
             },
             datiCardAnalytics: {},
             dropdownOpen: false,
-            modal: false,
+            modalElim: false,
+            modalStd: false,
+            modalGld: false,
         }
     },
     created() {
@@ -259,13 +265,21 @@ export default {
             }
         },
         //metodo che mostra o nasconde il dialog
-        toggleModal() {
-            this.modal = !this.modal
+        toggleModal(type) {
+            if (type == 'elim') {
+                this.modalElim = !this.modalElim
+            } else if (type == 'std') {
+                this.modalStd = !this.modalStd
+            } else {
+                this.modalGld = !this.modalGld
+            }
             this.hide()
         },
         //nasconde il dropdown
         hide() {
-            this.dropdownOpen = false
+            if (this.dropdownOpen) {
+                this.dropdownOpen = false
+            }
         },
         //calcola il numero da utilizzare nei grafici delle analytics
         calcolaProgress() {

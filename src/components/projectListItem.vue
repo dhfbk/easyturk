@@ -171,11 +171,15 @@ export default {
             this.dropdown = false
         },
         deleteItem() {
-            this.dropdown = !this.dropdown
+            if (this.dropdown) {
+                this.dropdown = !this.dropdown
+            }
             this.$emit('deleteThis')
         },
         upload(type) {
-            this.dropdown = !this.dropdown
+            if (this.dropdown) {
+                this.dropdown = !this.dropdown
+            }
             this.$emit('upload', type)
         },
     },
