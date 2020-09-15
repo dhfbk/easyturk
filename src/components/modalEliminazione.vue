@@ -1,5 +1,5 @@
 <template>
-    <transition name="fade">
+    <transition name="fade" mode="out-in" :duration="{ enter: 500, leave: 500 }" appear>
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
         >
@@ -18,23 +18,19 @@
                             />
                         </svg>
                     </div>
-                    <div class="py-2">
-                        Sicuro di voler eliminare il progetto? Questa azione è irreversibile.
-                    </div>
+                    <div
+                        class="py-2"
+                    >Sicuro di voler eliminare il progetto? Questa azione è irreversibile.</div>
 
                     <div class="ml-auto">
                         <button
                             class="transition duration-150 ease-in-out bg-primary hover:bg-orange-600 text-black hover:text-white font-bold py-2 px-4 rounded focus:outline-none"
                             @click="toggleModal()"
-                        >
-                            Elimina
-                        </button>
+                        >Elimina</button>
                         <button
                             class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-400 focus:outline-none ml-2 bg-transparent text-black font-semibold py-2 px-4 rounded"
                             @click="toggleModal()"
-                        >
-                            Annulla
-                        </button>
+                        >Annulla</button>
                     </div>
                 </div>
             </div>
@@ -47,10 +43,19 @@ export default {
     name: 'modalEliminazione',
     methods: {
         toggleModal() {
-            this.$emit('hideModal')
+            this.$emit('toggleModal', 'elim')
         },
     },
 }
 </script>
 
-<style></style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s !important;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>

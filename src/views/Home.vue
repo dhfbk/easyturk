@@ -1,5 +1,8 @@
 <template>
     <div class="home mx-8 mt-4 sm:mt-6 md:mx-16 pb-6">
+        <modalEliminazione v-if="modalElim" @toggleModal="toggleModal" />
+        <modalUpload v-if="modalStd" @upload="toggleModal" :type="'std'" />
+        <modalUpload v-if="modalGld" @upload="toggleModal" :type="'gld'" />
         <div class="mb-6">
             <div class="flex content-center flex-col sm:flex-row">
                 <svg style="width:24px;" viewBox="0 0 24 24">
@@ -9,7 +12,7 @@
                 </svg>
                 <h2 class="text-lg font-semibold ml-1 tracking-tight text-gray-800">Progetti</h2>
             </div>
-            <div class>
+            <div>
                 <div class="hidden w-3/5 md:flex text-center items-center flex-wrap text-lg p-2">
                     <span class="w-1/3 font-light">Project Id</span>
                     <span class="w-1/3 font-light">Title</span>
@@ -17,7 +20,7 @@
                 </div>
             </div>
             <div v-for="i in projects" :key="i.id" class="w-full mx-auto relative">
-                <projectListItem :projectData="i" />
+                <projectListItem :projectData="i" @deleteThis="toggleModal" @upload="toggleModal" />
             </div>
         </div>
         <div
@@ -65,16 +68,18 @@
 </template>
 
 <script>
-// @ is an alias to /src
-//import HelloWorld from "@/components/HelloWorld.vue";
 import projectListItem from '../components/projectListItem.vue'
 import tabellaWorker from '../components/tabellaWorker.vue'
+import modalEliminazione from '../components/modalEliminazione.vue'
+import modalUpload from '../components/modalUpload.vue'
 
 export default {
     name: 'Home',
     components: {
         projectListItem,
         tabellaWorker,
+        modalEliminazione,
+        modalUpload,
     },
     data() {
         return {
@@ -124,7 +129,22 @@ export default {
                     inProgressHITs: 0,
                 },
             ],
+            modalElim: false,
+            modalStd: false,
+            modalGld: false,
         }
+    },
+    methods: {
+        //metodo che mostra o nasconde il dialog
+        toggleModal(type) {
+            if (type == 'elim') {
+                this.modalElim = !this.modalElim
+            } else if (type == 'std') {
+                this.modalStd = !this.modalStd
+            } else {
+                this.modalGld = !this.modalGld
+            }
+        },
     },
 }
 </script>

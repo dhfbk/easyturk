@@ -3,36 +3,32 @@
         <div class="w-full md:w-3/5 flex contenutoPrj text-center items-center flex-wrap">
             <div class="flex flex-col w-1/3 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold tracking-tight">Project Id:</p>
-                <router-link to="view" class="">
+                <router-link to="view" class>
                     <p>{{ projectData.id }}</p>
                 </router-link>
             </div>
-            <div class="flex flex-col  w-1/3 justify-center text-center flex-wrap my-1 sm:my-0">
+            <div class="flex flex-col w-1/3 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold tracking-tight">Title:</p>
-                <p class="">{{ projectData.title }}</p>
+                <p class>{{ projectData.title }}</p>
             </div>
-            <div class="flex flex-col  w-1/3 justify-center text-center flex-wrap my-1 sm:my-0">
+            <div class="flex flex-col w-1/3 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold tracking-tight">Date:</p>
-                <p class="">{{ projectData.date }}</p>
+                <p class>{{ projectData.date }}</p>
             </div>
         </div>
         <span class="flex-grow flex justify-end w-2/5">
             <button
                 class="bg-primary hover:bg-orange-500 text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:inline-block"
-            >
-                Publish Batch
-            </button>
+            >Publish Batch</button>
 
             <button
+                @click="upload('std')"
                 class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
-            >
-                Upload Data
-            </button>
+            >Upload Data</button>
             <button
+                @click="upload('gld')"
                 class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
-            >
-                Upload Gold
-            </button>
+            >Upload Gold</button>
             <span v-click-outside="hide" class="flex align-center">
                 <button
                     class="py-2 px-2 m-1 focus:outline-none hover:bg-gray-300 bg-white rounded"
@@ -57,24 +53,22 @@
                     >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md sm:hidden"
-                            >Publish batch</a
-                        >
+                        >Publish batch</a>
                         <a
+                            @click="upload('std')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md xl:hidden"
-                            >Upload data</a
-                        >
+                        >Upload data</a>
                         <a
+                            @click="upload('gld')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md xl:hidden"
-                            >Upload Gold</a
-                        >
+                        >Upload Gold</a>
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md"
-                            >Edit</a
-                        >
+                        >Edit</a>
                         <a
+                            @click="deleteItem()"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
-                            >Delete</a
-                        >
+                        >Delete</a>
                     </div>
                 </transition>
             </span>
@@ -175,6 +169,14 @@ export default {
         },
         hide() {
             this.dropdown = false
+        },
+        deleteItem() {
+            this.dropdown = !this.dropdown
+            this.$emit('deleteThis')
+        },
+        upload(type) {
+            this.dropdown = !this.dropdown
+            this.$emit('upload', type)
         },
     },
 }

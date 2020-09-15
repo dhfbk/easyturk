@@ -1,6 +1,6 @@
 <template>
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
-        <modalEliminazione v-if="modal" @hideModal="toggleModal" />
+        <modalEliminazione v-if="modal" @toggleModal="toggleModal" />
         <div class="flex justify-between flex-wrap">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="flex relative">
