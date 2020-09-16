@@ -19,22 +19,16 @@
         <span class="flex-grow flex justify-end w-2/5">
             <button
                 class="bg-primary hover:bg-orange-500 text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:inline-block"
-            >
-                Publish Batch
-            </button>
+            >Publish Batch</button>
 
             <button
                 @click="upload('std')"
                 class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
-            >
-                Upload Data
-            </button>
+            >Upload Data</button>
             <button
                 @click="upload('gld')"
                 class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
-            >
-                Upload Gold
-            </button>
+            >Upload Gold</button>
             <span v-click-outside="hide" class="flex align-center">
                 <button
                     class="py-2 px-2 m-1 focus:outline-none hover:bg-gray-300 bg-white rounded"
@@ -59,27 +53,22 @@
                     >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md sm:hidden"
-                            >Publish batch</a
-                        >
+                        >Publish batch</a>
                         <a
                             @click="upload('std')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md xl:hidden"
-                            >Upload data</a
-                        >
+                        >Upload data</a>
                         <a
                             @click="upload('gld')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md xl:hidden"
-                            >Upload Gold</a
-                        >
+                        >Upload Gold</a>
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md"
-                            >Edit</a
-                        >
+                        >Edit</a>
                         <a
                             @click="deleteItem()"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
-                            >Delete</a
-                        >
+                        >Delete</a>
                     </div>
                 </transition>
             </span>
@@ -143,7 +132,12 @@
                     class="absolute bg-white hover:bg-gray-300 py-2 px-2 m-1 rounded focus:outline-none bottom-0 right-0"
                     @click="refresh()"
                 >
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <svg
+                        style="width:24px;height:24px"
+                        viewBox="0 0 24 24"
+                        class="transition ease-in-out"
+                        :class=" refreshIcon ? 'animate-spin ': 'animate-none'"
+                    >
                         <path
                             fill="currentColor"
                             d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"
@@ -171,6 +165,7 @@ export default {
             pieSize: 150,
             myWidth: 0,
             dropdown: false,
+            refreshIcon: false,
         }
     },
     created() {
@@ -206,6 +201,10 @@ export default {
         },
         refresh() {
             console.log('refreshing...')
+            this.refreshIcon = true
+            setTimeout(() => {
+                this.refreshIcon = false
+            }, 5000)
             //chiamata api per aggiornare i dati della HIT
         },
     },
