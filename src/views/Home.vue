@@ -12,8 +12,8 @@
                 </svg>
                 <h2 class="text-lg font-semibold ml-1 tracking-tight text-gray-800">Progetti</h2>
             </div>
-            <div>
-                <div class="hidden w-3/5 md:flex text-center items-center flex-wrap text-lg p-2">
+            <div class="my-1 mx-2 p-2 flex items-center flex-wrap">
+                <div class="hidden w-3/5 md:flex text-center items-center flex-wrap text-lg">
                     <span class="w-1/3 font-light">Project Id</span>
                     <span class="w-1/3 font-light">Title</span>
                     <span class="w-1/3 font-light">Date</span>
@@ -44,9 +44,9 @@
                             d="M21,18V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V6H12C10.89,6 10,6.9 10,8V16A2,2 0 0,0 12,18M12,16H22V8H12M16,13.5A1.5,1.5 0 0,1 14.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,12A1.5,1.5 0 0,1 16,13.5Z"
                         />
                     </svg>
-                    <h2
-                        class="font-semibold text-lg m-1 tracking-tight w-10/12 text-gray-800"
-                    >Saldo account</h2>
+                    <h2 class="font-semibold text-lg m-1 tracking-tight w-10/12 text-gray-800">
+                        Saldo account
+                    </h2>
                 </div>
                 <p class="text-black font-light text-5xl m-1 text-center">54$</p>
             </div>
@@ -57,9 +57,9 @@
                             d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
                         />
                     </svg>
-                    <h2
-                        class="font-semibold text-lg m-1 tracking-tight text-gray-800"
-                    >Reviewable results</h2>
+                    <h2 class="font-semibold text-lg m-1 tracking-tight text-gray-800">
+                        Reviewable results
+                    </h2>
                 </div>
                 <p class="text-black font-light text-5xl m-1 text-center">93</p>
             </div>
