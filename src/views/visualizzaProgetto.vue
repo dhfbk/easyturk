@@ -15,22 +15,30 @@
                     </svg>
                     <span class="ml-1">Pubblica</span>
                 </button>
-                <button
-                    @click="open('results')"
-                    type="submit"
-                    class="hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary mr-2 focus:outline-none"
-                >
-                    <svg style="width:24px;" viewBox="0 0 24 24">
-                        <path
-                            d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
-                        />
-                    </svg>
-                    <span class="ml-1">Risultati</span>
-                </button>
+                <div class="relative hidden sm:block">
+                    <button
+                        @click="open('results')"
+                        type="submit"
+                        class="hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none h-full"
+                    >
+                        <svg style="width:24px;" viewBox="0 0 24 24">
+                            <path
+                                d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
+                            />
+                        </svg>
+                        <span class="ml-1">Risultati</span>
+                    </button>
+                    <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"
+                        ></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
+                    </span>
+                </div>
                 <span v-click-outside="hide" class="flex align-center">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
-                        class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
+                        class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 ml-2 border-solid border-primary hover:bg-primary focus:outline-none"
                     >
                         <svg
                             class="transition duration-300 ease-in-out"
@@ -54,26 +62,32 @@
                         >
                             <a
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
-                            >Pubblica</a>
+                                >Pubblica</a
+                            >
                             <router-link
                                 to="results"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                            >Risultati</router-link>
+                                >Risultati</router-link
+                            >
                             <a
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
                                 @click="toggleModal('elim')"
-                            >Elimina</a>
+                                >Elimina</a
+                            >
                             <a
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                            >Modifica</a>
+                                >Modifica</a
+                            >
                             <a
                                 @click="toggleModal('std')"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                            >Carica dati</a>
+                                >Carica dati</a
+                            >
                             <a
                                 @click="toggleModal('gld')"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md"
-                            >Carica gold</a>
+                                >Carica gold</a
+                            >
                         </div>
                     </transition>
                 </span>

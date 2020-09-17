@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded shadow-md my-1 mx-2 p-2 flex items-center flex-wrap bg-white">
+    <div class="rounded shadow-md my-2 mx-2 p-2 flex items-center flex-wrap bg-white relative">
         <div class="w-full md:w-3/5 flex contenutoPrj text-center items-center flex-wrap">
             <div class="flex flex-col w-1/3 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold tracking-tight">Project Id:</p>
@@ -19,16 +19,22 @@
         <span class="flex-grow flex justify-end w-2/5">
             <button
                 class="bg-primary hover:bg-orange-500 text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:inline-block"
-            >Publish Batch</button>
+            >
+                Publish Batch
+            </button>
 
             <button
                 @click="upload('std')"
                 class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
-            >Upload Data</button>
+            >
+                Upload Data
+            </button>
             <button
                 @click="upload('gld')"
                 class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
-            >Upload Gold</button>
+            >
+                Upload Gold
+            </button>
             <span v-click-outside="hide" class="flex align-center">
                 <button
                     class="py-2 px-2 m-1 focus:outline-none hover:bg-gray-300 bg-white rounded"
@@ -53,22 +59,27 @@
                     >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md sm:hidden"
-                        >Publish batch</a>
+                            >Publish batch</a
+                        >
                         <a
                             @click="upload('std')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md xl:hidden"
-                        >Upload data</a>
+                            >Upload data</a
+                        >
                         <a
                             @click="upload('gld')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md xl:hidden"
-                        >Upload Gold</a>
+                            >Upload Gold</a
+                        >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md"
-                        >Edit</a>
+                            >Edit</a
+                        >
                         <a
                             @click="deleteItem()"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
-                        >Delete</a>
+                            >Delete</a
+                        >
                     </div>
                 </transition>
             </span>
@@ -89,6 +100,12 @@
                     <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
                 </svg>
             </button>
+            <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1" v-if="isTherePending">
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"
+                ></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
+            </span>
         </span>
         <transition name="slide-toggle">
             <div v-if="isOpen" class="content w-full flex flex-wrap justify-center relative">
@@ -136,7 +153,7 @@
                         style="width:24px;height:24px"
                         viewBox="0 0 24 24"
                         class="transition ease-in-out"
-                        :class=" refreshIcon ? 'animate-spin ': 'animate-none'"
+                        :class="refreshIcon ? 'animate-spin ' : 'animate-none'"
                     >
                         <path
                             fill="currentColor"
@@ -166,11 +183,16 @@ export default {
             myWidth: 0,
             dropdown: false,
             refreshIcon: false,
+            isTherePending: false,
         }
     },
     created() {
         this.displayWindowSize()
         window.onresize = this.displayWindowSize
+        //for (let i = 0; i < this.projectData.length; i++) {}
+        //controllare con un loop se ci sono HIT che attendono review
+        //se ci sono isTherePending = true
+        this.isTherePending = true
     },
     methods: {
         setPieSize() {

@@ -1,10 +1,10 @@
 <template>
-    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
+    <div class="relative lg:w-5/6 px-6 pt-2 pb-8 flex flex-col mt-4 mx-auto">
         <p class="text-2xl mb-4 text-primary">Review results</p>
         <div class="container mx-auto">
             <div class="mb-2">
                 <p class="text-lg mb-2">Filters</p>
-                <div class="flex flex-row justify-start">
+                <div class="flex flex-row justify-start mb-4">
                     <p class="text-md my-auto mr-1">Results per page:</p>
                     <input
                         class="appearance-none h-full w-20 rounded border block appearance-none bg-white border-gray-400 text-gray-700 pl-2 pr-1 py-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3"
@@ -41,6 +41,17 @@
                             </svg>
                         </div>
                     </div>
+                    <button
+                        class=" inline-flex flex-row items-center py-2 px-4 ml-auto rounded-md transition duration-150 ease-in-out bg-gray-300 hover:bg-gray-400 focus:outline-none"
+                    >
+                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                            <path
+                                fill="currentColor"
+                                d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"
+                            />
+                        </svg>
+                        <span class="ml-1">Download SVG</span>
+                    </button>
                 </div>
             </div>
             <resultsTable :current="current" v-on:selectAll="selectAll()" v-on:sort="sort(mode)" />
