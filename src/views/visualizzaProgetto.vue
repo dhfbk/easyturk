@@ -62,32 +62,27 @@
                         >
                             <a
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
-                                >Pubblica</a
-                            >
+                            >Pubblica</a>
                             <router-link
                                 to="results"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                                >Risultati</router-link
-                            >
+                            >Risultati</router-link>
                             <a
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
                                 @click="toggleModal('elim')"
-                                >Elimina</a
-                            >
-                            <a
+                            >Elimina</a>
+                            <router-link
+                                to="edit"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                                >Modifica</a
-                            >
+                            >Modifica</router-link>
                             <a
                                 @click="toggleModal('std')"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                                >Carica dati</a
-                            >
+                            >Carica dati</a>
                             <a
                                 @click="toggleModal('gld')"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md"
-                                >Carica gold</a
-                            >
+                            >Carica gold</a>
                         </div>
                     </transition>
                 </span>
@@ -186,6 +181,10 @@ export default {
             if (mode == 'results') {
                 this.$router.push({
                     name: 'reviewResults',
+                })
+            } else if (mode == 'edit') {
+                this.$router.push({
+                    name: 'modificaProgetto',
                 })
             }
         },
