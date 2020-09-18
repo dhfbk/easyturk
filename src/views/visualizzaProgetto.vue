@@ -1,5 +1,6 @@
 <template>
-    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
+    <div v-if="loading1"></div>
+    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto" v-else>
         <modalEliminazione v-if="modalElim" @toggleModal="toggleModal" />
         <modalUpload v-if="modalStd" @upload="toggleModal" :type="'std'" />
         <modalUpload v-if="modalGld" @upload="toggleModal" :type="'gld'" />
@@ -108,6 +109,7 @@ import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import modalUpload from '../components/modalUpload.vue'
+let $ = require('jquery')
 
 export default {
     name: 'visualizzaProgetto',
@@ -123,20 +125,19 @@ export default {
     data() {
         return {
             datiProgetto: {
-                nome: 'nomeProgetto',
-                titolo: "Italy's food",
-                descrizione:
-                    "If you know Italian food, we ask you to take a look at various different serving pictures and tell us if you think it's italian or not.",
-                keywords: 'food, italy, image, recognition, culture',
+                nome: '',
+                titolo: '',
+                descrizione: '',
+                keywords: '',
+                ricompensa: '',
+                creazione: '',
+                numLavoratori: 0,
+                tempoMax: 0,
+                scadenza: '',
+                autoApproval: 0,
+                layoutID: '',
                 stato: 'In corso',
-                ricompensa: '0.25',
-                creazione: '2020-09-02',
-                numLavoratori: 5,
-                tempoMax: 60,
-                scadenza: '2020-09-10',
-                autoApproval: 86400,
-                layoutID: 'hdf7777cv4cc34c',
-                parametri: 3,
+                parametri: 0,
                 totaleHIT: 400,
                 HITcompletate: 200,
                 HITdisponibili: 90,
@@ -164,18 +165,44 @@ export default {
             modalElim: false,
             modalStd: false,
             modalGld: false,
+            loading1: true,
+            loading: true,
         }
     },
     created() {
-        this.elaboraTempo(this.datiProgetto.tempoMax)
-        this.elaboraTempo(this.datiProgetto.autoApproval)
-        this.calcolaProgress()
-        this.impostaDatiCard()
+        this.getDatiPrj()
     },
     mounted() {
         this.popupItem = this.$el
     },
     methods: {
+        getDatiPrj() {
+            var self = this
+            $.ajax({
+                url:
+                    'https://web.apnetwork.it/mturk/?action=editProject&id=' +
+                    this.$route.params.idProgetto,
+                dataType: 'json',
+                method: 'get',
+                success: function(data) {
+                    self.datiProgetto.nome = data.values.name
+                    self.datiProgetto.titolo = data.values.title
+                    self.datiProgetto.descrizione = data.values.description
+                    self.datiProgetto.keywords = data.values.keywords
+                    self.datiProgetto.reward = data.values.reward
+                    self.datiProgetto.tempoMax = data.values.max_time
+                    self.datiProgetto.creazione = data.values.created_at
+                    self.datiProgetto.scadenza = data.values.expiry
+                    self.datiProgetto.autoApproval = data.values.auto_approve
+                    self.datiProgetto.layoutID = data.values.layout_id
+                    self.datiProgetto.parametri = data.values.params
+                    self.loading = false
+                },
+                error: function(data) {
+                    console.log(data)
+                },
+            })
+        },
         //metodo per aprire il link dei vari button
         open(mode) {
             if (mode == 'results') {
@@ -323,6 +350,17 @@ export default {
                 this.datiProgetto.tempoMax = tmp
             } else {
                 this.datiProgetto.autoApproval = tmp
+            }
+        },
+    },
+    watch: {
+        loading() {
+            if (!this.loading) {
+                this.elaboraTempo(this.datiProgetto.tempoMax)
+                this.elaboraTempo(this.datiProgetto.autoApproval)
+                this.calcolaProgress()
+                this.impostaDatiCard()
+                this.loading1 = false
             }
         },
     },

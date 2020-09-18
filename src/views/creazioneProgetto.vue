@@ -307,6 +307,13 @@
                 @click="caricaProgetto()"
                 type="submit"
                 class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
+                v-if="mode == 'modificaProgetto'"
+            >Salva modifiche</button>
+            <button
+                @click="caricaProgetto()"
+                type="submit"
+                class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
+                v-else
             >Salva</button>
         </div>
     </div>
@@ -319,20 +326,20 @@ export default {
     data() {
         return {
             errorTitolo: false,
-            pageTitle: 'prova2',
-            name: 'prova2',
-            title: 'prova2',
-            description: 'prova2',
-            keywords: 'prova2',
+            id: '',
+            name: '',
+            title: '',
+            description: '',
+            keywords: '',
             reward: 0.05,
-            workers: 5,
+            workers: 3,
             max_time: 1,
             max_time_send: 1,
             expiry: 1,
             expiry_send: 1,
             auto_approve: 1,
             auto_approve_send: 1,
-            layout_id: '76fd6fg5fg',
+            layout_id: '',
             params: 3,
             /*
             pageTitle: '',
@@ -357,23 +364,57 @@ export default {
             max1: 23,
             max2: 364,
             max3: 364,
+            mode: 'nuovoProgetto',
         }
     },
     created() {
+        this.mode = this.$route.name
         if (this.$route.path == '/create') {
+            this.mode = this.$route.name
             this.pageTitle = 'Crea un nuovo progetto'
         } else {
             this.pageTitle = 'Modifica progetto'
+            this.getDatiPrj()
         }
     },
     methods: {
+        getDatiPrj() {
+            var self = this
+            $.ajax({
+                url:
+                    'https://web.apnetwork.it/mturk/?action=editProject&id=' +
+                    this.$route.params.idProgetto,
+                dataType: 'json',
+                method: 'get',
+                success: function(data) {
+                    self.id = data.values.id
+                    self.name = data.values.name
+                    self.title = data.values.title
+                    self.description = data.values.description
+                    self.keywords = data.values.keywords
+                    self.reward = data.values.reward
+                    self.max_time = data.values.max_time
+                    self.expiry = data.values.expiry
+                    self.auto_approve = data.values.auto_approve
+                    self.layout_id = data.values.layout_id
+                    self.params = data.values.params
+                },
+                error: function(data) {
+                    console.log(data)
+                },
+            })
+        },
         caricaProgetto() {
             this.elaboraTempo('max_time')
             this.elaboraTempo('expiry')
             this.elaboraTempo('auto_approve')
             this.parseNumbers()
+            var url = 'https://web.apnetwork.it/mturk/?action=addProject'
+            if (this.mode == 'modificaProgetto') {
+                url = url + '&id=' + this.id
+            }
             $.ajax({
-                url: 'https://web.apnetwork.it/mturk/?action=addProject',
+                url: url,
                 dataType: 'json',
                 data: {
                     name: this.name,
@@ -389,10 +430,10 @@ export default {
                     params: this.params,
                 },
                 method: 'post',
-                success: function(data) {
-                    console.log(data)
+                success() {
+                    console.log('informazioni inserite')
                 },
-                error: function(data) {
+                error(data) {
                     console.log(data)
                 },
             })
