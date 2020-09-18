@@ -22,22 +22,22 @@ const routes = [
     component: creazioneProgetto,
   },
   {
-    path: '/edit',
+    path: '/edit/:idProgetto',
     name: 'modificaProgetto',
     component: creazioneProgetto,
   },
   {
-    path: '/view',
+    path: '/view/:idProgetto',
     name: 'visualizzaProgetto',
     component: visualizzaProgetto,
   },
   {
-    path: "/hitlist",
+    path: "/hitlist/:idProgetto",
     name: "listaHIT",
     component: HITList
   },
   {
-    path: '/results',
+    path: '/results/:idProgetto',
     name: 'reviewResults',
     component: reviewResults,
   },
