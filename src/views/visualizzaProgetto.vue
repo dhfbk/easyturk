@@ -63,27 +63,36 @@
                         >
                             <a
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
-                            >Pubblica</a>
+                                >Pubblica</a
+                            >
                             <router-link
                                 to="results"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                            >Risultati</router-link>
+                                >Risultati</router-link
+                            >
                             <a
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
                                 @click="toggleModal('elim')"
-                            >Elimina</a>
+                                >Elimina</a
+                            >
                             <router-link
-                                to="edit"
+                                :to="{
+                                    name: 'modificaProgetto',
+                                    params: { idProgetto: datiProgetto.id },
+                                }"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                            >Modifica</router-link>
+                                >Modifica</router-link
+                            >
                             <a
                                 @click="toggleModal('std')"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                            >Carica dati</a>
+                                >Carica dati</a
+                            >
                             <a
                                 @click="toggleModal('gld')"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md"
-                            >Carica gold</a>
+                                >Carica gold</a
+                            >
                         </div>
                     </transition>
                 </span>
@@ -109,8 +118,8 @@ import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import modalUpload from '../components/modalUpload.vue'
-let $ = require('jquery')
-
+//let $ = require('jquery')
+import axios from 'axios'
 export default {
     name: 'visualizzaProgetto',
     directives: {
@@ -177,31 +186,54 @@ export default {
     },
     methods: {
         getDatiPrj() {
-            var self = this
-            $.ajax({
+            // var self = this
+            console.log(this.$route.params.idProgetto)
+            axios({
                 url:
                     'https://web.apnetwork.it/mturk/?action=editProject&id=' +
                     this.$route.params.idProgetto,
-                dataType: 'json',
-                method: 'get',
-                success: function(data) {
-                    self.datiProgetto.nome = data.values.name
-                    self.datiProgetto.titolo = data.values.title
-                    self.datiProgetto.descrizione = data.values.description
-                    self.datiProgetto.keywords = data.values.keywords
-                    self.datiProgetto.reward = data.values.reward
-                    self.datiProgetto.tempoMax = data.values.max_time
-                    self.datiProgetto.creazione = data.values.created_at
-                    self.datiProgetto.scadenza = data.values.expiry
-                    self.datiProgetto.autoApproval = data.values.auto_approve
-                    self.datiProgetto.layoutID = data.values.layout_id
-                    self.datiProgetto.parametri = data.values.params
-                    self.loading = false
-                },
-                error: function(data) {
-                    console.log(data)
-                },
             })
+                .then(res => {
+                    console.log(res)
+                    this.datiProgetto.nome = res.data.values.name
+                    this.datiProgetto.titolo = res.data.values.title
+                    this.datiProgetto.descrizione = res.data.values.description
+                    this.datiProgetto.keywords = res.data.values.keywords
+                    this.datiProgetto.reward = res.data.values.reward
+                    this.datiProgetto.tempoMax = res.data.values.max_time
+                    this.datiProgetto.creazione = res.data.values.created_at
+                    this.datiProgetto.scadenza = res.data.values.expiry
+                    this.datiProgetto.autoApproval = res.data.values.auto_approve
+                    this.datiProgetto.layoutID = res.data.values.layout_id
+                    this.datiProgetto.parametri = res.data.values.params
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            // $.ajax({
+            //     url:
+            //         'https://web.apnetwork.it/mturk/?action=editProject&id=' +
+            //         this.$route.params.idProgetto,
+            //     dataType: 'json',
+            //     method: 'get',
+            //     success: function(data) {
+            //         self.datiProgetto.nome = data.values.name
+            //         self.datiProgetto.titolo = data.values.title
+            //         self.datiProgetto.descrizione = data.values.description
+            //         self.datiProgetto.keywords = data.values.keywords
+            //         self.datiProgetto.reward = data.values.reward
+            //         self.datiProgetto.tempoMax = data.values.max_time
+            //         self.datiProgetto.creazione = data.values.created_at
+            //         self.datiProgetto.scadenza = data.values.expiry
+            //         self.datiProgetto.autoApproval = data.values.auto_approve
+            //         self.datiProgetto.layoutID = data.values.layout_id
+            //         self.datiProgetto.parametri = data.values.params
+            //         self.loading = false
+            //     },
+            //     error: function(data) {
+            //         console.log(data)
+            //     },
+            // })
         },
         //metodo per aprire il link dei vari button
         open(mode) {

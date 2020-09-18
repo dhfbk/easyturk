@@ -3,10 +3,9 @@
         <p class="text-2xl mb-4 text-primary">{{ pageTitle }}</p>
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
-                <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="nome"
-                >Nome progetto</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="nome"
+                    >Nome progetto</label
+                >
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="nome"
@@ -19,10 +18,9 @@
                 <p class="text-gray-700 text-xs italic">Il nome non è mostrato ai lavoratori.</p>
             </div>
             <div class="w-full px-3 mb-4">
-                <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="titolo"
-                >Titolo</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="titolo"
+                    >Titolo</label
+                >
                 <input
                     :class="errorTitolo ? 'border-red-600' : 'border-gray-200'"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -38,16 +36,16 @@
                     survey about movies", instead of "short survey", così che i lavoratori sappiano
                     cosa aspettarsi.
                 </p>
-                <p
-                    :class="errorTitolo ? '' : 'hidden'"
-                    class="text-red-600 text-xs italic"
-                >Si è pregati di inserire il titolo</p>
+                <p :class="errorTitolo ? '' : 'hidden'" class="text-red-600 text-xs italic">
+                    Si è pregati di inserire il titolo
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="descrizione"
-                >Descrizione</label>
+                    >Descrizione</label
+                >
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="descrizione"
@@ -65,7 +63,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="keywords"
-                >Keywords</label>
+                    >Keywords</label
+                >
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="keywords"
@@ -74,9 +73,9 @@
                     v-model="keywords"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Fornisci keywords che aiuteranno i lavoratori a trovare i tuoi compiti.</p>
+                <p class="text-gray-700 text-xs italic">
+                    Fornisci keywords che aiuteranno i lavoratori a trovare i tuoi compiti.
+                </p>
             </div>
         </div>
         <hr class="solid mb-4" />
@@ -85,7 +84,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="ricompensa"
-                >Ricompensa per ogni assignment</label>
+                    >Ricompensa per ogni assignment</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="ricompensa"
@@ -105,7 +105,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="lavoratori"
-                >Numero di lavoratori/assignment per task</label>
+                    >Numero di lavoratori/assignment per task</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="lavoratori"
@@ -116,15 +117,16 @@
                     v-model="workers"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Quanti lavoratori vuoi che completino i tuoi task?</p>
+                <p class="text-gray-700 text-xs italic">
+                    Quanti lavoratori vuoi che completino i tuoi task?
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="tempoMax"
-                >Tempo massimo</label>
+                    >Tempo massimo</label
+                >
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -172,7 +174,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="scadenza"
-                >Scadenza</label>
+                    >Scadenza</label
+                >
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -220,7 +223,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="autoApproval"
-                >Auto approva e paga i lavoratori in</label>
+                    >Auto approva e paga i lavoratori in</label
+                >
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -271,7 +275,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="layoutId"
-                >Layout ID</label>
+                    >Layout ID</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="layoutId"
@@ -281,15 +286,16 @@
                     v-model="layout_id"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Questo è l'id del layout da far visualizzare al lavoratore.</p>
+                <p class="text-gray-700 text-xs italic">
+                    Questo è l'id del layout da far visualizzare al lavoratore.
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="parametri"
-                >Numero di parametri</label>
+                    >Numero di parametri</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="parametri"
@@ -308,19 +314,25 @@
                 type="submit"
                 class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                 v-if="mode == 'modificaProgetto'"
-            >Salva modifiche</button>
+            >
+                Salva modifiche
+            </button>
             <button
                 @click="caricaProgetto()"
                 type="submit"
                 class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                 v-else
-            >Salva</button>
+            >
+                Salva
+            </button>
         </div>
     </div>
 </template>
 
 <script>
-let $ = require('jquery')
+//let $ = require('jquery')
+import axios from 'axios'
+
 export default {
     name: 'creazioneProgetto',
     data() {
@@ -379,43 +391,85 @@ export default {
     },
     methods: {
         getDatiPrj() {
-            var self = this
-            $.ajax({
+            axios({
                 url:
                     'https://web.apnetwork.it/mturk/?action=editProject&id=' +
                     this.$route.params.idProgetto,
-                dataType: 'json',
                 method: 'get',
-                success: function(data) {
-                    self.id = data.values.id
-                    self.name = data.values.name
-                    self.title = data.values.title
-                    self.description = data.values.description
-                    self.keywords = data.values.keywords
-                    self.reward = data.values.reward
-                    self.max_time = data.values.max_time
-                    self.expiry = data.values.expiry
-                    self.auto_approve = data.values.auto_approve
-                    self.layout_id = data.values.layout_id
-                    self.params = data.values.params
-                },
-                error: function(data) {
-                    console.log(data)
-                },
+            }).then(res => {
+                this.id = res.data.values.id
+                this.name = res.data.values.name
+                this.title = res.data.values.title
+                this.description = res.data.values.description
+                this.keywords = res.data.values.keywords
+                this.reward = res.data.values.reward
+                this.max_time = res.data.values.max_time
+                this.expiry = res.data.values.expiry
+                this.auto_approve = res.data.values.auto_approve
+                this.layout_id = res.data.values.layout_id
+                this.params = res.data.values.params
             })
+            // var self = this
+            // $.ajax({
+            //     url:
+            //         'https://web.apnetwork.it/mturk/?action=editProject&id=' +
+            //         this.$route.params.idProgetto,
+            //     dataType: 'json',
+            //     method: 'get',
+            //     success: function(data) {
+            //         self.id = data.values.id
+            //         self.name = data.values.name
+            //         self.title = data.values.title
+            //         self.description = data.values.description
+            //         self.keywords = data.values.keywords
+            //         self.reward = data.values.reward
+            //         self.max_time = data.values.max_time
+            //         self.expiry = data.values.expiry
+            //         self.auto_approve = data.values.auto_approve
+            //         self.layout_id = data.values.layout_id
+            //         self.params = data.values.params
+            //     },
+            //     error: function(data) {
+            //         console.log(data)
+            //     },
+            // })
         },
         caricaProgetto() {
             this.elaboraTempo('max_time')
             this.elaboraTempo('expiry')
             this.elaboraTempo('auto_approve')
             this.parseNumbers()
-            var url = 'https://web.apnetwork.it/mturk/?action=addProject'
-            if (this.mode == 'modificaProgetto') {
-                url = url + '&id=' + this.id
-            }
-            $.ajax({
-                url: url,
-                dataType: 'json',
+            // var url = 'https://web.apnetwork.it/mturk/?action=addProject'
+            // if (this.mode == 'modificaProgetto') {
+            //     url = url + '&id=' + this.id
+            // }
+            // $.ajax({
+            //     url: url,
+            //     dataType: 'json',
+            //     data: {
+            //         name: this.name,
+            //         title: this.title,
+            //         description: this.description,
+            //         keywords: this.keywords,
+            //         reward: this.reward,
+            //         workers: this.workers,
+            //         max_time: this.max_time_send,
+            //         expiry: this.expiry_send,
+            //         auto_approve: this.auto_approve_send,
+            //         layout_id: this.layout_id,
+            //         params: this.params,
+            //     },
+            //     method: 'post',
+            //     success() {
+            //         console.log('informazioni inserite')
+            //     },
+            //     error(data) {
+            //         console.log(data)
+            //     },
+            // })
+            axios({
+                method: 'post',
+                url: 'https://web.apnetwork.it/mturk/?action=addProject',
                 data: {
                     name: this.name,
                     title: this.title,
@@ -429,14 +483,19 @@ export default {
                     layout_id: this.layout_id,
                     params: this.params,
                 },
-                method: 'post',
-                success() {
-                    console.log('informazioni inserite')
-                },
-                error(data) {
-                    console.log(data)
-                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             })
+                .then(response => {
+                    console.log(response)
+                    if (response.data.result == 'OK') {
+                        console.log('Inserimento avvenuto')
+                    } else {
+                        console.log('Errore')
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         },
         //modifica il tempo da minuti a minuti/ore/giorni
         elaboraTempo(nomeVar) {

@@ -1,6 +1,6 @@
 <template>
     <div class="home mx-8 mt-4 sm:mt-6 md:mx-16 pb-6">
-        <modalEliminazione v-if="modalElim" @toggleModal="toggleModal" />
+        <modalEliminazione v-if="modalElim" @toggleModal="toggleModal" :id="modalId" />
         <modalUpload v-if="modalStd" @upload="toggleModal" :type="'std'" />
         <modalUpload v-if="modalGld" @upload="toggleModal" :type="'gld'" />
         <div class="mb-6">
@@ -72,6 +72,8 @@ import projectListItem from '../components/projectListItem.vue'
 import tabellaWorker from '../components/tabellaWorker.vue'
 import modalEliminazione from '../components/modalEliminazione.vue'
 import modalUpload from '../components/modalUpload.vue'
+import axios from 'axios'
+//let $ = require('jquery')
 
 export default {
     name: 'Home',
@@ -83,67 +85,91 @@ export default {
     },
     data() {
         return {
-            projects: [
-                {
-                    id: 'URJYRLU1PP',
-                    title: 'Offensive Tweet Recognition',
-                    date: '27/08/2018',
-                    hasGold: true,
-                    hasData: true,
-                    totalHITs: 350,
-                    pendingReviewHITs: 100,
-                    completedHITs: 200,
-                    inProgressHITs: 50,
-                },
-                {
-                    id: 'G7Q5EOBNDG',
-                    title: 'Image Tagging',
-                    date: '19/06/2018',
-                    hasGold: false,
-                    hasData: true,
-                    totalHITs: 200,
-                    pendingReviewHITs: 62,
-                    completedHITs: 38,
-                    inProgressHITs: 100,
-                },
-                {
-                    id: 'YQOKWUAP6A',
-                    title: 'Soccer Events Recognition',
-                    date: '04/12/2019',
-                    hasGold: false,
-                    hasData: true,
-                    totalHITs: 400,
-                    pendingReviewHITs: 15,
-                    completedHITs: 360,
-                    inProgressHITs: 25,
-                },
-                {
-                    id: '8GIS78FLI2',
-                    title: 'Survey on Sports',
-                    date: '30/05/2020',
-                    hasGold: false,
-                    hasData: false,
-                    totalHITs: 250,
-                    pendingReviewHITs: 0,
-                    completedHITs: 250,
-                    inProgressHITs: 0,
-                },
-            ],
+            projects: null,
+            modalId: null,
+            // projects: [
+            //     {
+            //         id: 'URJYRLU1PP',
+            //         title: 'Offensive Tweet Recognition',
+            //         date: '27/08/2018',
+            //         hasGold: true,
+            //         hasData: true,
+            //         totalHITs: 350,
+            //         pendingReviewHITs: 100,
+            //         completedHITs: 200,
+            //         inProgressHITs: 50,
+            //     },
+            //     {
+            //         id: 'G7Q5EOBNDG',
+            //         title: 'Image Tagging',
+            //         date: '19/06/2018',
+            //         hasGold: false,
+            //         hasData: true,
+            //         totalHITs: 200,
+            //         pendingReviewHITs: 62,
+            //         completedHITs: 38,
+            //         inProgressHITs: 100,
+            //     },
+            //     {
+            //         id: 'YQOKWUAP6A',
+            //         title: 'Soccer Events Recognition',
+            //         date: '04/12/2019',
+            //         hasGold: false,
+            //         hasData: true,
+            //         totalHITs: 400,
+            //         pendingReviewHITs: 15,
+            //         completedHITs: 360,
+            //         inProgressHITs: 25,
+            //     },
+            //     {
+            //         id: '8GIS78FLI2',
+            //         title: 'Survey on Sports',
+            //         date: '30/05/2020',
+            //         hasGold: false,
+            //         hasData: false,
+            //         totalHITs: 250,
+            //         pendingReviewHITs: 0,
+            //         completedHITs: 250,
+            //         inProgressHITs: 0,
+            //     },
+            // ],
             modalElim: false,
             modalStd: false,
             modalGld: false,
         }
     },
+    created() {
+        axios({
+            url: 'https://web.apnetwork.it/mturk/?action=listProjects',
+            method: 'get',
+        }).then(res => {
+            this.projects = res.data.values
+        })
+        //var self = this
+        // $.ajax({
+        //     url: 'https://web.apnetwork.it/mturk/?action=listProjects',
+        //     method: 'get',
+        //     success: function(data) {
+        //         // console.log(data)
+        //         self.projects = data.values
+        //     },
+        //     error: function(data) {
+        //         console.log(data)
+        //     },
+        // })
+    },
     methods: {
         //metodo che mostra o nasconde il dialog
-        toggleModal(type) {
-            if (type == 'elim') {
+        toggleModal(arr) {
+            if (arr[0] == 'elim') {
                 this.modalElim = !this.modalElim
-            } else if (type == 'std') {
+            } else if (arr[0] == 'std') {
                 this.modalStd = !this.modalStd
             } else {
                 this.modalGld = !this.modalGld
             }
+            console.log(arr[1])
+            this.modalId = arr[1]
         },
     },
 }
