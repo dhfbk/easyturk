@@ -313,8 +313,7 @@
 </template>
 
 <script>
-let axios = require('axios')
-let jsonpAdapter = require('axios-jsonp')
+let $ = require('jquery')
 export default {
     name: 'creazioneProgetto',
     data() {
@@ -373,9 +372,9 @@ export default {
             this.elaboraTempo('expiry')
             this.elaboraTempo('auto_approve')
             this.parseNumbers()
-            axios({
-                method: 'post',
-                url: 'https://web.apnetwork.it/mturk/?action=addProject&jsonp=c',
+            $.ajax({
+                url: 'https://web.apnetwork.it/mturk/?action=addProject',
+                dataType: 'json',
                 data: {
                     name: this.name,
                     title: this.title,
@@ -389,20 +388,14 @@ export default {
                     layout_id: this.layout_id,
                     params: this.params,
                 },
-                adapter: jsonpAdapter,
-                callbackParamName: 'c',
+                method: 'post',
+                success: function(data) {
+                    console.log(data)
+                },
+                error: function(data) {
+                    console.log(data)
+                },
             })
-                .then(response => {
-                    console.log(response)
-                    if (response.data.result == 'OK') {
-                        console.log('Inserimento avvenuto')
-                    } else {
-                        console.log('Errore')
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
         },
         //modifica il tempo da minuti a minuti/ore/giorni
         elaboraTempo(nomeVar) {
