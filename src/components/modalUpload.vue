@@ -18,20 +18,87 @@
                             />
                         </svg>
                     </div>
-                    <h2
-                        class="py-2"
-                        v-if="type == 'std'"
-                    >Upload del file csv contenente i dati standard da utilizzare</h2>
-                    <h2
-                        class="py-2"
-                        v-else
-                    >Upload del file csv contenente i dati per il golden standard</h2>
-                    <div class="py-4 text-center">
+                    <p class="py-2" v-if="type == 'std'">
+                        Upload del file csv contenente i dati standard da utilizzare
+                    </p>
+                    <p class="py-2" v-else>
+                        Upload del file csv contenente i dati per il golden standard
+                    </p>
+                    <h2 class="font-light">
+                        Titles:
+                    </h2>
+                    <label class="inline-flex items-center mt-2">
+                        <input
+                            type="radio"
+                            id="auto"
+                            value="auto"
+                            class="form-radio h-4 w-4 text-red-600"
+                            v-model="picked"
+                        /><span class="ml-2 text-gray-700">Auto-select titles</span>
+                    </label>
+                    <label class="inline-flex items-center mt-2">
+                        <input
+                            type="radio"
+                            id="custom"
+                            value="custom"
+                            class="form-radio h-4 w-4 text-red-600"
+                            v-model="picked"
+                        /><span class="ml-2 text-gray-700"
+                            >Use custom titles (separated by comma)</span
+                        >
+                    </label>
+
+                    <input
+                        type="text"
+                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 mb-3 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        v-model="customTitles"
+                        :class="{ 'cursor-not-allowed bg-gray-300': picked != 'custom' }"
+                        :disabled="picked != 'custom'"
+                        placeholder="Titles"
+                    />
+
+                    <div class="flex my-1">
+                        <label class="inline-flex items-center w-1/2">
+                            <span class="font-light mr-2">Separator:</span>
+
+                            <select
+                                class="block appearance-none w-1/3 my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                id="separator"
+                                v-model="separated"
+                            >
+                                <option selected value="comma">Comma</option>
+                                <option value="tab">Tab</option>
+                                <option value="semicolon">Semicolon</option>
+                                <option value="space">Space</option>
+                            </select>
+                        </label>
+                        <label class="inline-flex items-center w-1/2">
+                            <span class="font-light mr-2"> String delimiter: </span>
+
+                            <select
+                                class="block appearance-none w-1/3 my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                id="separator"
+                                v-model="delimiter"
+                            >
+                                <option selected value="double">"</option>
+                                <option value="single">'</option>
+                                <option value="none">None</option>
+                            </select>
+                        </label>
+                    </div>
+                    <hr />
+
+                    <div class="py-6 text-center">
                         <label
                             for="file-upload"
-                            :class="inputLocked ? 'bg-gray-600 cursor-not-allowed' : 'bg-secondary cursor-pointer hover:bg-blue-700'"
+                            :class="
+                                inputLocked
+                                    ? 'bg-gray-600 cursor-not-allowed'
+                                    : 'bg-secondary cursor-pointer hover:bg-blue-700'
+                            "
                             class="inline-block text-white rounded-md px-4 py-2"
-                        >Scegli file</label>
+                            >Scegli file</label
+                        >
                         <input
                             id="file-upload"
                             name="upload_csv"
@@ -52,14 +119,16 @@
                                         />
                                     </svg>
                                     <div class="flex-1 px-3">
-                                        <span
-                                            class="text-gray-800 overflow-hidden"
-                                        >{{files[0].name}}</span>
+                                        <span class="text-gray-800 overflow-hidden">{{
+                                            files[0].name
+                                        }}</span>
                                     </div>
                                     <button
                                         @click="emptyFile"
                                         class="cursor-pointer w-8 h-8 text-center text-xl transition duration-150 ease-in-out hover:bg-gray-300 focus:bg-gray-400 rounded-full focus:outline-none"
-                                    >&times;</button>
+                                    >
+                                        &times;
+                                    </button>
                                 </div>
                             </div>
                         </transition>
@@ -68,11 +137,15 @@
                         <button
                             class="transition duration-150 ease-in-out bg-primary hover:bg-orange-600 text-black hover:text-white font-bold py-2 px-4 rounded focus:outline-none"
                             @click="toggleModal()"
-                        >Carica</button>
+                        >
+                            Carica
+                        </button>
                         <button
                             class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-400 focus:outline-none ml-2 bg-transparent text-black font-semibold py-2 px-4 rounded"
                             @click="toggleModal()"
-                        >Annulla</button>
+                        >
+                            Annulla
+                        </button>
                     </div>
                 </div>
             </div>
@@ -90,6 +163,10 @@ export default {
         return {
             files: [],
             inputLocked: false,
+            picked: 'auto',
+            customTitles: '',
+            separated: 'comma',
+            delimiter: 'double',
         }
     },
     methods: {
