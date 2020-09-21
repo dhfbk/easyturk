@@ -32,7 +32,7 @@
                             type="radio"
                             id="auto"
                             value="auto"
-                            class="form-radio h-4 w-4 text-red-600"
+                            class="form-radio"
                             v-model="picked"
                         />
                         <span class="ml-2 text-gray-700">Auto-select titles</span>
@@ -42,7 +42,7 @@
                             type="radio"
                             id="custom"
                             value="custom"
-                            class="form-radio h-4 w-4 text-red-600"
+                            class="form-radio"
                             v-model="picked"
                         />
                         <span class="ml-2 text-gray-700">Use custom titles (separated by comma)</span>
@@ -213,5 +213,50 @@ path {
     .customWidth {
         width: 50%;
     }
+}
+.form-radio {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    display: inline-block;
+    vertical-align: middle;
+    background-origin: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    flex-shrink: 0;
+    border-radius: 100%;
+    height: 1em;
+    width: 1em;
+    color: #0068b4;
+    background-color: #fff;
+    border-color: #003e84;
+    border-width: 1px;
+}
+
+.form-radio:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+    border-color: transparent;
+    background-color: currentColor;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@media not print {
+    .form-radio::-ms-check {
+        border-width: 1px;
+        color: transparent;
+        background: inherit;
+        border-color: inherit;
+        border-radius: inherit;
+    }
+}
+
+.form-radio:focus {
+    outline: none;
 }
 </style>
