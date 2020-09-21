@@ -22,13 +22,21 @@
                         class="py-2"
                     >Sicuro di voler eliminare il progetto? Questa azione è irreversibile.</div>
 
-                    <div class="ml-auto">
+                    <div class="ml-auto flex flex-col sm:flex-row">
                         <button
-                            class="transition duration-150 ease-in-out bg-primary hover:bg-orange-600 text-black hover:text-white font-bold py-2 px-4 rounded focus:outline-none"
-                            @click="toggleModal()"
-                        >Elimina</button>
+                            class="flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-orange-600 text-black hover:text-white font-bold py-2 px-4 rounded focus:outline-none"
+                            @click="deleteProject()"
+                        >
+                            <svg
+                                :class="loading ? 'animate-spin mr-1' : 'hidden'"
+                                style="width:24px;height:24px"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                            </svg>Elimina
+                        </button>
                         <button
-                            class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-400 focus:outline-none ml-2 bg-transparent text-black font-semibold py-2 px-4 rounded"
+                            class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-400 focus:outline-none mt-2 sm:mt-0 sm:ml-2 bg-transparent text-black font-semibold py-2 px-4 rounded"
                             @click="toggleModal()"
                         >Annulla</button>
                     </div>
@@ -45,6 +53,11 @@ import axios from 'axios'
 export default {
     name: 'modalEliminazione',
     props: { id: String },
+    data() {
+        return {
+            loading: false,
+        }
+    },
     created() {
         console.log(this.id)
     },
@@ -52,17 +65,23 @@ export default {
         toggleModal() {
             this.$emit('toggleModal', 'elim')
         },
-        delete() {
+        deleteProject() {
             //var self = this
+            this.loading = true
             axios({
-                url: 'https://web.apnetwork.it/mturk/?action=deleteProject',
-                method: 'post',
-                data: {
-                    id: this.id,
-                },
-            }).then(res => {
-                console.log(res.data.result)
+                url: 'https://web.apnetwork.it/mturk/?action=deleteProject&id=' + this.id,
+                method: 'get',
             })
+                .then(res => {
+                    console.log(res.data.result)
+                    this.loading = false
+                    this.$router.replace({ path: '/' })
+                    this.$emit('snackbar', 'success')
+                })
+                .catch(err => {
+                    console.log(err)
+                    this.$emit('snackbar', 'error')
+                })
             /*
             $.ajax({
                 url: 'https://web.apnetwork.it/mturk/?action=deleteProject',

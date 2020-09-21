@@ -1,7 +1,12 @@
 <template>
     <div v-if="loading1"></div>
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto" v-else>
-        <modalEliminazione v-if="modalElim" @toggleModal="toggleModal" />
+        <modalEliminazione
+            v-if="modalElim"
+            @toggleModal="toggleModal"
+            :id="datiProgetto.id"
+            @snackbar="emitSnackbar"
+        />
         <modalUpload v-if="modalStd" @upload="toggleModal" :type="'std'" />
         <modalUpload v-if="modalGld" @upload="toggleModal" :type="'gld'" />
         <div class="flex justify-between flex-wrap">
@@ -63,36 +68,30 @@
                         >
                             <a
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
-                                >Pubblica</a
-                            >
+                            >Pubblica</a>
                             <router-link
                                 to="results"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                                >Risultati</router-link
-                            >
+                            >Risultati</router-link>
                             <a
-                                class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
                                 @click="toggleModal('elim')"
-                                >Elimina</a
-                            >
+                            >Elimina</a>
                             <router-link
                                 :to="{
                                     name: 'edit',
                                     params: { projectId: datiProgetto.id },
                                 }"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                                >Modifica</router-link
-                            >
+                            >Modifica</router-link>
                             <a
                                 @click="toggleModal('std')"
-                                class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
-                                >Carica dati</a
-                            >
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
+                            >Carica dati</a>
                             <a
                                 @click="toggleModal('gld')"
-                                class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md"
-                                >Carica gold</a
-                            >
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md"
+                            >Carica gold</a>
                         </div>
                     </transition>
                 </span>
@@ -186,6 +185,9 @@ export default {
         this.popupItem = this.$el
     },
     methods: {
+        emitSnackbar(mode) {
+            this.$emit('snackbar', mode)
+        },
         getDatiPrj() {
             // var self = this
             this.datiProgetto.id = this.$route.params.projectId

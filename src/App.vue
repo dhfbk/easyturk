@@ -1,17 +1,35 @@
 <template>
     <div id="app" class="antialiased pb-6">
         <navbar />
+        <snack-bar :type="snackType" v-if="snack" />
         <transition name="fade" mode="out-in">
-            <router-view />
+            <router-view @snackbar="showSnack" />
         </transition>
     </div>
 </template>
 
 <script>
-import navbar from './components/navBar'
+import navbar from './components/navBar.vue'
+import snackBar from './components/snackBar.vue'
 export default {
     components: {
         navbar,
+        snackBar,
+    },
+    data() {
+        return {
+            snack: false,
+            snackType: '',
+        }
+    },
+    methods: {
+        showSnack(mode) {
+            this.snackType = mode
+            this.snack = true
+            setTimeout(() => {
+                this.snack = false
+            }, 4000)
+        },
     },
 }
 </script>
