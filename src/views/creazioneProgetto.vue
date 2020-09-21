@@ -493,6 +493,7 @@ export default {
                     } else {
                         console.log('Errore')
                     }
+                    this.$router.push('/')
                 })
                 .catch(err => {
                     console.log(err)
