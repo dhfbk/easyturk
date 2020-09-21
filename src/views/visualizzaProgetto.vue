@@ -66,7 +66,7 @@
                                 >Pubblica</a
                             >
                             <router-link
-                                to="results"
+                                :to="{ name: 'results', params: { projectId: datiProgetto.id } }"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
                                 >Risultati</router-link
                             >
@@ -77,8 +77,8 @@
                             >
                             <router-link
                                 :to="{
-                                    name: 'modificaProgetto',
-                                    params: { idProgetto: datiProgetto.id },
+                                    name: 'edit',
+                                    params: { projectId: datiProgetto.id },
                                 }"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
                                 >Modifica</router-link
@@ -187,11 +187,11 @@ export default {
     methods: {
         getDatiPrj() {
             // var self = this
-            console.log(this.$route.params.idProgetto)
+            //console.log(this.$route.params.projectId)
             axios({
                 url:
                     'https://web.apnetwork.it/mturk/?action=editProject&id=' +
-                    this.$route.params.idProgetto,
+                    this.$route.params.projectId,
             })
                 .then(res => {
                     console.log(res)
@@ -239,11 +239,13 @@ export default {
         open(mode) {
             if (mode == 'results') {
                 this.$router.push({
-                    name: 'reviewResults',
+                    name: 'results',
+                    params: { projectId: this.datiProgetto.id },
                 })
             } else if (mode == 'edit') {
                 this.$router.push({
-                    name: 'modificaProgetto',
+                    name: 'edit',
+                    params: { projectId: this.datiProgetto.id },
                 })
             }
         },

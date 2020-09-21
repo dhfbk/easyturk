@@ -52,11 +52,20 @@
             </vue-ellipse-progress>
         </div>
         <div class="w-full flex justify-start -mt-4" v-if="dati.type == 'HIT'">
-            <router-link to="hitlist">
+            <router-link
+                :to="{
+                    name: 'HITlist',
+                    params: {
+                        projectId: dati.id,
+                    },
+                }"
+            >
                 <button
                     type="submit"
                     class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary hover:text-white focus:outline-none"
-                >Vai alle HIT</button>
+                >
+                    Vai alle HIT
+                </button>
             </router-link>
         </div>
     </div>

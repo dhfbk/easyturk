@@ -5,8 +5,8 @@
                 <p class="block md:hidden text-md font-bold tracking-tight">Project Id:</p>
                 <router-link
                     :to="{
-                        name: 'visualizzaProgetto',
-                        params: { idProgetto: projectData.id },
+                        name: 'projectView',
+                        params: { projectId: projectData.id },
                     }"
                     class="focus:outline-none"
                 >
@@ -79,8 +79,8 @@
                         >
                         <router-link
                             :to="{
-                                name: 'modificaProgetto',
-                                params: { idProgetto: projectData.id },
+                                name: 'edit',
+                                params: { projectId: projectData.id },
                             }"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md"
                             >Edit</router-link
