@@ -14,7 +14,8 @@
     "vue": "^2.6.11",
     "vue-click-outside": "^1.1.0",
     "vue-ellipse-progress": "^1.2.0",
-    "vue-router": "^3.2.0"
+    "vue-router": "^3.2.0",
+    "vuelidate": "^0.7.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

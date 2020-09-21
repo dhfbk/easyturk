@@ -8,6 +8,9 @@ import VueEllipseProgress from 'vue-ellipse-progress';
 
 Vue.use(VueEllipseProgress);
 
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
+
 
 Vue.config.productionTip = false;
 

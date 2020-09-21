@@ -1,5 +1,8 @@
 <template>
-    <div class="md:w-5/6 bg-white shadow-md rounded px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
+    <form
+        class="md:w-5/6 bg-white shadow-md rounded px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto"
+        @submit.prevent="caricaProgetto"
+    >
         <p class="text-2xl mb-4 text-primary">{{ pageTitle }}</p>
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
@@ -13,7 +16,7 @@
                     type="text"
                     placeholder="Nome progetto"
                     maxlength="255"
-                    v-model="name"
+                    v-model.trim="$v.name.$model"
                     required
                 />
                 <p class="text-gray-700 text-xs italic">Il nome non è mostrato ai lavoratori.</p>
@@ -30,7 +33,7 @@
                     type="text"
                     placeholder="Titolo"
                     maxlength="255"
-                    v-model="title"
+                    v-model.trim="$v.title.$model"
                     required
                 />
                 <p class="text-gray-700 text-xs italic">
@@ -53,7 +56,7 @@
                     id="descrizione"
                     type="text"
                     placeholder="Descrizione"
-                    v-model="description"
+                    v-model.trim="$v.description.$model"
                     required
                 />
                 <p class="text-gray-700 text-xs italic">
@@ -71,7 +74,7 @@
                     id="keywords"
                     type="text"
                     placeholder="Keywords"
-                    v-model="keywords"
+                    v-model.trim="$v.keywords.$model"
                     required
                 />
                 <p
@@ -93,7 +96,7 @@
                     min="0.01"
                     step="0.01"
                     placeholder="0.01 $"
-                    v-model="reward"
+                    v-model.trim="$v.reward.$model"
                     required
                 />
                 <p class="text-gray-700 text-xs italic">
@@ -113,7 +116,7 @@
                     min="1"
                     step="1"
                     placeholder="1"
-                    v-model="workers"
+                    v-model.trim="$v.workers.$model"
                     required
                 />
                 <p
@@ -134,7 +137,7 @@
                         :max="max1"
                         step="1"
                         placeholder="1"
-                        v-model="max_time"
+                        v-model.trim="$v.max_time.$model"
                         required
                     />
                     <div class="relative mt-1 sm:mt-0 sm:ml-2">
@@ -182,7 +185,7 @@
                         :max="max2"
                         step="1"
                         placeholder="1"
-                        v-model="expiry"
+                        v-model.trim="$v.expiry.$model"
                         required
                     />
                     <div class="relative mt-1 sm:mt-0 sm:ml-2">
@@ -230,7 +233,7 @@
                         :max="max3"
                         step="1"
                         placeholder="1"
-                        v-model="auto_approve"
+                        v-model.trim="$v.auto_approve.$model"
                         required
                     />
                     <div class="relative mt-1 sm:mt-0 sm:ml-2">
@@ -278,7 +281,7 @@
                     type="text"
                     placeholder="Layout ID"
                     maxlength="255"
-                    v-model="layout_id"
+                    v-model.trim="$v.layout_id.$model"
                     required
                 />
                 <p
@@ -297,31 +300,46 @@
                     min="1"
                     step="1"
                     placeholder="1"
-                    v-model="params"
+                    v-model.trim="$v.params.$model"
                     required
                 />
             </div>
         </div>
         <div class="w-full flex justify-end flex-row">
             <button
-                @click="caricaProgetto()"
                 type="submit"
-                class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
+                class="flex flex-row py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                 v-if="mode == 'modificaProgetto'"
-            >Salva modifiche</button>
+            >
+                <svg
+                    :class="loading ? 'animate-spin mr-1' : 'hidden'"
+                    style="width:24px;height:24px"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                </svg>Salva modifiche
+            </button>
             <button
-                @click="caricaProgetto()"
                 type="submit"
-                class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
+                class="flex flex-row py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                 v-else
-            >Salva</button>
+            >
+                <svg
+                    :class="loading ? 'animate-spin mr-1' : 'hidden'"
+                    style="width:24px;height:24px"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                </svg>Salva
+            </button>
         </div>
-    </div>
+    </form>
 </template>
 
 <script>
 //let $ = require('jquery')
 import axios from 'axios'
+const { required } = require('vuelidate/lib/validators')
 
 export default {
     name: 'creazioneProgetto',
@@ -367,7 +385,60 @@ export default {
             max2: 364,
             max3: 364,
             mode: 'nuovoProgetto',
+            loading: false,
         }
+    },
+    validations() {
+        return {
+            name: {
+                required,
+            },
+            title: {
+                required,
+            },
+            description: {
+                required,
+            },
+            keywords: {
+                required,
+            },
+            layout_id: {
+                required,
+            },
+            workers: {
+                required,
+            },
+            max_time: {
+                required,
+            },
+            expiry: {
+                required,
+            },
+            auto_approve: {
+                required,
+            },
+            params: {
+                required,
+            },
+            reward: {
+                required,
+            },
+        }
+
+        /*
+        title: {
+            required,
+            minLength: minLength(2),
+        },
+        description: {
+            required,
+            minLength: minLength(2),
+        },
+        keywords: {
+            required,
+            minLength: minLength(2),
+        },
+        */
     },
     created() {
         this.mode = this.$route.name
@@ -429,69 +500,77 @@ export default {
             // })
         },
         caricaProgetto() {
-            this.elaboraTempo('max_time')
-            this.elaboraTempo('expiry')
-            this.elaboraTempo('auto_approve')
-            this.parseNumbers()
-            var url = 'https://web.apnetwork.it/mturk/?action=addProject'
-            if (this.mode == 'edit') {
-                url = url + '&id=' + this.id
+            this.$v.$touch()
+            if (!this.$v.$invalid) {
+                this.loading = true
+                this.elaboraTempo('max_time')
+                this.elaboraTempo('expiry')
+                this.elaboraTempo('auto_approve')
+                this.parseNumbers()
+                var url = 'https://web.apnetwork.it/mturk/?action=addProject'
+                if (this.mode == 'edit') {
+                    url = url + '&id=' + this.id
+                }
+                // $.ajax({
+                //     url: url,
+                //     dataType: 'json',
+                //     data: {
+                //         name: this.name,
+                //         title: this.title,
+                //         description: this.description,
+                //         keywords: this.keywords,
+                //         reward: this.reward,
+                //         workers: this.workers,
+                //         max_time: this.max_time_send,
+                //         expiry: this.expiry_send,
+                //         auto_approve: this.auto_approve_send,
+                //         layout_id: this.layout_id,
+                //         params: this.params,
+                //     },
+                //     method: 'post',
+                //     success() {
+                //         console.log('informazioni inserite')
+                //     },
+                //     error(data) {
+                //         console.log(data)
+                //     },
+                // })
+                axios({
+                    method: 'post',
+                    url: url,
+                    data: {
+                        name: this.name,
+                        title: this.title,
+                        description: this.description,
+                        keywords: this.keywords,
+                        reward: this.reward,
+                        workers: this.workers,
+                        max_time: this.max_time_send,
+                        expiry: this.expiry_send,
+                        auto_approve: this.auto_approve_send,
+                        layout_id: this.layout_id,
+                        params: this.params,
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                })
+                    .then(response => {
+                        this.loading = false
+                        console.log(response.statusText)
+                        if (response.statusText == 'OK') {
+                            console.log('Inserimento avvenuto')
+                        } else {
+                            console.log('Errore')
+                        }
+                        this.goHome()
+                    })
+                    .catch(err => {
+                        this.loading = false
+                        console.log(err)
+                    })
             }
-            console.log(url)
-            // $.ajax({
-            //     url: url,
-            //     dataType: 'json',
-            //     data: {
-            //         name: this.name,
-            //         title: this.title,
-            //         description: this.description,
-            //         keywords: this.keywords,
-            //         reward: this.reward,
-            //         workers: this.workers,
-            //         max_time: this.max_time_send,
-            //         expiry: this.expiry_send,
-            //         auto_approve: this.auto_approve_send,
-            //         layout_id: this.layout_id,
-            //         params: this.params,
-            //     },
-            //     method: 'post',
-            //     success() {
-            //         console.log('informazioni inserite')
-            //     },
-            //     error(data) {
-            //         console.log(data)
-            //     },
-            // })
-            axios({
-                method: 'post',
-                url: url,
-                data: {
-                    name: this.name,
-                    title: this.title,
-                    description: this.description,
-                    keywords: this.keywords,
-                    reward: this.reward,
-                    workers: this.workers,
-                    max_time: this.max_time_send,
-                    expiry: this.expiry_send,
-                    auto_approve: this.auto_approve_send,
-                    layout_id: this.layout_id,
-                    params: this.params,
-                },
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            })
-                .then(response => {
-                    console.log(response.statusText)
-                    if (response.statusText == 'OK') {
-                        console.log('Inserimento avvenuto')
-                    } else {
-                        console.log('Errore')
-                    }
-                    this.$router.push('/')
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+        },
+        goHome() {
+            this.$router.push({ path: '/', name: 'Home' })
         },
         elaboraTempoGET(nomeVar) {
             if (nomeVar == 'max_time') {
