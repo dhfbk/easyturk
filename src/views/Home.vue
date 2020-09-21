@@ -86,7 +86,7 @@ export default {
     data() {
         return {
             projects: null,
-            modalId: null,
+            modalId: '',
             // projects: [
             //     {
             //         id: 'URJYRLU1PP',
@@ -168,8 +168,13 @@ export default {
             } else {
                 this.modalGld = !this.modalGld
             }
-            console.log(arr[1])
+            //console.log(arr[1])
             this.modalId = arr[1]
+            if (arr[0] == 'elim' && this.modalId != '') {
+                this.projects = this.projects.filter(function(el) {
+                    return el.id != this.modalId
+                })
+            }
         },
     },
 }
