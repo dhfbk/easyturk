@@ -56,7 +56,7 @@
                 :to="{
                     name: 'HITlist',
                     params: {
-                        projectId: dati.id,
+                        projectId: dati.idPrj,
                     },
                 }"
             >

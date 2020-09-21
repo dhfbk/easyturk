@@ -74,8 +74,8 @@
                             >Elimina</a>
                             <router-link
                                 :to="{
-                                    name: 'modificaProgetto',
-                                    params: { idProgetto: datiProgetto.id },
+                                    name: 'edit',
+                                    params: { projectId: datiProgetto.id },
                                 }"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
                             >Modifica</router-link>
@@ -182,7 +182,7 @@ export default {
     methods: {
         getDatiPrj() {
             // var self = this
-            this.datiProgetto.id = this.$route.params.idProgetto
+            this.datiProgetto.id = this.$route.params.projectId
             axios({
                 url:
                     'https://web.apnetwork.it/mturk/?action=editProject&id=' + this.datiProgetto.id,
@@ -277,6 +277,7 @@ export default {
             this.datiCard.dati3 = [this.datiProgetto.layoutID, this.datiProgetto.parametri]
             this.datiCardAnalytics = {
                 cardHIT: {
+                    idPrj: this.datiProgetto.id,
                     titolo: 'Totale HIT',
                     totale: this.datiProgetto.totaleHIT,
                     type: 'HIT',
