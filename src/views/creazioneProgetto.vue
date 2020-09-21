@@ -3,9 +3,10 @@
         <p class="text-2xl mb-4 text-primary">{{ pageTitle }}</p>
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="nome"
-                    >Nome progetto</label
-                >
+                <label
+                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
+                    for="nome"
+                >Nome progetto</label>
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="nome"
@@ -18,9 +19,10 @@
                 <p class="text-gray-700 text-xs italic">Il nome non è mostrato ai lavoratori.</p>
             </div>
             <div class="w-full px-3 mb-4">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="titolo"
-                    >Titolo</label
-                >
+                <label
+                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
+                    for="titolo"
+                >Titolo</label>
                 <input
                     :class="errorTitolo ? 'border-red-600' : 'border-gray-200'"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -36,16 +38,16 @@
                     survey about movies", instead of "short survey", così che i lavoratori sappiano
                     cosa aspettarsi.
                 </p>
-                <p :class="errorTitolo ? '' : 'hidden'" class="text-red-600 text-xs italic">
-                    Si è pregati di inserire il titolo
-                </p>
+                <p
+                    :class="errorTitolo ? '' : 'hidden'"
+                    class="text-red-600 text-xs italic"
+                >Si è pregati di inserire il titolo</p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="descrizione"
-                    >Descrizione</label
-                >
+                >Descrizione</label>
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="descrizione"
@@ -63,8 +65,7 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="keywords"
-                    >Keywords</label
-                >
+                >Keywords</label>
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="keywords"
@@ -73,9 +74,9 @@
                     v-model="keywords"
                     required
                 />
-                <p class="text-gray-700 text-xs italic">
-                    Fornisci keywords che aiuteranno i lavoratori a trovare i tuoi compiti.
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >Fornisci keywords che aiuteranno i lavoratori a trovare i tuoi compiti.</p>
             </div>
         </div>
         <hr class="solid mb-4" />
@@ -84,8 +85,7 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="ricompensa"
-                    >Ricompensa per ogni assignment</label
-                >
+                >Ricompensa per ogni assignment</label>
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="ricompensa"
@@ -105,8 +105,7 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="lavoratori"
-                    >Numero di lavoratori/assignment per task</label
-                >
+                >Numero di lavoratori/assignment per task</label>
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="lavoratori"
@@ -117,16 +116,15 @@
                     v-model="workers"
                     required
                 />
-                <p class="text-gray-700 text-xs italic">
-                    Quanti lavoratori vuoi che completino i tuoi task?
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >Quanti lavoratori vuoi che completino i tuoi task?</p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="tempoMax"
-                    >Tempo massimo</label
-                >
+                >Tempo massimo</label>
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -174,8 +172,7 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="scadenza"
-                    >Scadenza</label
-                >
+                >Scadenza</label>
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -223,8 +220,7 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="autoApproval"
-                    >Auto approva e paga i lavoratori in</label
-                >
+                >Auto approva e paga i lavoratori in</label>
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -275,8 +271,7 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="layoutId"
-                    >Layout ID</label
-                >
+                >Layout ID</label>
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="layoutId"
@@ -286,16 +281,15 @@
                     v-model="layout_id"
                     required
                 />
-                <p class="text-gray-700 text-xs italic">
-                    Questo è l'id del layout da far visualizzare al lavoratore.
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >Questo è l'id del layout da far visualizzare al lavoratore.</p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="parametri"
-                    >Numero di parametri</label
-                >
+                >Numero di parametri</label>
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="parametri"
@@ -314,17 +308,13 @@
                 type="submit"
                 class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                 v-if="mode == 'modificaProgetto'"
-            >
-                Salva modifiche
-            </button>
+            >Salva modifiche</button>
             <button
                 @click="caricaProgetto()"
                 type="submit"
                 class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                 v-else
-            >
-                Salva
-            </button>
+            >Salva</button>
         </div>
     </div>
 </template>
@@ -404,11 +394,14 @@ export default {
                 this.description = res.data.values.description
                 this.keywords = res.data.values.keywords
                 this.reward = res.data.values.reward
-                this.max_time = res.data.values.max_time
-                this.expiry = res.data.values.expiry
-                this.auto_approve = res.data.values.auto_approve
+                this.max_time = parseInt(res.data.values.max_time)
+                this.expiry = parseInt(res.data.values.expiry)
+                this.auto_approve = parseInt(res.data.values.auto_approve)
                 this.layout_id = res.data.values.layout_id
                 this.params = res.data.values.params
+                this.elaboraTempoGET('max_time')
+                this.elaboraTempoGET('expiry')
+                this.elaboraTempoGET('auto_approve')
             })
             // var self = this
             // $.ajax({
@@ -440,10 +433,11 @@ export default {
             this.elaboraTempo('expiry')
             this.elaboraTempo('auto_approve')
             this.parseNumbers()
-            // var url = 'https://web.apnetwork.it/mturk/?action=addProject'
-            // if (this.mode == 'modificaProgetto') {
-            //     url = url + '&id=' + this.id
-            // }
+            var url = 'https://web.apnetwork.it/mturk/?action=addProject'
+            if (this.mode == 'edit') {
+                url = url + '&id=' + this.id
+            }
+            console.log(url)
             // $.ajax({
             //     url: url,
             //     dataType: 'json',
@@ -470,7 +464,7 @@ export default {
             // })
             axios({
                 method: 'post',
-                url: 'https://web.apnetwork.it/mturk/?action=addProject',
+                url: url,
                 data: {
                     name: this.name,
                     title: this.title,
@@ -497,6 +491,39 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        elaboraTempoGET(nomeVar) {
+            if (nomeVar == 'max_time') {
+                if (this.max_time < 60) {
+                    this.selectTempoMax = 'minuti'
+                } else if (this.max_time < 1440) {
+                    this.max_time = this.max_time / 60
+                    this.selectTempoMax = 'ore'
+                } else {
+                    this.max_time = this.max_time / 1440
+                    this.selectTempoMax = 'giorni'
+                }
+            } else if (nomeVar == 'expiry') {
+                if (this.expiry < 60) {
+                    this.selectExpiry = 'minuti'
+                } else if (this.expiry < 1440) {
+                    this.expiry = this.expiry / 60
+                    this.selectExpiry = 'ore'
+                } else {
+                    this.expiry = this.expiry / 1440
+                    this.selectExpiry = 'giorni'
+                }
+            } else {
+                if (this.auto_approve < 60) {
+                    this.selectAutoApprove = 'minuti'
+                } else if (this.auto_approve < 1440) {
+                    this.auto_approve = this.auto_approve / 60
+                    this.selectAutoApprove = 'ore'
+                } else {
+                    this.auto_approve = this.auto_approve / 1440
+                    this.selectAutoApprove = 'giorni'
+                }
+            }
         },
         //modifica il tempo da minuti a minuti/ore/giorni
         elaboraTempo(nomeVar) {

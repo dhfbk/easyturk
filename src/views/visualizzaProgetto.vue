@@ -141,7 +141,7 @@ export default {
                 creazione: '',
                 numLavoratori: 0,
                 tempoMax: 0,
-                scadenza: '',
+                scadenza: 0,
                 autoApproval: 0,
                 layoutID: '',
                 stato: 'In corso',
@@ -202,10 +202,10 @@ export default {
                     this.datiProgetto.descrizione = res.data.values.description
                     this.datiProgetto.keywords = res.data.values.keywords
                     this.datiProgetto.ricompensa = res.data.values.reward + '$'
-                    this.datiProgetto.tempoMax = res.data.values.max_time
+                    this.datiProgetto.tempoMax = parseInt(res.data.values.max_time)
                     this.datiProgetto.creazione = res.data.values.created_at
-                    this.datiProgetto.scadenza = res.data.values.expiry
-                    this.datiProgetto.autoApproval = res.data.values.auto_approve
+                    this.datiProgetto.scadenza = parseInt(res.data.values.expiry)
+                    this.datiProgetto.autoApproval = parseInt(res.data.values.auto_approve)
                     this.datiProgetto.layoutID = res.data.values.layout_id
                     this.datiProgetto.parametri = res.data.values.params
                     this.datiProgetto.numLavoratori = res.data.values.workers
@@ -373,30 +373,41 @@ export default {
             this.datiProgetto.noProgress =
                 (100 * this.datiProgetto.risposteNO) / this.datiProgetto.HITcompletate
         },
-        //modifica il tempo da secondi a minuti/ore/giorni
-        elaboraTempo(tempo) {
-            var tmp = 0
-            if (tempo < 60) {
-                tmp = Math.floor(tempo) + ' secondi'
-            } else if (tempo < 3600) {
-                tmp = Math.floor(tempo / 60) + ' minuti'
-            } else if (tempo < 86400) {
-                tmp = Math.floor(tempo / 3600) + ' ore'
+        elaboraTempo(nomeVar) {
+            if (nomeVar == 'tempoMax') {
+                if (this.datiProgetto.tempoMax < 60) {
+                    this.datiProgetto.tempoMax += ' minuti'
+                } else if (this.datiProgetto.tempoMax < 1440) {
+                    this.datiProgetto.tempoMax = this.datiProgetto.tempoMax / 60 + ' ore'
+                } else {
+                    this.datiProgetto.tempoMax = this.datiProgetto.tempoMax / 1440 + ' giorni'
+                }
+            } else if (nomeVar == 'scadenza') {
+                if (this.datiProgetto.scadenza < 60) {
+                    this.datiProgetto.scadenza += ' minuti'
+                } else if (this.datiProgetto.scadenza < 1440) {
+                    this.datiProgetto.scadenza = this.datiProgetto.scadenza / 60 + ' ore'
+                } else {
+                    this.datiProgetto.scadenza = this.datiProgetto.scadenza / 1440 + ' giorni'
+                }
             } else {
-                tmp = Math.floor(tempo / 86400) + ' giorni'
-            }
-            if (tempo == this.datiProgetto.tempoMax) {
-                this.datiProgetto.tempoMax = tmp
-            } else {
-                this.datiProgetto.autoApproval = tmp
+                if (this.datiProgetto.autoApproval < 60) {
+                    this.datiProgetto.autoApproval += ' minuti'
+                } else if (this.datiProgetto.autoApproval < 1440) {
+                    this.datiProgetto.autoApproval = this.datiProgetto.autoApproval / 60 + ' ore'
+                } else {
+                    this.datiProgetto.autoApproval =
+                        this.datiProgetto.autoApproval / 1440 + ' giorni'
+                }
             }
         },
     },
     watch: {
         loading() {
             if (!this.loading) {
-                this.elaboraTempo(this.datiProgetto.tempoMax)
-                this.elaboraTempo(this.datiProgetto.autoApproval)
+                this.elaboraTempo('tempoMax')
+                this.elaboraTempo('scadenza')
+                this.elaboraTempo('autoApproval')
                 this.calcolaProgress()
                 this.impostaDatiCard()
                 this.loading1 = false
