@@ -3,12 +3,12 @@
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto" v-else>
         <modalEliminazione
             v-if="modalElim"
-            @toggleModal="toggleModal"
+            @toggleModal="toggleModal('elim')"
             :id="datiProgetto.id"
             @snackbar="emitSnackbar"
         />
-        <modalUpload v-if="modalStd" @upload="toggleModal" :type="'std'" />
-        <modalUpload v-if="modalGld" @upload="toggleModal" :type="'gld'" />
+        <modalUpload v-if="modalStd" @upload="toggleModal('std')" :type="'std'" />
+        <modalUpload v-if="modalGld" @upload="toggleModal('gld')" :type="'gld'" />
         <div class="flex justify-between flex-wrap">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="flex relative">
