@@ -41,10 +41,13 @@
                         <router-link
                             to="results"
                             class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
-                        >Aggiungi assignment</router-link>
+                        >
+                            Aggiungi assignment
+                        </router-link>
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md sm:rounded-md"
-                        >Modifica</a>
+                            >Modifica</a
+                        >
                     </div>
                 </transition>
             </div>

@@ -394,9 +394,10 @@ export default {
             axios({
                 url:
                     'https://web.apnetwork.it/mturk/?action=editProject&id=' +
-                    this.$route.params.idProgetto,
+                    this.$route.params.projectId,
                 method: 'get',
             }).then(res => {
+                console.log(res.data)
                 this.id = res.data.values.id
                 this.name = res.data.values.name
                 this.title = res.data.values.title
