@@ -3,7 +3,7 @@
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
         >
-            <div class="bg-white rounded-lg w-1/2">
+            <div class="bg-white rounded-lg w-auto mx-2 lg:w-1/2">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <h2 class="text-gray-900 font-bold text-lg">Scegli il file da caricare</h2>
@@ -18,15 +18,15 @@
                             />
                         </svg>
                     </div>
-                    <p class="py-2" v-if="type == 'std'">
-                        Upload del file csv contenente i dati standard da utilizzare
-                    </p>
-                    <p class="py-2" v-else>
-                        Upload del file csv contenente i dati per il golden standard
-                    </p>
-                    <h2 class="font-light">
-                        Titles:
-                    </h2>
+                    <p
+                        class="py-2"
+                        v-if="type == 'std'"
+                    >Upload del file csv contenente i dati standard da utilizzare</p>
+                    <p
+                        class="py-2"
+                        v-else
+                    >Upload del file csv contenente i dati per il golden standard</p>
+                    <h2 class="font-light">Titles:</h2>
                     <label class="inline-flex items-center mt-2">
                         <input
                             type="radio"
@@ -34,7 +34,8 @@
                             value="auto"
                             class="form-radio h-4 w-4 text-red-600"
                             v-model="picked"
-                        /><span class="ml-2 text-gray-700">Auto-select titles</span>
+                        />
+                        <span class="ml-2 text-gray-700">Auto-select titles</span>
                     </label>
                     <label class="inline-flex items-center mt-2">
                         <input
@@ -43,9 +44,8 @@
                             value="custom"
                             class="form-radio h-4 w-4 text-red-600"
                             v-model="picked"
-                        /><span class="ml-2 text-gray-700"
-                            >Use custom titles (separated by comma)</span
-                        >
+                        />
+                        <span class="ml-2 text-gray-700">Use custom titles (separated by comma)</span>
                     </label>
 
                     <input
@@ -57,12 +57,12 @@
                         placeholder="Titles"
                     />
 
-                    <div class="flex my-1">
-                        <label class="inline-flex items-center w-1/2">
+                    <div class="flex customFlex my-1">
+                        <label class="inline-flex items-center customWidth">
                             <span class="font-light mr-2">Separator:</span>
 
                             <select
-                                class="block appearance-none w-1/3 my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                class="block appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                 id="separator"
                                 v-model="separated"
                             >
@@ -72,11 +72,11 @@
                                 <option value="space">Space</option>
                             </select>
                         </label>
-                        <label class="inline-flex items-center w-1/2">
-                            <span class="font-light mr-2"> String delimiter: </span>
+                        <label class="inline-flex items-center customWidth">
+                            <span class="font-light mr-2">String delimiter:</span>
 
                             <select
-                                class="block appearance-none w-1/3 my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                class="block appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                 id="separator"
                                 v-model="delimiter"
                             >
@@ -97,8 +97,7 @@
                                     : 'bg-secondary cursor-pointer hover:bg-blue-700'
                             "
                             class="inline-block text-white rounded-md px-4 py-2"
-                            >Scegli file</label
-                        >
+                        >Scegli file</label>
                         <input
                             id="file-upload"
                             name="upload_csv"
@@ -119,33 +118,29 @@
                                         />
                                     </svg>
                                     <div class="flex-1 px-3">
-                                        <span class="text-gray-800 overflow-hidden">{{
+                                        <span class="text-gray-800 overflow-hidden">
+                                            {{
                                             files[0].name
-                                        }}</span>
+                                            }}
+                                        </span>
                                     </div>
                                     <button
                                         @click="emptyFile"
                                         class="cursor-pointer w-8 h-8 text-center text-xl transition duration-150 ease-in-out hover:bg-gray-300 focus:bg-gray-400 rounded-full focus:outline-none"
-                                    >
-                                        &times;
-                                    </button>
+                                    >&times;</button>
                                 </div>
                             </div>
                         </transition>
                     </div>
                     <div class="ml-auto">
                         <button
-                            class="transition duration-150 ease-in-out bg-primary hover:bg-orange-600 text-black hover:text-white font-bold py-2 px-4 rounded focus:outline-none"
+                            class="transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="toggleModal()"
-                        >
-                            Carica
-                        </button>
+                        >Carica</button>
                         <button
-                            class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-400 focus:outline-none ml-2 bg-transparent text-black font-semibold py-2 px-4 rounded"
+                            class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-200 focus:outline-none ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
-                        >
-                            Annulla
-                        </button>
+                        >Annulla</button>
                     </div>
                 </div>
             </div>
@@ -203,5 +198,20 @@ export default {
 }
 path {
     fill: rgba(45, 55, 72, 1);
+}
+.customFlex {
+    flex-direction: column;
+}
+.customWidth {
+    width: fit-content;
+}
+@media screen and (min-width: 512px) {
+    .customFlex {
+        flex-direction: row;
+    }
+
+    .customWidth {
+        width: 50%;
+    }
 }
 </style>

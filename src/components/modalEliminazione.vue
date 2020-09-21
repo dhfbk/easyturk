@@ -24,7 +24,7 @@
 
                     <div class="ml-auto flex flex-col sm:flex-row">
                         <button
-                            class="flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-orange-600 text-black hover:text-white font-bold py-2 px-4 rounded focus:outline-none"
+                            class="flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="deleteProject()"
                         >
                             <svg
@@ -36,7 +36,7 @@
                             </svg>Elimina
                         </button>
                         <button
-                            class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-400 focus:outline-none mt-2 sm:mt-0 sm:ml-2 bg-transparent text-black font-semibold py-2 px-4 rounded"
+                            class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-200 focus:outline-none mt-2 sm:mt-0 sm:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
                         >Annulla</button>
                     </div>
