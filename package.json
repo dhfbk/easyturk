@@ -10,7 +10,6 @@
   "dependencies": {
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
-    "jquery": "^3.5.1",
     "tailwindcss": "^1.8.5",
     "vue": "^2.6.11",
     "vue-click-outside": "^1.1.0",

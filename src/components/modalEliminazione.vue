@@ -18,23 +18,19 @@
                             />
                         </svg>
                     </div>
-                    <div class="py-2">
-                        Sicuro di voler eliminare il progetto? Questa azione è irreversibile.
-                    </div>
+                    <div
+                        class="py-2"
+                    >Sicuro di voler eliminare il progetto? Questa azione è irreversibile.</div>
 
                     <div class="ml-auto">
                         <button
                             class="transition duration-150 ease-in-out bg-primary hover:bg-orange-600 text-black hover:text-white font-bold py-2 px-4 rounded focus:outline-none"
                             @click="toggleModal()"
-                        >
-                            Elimina
-                        </button>
+                        >Elimina</button>
                         <button
                             class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-400 focus:outline-none ml-2 bg-transparent text-black font-semibold py-2 px-4 rounded"
                             @click="toggleModal()"
-                        >
-                            Annulla
-                        </button>
+                        >Annulla</button>
                     </div>
                 </div>
             </div>
@@ -43,7 +39,8 @@
 </template>
 
 <script>
-let $ = require('jquery')
+import axios from 'axios'
+//let $ = require('jquery')
 
 export default {
     name: 'modalEliminazione',
@@ -56,7 +53,17 @@ export default {
             this.$emit('toggleModal', 'elim')
         },
         delete() {
-            var self = this
+            //var self = this
+            axios({
+                url: 'https://web.apnetwork.it/mturk/?action=deleteProject',
+                method: 'post',
+                data: {
+                    id: this.id,
+                },
+            }).then(res => {
+                console.log(res.data.result)
+            })
+            /*
             $.ajax({
                 url: 'https://web.apnetwork.it/mturk/?action=deleteProject',
                 dataType: 'json',
@@ -68,6 +75,7 @@ export default {
                     console.log(data)
                 },
             })
+            */
         },
     },
 }
