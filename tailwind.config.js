@@ -6,8 +6,9 @@ module.exports = {
                 height: 'height',
             },
             colors: {
-                primary: '#FF9900',
-                secondary: '#0091FF',
+                primary: '#0068b4',
+                primaryDark: '#003e84',
+                secondary: '#a5a5a5',
                 // ...
             },
         },

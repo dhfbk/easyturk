@@ -67,14 +67,14 @@
                             class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"
                         >
                             <a
-                                class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
+                                class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
                             >Pubblica</a>
                             <router-link
                                 to="results"
-                                class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
+                                class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                             >Risultati</router-link>
                             <a
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 @click="toggleModal('elim')"
                             >Elimina</a>
                             <router-link
@@ -82,15 +82,15 @@
                                     name: 'edit',
                                     params: { projectId: datiProgetto.id },
                                 }"
-                                class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
+                                class="block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                             >Modifica</router-link>
                             <a
                                 @click="toggleModal('std')"
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary"
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                             >Carica dati</a>
                             <a
                                 @click="toggleModal('gld')"
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md"
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
                             >Carica gold</a>
                         </div>
                     </transition>
@@ -185,8 +185,8 @@ export default {
         this.popupItem = this.$el
     },
     methods: {
-        emitSnackbar(mode) {
-            this.$emit('snackbar', mode)
+        emitSnackbar(arr) {
+            this.$emit('snackbar', arr[0])
         },
         getDatiPrj() {
             // var self = this

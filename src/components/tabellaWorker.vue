@@ -19,7 +19,7 @@
         <router-link to="/workers" v-if="showBtn">
             <button
                 type="submit"
-                class="py-2 px-4 bg-white mt-4 rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white hover:bg-primary focus:outline-none"
+                class="py-2 px-4 bg-white mt-4 rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary text-gray-800 hover:text-gray-100 hover:bg-primary focus:outline-none"
             >
                 View all
             </button>

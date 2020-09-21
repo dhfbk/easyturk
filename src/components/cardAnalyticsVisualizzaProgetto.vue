@@ -62,7 +62,7 @@
             >
                 <button
                     type="submit"
-                    class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary hover:text-white focus:outline-none"
+                    class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid text-gray-800 border-primary hover:bg-primary hover:text-gray-100 focus:outline-none"
                 >
                     Vai alle HIT
                 </button>

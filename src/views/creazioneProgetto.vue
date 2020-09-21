@@ -481,8 +481,8 @@ export default {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             })
                 .then(response => {
-                    console.log(response)
-                    if (response.data.result == 'OK') {
+                    console.log(response.statusText)
+                    if (response.statusText == 'OK') {
                         console.log('Inserimento avvenuto')
                     } else {
                         console.log('Errore')
