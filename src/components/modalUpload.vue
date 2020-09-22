@@ -210,8 +210,6 @@ export default {
                     .post('https://web.apnetwork.it/mturk/?action=uploadFile', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
-                            'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
-                            'Access-Control-Allow-Headers': 'Content-Type, Origin, Authorization',
                         },
                         onUploadProgress: function(progressEvent) {
                             this.uploadPercentage = parseInt(
@@ -219,7 +217,8 @@ export default {
                             )
                         }.bind(this),
                     })
-                    .then(function() {
+                    .then(function(res) {
+                        console.log(res)
                         console.log('SUCCESS!!')
                     })
                     .catch(function() {
