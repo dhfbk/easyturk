@@ -2,7 +2,8 @@
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
         <modalEliminazione
             v-if="modalElim && !loading1"
-            @toggleModal="toggleModal('elim')"
+            @deleteModal="deleteModal"
+            @deleted="deleted"
             :id="datiProgetto.id"
             @snackbar="emitSnackbar"
         />
@@ -79,30 +80,36 @@
                         >
                             <a
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                            >Publish</a>
+                                >Publish</a
+                            >
                             <router-link
                                 to="results"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                            >Results</router-link>
+                                >Results</router-link
+                            >
                             <a
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 @click="toggleModal('elim')"
-                            >Delete</a>
+                                >Delete</a
+                            >
                             <router-link
                                 :to="{
                                     name: 'edit',
                                     params: { projectId: datiProgetto.id },
                                 }"
                                 class="block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                            >Edit</router-link>
+                                >Edit</router-link
+                            >
                             <a
                                 @click="toggleModal('std')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                            >Upload dati</a>
+                                >Upload dati</a
+                            >
                             <a
                                 @click="toggleModal('gld')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
-                            >Upload gold</a>
+                                >Upload gold</a
+                            >
                         </div>
                     </transition>
                 </span>
@@ -121,8 +128,8 @@
             </div>
             <div class="mx-0 sm:mx-2">
                 <div class="w-full flex flex-col justify-center" v-if="loading1">
-                    <loader :type="'cardAnalyticsVisualizza'"  :num="3"/>
-                    <loader :type="'cardAnalyticsVisualizza'"  :num="2"/>
+                    <loader :type="'cardAnalyticsVisualizza'" :num="3" />
+                    <loader :type="'cardAnalyticsVisualizza'" :num="2" />
                 </div>
                 <div v-else>
                     <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
@@ -152,7 +159,7 @@ export default {
         cardInfo,
         cardAnalytics,
         modalUpload,
-        loader
+        loader,
     },
     data() {
         return {
@@ -371,11 +378,15 @@ export default {
                 },
             }
         },
+        deleteModal() {
+            this.modalElim = !this.modalElim
+        },
+        deleted() {
+            this.$router.push('/')
+        },
         //metodo che mostra o nasconde il dialog
         toggleModal(type) {
-            if (type == 'elim') {
-                this.modalElim = !this.modalElim
-            } else if (type == 'std') {
+            if (type == 'std') {
                 this.modalStd = !this.modalStd
             } else {
                 this.modalGld = !this.modalGld

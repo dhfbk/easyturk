@@ -25,16 +25,22 @@
         <span class="flex-grow flex justify-end w-2/5">
             <button
                 class="transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:inline-block"
-            >Publish Batch</button>
+            >
+                Publish Batch
+            </button>
 
             <button
                 @click="upload('std')"
                 class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
-            >Upload Data</button>
+            >
+                Upload Data
+            </button>
             <button
                 @click="upload('gld')"
                 class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
-            >Upload Gold</button>
+            >
+                Upload Gold
+            </button>
             <span v-click-outside="hide" class="flex align-center">
                 <button
                     class="py-2 px-2 m-1 focus:outline-none hover:bg-gray-300 bg-white rounded"
@@ -59,26 +65,31 @@
                     >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md sm:hidden"
-                        >Publish batch</a>
+                            >Publish batch</a
+                        >
                         <a
                             @click="upload('std')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md xl:hidden"
-                        >Upload data</a>
+                            >Upload data</a
+                        >
                         <a
                             @click="upload('gld')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md xl:hidden"
-                        >Upload Gold</a>
+                            >Upload Gold</a
+                        >
                         <router-link
                             :to="{
                                 name: 'edit',
                                 params: { projectId: projectData.id },
                             }"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md"
-                        >Edit</router-link>
+                            >Edit</router-link
+                        >
                         <a
                             @click="deleteItem()"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
-                        >Delete</a>
+                            >Delete</a
+                        >
                     </div>
                 </transition>
             </span>
@@ -213,7 +224,7 @@ export default {
             if (this.dropdown) {
                 this.dropdown = !this.dropdown
             }
-            this.$emit('deleteThis', ['elim', this.projectData.id, 'first'])
+            this.$emit('deleteThis', this.projectData.id)
         },
         upload(type) {
             if (this.dropdown) {

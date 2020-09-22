@@ -2,7 +2,7 @@
     <div class="absolute right-0 top-1 m-5 z-30">
         <div
             class="flex items-center bg-green-500 border-l-4 border-green-700 py-2 px-3 shadow-md mb-2"
-            v-if="type == 'success'"
+            v-if="msg != 'Error' || msg != 'Error. Try again'"
         >
             <div class="text-green-500 rounded-full bg-white mr-3">
                 <svg
@@ -18,7 +18,7 @@
                     />
                 </svg>
             </div>
-            <div class="text-white max-w-xs">{{msg}}</div>
+            <div class="text-white max-w-xs">{{ msg }}</div>
         </div>
 
         <!--
@@ -84,7 +84,7 @@
                     />
                 </svg>
             </div>
-            <div class="text-white max-w-xs">{{msg}}</div>
+            <div class="text-white max-w-xs">{{ msg }}</div>
         </div>
     </div>
 </template>
@@ -93,11 +93,9 @@
 export default {
     name: 'snackBar',
     props: {
-        type: String,
-        msg: String
+        msg: String,
     },
 }
 </script>
 
-<style>
-</style>
+<style></style>

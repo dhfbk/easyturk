@@ -7,7 +7,7 @@
         >
             <p>You are using the sandbox version</p>
         </div>
-        <snack-bar :type="snackType" :msg="messaggio" v-if="snack" />
+        <snack-bar :msg="messaggio" v-if="snack" />
         <transition name="fade" mode="out-in">
             <router-view @snackbar="showSnack" @sandbox="setSandbox" />
         </transition>
@@ -34,9 +34,9 @@ export default {
         setSandbox(show) {
             this.sandbox = show
         },
-        showSnack(arr) {
-            this.snackType = arr[0]
-            this.messaggio = arr[2]
+        showSnack(msg) {
+            //this.snackType = arr[0]
+            this.messaggio = msg
             this.snack = true
             setTimeout(() => {
                 this.snack = false
@@ -63,5 +63,4 @@ export default {
     min-height: 2rem;
     padding: 5px 10px;
 }
-
 </style>

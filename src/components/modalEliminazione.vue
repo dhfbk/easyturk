@@ -18,9 +18,9 @@
                             />
                         </svg>
                     </div>
-                    <div
-                        class="py-2"
-                    >Are you sure you want to delete the project? This action is irreversible.</div>
+                    <div class="py-2">
+                        Are you sure you want to delete the project? This action is irreversible.
+                    </div>
 
                     <div class="ml-auto flex flex-col sm:flex-row">
                         <button
@@ -32,13 +32,15 @@
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                            </svg>Delete
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
+                            >Delete
                         </button>
                         <button
                             class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-200 focus:outline-none mt-2 sm:mt-0 sm:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
-                        >Cancel</button>
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>
@@ -63,7 +65,7 @@ export default {
     },
     methods: {
         toggleModal() {
-            this.$emit('toggleModal', ['elim', ''])
+            this.$emit('deleteModal', '')
         },
         deleteProject() {
             //var self = this
@@ -75,15 +77,15 @@ export default {
                 .then(res => {
                     console.log(res.data.result)
                     this.loading = false
-                    console.log(this.$route.name)
-                    this.$emit('snackbar', ['success', this.id, 'Progetto eliminato'])
-                    if (this.$route.name != 'Home') {
-                        this.$router.replace({ path: '/' })
-                    }
+                    //console.log(this.$route.name)
+                    this.$emit('deleted', 'Progetto eliminato.')
+                    this.toggleModal()
+                    // this.$emit('snackbar', ['success', this.id, 'Progetto eliminato'])
                 })
                 .catch(err => {
                     console.log(err)
-                    this.$emit('snackbar', ['error', '', 'Errore'])
+                    this.$emit('deleted', 'Errore')
+                    this.toggleModal()
                 })
             /*
             $.ajax({

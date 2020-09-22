@@ -18,7 +18,7 @@ const routes = [
     },
     {
         path: '/create',
-        name: 'nuovoProgetto',
+        name: 'new',
         component: creazioneProgetto,
     },
     {

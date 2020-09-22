@@ -18,14 +18,8 @@
                             />
                         </svg>
                     </div>
-                    <p
-                        class="py-2"
-                        v-if="type == 'std'"
-                    >File upload for the base csv document</p>
-                    <p
-                        class="py-2"
-                        v-else
-                    >File upload for the golden standard csv document</p>
+                    <p class="py-2" v-if="type == 'std'">File upload for the base csv document</p>
+                    <p class="py-2" v-else>File upload for the golden standard csv document</p>
                     <h2 class="font-light">Titles:</h2>
                     <label class="inline-flex items-center mt-2">
                         <input
@@ -46,14 +40,16 @@
                             class="form-radio"
                             v-model="picked"
                         />
-                        <span class="ml-2 text-gray-700">Use custom titles (separated by comma)</span>
+                        <span class="ml-2 text-gray-700"
+                            >Use custom titles (separated by comma)</span
+                        >
                     </label>
 
                     <input
                         type="text"
                         class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 mb-3 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         v-model="customTitles"
-                        :class=" picked==0 ? '' : 'cursor-not-allowed bg-gray-300'"
+                        :class="picked == 0 ? '' : 'cursor-not-allowed bg-gray-300'"
                         :disabled="picked == 1"
                         placeholder="Titles"
                     />
@@ -98,7 +94,8 @@
                                     : 'bg-secondary cursor-pointer hover:bg-blue-700'
                             "
                             class="inline-block text-white rounded-md px-4 py-2"
-                        >Choose file</label>
+                            >Choose file</label
+                        >
                         <input
                             id="file"
                             name="upload_csv"
@@ -121,31 +118,39 @@
                                     </svg>
                                     <div class="flex-1 px-3">
                                         <span class="text-gray-800 overflow-hidden">
-                                            {{
-                                            file.name
-                                            }}
+                                            {{ file.name }}
                                         </span>
                                     </div>
                                     <button
                                         @click="emptyFile"
                                         class="cursor-pointer w-8 h-8 text-center text-xl transition duration-150 ease-in-out hover:bg-gray-300 focus:bg-gray-400 rounded-full focus:outline-none"
-                                    >&times;</button>
+                                    >
+                                        &times;
+                                    </button>
                                 </div>
                             </div>
                         </transition>
                     </div>
                     <div class="w-full mb-2">
-                        <progress class="w-full" max="100" :value.prop="uploadPercentage"></progress>
+                        <progress
+                            class="w-full"
+                            max="100"
+                            :value.prop="uploadPercentage"
+                        ></progress>
                     </div>
                     <div class="ml-auto">
                         <button
                             class="transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="uploadFile()"
-                        >Upload</button>
+                        >
+                            Upload
+                        </button>
                         <button
                             class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-200 focus:outline-none ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
-                        >Cancel</button>
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>
@@ -174,10 +179,11 @@ export default {
     },
     methods: {
         toggleModal() {
+            console.log(this.type)
             if (this.type == 'std') {
-                this.$emit('toggleModal', 'std')
+                this.$emit('uploadModal', ['std', ''])
             } else {
-                this.$emit('toggleModal', 'gld')
+                this.$emit('uploadModal', ['gld', ''])
             }
         },
         displayFile() {
@@ -218,18 +224,12 @@ export default {
                         }.bind(this),
                     })
                     .then(() => {
-                        if (this.type == 'std') {
-                            this.$emit('snackbar', ['success', '', 'Upload completed', 'std'])
-                        } else {
-                            this.$emit('snackbar', ['success', '', 'Upload completed', 'gld'])
-                        }
+                        this.$emit('uploaded', 'Upload completed')
+                        this.toggleModal()
                     })
                     .catch(() => {
-                        if (this.type == 'std') {
-                            this.$emit('snackbar', ['error', '', 'Error. Try again', 'std'])
-                        } else {
-                            this.$emit('snackbar', ['error', '', 'Error. Try again', 'gld'])
-                        }
+                        this.$emit('uploaded', 'Error. Try again')
+                        this.toggleModal()
                     })
             }
         },
