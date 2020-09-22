@@ -1,27 +1,26 @@
 <template>
-    <div v-if="loading1"></div>
-    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto" v-else>
+    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
         <modalEliminazione
-            v-if="modalElim"
+            v-if="modalElim && !loading1"
             @toggleModal="toggleModal('elim')"
             :id="datiProgetto.id"
             @snackbar="emitSnackbar"
         />
         <modalUpload
-            v-if="modalStd"
+            v-if="modalStd && !loading1"
             :type="'std'"
             :id="datiProgetto.id"
             @snackbar="emitSnackbar"
             @toggleModal="toggleModal"
         />
         <modalUpload
-            v-if="modalGld"
+            v-if="modalGld && !loading1"
             :type="'gld'"
             :id="datiProgetto.id"
             @snackbar="emitSnackbar"
             @toggleModal="toggleModal"
         />
-        <div class="flex justify-between flex-wrap">
+        <div class="flex justify-between flex-wrap" v-if="!loading1">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="flex relative">
                 <button
@@ -111,13 +110,23 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 mt-2">
             <div class="mx-0 sm:mx-2">
-                <cardInfo :titoli="titoliCard.titoli1" :dati="datiCard.dati1" />
-                <cardInfo :titoli="titoliCard.titoli2" :dati="datiCard.dati2" />
-                <cardInfo :titoli="titoliCard.titoli3" :dati="datiCard.dati3" />
+                <div class="w-full flex flex-col justify-center" v-if="loading1">
+                    <loader :type="'cardInfoVisualizza'" v-for="n in 3" :key="n" />
+                </div>
+                <div v-else>
+                    <cardInfo :titoli="titoliCard.titoli1" :dati="datiCard.dati1" />
+                    <cardInfo :titoli="titoliCard.titoli2" :dati="datiCard.dati2" />
+                    <cardInfo :titoli="titoliCard.titoli3" :dati="datiCard.dati3" />
+                </div>
             </div>
             <div class="mx-0 sm:mx-2">
-                <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
-                <cardAnalytics :dati="datiCardAnalytics.cardAggregate" />
+                <div class="w-full flex flex-col justify-center" v-if="loading1">
+                    <loader :type="'cardAnalyticsVisualizza'" v-for="n in 2" :key="n" />
+                </div>
+                <div v-else>
+                    <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
+                    <cardAnalytics :dati="datiCardAnalytics.cardAggregate" />
+                </div>
             </div>
         </div>
     </div>
@@ -129,8 +138,9 @@ import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import modalUpload from '../components/modalUpload.vue'
-//let $ = require('jquery')
+import loader from '../components/loader.vue'
 import axios from 'axios'
+
 export default {
     name: 'visualizzaProgetto',
     directives: {
@@ -141,6 +151,7 @@ export default {
         cardInfo,
         cardAnalytics,
         modalUpload,
+        loader
     },
     data() {
         return {

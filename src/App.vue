@@ -3,8 +3,10 @@
         <navbar />
         <div
             v-if="sandbox"
-            class="w-full h-8 bg-orange-400 text-center"
-        >You are using the sandbox version</div>
+            class="w-full customEl bg-orange-400 text-center flex justify-center content-center items-center"
+        >
+            <p>You are using the sandbox version</p>
+        </div>
         <snack-bar :type="snackType" :msg="messaggio" v-if="snack" />
         <transition name="fade" mode="out-in">
             <router-view @snackbar="showSnack" @sandbox="setSandbox" />
@@ -56,4 +58,10 @@ export default {
 .fade-leave-active {
     opacity: 0;
 }
+
+.customEl {
+    min-height: 2rem;
+    padding: 5px 10px;
+}
+
 </style>

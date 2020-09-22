@@ -1,6 +1,6 @@
 <template>
     <div class="home mx-8 sm:mt-2 md:mx-16 pb-6">
-        <p class="text-5xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
+        <p class="text-3xl sm:text-5xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
         <modalEliminazione
             v-if="modalElim"
             @snackbar="emitSnackbar"
@@ -25,7 +25,10 @@
                     <span class="w-1/3 font-light">Date</span>
                 </div>
             </div>
-            <div v-for="i in projects" :key="i.id" class="w-full mx-auto relative">
+            <div class="w-full flex flex-col justify-center" v-if="loading">
+                <loader :type="'homePrj'" v-for="n in 2" :key="n" />
+            </div>
+            <div v-for="i in projects" :key="i.id" class="w-full mx-auto relative" v-else>
                 <projectListItem :projectData="i" @deleteThis="toggleModal" @upload="toggleModal" />
             </div>
         </div>
@@ -50,13 +53,22 @@
                             d="M21,18V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V6H12C10.89,6 10,6.9 10,8V16A2,2 0 0,0 12,18M12,16H22V8H12M16,13.5A1.5,1.5 0 0,1 14.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,12A1.5,1.5 0 0,1 16,13.5Z"
                         />
                     </svg>
-                    <h2 class="font-semibold text-lg m-1 tracking-tight w-10/12 text-gray-800">
-                        Account balance
-                    </h2>
+                    <h2
+                        class="font-semibold text-lg m-1 tracking-tight w-10/12 text-gray-800"
+                    >Account balance</h2>
                 </div>
-                <p class="text-black font-light text-4xl m-1 text-center">
-                    {{ userInfo.balance }}€
-                </p>
+                <svg
+                    class="animate-spin mx-auto my-1"
+                    style="width:4rem;height:4rem"
+                    viewBox="0 0 24 24"
+                    v-if="loading"
+                >
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                </svg>
+                <p
+                    class="text-black font-light text-4xl m-1 text-center"
+                    v-else
+                >${{ userInfo.balance }}</p>
             </div>
             <div class="rounded shadow-md m-2 p-2 flex flex-col justify-around bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
@@ -65,9 +77,9 @@
                             d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
                         />
                     </svg>
-                    <h2 class="font-semibold text-lg m-1 tracking-tight text-gray-800">
-                        Reviewable results
-                    </h2>
+                    <h2
+                        class="font-semibold text-lg m-1 tracking-tight text-gray-800"
+                    >Reviewable results</h2>
                 </div>
                 <p class="text-black font-light text-5xl m-1 text-center">93</p>
             </div>
@@ -80,8 +92,8 @@ import projectListItem from '../components/projectListItem.vue'
 import tabellaWorker from '../components/tabellaWorker.vue'
 import modalEliminazione from '../components/modalEliminazione.vue'
 import modalUpload from '../components/modalUpload.vue'
+import loader from '../components/loader.vue'
 import axios from 'axios'
-//let $ = require('jquery')
 
 export default {
     name: 'Home',
@@ -90,6 +102,7 @@ export default {
         tabellaWorker,
         modalEliminazione,
         modalUpload,
+        loader,
     },
     data() {
         return {
@@ -99,6 +112,7 @@ export default {
             modalElim: false,
             modalStd: false,
             modalGld: false,
+            loading: true,
         }
     },
 
@@ -128,6 +142,7 @@ export default {
                         this.userInfo = responses[1].data.data
                         this.$emit('sandbox', this.userInfo.use_sandbox)
                         console.log(responses[0], responses[1])
+                        this.loading = false
                     })
                 )
                 .catch(errors => {
