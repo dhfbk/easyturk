@@ -6,7 +6,7 @@
             <div class="bg-white rounded-lg w-1/2">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
-                        <div class="text-gray-900 font-bold text-lg">Conferma azione</div>
+                        <div class="text-gray-900 font-bold text-lg">Confirm action</div>
                         <svg
                             class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +20,7 @@
                     </div>
                     <div
                         class="py-2"
-                    >Sicuro di voler eliminare il progetto? Questa azione è irreversibile.</div>
+                    >Are you sure you want to delete the project? This action is irreversible.</div>
 
                     <div class="ml-auto flex flex-col sm:flex-row">
                         <button
@@ -33,12 +33,12 @@
                                 viewBox="0 0 24 24"
                             >
                                 <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                            </svg>Elimina
+                            </svg>Delete
                         </button>
                         <button
                             class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-200 focus:outline-none mt-2 sm:mt-0 sm:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
-                        >Annulla</button>
+                        >Cancel</button>
                     </div>
                 </div>
             </div>
@@ -76,14 +76,14 @@ export default {
                     console.log(res.data.result)
                     this.loading = false
                     console.log(this.$route.name)
-                    this.$emit('snackbar', ['success', this.id])
+                    this.$emit('snackbar', ['success', this.id, 'Progetto eliminato'])
                     if (this.$route.name != 'Home') {
                         this.$router.replace({ path: '/' })
                     }
                 })
                 .catch(err => {
                     console.log(err)
-                    this.$emit('snackbar', 'error')
+                    this.$emit('snackbar', ['error', '', 'Errore'])
                 })
             /*
             $.ajax({

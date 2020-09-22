@@ -18,7 +18,7 @@
                     />
                 </svg>
             </div>
-            <div class="text-white max-w-xs">Project successfully deleted!</div>
+            <div class="text-white max-w-xs">{{msg}}</div>
         </div>
 
         <!--
@@ -84,7 +84,7 @@
                     />
                 </svg>
             </div>
-            <div class="text-white max-w-xs">Error encountered. Try again</div>
+            <div class="text-white max-w-xs">{{msg}}</div>
         </div>
     </div>
 </template>
@@ -94,6 +94,7 @@ export default {
     name: 'snackBar',
     props: {
         type: String,
+        msg: String
     },
 }
 </script>

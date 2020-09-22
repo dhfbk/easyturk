@@ -1,6 +1,6 @@
 <template>
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
-        <h1 class="text-2xl mb-4 text-orange-400">Hit del progetto "nomeProgetto"</h1>
+        <h1 class="text-2xl mb-4 text-primary">HIT for the project *projectId*</h1>
         <tableHIT :datiHIT="datiHIT" />
     </div>
 </template>
@@ -31,9 +31,9 @@ export default {
                     Expiration: '2015-01-01',
                     AssignmentDurationInSeconds: 123,
                     HITReviewStatus: 'NotReviewed',
-                    NumberOfAssignmentsPending: 123,
-                    NumberOfAssignmentsAvailable: 123,
-                    NumberOfAssignmentsCompleted: 123,
+                    NumberOfAssignmentsSubmitted: 123,
+                    NumberOfAssignmentsApproved: 123,
+                    NumberOfAssignmentsRejected: 123,
                     selected: false,
                 },
                 {
@@ -53,9 +53,9 @@ export default {
                     Expiration: '2015-01-01',
                     AssignmentDurationInSeconds: 123,
                     HITReviewStatus: 'NotReviewed',
-                    NumberOfAssignmentsPending: 123,
-                    NumberOfAssignmentsAvailable: 123,
-                    NumberOfAssignmentsCompleted: 123,
+                    NumberOfAssignmentsSubmitted: 123,
+                    NumberOfAssignmentsApproved: 123,
+                    NumberOfAssignmentsRejected: 123,
                     selected: false,
                 },
                 {
@@ -75,9 +75,9 @@ export default {
                     Expiration: '2015-01-01',
                     AssignmentDurationInSeconds: 123,
                     HITReviewStatus: 'ReviewedInappropriate',
-                    NumberOfAssignmentsPending: 123,
-                    NumberOfAssignmentsAvailable: 123,
-                    NumberOfAssignmentsCompleted: 123,
+                    NumberOfAssignmentsSubmitted: 123,
+                    NumberOfAssignmentsApproved: 123,
+                    NumberOfAssignmentsRejected: 123,
                     selected: false,
                 },
             ],

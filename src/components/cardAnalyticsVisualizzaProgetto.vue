@@ -8,7 +8,7 @@
                     />
                 </svg>
                 <div>
-                    <span class="font-bold tracking-tight">Totale HIT:&nbsp;</span>
+                    <span class="font-bold tracking-tight">HIT total:&nbsp;</span>
                     <span>{{ dati.totale }}</span>
                 </div>
             </div>
@@ -19,7 +19,7 @@
                     />
                 </svg>
                 <div>
-                    <span class="font-bold tracking-tight">Hit completate:&nbsp;</span>
+                    <span class="font-bold tracking-tight">Completed HITs:&nbsp;</span>
                     <span>{{ dati.totale }}</span>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     />
                 </svg>
                 <div>
-                    <span class="font-bold tracking-tight">Totale assignment:&nbsp;</span>
+                    <span class="font-bold tracking-tight">Assignment total:&nbsp;</span>
                     <span>{{ dati.totale }}</span>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                     type="submit"
                     class="py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid text-gray-800 border-primary hover:bg-primary hover:text-gray-100 focus:outline-none"
                 >
-                    Vai alle HIT
+                    Go to HITs
                 </button>
             </router-link>
         </div>

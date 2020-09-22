@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto">
         <div class="flex flex-row justify-end mb-2">
-            <p class="text-md my-auto mr-1">Stato:</p>
+            <p class="text-md my-auto mr-1">Status:</p>
             <div class="relative">
                 <select
                     class="appearance-none h-full rounded border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 pl-2 pr-12 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -10,9 +10,11 @@
                     @change="sortBy(sortType)"
                     v-model="sortType"
                 >
-                    <option v-for="item in sortOptions" :key="item.value" :value="item.value">{{
+                    <option v-for="item in sortOptions" :key="item.value" :value="item.value">
+                        {{
                         item.text
-                    }}</option>
+                        }}
+                    </option>
                 </select>
                 <div
                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
@@ -33,16 +35,12 @@
             <thead>
                 <tr class="text-center bg-primary border-b border-grey uppercase tracking-tight">
                     <th class="py-2 px-2 text-sm text-white">HIT ID</th>
-                    <th class="py-2 px-2 text-sm text-white">Stato</th>
-                    <th class="py-2 px-2 hidden sm:table-cell text-sm text-white">Creazione</th>
-                    <th class="py-2 px-2 hidden md:table-cell text-sm text-white">
-                        Tot. assignment
-                    </th>
-                    <th class="py-2 px-2 hidden md:table-cell text-sm text-white">Completati</th>
-                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-white">In sospeso</th>
-                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-white">
-                        Disponibili
-                    </th>
+                    <th class="py-2 px-2 text-sm text-white">Status</th>
+                    <th class="py-2 px-2 hidden sm:table-cell text-sm text-white">Creation</th>
+                    <th class="py-2 px-2 hidden md:table-cell text-sm text-white">N. of assignments</th>
+                    <th class="py-2 px-2 hidden md:table-cell text-sm text-white">Submitted</th>
+                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-white">Approved</th>
+                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-white">Rejected</th>
                 </tr>
             </thead>
             <tbody class="bg-white text-center">
@@ -85,19 +83,19 @@
                         <p class="text-sm text-gray-700 font-medium">{{ hit.MaxAssignments }}</p>
                     </td>
                     <td class="hidden md:table-cell py-2 border-r border-grey-light">
-                        <p class="text-sm text-gray-700 font-medium">
-                            {{ hit.NumberOfAssignmentsCompleted }}
-                        </p>
+                        <p
+                            class="text-sm text-gray-700 font-medium"
+                        >{{ hit.NumberOfAssignmentsSubmitted }}</p>
                     </td>
                     <td class="hidden lg:table-cell py-2 border-r border-grey-light">
-                        <p class="text-sm text-gray-700 font-medium">
-                            {{ hit.NumberOfAssignmentsPending }}
-                        </p>
+                        <p
+                            class="text-sm text-gray-700 font-medium"
+                        >{{ hit.NumberOfAssignmentsApproved }}</p>
                     </td>
                     <td class="hidden lg:table-cell py-2">
-                        <p class="text-sm text-gray-700 font-medium">
-                            {{ hit.NumberOfAssignmentsAvailable }}
-                        </p>
+                        <p
+                            class="text-sm text-gray-700 font-medium"
+                        >{{ hit.NumberOfAssignmentsRejected }}</p>
                     </td>
                 </tr>
             </tbody>

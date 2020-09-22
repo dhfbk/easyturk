@@ -6,7 +6,7 @@
             <div class="bg-white rounded-lg w-auto mx-2 lg:w-1/2">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
-                        <h2 class="text-gray-900 font-bold text-lg">Scegli il file da caricare</h2>
+                        <h2 class="text-gray-900 font-bold text-lg">Choose the file to upload</h2>
                         <svg
                             class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
@@ -21,11 +21,11 @@
                     <p
                         class="py-2"
                         v-if="type == 'std'"
-                    >Upload del file csv contenente i dati standard da utilizzare</p>
+                    >File upload for the base csv document</p>
                     <p
                         class="py-2"
                         v-else
-                    >Upload del file csv contenente i dati per il golden standard</p>
+                    >File upload for the golden standard csv document</p>
                     <h2 class="font-light">Titles:</h2>
                     <label class="inline-flex items-center mt-2">
                         <input
@@ -98,7 +98,7 @@
                                     : 'bg-secondary cursor-pointer hover:bg-blue-700'
                             "
                             class="inline-block text-white rounded-md px-4 py-2"
-                        >Scegli file</label>
+                        >Choose file</label>
                         <input
                             id="file"
                             name="upload_csv"
@@ -141,11 +141,11 @@
                         <button
                             class="transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="uploadFile()"
-                        >Carica</button>
+                        >Upload</button>
                         <button
                             class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-200 focus:outline-none ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
-                        >Annulla</button>
+                        >Cancel</button>
                     </div>
                 </div>
             </div>
@@ -175,9 +175,9 @@ export default {
     methods: {
         toggleModal() {
             if (this.type == 'std') {
-                this.$emit('upload', 'std')
+                this.$emit('toggleModal', 'std')
             } else {
-                this.$emit('upload', 'gld')
+                this.$emit('toggleModal', 'gld')
             }
         },
         displayFile() {
@@ -217,12 +217,19 @@ export default {
                             )
                         }.bind(this),
                     })
-                    .then(function(res) {
-                        console.log(res)
-                        console.log('SUCCESS!!')
+                    .then(() => {
+                        if (this.type == 'std') {
+                            this.$emit('snackbar', ['success', '', 'Upload completed', 'std'])
+                        } else {
+                            this.$emit('snackbar', ['success', '', 'Upload completed', 'gld'])
+                        }
                     })
-                    .catch(function() {
-                        console.log('FAILURE!!')
+                    .catch(() => {
+                        if (this.type == 'std') {
+                            this.$emit('snackbar', ['error', '', 'Error. Try again', 'std'])
+                        } else {
+                            this.$emit('snackbar', ['error', '', 'Error. Try again', 'gld'])
+                        }
                     })
             }
         },

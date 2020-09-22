@@ -6,9 +6,10 @@
         <p class="text-2xl mb-4 text-primary">{{ pageTitle }}</p>
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="nome"
-                    >Nome progetto</label
-                >
+                <label
+                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
+                    for="nome"
+                >Project Name</label>
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="nome"
@@ -18,12 +19,13 @@
                     v-model.trim="$v.name.$model"
                     required
                 />
-                <p class="text-gray-700 text-xs italic">Il nome non è mostrato ai lavoratori.</p>
+                <p class="text-gray-700 text-xs italic">This name is not displayed to Workers.</p>
             </div>
             <div class="w-full px-3 mb-4">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="titolo"
-                    >Titolo</label
-                >
+                <label
+                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
+                    for="titolo"
+                >Title</label>
                 <input
                     :class="errorTitolo ? 'border-red-600' : 'border-gray-200'"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -34,21 +36,19 @@
                     v-model.trim="$v.title.$model"
                     required
                 />
-                <p class="text-gray-700 text-xs italic">
-                    Descrivi il progetto ai lavoratori. Sii più specifico/a possibile, es. "answer a
-                    survey about movies", instead of "short survey", così che i lavoratori sappiano
-                    cosa aspettarsi.
-                </p>
-                <p :class="errorTitolo ? '' : 'hidden'" class="text-red-600 text-xs italic">
-                    Si è pregati di inserire il titolo
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >Describe the survey to Workers. Be as specific as possible, e.g. "answer a survey about movies", instead of "short survey", so Workers know what to expect.</p>
+                <p
+                    :class="errorTitolo ? '' : 'hidden'"
+                    class="text-red-600 text-xs italic"
+                >Si è pregati di inserire il titolo</p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="descrizione"
-                    >Descrizione</label
-                >
+                >Description</label>
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="descrizione"
@@ -57,17 +57,15 @@
                     v-model.trim="$v.description.$model"
                     required
                 />
-                <p class="text-gray-700 text-xs italic">
-                    Fornisci più dettagli sul progetto. Questo consente ai lavoratori di avere più
-                    informazioni prima che decidano di visualizzare il compito.
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >Give more detail about this survey. This gives Workers a bit more information before they decide to view your survey.</p>
             </div>
             <div class="md:w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="keywords"
-                    >Keywords</label
-                >
+                >Keywords</label>
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="keywords"
@@ -76,9 +74,9 @@
                     v-model.trim="$v.keywords.$model"
                     required
                 />
-                <p class="text-gray-700 text-xs italic">
-                    Fornisci keywords che aiuteranno i lavoratori a trovare i tuoi compiti.
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >Provide keywords that will help Workers search for your tasks.</p>
             </div>
         </div>
         <hr class="solid mb-4" />
@@ -87,8 +85,7 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="ricompensa"
-                    >Ricompensa per ogni assignment</label
-                >
+                >Reward per response</label>
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="ricompensa"
@@ -99,17 +96,15 @@
                     v-model.trim="$v.reward.$model"
                     required
                 />
-                <p class="text-gray-700 text-xs italic">
-                    Questo è quanto un lavoratore verrà pagato per completare un compito. Considera
-                    quanto tempo dovrà impiegare per completare il compito.
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >This is how much a Worker will be paid for completing your survey. Consider how long it will take a Worker to complete your survey.</p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="lavoratori"
-                    >Numero di lavoratori/assignment per task</label
-                >
+                >Number of respondents</label>
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="lavoratori"
@@ -120,16 +115,15 @@
                     v-model.trim="$v.workers.$model"
                     required
                 />
-                <p class="text-gray-700 text-xs italic">
-                    Quanti lavoratori vuoi che completino i tuoi task?
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >How many unique Workers do you want to complete your survey?</p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="tempoMax"
-                    >Tempo massimo</label
-                >
+                >Time allotted per Worker</label>
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -149,9 +143,9 @@
                             v-model="selectTempoMax"
                             @change="fixMax(1)"
                         >
-                            <option value="giorni">Giorni</option>
-                            <option selected value="ore">Ore</option>
-                            <option value="minuti">Minuti</option>
+                            <option selected value="days">Days</option>
+                            <option value="hours">Hours</option>
+                            <option value="minutes">Minutes</option>
                         </select>
                         <div
                             class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900"
@@ -168,17 +162,15 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-gray-700 text-xs italic">
-                    Tempo massimo che un lavoratore ha per completare il task. Sii generoso/a così
-                    che i lavoratori non vadano di fretta.
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >Maximum time a Worker has to complete the survey. Be generous so that Workers are not rushed.</p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="scadenza"
-                    >Scadenza</label
-                >
+                >Survey expires in</label>
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -198,9 +190,9 @@
                             v-model="selectExpiry"
                             @change="fixMax(2)"
                         >
-                            <option selected value="giorni">Giorni</option>
-                            <option value="ore">Ore</option>
-                            <option value="minuti">Minuti</option>
+                            <option selected value="days">Days</option>
+                            <option value="hours">Hours</option>
+                            <option value="minutes">Minutes</option>
                         </select>
                         <div
                             class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900"
@@ -217,17 +209,15 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-gray-700 text-xs italic">
-                    Tempo massimo che il compito sarà disponibile per i lavoratori su Mechanical
-                    Turk.
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >Maximum time your survey will be available to Workers on Mechanical Turk.</p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="autoApproval"
-                    >Auto approva e paga i lavoratori in</label
-                >
+                >Auto-approve and pay Workers in</label>
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -247,9 +237,9 @@
                             v-model="selectAutoApprove"
                             @change="fixMax(3)"
                         >
-                            <option selected value="giorni">Giorni</option>
-                            <option value="ore">Ore</option>
-                            <option value="minuti">Minuti</option>
+                            <option selected value="days">Days</option>
+                            <option value="hours">Hours</option>
+                            <option value="minutes">Minutes</option>
                         </select>
                         <div
                             class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900"
@@ -266,10 +256,9 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-gray-700 text-xs italic">
-                    Questo è il tempo che hai per rifiutare un assignment di un lavoratore dopo che
-                    è stato inviato.
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >This is the amount of time you have to reject a Worker's assignment after they submit the assignment.</p>
             </div>
         </div>
         <hr class="solid mb-4" />
@@ -278,8 +267,7 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="layoutId"
-                    >Layout ID</label
-                >
+                >Layout ID</label>
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="layoutId"
@@ -289,16 +277,15 @@
                     v-model.trim="$v.layout_id.$model"
                     required
                 />
-                <p class="text-gray-700 text-xs italic">
-                    Questo è l'id del layout da far visualizzare al lavoratore.
-                </p>
+                <p
+                    class="text-gray-700 text-xs italic"
+                >This is the id of the layout that will be shown to the Worker.</p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="parametri"
-                    >Numero di parametri</label
-                >
+                >Parameters number</label>
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="parametri"
@@ -322,8 +309,8 @@
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
-                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
-                >Save changes
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                </svg>Save changes
             </button>
             <button
                 type="submit"
@@ -335,15 +322,13 @@
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
-                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
-                >Save
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                </svg>Save
             </button>
             <button
                 @click="router.go(-1)"
                 class="flex flex-row bg-gray-300 hover:bg-gray-400 py-2 px-4 ml-4 rounded-md transition duration-150 ease-in-out focus:outline-none"
-            >
-                Cancel
-            </button>
+            >Cancel</button>
         </div>
     </form>
 </template>
@@ -390,9 +375,9 @@ export default {
             layout_id: '',
             params: 1,
             */
-            selectTempoMax: 'ore',
-            selectExpiry: 'giorni',
-            selectAutoApprove: 'giorni',
+            selectTempoMax: 'hours',
+            selectExpiry: 'days',
+            selectAutoApprove: 'days',
             max1: 23,
             max2: 364,
             max3: 364,
@@ -456,18 +441,24 @@ export default {
         this.mode = this.$route.name
         if (this.$route.path == '/create') {
             this.mode = this.$route.name
-            this.pageTitle = 'Crea un nuovo progetto'
+            this.pageTitle = 'Create new project'
         } else {
-            this.pageTitle = 'Modifica progetto'
+            this.pageTitle = 'Edit project ' + this.$route.params.projectId
             this.getDatiPrj()
         }
     },
     methods: {
+        emitSnackbar(arr) {
+            if (arr[3] == 'std') {
+                this.toggleModal('std')
+            } else if (arr[3] == 'gld') {
+                this.toggleModal('gld')
+            }
+            this.$emit('snackbar', arr)
+        },
         getDatiPrj() {
             axios({
-                url:
-                    this.APIURL + '?action=editProject&id=' +
-                    this.$route.params.projectId,
+                url: this.APIURL + '?action=editProject&id=' + this.$route.params.projectId,
                 method: 'get',
             }).then(res => {
                 console.log(res.data)
@@ -486,30 +477,6 @@ export default {
                 this.elaboraTempoGET('expiry')
                 this.elaboraTempoGET('auto_approve')
             })
-            // var self = this
-            // $.ajax({
-            //     url:
-            //         'https://web.apnetwork.it/mturk/?action=editProject&id=' +
-            //         this.$route.params.idProgetto,
-            //     dataType: 'json',
-            //     method: 'get',
-            //     success: function(data) {
-            //         self.id = data.values.id
-            //         self.name = data.values.name
-            //         self.title = data.values.title
-            //         self.description = data.values.description
-            //         self.keywords = data.values.keywords
-            //         self.reward = data.values.reward
-            //         self.max_time = data.values.max_time
-            //         self.expiry = data.values.expiry
-            //         self.auto_approve = data.values.auto_approve
-            //         self.layout_id = data.values.layout_id
-            //         self.params = data.values.params
-            //     },
-            //     error: function(data) {
-            //         console.log(data)
-            //     },
-            // })
         },
         caricaProgetto() {
             this.$v.$touch()
@@ -523,30 +490,6 @@ export default {
                 if (this.mode == 'edit') {
                     url = url + '&id=' + this.id
                 }
-                // $.ajax({
-                //     url: url,
-                //     dataType: 'json',
-                //     data: {
-                //         name: this.name,
-                //         title: this.title,
-                //         description: this.description,
-                //         keywords: this.keywords,
-                //         reward: this.reward,
-                //         workers: this.workers,
-                //         max_time: this.max_time_send,
-                //         expiry: this.expiry_send,
-                //         auto_approve: this.auto_approve_send,
-                //         layout_id: this.layout_id,
-                //         params: this.params,
-                //     },
-                //     method: 'post',
-                //     success() {
-                //         console.log('informazioni inserite')
-                //     },
-                //     error(data) {
-                //         console.log(data)
-                //     },
-                // })
                 axios({
                     method: 'post',
                     url: url,
@@ -575,45 +518,53 @@ export default {
                         }
                         this.goHome()
                     })
-                    .catch(err => {
+                    .catch(() => {
                         this.loading = false
-                        console.log(err)
+                        var arr = ['error', '', 'Error. Try Again', '']
+                        this.emitSnackbar(arr)
                     })
             }
         },
         goHome() {
+            var arr = []
+            if (this.mode == 'edit') {
+                arr = ['success', '', 'Edit successful', '']
+            } else {
+                arr = ['success', '', 'Project created', '']
+            }
+            this.emitSnackbar(arr)
             this.$router.push({ path: '/', name: 'Home' })
         },
         elaboraTempoGET(nomeVar) {
             if (nomeVar == 'max_time') {
                 if (this.max_time < 60) {
-                    this.selectTempoMax = 'minuti'
+                    this.selectTempoMax = 'minutes'
                 } else if (this.max_time < 1440) {
                     this.max_time = this.max_time / 60
-                    this.selectTempoMax = 'ore'
+                    this.selectTempoMax = 'hours'
                 } else {
                     this.max_time = this.max_time / 1440
-                    this.selectTempoMax = 'giorni'
+                    this.selectTempoMax = 'days'
                 }
             } else if (nomeVar == 'expiry') {
                 if (this.expiry < 60) {
-                    this.selectExpiry = 'minuti'
+                    this.selectExpiry = 'minutes'
                 } else if (this.expiry < 1440) {
                     this.expiry = this.expiry / 60
-                    this.selectExpiry = 'ore'
+                    this.selectExpiry = 'hours'
                 } else {
                     this.expiry = this.expiry / 1440
-                    this.selectExpiry = 'giorni'
+                    this.selectExpiry = 'days'
                 }
             } else {
                 if (this.auto_approve < 60) {
-                    this.selectAutoApprove = 'minuti'
+                    this.selectAutoApprove = 'minutes'
                 } else if (this.auto_approve < 1440) {
                     this.auto_approve = this.auto_approve / 60
-                    this.selectAutoApprove = 'ore'
+                    this.selectAutoApprove = 'hours'
                 } else {
                     this.auto_approve = this.auto_approve / 1440
-                    this.selectAutoApprove = 'giorni'
+                    this.selectAutoApprove = 'days'
                 }
             }
         },
@@ -622,19 +573,19 @@ export default {
             if (nomeVar == 'max_time') {
                 if (this.selectTempoMax == 'ore') {
                     this.max_time_send = this.max_time * 60
-                } else if (this.selectTempoMax == 'giorni') {
+                } else if (this.selectTempoMax == 'days') {
                     this.max_time_send = this.max_time * 1440
                 }
             } else if (nomeVar == 'expiry') {
-                if (this.selectExpiry == 'ore') {
+                if (this.selectExpiry == 'hours') {
                     this.expiry_send = this.expiry * 60
-                } else if (this.selectExpiry == 'giorni') {
+                } else if (this.selectExpiry == 'days') {
                     this.expiry_send = this.expiry * 1440
                 }
             } else {
-                if (this.selectAutoApprove == 'ore') {
+                if (this.selectAutoApprove == 'hours') {
                     this.auto_approvesend = this.auto_approve * 60
-                } else if (this.selectAutoApprove == 'giorni') {
+                } else if (this.selectAutoApprove == 'days') {
                     this.auto_approvesend = this.auto_approve * 1440
                 }
             }
@@ -642,29 +593,29 @@ export default {
         fixMax(num) {
             switch (num) {
                 case 1:
-                    if (this.selectTempoMax == 'minuti') {
+                    if (this.selectTempoMax == 'minutes') {
                         this.max1 = 59
-                    } else if (this.selectTempoMax == 'ore') {
+                    } else if (this.selectTempoMax == 'hours') {
                         this.max1 = 23
-                    } else if (this.selectTempoMax == 'giorni') {
+                    } else if (this.selectTempoMax == 'days') {
                         this.max1 = 364
                     }
                     break
                 case 2:
-                    if (this.selectExpiry == 'minuti') {
+                    if (this.selectExpiry == 'minutes') {
                         this.max2 = 59
-                    } else if (this.selectExpiry == 'ore') {
+                    } else if (this.selectExpiry == 'hours') {
                         this.max2 = 23
-                    } else if (this.selectExpiry == 'giorni') {
+                    } else if (this.selectExpiry == 'days') {
                         this.max2 = 364
                     }
                     break
                 case 3:
-                    if (this.selectAutoApprove == 'minuti') {
+                    if (this.selectAutoApprove == 'minutes') {
                         this.max3 = 59
-                    } else if (this.selectAutoApprove == 'ore') {
+                    } else if (this.selectAutoApprove == 'hours') {
                         this.max3 = 23
-                    } else if (this.selectAutoApprove == 'giorni') {
+                    } else if (this.selectAutoApprove == 'days') {
                         this.max3 = 364
                     }
                     break

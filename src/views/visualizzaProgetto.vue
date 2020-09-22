@@ -9,15 +9,17 @@
         />
         <modalUpload
             v-if="modalStd"
-            @upload="toggleModal('std')"
             :type="'std'"
             :id="datiProgetto.id"
+            @snackbar="emitSnackbar"
+            @toggleModal="toggleModal"
         />
         <modalUpload
             v-if="modalGld"
-            @upload="toggleModal('gld')"
             :type="'gld'"
             :id="datiProgetto.id"
+            @snackbar="emitSnackbar"
+            @toggleModal="toggleModal"
         />
         <div class="flex justify-between flex-wrap">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
@@ -29,7 +31,7 @@
                     <svg style="width:24px;" viewBox="0 0 24 24">
                         <path d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                     </svg>
-                    <span class="ml-1">Pubblica</span>
+                    <span class="ml-1">Publish</span>
                 </button>
                 <div class="relative hidden sm:block">
                     <button
@@ -42,7 +44,7 @@
                                 d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
                             />
                         </svg>
-                        <span class="ml-1">Risultati</span>
+                        <span class="ml-1">Results</span>
                     </button>
                     <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
                         <span
@@ -78,30 +80,30 @@
                         >
                             <a
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                            >Pubblica</a>
+                            >Publish</a>
                             <router-link
                                 to="results"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                            >Risultati</router-link>
+                            >Results</router-link>
                             <a
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 @click="toggleModal('elim')"
-                            >Elimina</a>
+                            >Delete</a>
                             <router-link
                                 :to="{
                                     name: 'edit',
                                     params: { projectId: datiProgetto.id },
                                 }"
                                 class="block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                            >Modifica</router-link>
+                            >Edit</router-link>
                             <a
                                 @click="toggleModal('std')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                            >Carica dati</a>
+                            >Upload dati</a>
                             <a
                                 @click="toggleModal('gld')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
-                            >Carica gold</a>
+                            >Upload gold</a>
                         </div>
                     </transition>
                 </span>
@@ -196,14 +198,18 @@ export default {
     },
     methods: {
         emitSnackbar(arr) {
-            this.$emit('snackbar', arr[0])
+            if (arr[3] == 'std') {
+                this.toggleModal('std')
+            } else if (arr[3] == 'gld') {
+                this.toggleModal('gld')
+            }
+            this.$emit('snackbar', arr)
         },
         getDatiPrj() {
             // var self = this
             this.datiProgetto.id = this.$route.params.projectId
             axios({
-                url:
-                    this.APIURL + '?action=editProject&id=' + this.datiProgetto.id,
+                url: this.APIURL + '?action=editProject&id=' + this.datiProgetto.id,
             })
                 .then(res => {
                     //console.log(res)
