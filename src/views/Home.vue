@@ -1,5 +1,6 @@
 <template>
-    <div class="home mx-8 mt-4 sm:mt-6 md:mx-16 pb-6">
+    <div class="home mx-8 sm:mt-2 md:mx-16 pb-6">
+        <p class="text-5xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
         <modalEliminazione
             v-if="modalElim"
             @snackbar="emitSnackbar"
@@ -15,7 +16,7 @@
                         d="M17,17H15V13H17M13,17H11V7H13M9,17H7V10H9M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z"
                     />
                 </svg>
-                <h2 class="text-lg font-semibold ml-1 tracking-tight text-gray-800">Progetti</h2>
+                <h2 class="text-lg font-semibold ml-1 tracking-tight text-gray-800">Projects</h2>
             </div>
             <div class="my-1 mx-2 p-2 flex items-center flex-wrap">
                 <div class="hidden w-3/5 md:flex text-center items-center flex-wrap text-lg">
@@ -49,11 +50,13 @@
                             d="M21,18V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V6H12C10.89,6 10,6.9 10,8V16A2,2 0 0,0 12,18M12,16H22V8H12M16,13.5A1.5,1.5 0 0,1 14.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,12A1.5,1.5 0 0,1 16,13.5Z"
                         />
                     </svg>
-                    <h2
-                        class="font-semibold text-lg m-1 tracking-tight w-10/12 text-gray-800"
-                    >Saldo account</h2>
+                    <h2 class="font-semibold text-lg m-1 tracking-tight w-10/12 text-gray-800">
+                        Account balance
+                    </h2>
                 </div>
-                <p class="text-black font-light text-5xl m-1 text-center">54$</p>
+                <p class="text-black font-light text-4xl m-1 text-center">
+                    {{ userInfo.balance }}€
+                </p>
             </div>
             <div class="rounded shadow-md m-2 p-2 flex flex-col justify-around bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
@@ -62,9 +65,9 @@
                             d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
                         />
                     </svg>
-                    <h2
-                        class="font-semibold text-lg m-1 tracking-tight text-gray-800"
-                    >Reviewable results</h2>
+                    <h2 class="font-semibold text-lg m-1 tracking-tight text-gray-800">
+                        Reviewable results
+                    </h2>
                 </div>
                 <p class="text-black font-light text-5xl m-1 text-center">93</p>
             </div>
@@ -90,83 +93,56 @@ export default {
     },
     data() {
         return {
-            projects: null,
+            projects: [],
             modalId: '',
-            // projects: [
-            //     {
-            //         id: 'URJYRLU1PP',
-            //         title: 'Offensive Tweet Recognition',
-            //         date: '27/08/2018',
-            //         hasGold: true,
-            //         hasData: true,
-            //         totalHITs: 350,
-            //         pendingReviewHITs: 100,
-            //         completedHITs: 200,
-            //         inProgressHITs: 50,
-            //     },
-            //     {
-            //         id: 'G7Q5EOBNDG',
-            //         title: 'Image Tagging',
-            //         date: '19/06/2018',
-            //         hasGold: false,
-            //         hasData: true,
-            //         totalHITs: 200,
-            //         pendingReviewHITs: 62,
-            //         completedHITs: 38,
-            //         inProgressHITs: 100,
-            //     },
-            //     {
-            //         id: 'YQOKWUAP6A',
-            //         title: 'Soccer Events Recognition',
-            //         date: '04/12/2019',
-            //         hasGold: false,
-            //         hasData: true,
-            //         totalHITs: 400,
-            //         pendingReviewHITs: 15,
-            //         completedHITs: 360,
-            //         inProgressHITs: 25,
-            //     },
-            //     {
-            //         id: '8GIS78FLI2',
-            //         title: 'Survey on Sports',
-            //         date: '30/05/2020',
-            //         hasGold: false,
-            //         hasData: false,
-            //         totalHITs: 250,
-            //         pendingReviewHITs: 0,
-            //         completedHITs: 250,
-            //         inProgressHITs: 0,
-            //     },
-            // ],
+            userInfo: [],
             modalElim: false,
             modalStd: false,
             modalGld: false,
         }
     },
+
     created() {
-        this.getProjects()
-        //var self = this
-        // $.ajax({
-        //     url: 'https://web.apnetwork.it/mturk/?action=listProjects',
-        //     method: 'get',
-        //     success: function(data) {
-        //         // console.log(data)
-        //         self.projects = data.values
-        //     },
-        //     error: function(data) {
-        //         console.log(data)
-        //     },
-        // })
+        //this.getProjects()
+        //this.getUserInfo()
+        this.getData()
     },
     methods: {
-        getProjects() {
-            axios({
-                url: this.APIURL + '?action=listProjects',
-                method: 'get',
-            }).then(res => {
-                this.projects = res.data.values
-            })
+        // getProjects() {
+        //     axios({
+        //         url: this.APIURL + '?action=listProjects',
+        //         method: 'get',
+        //     }).then(res => {
+        //         this.projects = res.data.values
+        //     })
+        // },
+        getData() {
+            axios
+                .all([
+                    axios.get(this.APIURL + '?action=listProjects'),
+                    axios.get(this.APIURL + '?action=getUserInfo'),
+                ])
+                .then(
+                    axios.spread((...responses) => {
+                        this.projects = responses[0].data.values
+                        this.userInfo = responses[1].data.data
+                        this.$emit('sandbox', this.userInfo.use_sandbox)
+                        console.log(responses[0], responses[1])
+                    })
+                )
+                .catch(errors => {
+                    console.log(errors)
+                })
         },
+        // getUserInfo() {
+        //     axios({
+        //         url: this.APIURL + '?action=getUserInfo',
+        //         method: 'get',
+        //     }).then(res => {
+        //         this.userInfo = res.data.data
+        //         this.$emit('sandbox', this.userInfo.use_sandbox)
+        //     })
+        // },
         emitSnackbar(arr) {
             this.$emit('snackbar', arr[0])
             this.toggleModal(['elim', arr[1]])
