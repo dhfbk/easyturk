@@ -203,7 +203,7 @@ export default {
             this.datiProgetto.id = this.$route.params.projectId
             axios({
                 url:
-                    'https://web.apnetwork.it/mturk/?action=editProject&id=' + this.datiProgetto.id,
+                    this.APIURL + '?action=editProject&id=' + this.datiProgetto.id,
             })
                 .then(res => {
                     //console.log(res)

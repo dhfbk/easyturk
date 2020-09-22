@@ -161,7 +161,7 @@ export default {
     methods: {
         getProjects() {
             axios({
-                url: 'https://web.apnetwork.it/mturk/?action=listProjects',
+                url: this.APIURL + '?action=listProjects',
                 method: 'get',
             }).then(res => {
                 this.projects = res.data.values

@@ -69,7 +69,7 @@ export default {
             //var self = this
             this.loading = true
             axios({
-                url: 'https://web.apnetwork.it/mturk/?action=deleteProject&id=' + this.id,
+                url: this.APIURL + '?action=deleteProject&id=' + this.id,
                 method: 'get',
             })
                 .then(res => {

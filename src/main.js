@@ -11,6 +11,15 @@ Vue.use(VueEllipseProgress);
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 
+Vue.mixin({
+  data: function() {
+    return {
+      get APIURL() {
+        return "https://web.apnetwork.it/mturk/";
+      }
+    }
+  }
+})
 
 Vue.config.productionTip = false;
 

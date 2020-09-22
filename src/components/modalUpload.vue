@@ -31,7 +31,7 @@
                         <input
                             type="radio"
                             id="auto"
-                            :value="true"
+                            :value="1"
                             class="form-radio"
                             checked
                             v-model="picked"
@@ -42,7 +42,7 @@
                         <input
                             type="radio"
                             id="custom"
-                            :value="false"
+                            :value="0"
                             class="form-radio"
                             v-model="picked"
                         />
@@ -53,8 +53,8 @@
                         type="text"
                         class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 mb-3 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         v-model="customTitles"
-                        :class="{ 'cursor-not-allowed bg-gray-300': picked != 'custom' }"
-                        :disabled="picked != 'custom'"
+                        :class=" picked==0 ? '' : 'cursor-not-allowed bg-gray-300'"
+                        :disabled="picked == 1"
                         placeholder="Titles"
                     />
 
@@ -165,7 +165,7 @@ export default {
         return {
             file: '',
             inputLocked: false,
-            picked: true,
+            picked: 1,
             customTitles: '',
             separated: 'comma',
             delimiter: 'double',
@@ -201,13 +201,13 @@ export default {
                 formData.append('char', this.separated)
                 formData.append('fieldsTitlesInFirstLine', this.picked)
                 if (this.type == 'gld') {
-                    formData.append('isGold', true)
+                    formData.append('isGold', 1)
                 } else {
-                    formData.append('isGold', false)
+                    formData.append('isGold', 0)
                 }
                 formData.append('fieldTitles', this.customTitles)
                 axios
-                    .post('https://web.apnetwork.it/mturk/?action=uploadFile', formData, {
+                    .post(this.APIURL + '?action=uploadFile', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },

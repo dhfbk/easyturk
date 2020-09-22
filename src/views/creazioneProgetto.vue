@@ -466,7 +466,7 @@ export default {
         getDatiPrj() {
             axios({
                 url:
-                    'https://web.apnetwork.it/mturk/?action=editProject&id=' +
+                    this.APIURL + '?action=editProject&id=' +
                     this.$route.params.projectId,
                 method: 'get',
             }).then(res => {
@@ -519,7 +519,7 @@ export default {
                 this.elaboraTempo('expiry')
                 this.elaboraTempo('auto_approve')
                 this.parseNumbers()
-                var url = 'https://web.apnetwork.it/mturk/?action=addProject'
+                var url = this.APIURL + '?action=addProject'
                 if (this.mode == 'edit') {
                     url = url + '&id=' + this.id
                 }
