@@ -6,10 +6,9 @@
         <p class="text-2xl mb-4 text-primary">{{ pageTitle }}</p>
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
-                <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="nome"
-                >Nome progetto</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="nome"
+                    >Nome progetto</label
+                >
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="nome"
@@ -22,10 +21,9 @@
                 <p class="text-gray-700 text-xs italic">Il nome non è mostrato ai lavoratori.</p>
             </div>
             <div class="w-full px-3 mb-4">
-                <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="titolo"
-                >Titolo</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="titolo"
+                    >Titolo</label
+                >
                 <input
                     :class="errorTitolo ? 'border-red-600' : 'border-gray-200'"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -41,16 +39,16 @@
                     survey about movies", instead of "short survey", così che i lavoratori sappiano
                     cosa aspettarsi.
                 </p>
-                <p
-                    :class="errorTitolo ? '' : 'hidden'"
-                    class="text-red-600 text-xs italic"
-                >Si è pregati di inserire il titolo</p>
+                <p :class="errorTitolo ? '' : 'hidden'" class="text-red-600 text-xs italic">
+                    Si è pregati di inserire il titolo
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="descrizione"
-                >Descrizione</label>
+                    >Descrizione</label
+                >
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="descrizione"
@@ -68,7 +66,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="keywords"
-                >Keywords</label>
+                    >Keywords</label
+                >
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="keywords"
@@ -77,9 +76,9 @@
                     v-model.trim="$v.keywords.$model"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Fornisci keywords che aiuteranno i lavoratori a trovare i tuoi compiti.</p>
+                <p class="text-gray-700 text-xs italic">
+                    Fornisci keywords che aiuteranno i lavoratori a trovare i tuoi compiti.
+                </p>
             </div>
         </div>
         <hr class="solid mb-4" />
@@ -88,7 +87,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="ricompensa"
-                >Ricompensa per ogni assignment</label>
+                    >Ricompensa per ogni assignment</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="ricompensa"
@@ -108,7 +108,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="lavoratori"
-                >Numero di lavoratori/assignment per task</label>
+                    >Numero di lavoratori/assignment per task</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="lavoratori"
@@ -119,15 +120,16 @@
                     v-model.trim="$v.workers.$model"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Quanti lavoratori vuoi che completino i tuoi task?</p>
+                <p class="text-gray-700 text-xs italic">
+                    Quanti lavoratori vuoi che completino i tuoi task?
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="tempoMax"
-                >Tempo massimo</label>
+                    >Tempo massimo</label
+                >
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -175,7 +177,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="scadenza"
-                >Scadenza</label>
+                    >Scadenza</label
+                >
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -223,7 +226,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="autoApproval"
-                >Auto approva e paga i lavoratori in</label>
+                    >Auto approva e paga i lavoratori in</label
+                >
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -274,7 +278,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="layoutId"
-                >Layout ID</label>
+                    >Layout ID</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="layoutId"
@@ -284,15 +289,16 @@
                     v-model.trim="$v.layout_id.$model"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Questo è l'id del layout da far visualizzare al lavoratore.</p>
+                <p class="text-gray-700 text-xs italic">
+                    Questo è l'id del layout da far visualizzare al lavoratore.
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="parametri"
-                >Numero di parametri</label>
+                    >Numero di parametri</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="parametri"
@@ -316,8 +322,8 @@
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
-                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                </svg>Salva modifiche
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
+                >Save changes
             </button>
             <button
                 type="submit"
@@ -329,8 +335,14 @@
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
-                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                </svg>Salva
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
+                >Save
+            </button>
+            <button
+                @click="router.go(-1)"
+                class="flex flex-row bg-gray-300 hover:bg-gray-400 py-2 px-4 ml-4 rounded-md transition duration-150 ease-in-out focus:outline-none"
+            >
+                Cancel
             </button>
         </div>
     </form>
@@ -555,8 +567,8 @@ export default {
                 })
                     .then(response => {
                         this.loading = false
-                        console.log(response.statusText)
-                        if (response.statusText == 'OK') {
+                        console.log(response.data.result)
+                        if (response.data.result == 'OK') {
                             console.log('Inserimento avvenuto')
                         } else {
                             console.log('Errore')
