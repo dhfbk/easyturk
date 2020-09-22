@@ -36,8 +36,7 @@
         <div class="animate-pulse flex flex-col">
             <div class="h-2 w-1/2 bg-gray-500 rounded"></div>
             <div class="flex flex-row justify-evenly w-full mt-6">
-                <div class="rounded-full bg-gray-500 h-24 w-24 mr-2"></div>
-                <div class="rounded-full bg-gray-500 h-24 w-24"></div>
+                <div class="rounded-full bg-gray-500 h-24 w-24" v-for="n in num" :key="n"></div>
             </div>
         </div>
     </div>
@@ -48,6 +47,7 @@ export default {
     name: 'loader',
     props: {
         type: String,
+        num: Number,
     },
 }
 </script>

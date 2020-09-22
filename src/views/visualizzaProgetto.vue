@@ -121,7 +121,8 @@
             </div>
             <div class="mx-0 sm:mx-2">
                 <div class="w-full flex flex-col justify-center" v-if="loading1">
-                    <loader :type="'cardAnalyticsVisualizza'" v-for="n in 2" :key="n" />
+                    <loader :type="'cardAnalyticsVisualizza'"  :num="3"/>
+                    <loader :type="'cardAnalyticsVisualizza'"  :num="2"/>
                 </div>
                 <div v-else>
                     <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
