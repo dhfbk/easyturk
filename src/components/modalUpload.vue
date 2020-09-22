@@ -31,8 +31,9 @@
                         <input
                             type="radio"
                             id="auto"
-                            value="auto"
+                            :value="true"
                             class="form-radio"
+                            checked
                             v-model="picked"
                         />
                         <span class="ml-2 text-gray-700">Auto-select titles</span>
@@ -41,7 +42,7 @@
                         <input
                             type="radio"
                             id="custom"
-                            value="custom"
+                            :value="false"
                             class="form-radio"
                             v-model="picked"
                         />
@@ -69,7 +70,7 @@
                                 <option selected value="comma">Comma</option>
                                 <option value="tab">Tab</option>
                                 <option value="semicolon">Semicolon</option>
-                                <option value="space">Space</option>
+                                <!--<option value="space">Space</option>-->
                             </select>
                         </label>
                         <label class="inline-flex items-center customWidth">
@@ -82,7 +83,7 @@
                             >
                                 <option selected value="double">"</option>
                                 <option value="single">'</option>
-                                <option value="none">None</option>
+                                <!--<option value="none">None</option>-->
                             </select>
                         </label>
                     </div>
@@ -90,7 +91,7 @@
 
                     <div class="py-6 text-center">
                         <label
-                            for="file-upload"
+                            for="file"
                             :class="
                                 inputLocked
                                     ? 'bg-gray-600 cursor-not-allowed'
@@ -99,16 +100,17 @@
                             class="inline-block text-white rounded-md px-4 py-2"
                         >Scegli file</label>
                         <input
-                            id="file-upload"
+                            id="file"
                             name="upload_csv"
                             type="file"
+                            ref="file"
                             accept=".csv, text/csv"
                             style="display:none;"
                             :disabled="inputLocked"
                             @change="displayFile"
                         />
                         <transition name="fade" mode="out-in" appear>
-                            <div class="w-1/2 mt-2 mx-auto text-left" v-if="files.length > 0">
+                            <div class="w-1/2 mt-2 mx-auto text-left" v-if="file != ''">
                                 <div
                                     class="flex items-center bg-gray-200 pl-2 pr-4 py-2 rounded-lg my-1"
                                 >
@@ -120,7 +122,7 @@
                                     <div class="flex-1 px-3">
                                         <span class="text-gray-800 overflow-hidden">
                                             {{
-                                            files[0].name
+                                            file.name
                                             }}
                                         </span>
                                     </div>
@@ -132,10 +134,13 @@
                             </div>
                         </transition>
                     </div>
+                    <div class="w-full mb-2">
+                        <progress class="w-full" max="100" :value.prop="uploadPercentage"></progress>
+                    </div>
                     <div class="ml-auto">
                         <button
                             class="transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-gray-100 py-2 px-4 rounded focus:outline-none"
-                            @click="toggleModal()"
+                            @click="uploadFile()"
                         >Carica</button>
                         <button
                             class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-200 focus:outline-none ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
@@ -149,19 +154,22 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name: 'modalUpload',
     props: {
         type: String,
+        id: String,
     },
     data() {
         return {
-            files: [],
+            file: '',
             inputLocked: false,
-            picked: 'auto',
+            picked: true,
             customTitles: '',
             separated: 'comma',
             delimiter: 'double',
+            uploadPercentage: 0,
         }
     },
     methods: {
@@ -173,15 +181,51 @@ export default {
             }
         },
         displayFile() {
-            var file = document.getElementById('file-upload').files[0]
-            this.files.push(file)
+            this.file = this.$refs.file.files[0]
             this.inputLocked = true
         },
         emptyFile() {
-            document.getElementById('file-upload').value = ''
-            this.files.pop()
+            document.getElementById('file').value = ''
+            this.file = ''
             this.inputLocked = false
-            console.log(document.getElementById('file-upload').files[0])
+            console.log(document.getElementById('file').files[0])
+        },
+        uploadFile() {
+            if (this.file == '') {
+                console.log('nessun file da caricare')
+            } else {
+                let formData = new FormData()
+                formData.append('csvFile', this.file)
+                formData.append('id', this.id)
+                formData.append('enclosure', this.delimiter)
+                formData.append('char', this.separated)
+                formData.append('fieldsTitlesInFirstLine', this.picked)
+                if (this.type == 'gld') {
+                    formData.append('isGold', true)
+                } else {
+                    formData.append('isGold', false)
+                }
+                formData.append('fieldTitles', this.customTitles)
+                axios
+                    .post('https://web.apnetwork.it/mturk/?action=uploadFile', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
+                            'Access-Control-Allow-Headers': 'Content-Type, Origin, Authorization',
+                        },
+                        onUploadProgress: function(progressEvent) {
+                            this.uploadPercentage = parseInt(
+                                Math.round((progressEvent.loaded / progressEvent.total) * 100)
+                            )
+                        }.bind(this),
+                    })
+                    .then(function() {
+                        console.log('SUCCESS!!')
+                    })
+                    .catch(function() {
+                        console.log('FAILURE!!')
+                    })
+            }
         },
     },
 }

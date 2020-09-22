@@ -6,8 +6,8 @@
             @toggleModal="toggleModal(['elim'])"
             :id="modalId"
         />
-        <modalUpload v-if="modalStd" @upload="toggleModal(['std'])" :type="'std'" />
-        <modalUpload v-if="modalGld" @upload="toggleModal(['gld'])" :type="'gld'" />
+        <modalUpload v-if="modalStd" @upload="toggleModal(['std'])" :type="'std'" :id="modalId" />
+        <modalUpload v-if="modalGld" @upload="toggleModal(['gld'])" :type="'gld'" :id="modalId" />
         <div class="mb-6">
             <div class="flex content-center flex-col sm:flex-row">
                 <svg style="width:24px;" viewBox="0 0 24 24">

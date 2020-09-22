@@ -7,8 +7,18 @@
             :id="datiProgetto.id"
             @snackbar="emitSnackbar"
         />
-        <modalUpload v-if="modalStd" @upload="toggleModal('std')" :type="'std'" />
-        <modalUpload v-if="modalGld" @upload="toggleModal('gld')" :type="'gld'" />
+        <modalUpload
+            v-if="modalStd"
+            @upload="toggleModal('std')"
+            :type="'std'"
+            :id="datiProgetto.id"
+        />
+        <modalUpload
+            v-if="modalGld"
+            @upload="toggleModal('gld')"
+            :type="'gld'"
+            :id="datiProgetto.id"
+        />
         <div class="flex justify-between flex-wrap">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="flex relative">

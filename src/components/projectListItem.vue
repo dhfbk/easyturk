@@ -219,7 +219,7 @@ export default {
             if (this.dropdown) {
                 this.dropdown = !this.dropdown
             }
-            this.$emit('upload', type)
+            this.$emit('upload', [type, this.projectData.id])
         },
         refresh() {
             console.log('refreshing...')
