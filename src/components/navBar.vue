@@ -107,16 +107,19 @@
             <div>
                 <router-link
                     to="/"
-                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-white hover:text-black sm:mr-4 focus:outline-none"
-                >Home</router-link>
+                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-white hover:text-gray-400 sm:mr-4 focus:outline-none"
+                    >Home</router-link
+                >
                 <router-link
                     to="workers"
-                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-white hover:text-black sm:mr-4 focus:outline-none"
-                >Workers</router-link>
+                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-white hover:text-gray-400 sm:mr-4 focus:outline-none"
+                    >Workers</router-link
+                >
                 <router-link
                     to="create"
-                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-white hover:text-black focus:outline-none"
-                >Create Project</router-link>
+                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-white hover:text-gray-400 focus:outline-none"
+                    >Create Project</router-link
+                >
             </div>
         </div>
     </nav>
