@@ -261,7 +261,9 @@ switch ($Action) {
                 $DB->startTransaction();
                 $success = true;
 
-                if ($stmt = $mysqli->prepare("UPDATE project_files SET deleted=1 WHERE project_id=? AND is_gold=?")) {
+                if ($stmt = $mysqli->prepare("UPDATE project_files
+                        SET deleted = 1
+                        WHERE project_id = ? AND is_gold = ?")) {
                     $stmt->bind_param("si", $_REQUEST['id'], $isGold);
                     if (!$stmt->execute()) {
                         $success = false;
@@ -308,7 +310,7 @@ switch ($Action) {
 
             case "deleteProject":
                 $r = find("projects", $_REQUEST['id'], "Project not found");
-                if ($stmt = $mysqli->prepare("UPDATE projects SET deleted=1 WHERE id=?")) {
+                if ($stmt = $mysqli->prepare("UPDATE projects SET deleted = 1 WHERE id = ?")) {
                     $stmt->bind_param("s", $_REQUEST['id']);
                     $stmt->execute();
                     $stmt->close();
@@ -322,18 +324,10 @@ switch ($Action) {
                 $ret['issues'] = array();
                 $hasData = false;
                 $hasGold = false;
-                $query = "SELECT * FROM project_files WHERE project_id = '{$r['id']}' AND deleted = '0'";
-                $DB->query($query);
-                while ($row = $DB->fetch()) {
-                    if ($row['is_gold']) {
-                        $hasGold = true;
-                    }
-                    else {
-                        $hasData = true;
-                    }
-                }
-                if (!$hasGold) {
-                    $ret['issues'][] = "Gold file missing";
+                $query = "SELECT * FROM project_files
+                    WHERE project_id = '{$r['id']}' AND deleted = '0' AND is_gold = '0'";
+                if ($DB->querynum($query)) {
+                    $hasData = true;
                 }
                 if (!$hasData) {
                     $ret['issues'][] = "Training file missing";
