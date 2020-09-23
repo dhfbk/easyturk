@@ -20,6 +20,7 @@
             @uploadModal="uploadModal"
             @uploaded="uploaded"
         />
+        <modalHIT v-if="modalHIT && !loading1" :id="datiProgetto.id" @uploadModal="uploadModal" />
         <div class="flex justify-between flex-wrap" v-if="!loading1">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="flex relative">
@@ -98,11 +99,15 @@
                             <a
                                 @click="uploadModal(['std'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                            >Upload dati</a>
+                            >Base CSV upload</a>
                             <a
                                 @click="uploadModal(['gld'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
-                            >Upload gold</a>
+                            >Gold CSV upload</a>
+                            <a
+                                @click="uploadModal(['hit'])"
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
+                            >Load HITs</a>
                         </div>
                     </transition>
                 </span>
@@ -142,6 +147,7 @@ import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import modalUpload from '../components/modalUpload.vue'
 import loader from '../components/loader.vue'
+import modalHIT from '../components/modalHIT.vue'
 import axios from 'axios'
 
 export default {
@@ -155,6 +161,7 @@ export default {
         cardAnalytics,
         modalUpload,
         loader,
+        modalHIT,
     },
     data() {
         return {
@@ -184,8 +191,8 @@ export default {
                 siProgress: 0,
                 noProgress: 0,
                 id: '',
-                baseCsv: "not uploaded",
-                goldCsv: "not uploaded",
+                baseCsv: "<span class='text-red-600'>not uploaded</span>",
+                goldCsv: "<span class='text-red-600'>not uploaded</span>",
             },
             titoliCard: {
                 titoli1: [],
@@ -202,6 +209,7 @@ export default {
             modalElim: false,
             modalStd: false,
             modalGld: false,
+            modalHIT: false,
             loading1: true,
             loading: true,
         }
@@ -225,43 +233,31 @@ export default {
         getDatiPrj() {
             this.datiProgetto.id = this.$route.params.projectId
             axios
-                .all([
-                    axios.get(this.APIURL + '?action=getProjectInfo&id=' + this.datiProgetto.id),
-                    axios.get(
-                        this.APIURL + '?action=getData&id=' + this.datiProgetto.id + '&isGold=0'
-                    ),
-                    axios.get(
-                        this.APIURL + '?action=getData&id=' + this.datiProgetto.id + '&isGold=1'
-                    ),
-                ])
-                .then(
-                    axios.spread((...responses) => {
-                        //console.log(responses[0])
-                        //console.log(responses[1].data.result)
-                        //console.log(responses[2].data.result)
-                        this.datiProgetto.nome = responses[0].data.values.name
-                        this.datiProgetto.titolo = responses[0].data.values.title
-                        this.datiProgetto.descrizione = responses[0].data.values.description
-                        this.datiProgetto.keywords = responses[0].data.values.keywords
-                        this.datiProgetto.ricompensa = responses[0].data.values.reward + '$'
-                        this.datiProgetto.tempoMax = parseInt(responses[0].data.values.max_time)
-                        this.datiProgetto.creazione = responses[0].data.values.created_at
-                        this.datiProgetto.scadenza = parseInt(responses[0].data.values.expiry)
-                        this.datiProgetto.autoApproval = parseInt(
-                            responses[0].data.values.auto_approve
-                        )
-                        this.datiProgetto.layoutID = responses[0].data.values.layout_id
-                        this.datiProgetto.parametri = responses[0].data.values.params
-                        this.datiProgetto.numLavoratori = responses[0].data.values.workers
-                        if(responses[1].data.result == "OK"){
-                            this.datiProgetto.baseCsv = "uploaded"
-                        }
-                        if(responses[2].data.result == "OK"){
-                            this.datiProgetto.goldCsv = "uploaded"
-                        }
-                        this.loading = false
-                    })
-                )
+                .get(this.APIURL + '?action=getProjectInfo&id=' + this.datiProgetto.id)
+                .then(res => {
+                    //console.log(res)
+                    //console.log(responses[1].data.result)
+                    //console.log(responses[2].data.result)
+                    this.datiProgetto.nome = res.data.values.name
+                    this.datiProgetto.titolo = res.data.values.title
+                    this.datiProgetto.descrizione = res.data.values.description
+                    this.datiProgetto.keywords = res.data.values.keywords
+                    this.datiProgetto.ricompensa = res.data.values.reward + '$'
+                    this.datiProgetto.tempoMax = parseInt(res.data.values.max_time)
+                    this.datiProgetto.creazione = res.data.values.created_at
+                    this.datiProgetto.scadenza = parseInt(res.data.values.expiry)
+                    this.datiProgetto.autoApproval = parseInt(res.data.values.auto_approve)
+                    this.datiProgetto.layoutID = res.data.values.layout_id
+                    this.datiProgetto.parametri = res.data.values.params
+                    this.datiProgetto.numLavoratori = res.data.values.workers
+                    if (res.data.numData > 0) {
+                        this.datiProgetto.baseCsv = "<span class='text-green-600'>uploaded</span>"
+                    }
+                    if (res.data.numGold == 'OK') {
+                        this.datiProgetto.goldCsv = "<span class='text-green-600'>uploaded</span>"
+                    }
+                    this.loading = false
+                })
                 .catch(err => {
                     console.log(err)
                 })
@@ -382,8 +378,10 @@ export default {
         uploadModal(type) {
             if (type[0] == 'std') {
                 this.modalStd = !this.modalStd
-            } else {
+            } else if (type[0] == 'gld') {
                 this.modalGld = !this.modalGld
+            } else {
+                this.modalHIT = !this.modalHIT
             }
             this.hide()
         },
