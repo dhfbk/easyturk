@@ -6,10 +6,9 @@
         <p class="text-2xl mb-4 text-primary">{{ pageTitle }}</p>
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
-                <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="nome"
-                >Project Name</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="nome"
+                    >Project Name</label
+                >
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="nome"
@@ -22,10 +21,9 @@
                 <p class="text-gray-700 text-xs italic">This name is not displayed to Workers.</p>
             </div>
             <div class="w-full px-3 mb-4">
-                <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="titolo"
-                >Title</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="titolo"
+                    >Title</label
+                >
                 <input
                     :class="errorTitolo ? 'border-red-600' : 'border-gray-200'"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -36,19 +34,20 @@
                     v-model.trim="$v.title.$model"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Describe the survey to Workers. Be as specific as possible, e.g. "answer a survey about movies", instead of "short survey", so Workers know what to expect.</p>
-                <p
-                    :class="errorTitolo ? '' : 'hidden'"
-                    class="text-red-600 text-xs italic"
-                >Si è pregati di inserire il titolo</p>
+                <p class="text-gray-700 text-xs italic">
+                    Describe the survey to Workers. Be as specific as possible, e.g. "answer a
+                    survey about movies", instead of "short survey", so Workers know what to expect.
+                </p>
+                <p :class="errorTitolo ? '' : 'hidden'" class="text-red-600 text-xs italic">
+                    Si è pregati di inserire il titolo
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="descrizione"
-                >Description</label>
+                    >Description</label
+                >
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="descrizione"
@@ -57,15 +56,17 @@
                     v-model.trim="$v.description.$model"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Give more detail about this survey. This gives Workers a bit more information before they decide to view your survey.</p>
+                <p class="text-gray-700 text-xs italic">
+                    Give more detail about this survey. This gives Workers a bit more information
+                    before they decide to view your survey.
+                </p>
             </div>
             <div class="md:w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="keywords"
-                >Keywords</label>
+                    >Keywords</label
+                >
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="keywords"
@@ -74,9 +75,9 @@
                     v-model.trim="$v.keywords.$model"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Provide keywords that will help Workers search for your tasks.</p>
+                <p class="text-gray-700 text-xs italic">
+                    Provide keywords that will help Workers search for your tasks.
+                </p>
             </div>
         </div>
         <hr class="solid mb-4" />
@@ -85,7 +86,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="ricompensa"
-                >Reward per response</label>
+                    >Reward per response</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="ricompensa"
@@ -96,15 +98,17 @@
                     v-model.trim="$v.reward.$model"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >This is how much a Worker will be paid for completing your survey. Consider how long it will take a Worker to complete your survey.</p>
+                <p class="text-gray-700 text-xs italic">
+                    This is how much a Worker will be paid for completing your survey. Consider how
+                    long it will take a Worker to complete your survey.
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="lavoratori"
-                >Number of respondents</label>
+                    >Number of respondents</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="lavoratori"
@@ -115,15 +119,16 @@
                     v-model.trim="$v.workers.$model"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >How many unique Workers do you want to complete your survey?</p>
+                <p class="text-gray-700 text-xs italic">
+                    How many unique Workers do you want to complete your survey?
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="tempoMax"
-                >Time allotted per Worker</label>
+                    >Time allotted per Worker</label
+                >
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -162,15 +167,17 @@
                         </div>
                     </div>
                 </div>
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Maximum time a Worker has to complete the survey. Be generous so that Workers are not rushed.</p>
+                <p class="text-gray-700 text-xs italic">
+                    Maximum time a Worker has to complete the survey. Be generous so that Workers
+                    are not rushed.
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="scadenza"
-                >Survey expires in</label>
+                    >Survey expires in</label
+                >
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -209,15 +216,16 @@
                         </div>
                     </div>
                 </div>
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Maximum time your survey will be available to Workers on Mechanical Turk.</p>
+                <p class="text-gray-700 text-xs italic">
+                    Maximum time your survey will be available to Workers on Mechanical Turk.
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="autoApproval"
-                >Auto-approve and pay Workers in</label>
+                    >Auto-approve and pay Workers in</label
+                >
                 <div class="flex flex-col flex-grow sm:flex-row">
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -256,9 +264,10 @@
                         </div>
                     </div>
                 </div>
-                <p
-                    class="text-gray-700 text-xs italic"
-                >This is the amount of time you have to reject a Worker's assignment after they submit the assignment.</p>
+                <p class="text-gray-700 text-xs italic">
+                    This is the amount of time you have to reject a Worker's assignment after they
+                    submit the assignment.
+                </p>
             </div>
         </div>
         <hr class="solid mb-4" />
@@ -267,7 +276,8 @@
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="layoutId"
-                >Layout ID</label>
+                    >Layout ID</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="layoutId"
@@ -277,15 +287,16 @@
                     v-model.trim="$v.layout_id.$model"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >This is the id of the layout that will be shown to the Worker.</p>
+                <p class="text-gray-700 text-xs italic">
+                    This is the id of the layout that will be shown to the Worker.
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
                     for="parametri"
-                >Parameters number</label>
+                    >Parameters number</label
+                >
                 <input
                     class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="parametri"
@@ -309,8 +320,8 @@
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
-                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                </svg>Save changes
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
+                >Save changes
             </button>
             <button
                 type="submit"
@@ -322,13 +333,15 @@
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
-                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                </svg>Save
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
+                >Save
             </button>
             <button
                 @click="router.go(-1)"
                 class="flex flex-row bg-gray-300 hover:bg-gray-400 py-2 px-4 ml-4 rounded-md transition duration-150 ease-in-out focus:outline-none"
-            >Cancel</button>
+            >
+                Cancel
+            </button>
         </div>
     </form>
 </template>
@@ -448,13 +461,8 @@ export default {
         }
     },
     methods: {
-        emitSnackbar(arr) {
-            if (arr[3] == 'std') {
-                this.toggleModal('std')
-            } else if (arr[3] == 'gld') {
-                this.toggleModal('gld')
-            }
-            this.$emit('snackbar', arr)
+        emitSnackbar(msg) {
+            this.$emit('snackbar', msg)
         },
         getDatiPrj() {
             axios({
@@ -520,19 +528,19 @@ export default {
                     })
                     .catch(() => {
                         this.loading = false
-                        var arr = ['error', '', 'Error. Try Again', '']
-                        this.emitSnackbar(arr)
+                        var msg = 'Error. Try Again'
+                        this.emitSnackbar(msg)
                     })
             }
         },
         goHome() {
-            var arr = []
+            var msg
             if (this.mode == 'edit') {
-                arr = ['success', '', 'Edit successful', '']
+                msg = 'Edit successful'
             } else {
-                arr = ['success', '', 'Project created', '']
+                msg = 'Project created'
             }
-            this.emitSnackbar(arr)
+            this.emitSnackbar(msg)
             this.$router.push({ path: '/', name: 'Home' })
         },
         elaboraTempoGET(nomeVar) {
