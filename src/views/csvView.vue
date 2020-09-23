@@ -1,7 +1,7 @@
 <template>
     <div class=" flex items-center flex-col lg:w-5/6 mx-auto mt-4">
-        <p class="text-2xl text-primary mr-auto">{{ filename }}</p>
-        <div class="flex flex-row justify-start mr-auto mb-1">
+        <p class="text-2xl text-primary mr-auto ml-2">{{ filename }}</p>
+        <div class="flex flex-row justify-start mr-auto mb-1 ml-2">
             <p class="text-md my-auto mr-1">Results per page:</p>
             <input
                 class=" appearance-none h-full w-20 m-2 rounded border block appearance-none bg-white border-gray-400 text-gray-700 pl-2 pr-1 py-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -14,7 +14,8 @@
                 v-model="numPerPage"
             />
         </div>
-        <table class="shadow-md rounded w-full bg-white">
+        <loader :type="'csvData'" v-if="loading" />
+        <table v-else class="shadow-md rounded w-full bg-white">
             <thead>
                 <tr class="text-center text-white bg-primary border-b border-grey uppercase tracking-tight">
                     <th v-for="x in headers" :key="x">
@@ -24,7 +25,7 @@
             </thead>
             <tbody>
                 <tr v-for="(x, index) in current" :key="index" class="border-b hover:bg-gray-100">
-                    <td v-for="i in headers.length" :key="i">
+                    <td class="p-1" v-for="i in headers.length" :key="i">
                         {{ x[i - 1] }}
                     </td>
                 </tr>
@@ -34,7 +35,7 @@
             <button
                 @click="page--"
                 v-if="totalNum > numPerPage && page >= 1"
-                class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
+                class="bg-gray-300 sm:w-48 w-32 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
             >
                 Previous
             </button>
@@ -43,7 +44,7 @@
             <button
                 @click="page++"
                 v-if="totalNum > numPerPage && page < pageNum"
-                class="bg-gray-300 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
+                class="bg-gray-300 sm:w-48 w-32 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
             >
                 Next
             </button>
@@ -54,17 +55,20 @@
 
 <script>
 import axios from 'axios'
+import loader from '../components/loader'
 
 export default {
+    components: { loader },
     data() {
         return {
             current: [],
             headers: [],
             projectId: this.$route.params.projectId,
-            page: 0,
+            page: 1,
             numPerPage: 50,
             totalNum: 0,
             filename: '',
+            loading: true,
         }
     },
     created() {
@@ -73,6 +77,7 @@ export default {
     },
     methods: {
         update() {
+            this.loading = true
             var url =
                 this.APIURL +
                 '?action=getData&id=' +
@@ -90,6 +95,7 @@ export default {
                     this.totalNum = res.data.num
                     this.pageNum = Math.ceil(this.totalNum / this.numPerPage) - 1
                     this.filename = res.data.filename
+                    this.loading = false
                 })
                 .catch(err => {
                     console.log(err)
@@ -104,7 +110,7 @@ export default {
         },
         numPerPage: function() {
             this.pageNum = Math.ceil(this.totalNum / this.numPerPage) - 1
-            this.page = 0
+            this.page = 1
             this.current = []
             this.update()
         },
