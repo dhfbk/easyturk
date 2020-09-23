@@ -26,20 +26,34 @@
             <button
                 class="transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:inline-block"
             >
-                Publish Batch
+                <svg style="width:24px;" viewBox="0 0 24 24">
+                    <path fill="white" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
+                </svg>
             </button>
 
             <button
                 @click="upload('std')"
-                class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
+                class="bg-gray-300 hover:bg-gray-400 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden xl:flex flex-row"
             >
-                Upload Data
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path
+                        fill="rgba(26, 32, 44, 1)"
+                        d="M14,13V17H10V13H7L12,8L17,13M19.35,10.03C18.67,6.59 15.64,4 12,4C9.11,4 6.6,5.64 5.35,8.03C2.34,8.36 0,10.9 0,14A6,6 0 0,0 6,20H19A5,5 0 0,0 24,15C24,12.36 21.95,10.22 19.35,10.03Z"
+                    />
+                </svg>
+                <span class="ml-1">Standard</span>
             </button>
             <button
                 @click="upload('gld')"
-                class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded m-1 focus:outline-none hidden xl:inline-block"
+                class="bg-gray-300 hover:bg-gray-400 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden xl:flex flex-row"
             >
-                Upload Gold
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path
+                        fill="rgba(26, 32, 44, 1)"
+                        d="M14,13V17H10V13H7L12,8L17,13M19.35,10.03C18.67,6.59 15.64,4 12,4C9.11,4 6.6,5.64 5.35,8.03C2.34,8.36 0,10.9 0,14A6,6 0 0,0 6,20H19A5,5 0 0,0 24,15C24,12.36 21.95,10.22 19.35,10.03Z"
+                    />
+                </svg>
+                <span class="ml-1">Gold</span>
             </button>
             <span v-click-outside="hide" class="flex align-center">
                 <button
@@ -65,31 +79,26 @@
                     >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md sm:hidden"
-                            >Publish batch</a
-                        >
+                        >Publish batch</a>
                         <a
                             @click="upload('std')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md xl:hidden"
-                            >Upload data</a
-                        >
+                        >Upload data</a>
                         <a
                             @click="upload('gld')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md xl:hidden"
-                            >Upload Gold</a
-                        >
+                        >Upload Gold</a>
                         <router-link
                             :to="{
                                 name: 'edit',
                                 params: { projectId: projectData.id },
                             }"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md"
-                            >Edit</router-link
-                        >
+                        >Edit</router-link>
                         <a
                             @click="deleteItem()"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
-                            >Delete</a
-                        >
+                        >Delete</a>
                     </div>
                 </transition>
             </span>

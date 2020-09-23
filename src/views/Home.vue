@@ -22,7 +22,7 @@
             :id="modalId"
         />
         <div class="mb-6">
-            <div class="flex content-center flex-col sm:flex-row">
+            <div class="flex content-center flex-col sm:flex-row px-4">
                 <svg style="width:24px;" viewBox="0 0 24 24">
                     <path
                         d="M17,17H15V13H17M13,17H11V7H13M9,17H7V10H9M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z"
@@ -80,6 +80,7 @@
         <div
             class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center"
         >
+            <!--
             <div class="rounded shadow-md m-2 p-4 col-span-3 row-span-3 bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
                     <svg style="width:24px;" viewBox="0 0 24 24">
@@ -91,6 +92,7 @@
                 </div>
                 <tabellaWorker />
             </div>
+            -->
             <div class="rounded shadow-md m-2 p-2 flex flex-col justify-around bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
                     <svg style="width:24px" viewBox="0 0 24 24">
@@ -133,7 +135,7 @@
 
 <script>
 import projectListItem from '../components/projectListItem.vue'
-import tabellaWorker from '../components/tabellaWorker.vue'
+//import tabellaWorker from '../components/tabellaWorker.vue'
 import modalEliminazione from '../components/modalEliminazione.vue'
 import modalUpload from '../components/modalUpload.vue'
 import loader from '../components/loader.vue'
@@ -143,7 +145,7 @@ export default {
     name: 'Home',
     components: {
         projectListItem,
-        tabellaWorker,
+        //tabellaWorker,
         modalEliminazione,
         modalUpload,
         loader,
