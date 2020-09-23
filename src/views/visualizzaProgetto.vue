@@ -79,36 +79,30 @@
                         >
                             <a
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                >Publish</a
-                            >
+                            >Publish</a>
                             <router-link
                                 to="results"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Results</router-link
-                            >
+                            >Results</router-link>
                             <a
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 @click="deleteModal()"
-                                >Delete</a
-                            >
+                            >Delete</a>
                             <router-link
                                 :to="{
                                     name: 'edit',
                                     params: { projectId: datiProgetto.id },
                                 }"
                                 class="block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Edit</router-link
-                            >
+                            >Edit</router-link>
                             <a
                                 @click="uploadModal(['std'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Upload dati</a
-                            >
+                            >Upload dati</a>
                             <a
                                 @click="uploadModal(['gld'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
-                                >Upload gold</a
-                            >
+                            >Upload gold</a>
                         </div>
                     </transition>
                 </span>
@@ -127,10 +121,12 @@
             </div>
             <div class="mx-0 sm:mx-2">
                 <div class="w-full flex flex-col justify-center" v-if="loading1">
+                    <loader :type="'cardInfoVisualizza'" />
                     <loader :type="'cardAnalyticsVisualizza'" :num="3" />
                     <loader :type="'cardAnalyticsVisualizza'" :num="2" />
                 </div>
                 <div v-else>
+                    <cardInfo :titoli="titoliCard.titoli4" :dati="datiCard.dati4" />
                     <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
                     <cardAnalytics :dati="datiCardAnalytics.cardAggregate" />
                 </div>
@@ -188,6 +184,8 @@ export default {
                 siProgress: 0,
                 noProgress: 0,
                 id: '',
+                baseCsv: "not uploaded",
+                goldCsv: "not uploaded",
             },
             titoliCard: {
                 titoli1: [],
@@ -223,55 +221,50 @@ export default {
         //     }
         //     this.$emit('snackbar', arr)
         // },
+
         getDatiPrj() {
-            // var self = this
             this.datiProgetto.id = this.$route.params.projectId
-            axios({
-                url: this.APIURL + '?action=editProject&id=' + this.datiProgetto.id,
-            })
-                .then(res => {
-                    //console.log(res)
-                    this.datiProgetto.nome = res.data.values.name
-                    this.datiProgetto.titolo = res.data.values.title
-                    this.datiProgetto.descrizione = res.data.values.description
-                    this.datiProgetto.keywords = res.data.values.keywords
-                    this.datiProgetto.ricompensa = res.data.values.reward + '$'
-                    this.datiProgetto.tempoMax = parseInt(res.data.values.max_time)
-                    this.datiProgetto.creazione = res.data.values.created_at
-                    this.datiProgetto.scadenza = parseInt(res.data.values.expiry)
-                    this.datiProgetto.autoApproval = parseInt(res.data.values.auto_approve)
-                    this.datiProgetto.layoutID = res.data.values.layout_id
-                    this.datiProgetto.parametri = res.data.values.params
-                    this.datiProgetto.numLavoratori = res.data.values.workers
-                    this.loading = false
-                })
+            axios
+                .all([
+                    axios.get(this.APIURL + '?action=getProjectInfo&id=' + this.datiProgetto.id),
+                    axios.get(
+                        this.APIURL + '?action=getData&id=' + this.datiProgetto.id + '&isGold=0'
+                    ),
+                    axios.get(
+                        this.APIURL + '?action=getData&id=' + this.datiProgetto.id + '&isGold=1'
+                    ),
+                ])
+                .then(
+                    axios.spread((...responses) => {
+                        //console.log(responses[0])
+                        //console.log(responses[1].data.result)
+                        //console.log(responses[2].data.result)
+                        this.datiProgetto.nome = responses[0].data.values.name
+                        this.datiProgetto.titolo = responses[0].data.values.title
+                        this.datiProgetto.descrizione = responses[0].data.values.description
+                        this.datiProgetto.keywords = responses[0].data.values.keywords
+                        this.datiProgetto.ricompensa = responses[0].data.values.reward + '$'
+                        this.datiProgetto.tempoMax = parseInt(responses[0].data.values.max_time)
+                        this.datiProgetto.creazione = responses[0].data.values.created_at
+                        this.datiProgetto.scadenza = parseInt(responses[0].data.values.expiry)
+                        this.datiProgetto.autoApproval = parseInt(
+                            responses[0].data.values.auto_approve
+                        )
+                        this.datiProgetto.layoutID = responses[0].data.values.layout_id
+                        this.datiProgetto.parametri = responses[0].data.values.params
+                        this.datiProgetto.numLavoratori = responses[0].data.values.workers
+                        if(responses[1].data.result == "OK"){
+                            this.datiProgetto.baseCsv = "uploaded"
+                        }
+                        if(responses[2].data.result == "OK"){
+                            this.datiProgetto.goldCsv = "uploaded"
+                        }
+                        this.loading = false
+                    })
+                )
                 .catch(err => {
                     console.log(err)
                 })
-            // $.ajax({
-            //     url:
-            //         'https://web.apnetwork.it/mturk/?action=editProject&id=' +
-            //         this.$route.params.idProgetto,
-            //     dataType: 'json',
-            //     method: 'get',
-            //     success: function(data) {
-            //         self.datiProgetto.nome = data.values.name
-            //         self.datiProgetto.titolo = data.values.title
-            //         self.datiProgetto.descrizione = data.values.description
-            //         self.datiProgetto.keywords = data.values.keywords
-            //         self.datiProgetto.reward = data.values.reward
-            //         self.datiProgetto.tempoMax = data.values.max_time
-            //         self.datiProgetto.creazione = data.values.created_at
-            //         self.datiProgetto.scadenza = data.values.expiry
-            //         self.datiProgetto.autoApproval = data.values.auto_approve
-            //         self.datiProgetto.layoutID = data.values.layout_id
-            //         self.datiProgetto.parametri = data.values.params
-            //         self.loading = false
-            //     },
-            //     error: function(data) {
-            //         console.log(data)
-            //     },
-            // })
         },
         //metodo per aprire il link dei vari button
         open(mode) {
@@ -319,6 +312,8 @@ export default {
             ]
             this.titoliCard.titoli3 = ['Layout ID', 'Numero parametri']
             this.datiCard.dati3 = [this.datiProgetto.layoutID, this.datiProgetto.parametri]
+            this.titoliCard.titoli4 = ['Base CSV status', 'Gold CSV status']
+            this.datiCard.dati4 = [this.datiProgetto.baseCsv, this.datiProgetto.goldCsv]
             this.datiCardAnalytics = {
                 cardHIT: {
                     idPrj: this.datiProgetto.id,
