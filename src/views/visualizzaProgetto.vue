@@ -5,21 +5,20 @@
             @deleteModal="deleteModal"
             @deleted="deleted"
             :id="datiProgetto.id"
-            @snackbar="emitSnackbar"
         />
         <modalUpload
             v-if="modalStd && !loading1"
             :type="'std'"
             :id="datiProgetto.id"
-            @snackbar="emitSnackbar"
-            @toggleModal="toggleModal"
+            @uploadModal="uploadModal"
+            @uploaded="uploaded"
         />
         <modalUpload
             v-if="modalGld && !loading1"
             :type="'gld'"
             :id="datiProgetto.id"
-            @snackbar="emitSnackbar"
-            @toggleModal="toggleModal"
+            @uploadModal="uploadModal"
+            @uploaded="uploaded"
         />
         <div class="flex justify-between flex-wrap" v-if="!loading1">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
@@ -89,7 +88,7 @@
                             >
                             <a
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                @click="toggleModal('elim')"
+                                @click="deleteModal()"
                                 >Delete</a
                             >
                             <router-link
@@ -101,12 +100,12 @@
                                 >Edit</router-link
                             >
                             <a
-                                @click="toggleModal('std')"
+                                @click="uploadModal(['std'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 >Upload dati</a
                             >
                             <a
-                                @click="toggleModal('gld')"
+                                @click="uploadModal(['gld'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
                                 >Upload gold</a
                             >
@@ -216,14 +215,14 @@ export default {
         this.popupItem = this.$el
     },
     methods: {
-        emitSnackbar(arr) {
-            if (arr[3] == 'std') {
-                this.toggleModal('std')
-            } else if (arr[3] == 'gld') {
-                this.toggleModal('gld')
-            }
-            this.$emit('snackbar', arr)
-        },
+        // emitSnackbar(arr) {
+        //     if (arr[3] == 'std') {
+        //         this.toggleModal('std')
+        //     } else if (arr[3] == 'gld') {
+        //         this.toggleModal('gld')
+        //     }
+        //     this.$emit('snackbar', arr)
+        // },
         getDatiPrj() {
             // var self = this
             this.datiProgetto.id = this.$route.params.projectId
@@ -385,13 +384,16 @@ export default {
             this.$router.push('/')
         },
         //metodo che mostra o nasconde il dialog
-        toggleModal(type) {
-            if (type == 'std') {
+        uploadModal(type) {
+            if (type[0] == 'std') {
                 this.modalStd = !this.modalStd
             } else {
                 this.modalGld = !this.modalGld
             }
             this.hide()
+        },
+        uploaded(msg) {
+            this.$emit('snackbar', msg)
         },
         //nasconde il dropdown
         hide() {
