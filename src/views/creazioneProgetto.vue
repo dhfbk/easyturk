@@ -466,7 +466,7 @@ export default {
         },
         getDatiPrj() {
             axios({
-                url: this.APIURL + '?action=editProject&id=' + this.$route.params.projectId,
+                url: this.APIURL + '?action=getProjectInfo&id=' + this.$route.params.projectId,
                 method: 'get',
             }).then(res => {
                 console.log(res.data)
