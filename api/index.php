@@ -33,7 +33,7 @@ session_start();
 require_once("config.php");
 require_once("inc/include.php");
 require_once("inc/Mysql_connector.class.php");
-require_once("inc/aws/aws-autoloader.php");
+require_once("vendor/autoload.php");
 
 $Action = isset($_REQUEST['action']) ? $_REQUEST['action'] : "";
 $User = 1;
