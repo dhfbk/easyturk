@@ -7,6 +7,7 @@ import reviewResults from '../views/reviewResults.vue'
 import HITList from '../views/HITList.vue'
 import viewHIT from '../views/viewHIT.vue'
 import workerList from '../views/workerList.vue'
+import csvView from '../views/csvView.vue'
 
 Vue.use(VueRouter)
 
@@ -50,6 +51,11 @@ const routes = [
         path: '/workers',
         name: 'workerList',
         component: workerList,
+    },
+    {
+        path: '/:projectId/data',
+        name: 'csv',
+        component: csvView,
     },
 ]
 
