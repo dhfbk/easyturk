@@ -40,7 +40,19 @@
                 Previous
             </button>
             <div v-else></div>
-            <p class="text-center">Page {{ page + 1 }} of {{ pageNum + 1 }}</p>
+            <p class="text-center">
+                Page
+                <input
+                    class=" appearance-none w-16 m-2 rounded border appearance-none bg-white border-gray-400 text-gray-700 pl-2 pr-1 py-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    type="number"
+                    name="quantity"
+                    min="1"
+                    :max="pageNum"
+                    v-model="page"
+                />
+                of
+                {{ pageNum }}
+            </p>
             <button
                 @click="page++"
                 v-if="totalNum > numPerPage && page < pageNum"
@@ -69,9 +81,16 @@ export default {
             totalNum: 0,
             filename: '',
             loading: true,
+            pageNum: 1,
+            isGold: 0,
         }
     },
     created() {
+        if (this.$route.params.type == 'gold') {
+            this.isGold = 1
+        } else {
+            this.isGold = 0
+        }
         console.log(this.projectId)
         this.update()
     },
@@ -85,7 +104,9 @@ export default {
                 '&howMany=' +
                 this.numPerPage +
                 '&page=' +
-                this.page
+                this.page +
+                '&isGold=' +
+                this.isGold
             axios
                 .get(url)
                 .then(res => {
@@ -93,7 +114,7 @@ export default {
                     this.current = res.data.data
                     this.headers = res.data.fields
                     this.totalNum = res.data.num
-                    this.pageNum = Math.ceil(this.totalNum / this.numPerPage) - 1
+                    this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
                     this.filename = res.data.filename
                     this.loading = false
                 })
@@ -104,12 +125,12 @@ export default {
     },
     watch: {
         page: function() {
-            this.pageNum = Math.ceil(this.totalNum / this.numPerPage) - 1
+            this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
             this.current = []
             this.update()
         },
         numPerPage: function() {
-            this.pageNum = Math.ceil(this.totalNum / this.numPerPage) - 1
+            this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
             this.page = 1
             this.current = []
             this.update()
