@@ -27,8 +27,8 @@
     >
         <div class="animate-pulse flex flex-col">
             <div class="h-2 w-1/2 bg-gray-500 rounded"></div>
-            <div class="flex flex-row justify-evenly w-full mt-6">
-                <div class="rounded-full bg-gray-500 h-24 w-24" v-for="n in num" :key="n"></div>
+            <div class="flex flex-row justify-evenly w-full mt-6 flex-wrap">
+                <div class="rounded-full bg-gray-500 h-24 w-24 m-2" v-for="n in num" :key="n"></div>
             </div>
         </div>
     </div>

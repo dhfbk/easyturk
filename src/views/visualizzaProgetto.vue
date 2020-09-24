@@ -26,25 +26,29 @@
             <div class="flex relative">
                 <button
                     type="submit"
-                    class="hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary hover:text-white mr-2 focus:outline-none"
+                    class="tooltip hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary hover:text-white mr-2 focus:outline-none"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                         <path d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                     </svg>
-                    <span class="ml-1">Publish</span>
+                    <span
+                        class="tooltip-text bg-white border rounded border-gray-100 text-gray-700 -mt-24"
+                    >Publish</span>
                 </button>
                 <div class="relative hidden sm:block">
                     <button
                         @click="open('results')"
                         type="submit"
-                        class="hidden sm:inline-flex flex-row items-center  py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white hover:bg-primary focus:outline-none h-full"
+                        class="tooltip hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white hover:bg-primary focus:outline-none h-full"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
                                 d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
                             />
                         </svg>
-                        <span class="ml-1">Results</span>
+                        <span
+                            class="tooltip-text bg-white border rounded border-gray-100 text-gray-700 -mt-24"
+                        >Results</span>
                     </button>
                     <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
                         <span
@@ -56,10 +60,10 @@
                 <span v-click-outside="hide" class="flex align-center">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
-                        class="py-2 px-2 bg-transparent rounded-md  border-2 ml-2 border-solid border-primary hover:bg-primary hover:text-white focus:outline-none"
+                        class="py-2 px-2 bg-transparent rounded-md border-2 ml-2 border-solid border-primary hover:bg-primary hover:text-white focus:outline-none"
                     >
                         <svg
-                            class="transition duration-300 ease-in-out fill-current "
+                            class="transition duration-300 ease-in-out fill-current"
                             :class="{ 'transform  rotate-180': dropdownOpen }"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -79,41 +83,34 @@
                         >
                             <a
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                >Publish</a
-                            >
+                            >Publish</a>
                             <router-link
                                 to="results"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Results</router-link
-                            >
+                            >Results</router-link>
                             <a
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary sm:rounded-t-md hover:text-gray-100"
                                 @click="deleteModal()"
-                                >Delete</a
-                            >
+                            >Delete</a>
                             <router-link
                                 :to="{
                                     name: 'edit',
                                     params: { projectId: datiProgetto.id },
                                 }"
                                 class="block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Edit</router-link
-                            >
+                            >Edit</router-link>
                             <a
                                 @click="uploadModal(['std'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Base CSV upload</a
-                            >
+                            >Base CSV upload</a>
                             <a
                                 @click="uploadModal(['gld'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Gold CSV upload</a
-                            >
+                            >Gold CSV upload</a>
                             <a
                                 @click="uploadModal(['hit'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
-                                >Load HITs</a
-                            >
+                            >Load HITs</a>
                         </div>
                     </transition>
                 </span>
@@ -197,8 +194,10 @@ export default {
                 siProgress: 0,
                 noProgress: 0,
                 id: '',
-                baseCsv: "<span class='text-red-600'>not uploaded</span>",
-                goldCsv: "<span class='text-red-600'>not uploaded</span>",
+                baseCsv:
+                    "<div class='flex flex-row justify-between'><span class='text-red-600'>not uploaded</span></div>",
+                goldCsv:
+                    "<div class='flex flex-row justify-between'><span class='text-red-600'>not uploaded</span></div>",
             },
             titoliCard: {
                 titoli1: [],
@@ -257,10 +256,16 @@ export default {
                     this.datiProgetto.parametri = res.data.values.params
                     this.datiProgetto.numLavoratori = res.data.values.workers
                     if (res.data.numData > 0) {
-                        this.datiProgetto.baseCsv = "<span class='text-green-600'>uploaded</span>"
+                        this.datiProgetto.baseCsv =
+                            "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 py-1 bg-transparent transition duration-150 hover:bg-gray-300 rounded' href='#/" +
+                            this.datiProgetto.id +
+                            "/data/standard'>View data</a></div>"
                     }
                     if (res.data.numGold == 'OK') {
-                        this.datiProgetto.goldCsv = "<span class='text-green-600'>uploaded</span>"
+                        this.datiProgetto.goldCsv =
+                            "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 bg-transparent transition duration-150 hover:bg-gray-300 rounded' href='#/" +
+                            this.datiProgetto.id +
+                            "/data/gold'>View data</a></div>"
                     }
                     this.loading = false
                 })
@@ -454,5 +459,19 @@ export default {
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
+}
+.tooltip .tooltip-text {
+    visibility: hidden;
+    text-align: center;
+    padding: 2px 6px;
+    position: absolute;
+    z-index: 100;
+    left: 0;
+}
+.tooltip-text{
+    margin-left: -6px;
+}
+.tooltip:hover .tooltip-text {
+    visibility: visible;
 }
 </style>

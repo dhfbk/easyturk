@@ -24,16 +24,19 @@
         </div>
         <span class="flex-grow flex justify-end w-2/5">
             <button
-                class="transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:inline-block"
+                class="tooltip relative transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:inline-block"
             >
                 <svg style="width:24px;" viewBox="0 0 24 24">
                     <path fill="white" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                 </svg>
+                <span
+                    class="tooltip-text bg-white border rounded border-gray-100 text-gray-700 -mt-16 -ml-2"
+                >Publish</span>
             </button>
 
             <button
                 @click="upload('std')"
-                class="bg-gray-300 hover:bg-gray-400 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden xl:flex flex-row"
+                class="tooltip relative bg-gray-300 hover:bg-gray-400 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden xl:flex flex-row"
             >
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path
@@ -42,10 +45,13 @@
                     />
                 </svg>
                 <span class="ml-1">Standard</span>
+                <span
+                    class="tooltip-text bg-white border rounded border-gray-100 text-gray-700 -mt-16"
+                >Upload standard csv</span>
             </button>
             <button
                 @click="upload('gld')"
-                class="bg-gray-300 hover:bg-gray-400 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden xl:flex flex-row"
+                class="tooltip relative bg-gray-300 hover:bg-gray-400 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden xl:flex flex-row"
             >
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path
@@ -54,6 +60,9 @@
                     />
                 </svg>
                 <span class="ml-1">Gold</span>
+                <span
+                    class="tooltip-text bg-white border rounded border-gray-100 text-gray-700 -mt-16"
+                >Upload gold csv</span>
             </button>
             <span v-click-outside="hide" class="flex align-center">
                 <button
@@ -270,5 +279,16 @@ export default {
     .widthElem {
         width: auto;
     }
+}
+.tooltip .tooltip-text {
+    visibility: hidden;
+    text-align: center;
+    padding: 2px 6px;
+    position: absolute;
+    z-index: 100;
+    left: 0;
+}
+.tooltip:hover .tooltip-text {
+    visibility: visible;
 }
 </style>
