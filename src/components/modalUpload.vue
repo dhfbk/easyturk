@@ -22,27 +22,12 @@
                     <p class="py-2" v-else>File upload for the golden standard csv document</p>
                     <h2 class="font-light">Titles:</h2>
                     <label class="inline-flex items-center mt-2">
-                        <input
-                            type="radio"
-                            id="auto"
-                            :value="1"
-                            class="form-radio"
-                            checked
-                            v-model="picked"
-                        />
+                        <input type="radio" id="auto" :value="1" class="form-radio" checked v-model="picked" />
                         <span class="ml-2 text-gray-700">Auto-select titles</span>
                     </label>
                     <label class="inline-flex items-center mt-2">
-                        <input
-                            type="radio"
-                            id="custom"
-                            :value="0"
-                            class="form-radio"
-                            v-model="picked"
-                        />
-                        <span class="ml-2 text-gray-700"
-                            >Use custom titles (separated by comma)</span
-                        >
+                        <input type="radio" id="custom" :value="0" class="form-radio" v-model="picked" />
+                        <span class="ml-2 text-gray-700">Use custom titles (separated by comma)</span>
                     </label>
 
                     <input
@@ -108,9 +93,7 @@
                         />
                         <transition name="fade" mode="out-in" appear>
                             <div class="w-1/2 mt-2 mx-auto text-left" v-if="file != ''">
-                                <div
-                                    class="flex items-center bg-gray-200 pl-2 pr-4 py-2 rounded-lg my-1"
-                                >
+                                <div class="flex items-center bg-gray-200 pl-2 pr-4 py-2 rounded-lg my-1">
                                     <svg viewBox="0 0 24 24" class="w-12 h-10">
                                         <path
                                             d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M15.8,20H14L12,16.6L10,20H8.2L11.1,15.5L8.2,11H10L12,14.4L14,11H15.8L12.9,15.5L15.8,20M13,9V3.5L18.5,9H13Z"
@@ -132,11 +115,7 @@
                         </transition>
                     </div>
                     <div class="w-full mb-2">
-                        <progress
-                            class="w-full"
-                            max="100"
-                            :value.prop="uploadPercentage"
-                        ></progress>
+                        <progress class="w-full" max="100" :value.prop="uploadPercentage"></progress>
                     </div>
                     <div class="ml-auto">
                         <button
@@ -223,9 +202,14 @@ export default {
                             )
                         }.bind(this),
                     })
-                    .then(() => {
-                        this.$emit('uploaded', 'Upload completed')
+                    .then(res => {
+                        if (res.data.result != 'ERR') {
+                            this.$emit('uploaded', 'Upload completed')
+                        } else {
+                            this.$emit('uploaded', 'Error. Try again')
+                        }
                         this.toggleModal()
+                        console.log(res.data)
                     })
                     .catch(() => {
                         this.$emit('uploaded', 'Error. Try again')

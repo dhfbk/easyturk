@@ -53,7 +53,7 @@ const routes = [
         component: workerList,
     },
     {
-        path: '/:projectId/data',
+        path: '/:projectId/data/:type',
         name: 'csv',
         component: csvView,
     },

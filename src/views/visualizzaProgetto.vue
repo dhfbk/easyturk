@@ -20,30 +20,67 @@
             @uploadModal="uploadModal"
             @uploaded="uploaded"
         />
+        <modalHIT v-if="modalHIT && !loading1" :id="datiProgetto.id" @uploadModal="uploadModal" />
         <div class="flex justify-between flex-wrap" v-if="!loading1">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="flex relative">
                 <button
                     type="submit"
-                    class="hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary mr-2 focus:outline-none"
+                    class="tooltip ripple-outlined hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
                 >
-                    <svg style="width:24px;" viewBox="0 0 24 24">
-                        <path d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
+                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                        <path
+                            d="M18.4,10.6C16.55,9 14.15,8 11.5,8C6.85,8 2.92,11.03 1.54,15.22L3.9,16C4.95,12.81 7.95,10.5 11.5,10.5C13.45,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z"
+                        />
                     </svg>
-                    <span class="ml-1">Publish</span>
+                    <span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
+                    >Publish</span>
+                </button>
+                <router-link
+                    :to="{
+                                    name: 'edit',
+                                    params: { projectId: datiProgetto.id },
+                                }"
+                    class="tooltip relative ripple-outlined hidden lg:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
+                >
+                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                        <path
+                            d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+                        />
+                    </svg>
+                    <span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
+                    >Edit</span>
+                </router-link>
+                <button
+                    @click="deleteModal()"
+                    type="submit"
+                    class="tooltip relative ripple-outlined hidden lg:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
+                >
+                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                        <path
+                            d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                        />
+                    </svg>
+                    <span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
+                    >Delete</span>
                 </button>
                 <div class="relative hidden sm:block">
                     <button
                         @click="open('results')"
                         type="submit"
-                        class="hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none h-full"
+                        class="tooltip ripple-outlined hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white focus:outline-none h-full mr-2"
                     >
-                        <svg style="width:24px;" viewBox="0 0 24 24">
+                        <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
                                 d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
                             />
                         </svg>
-                        <span class="ml-1">Results</span>
+                        <span
+                            class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
+                        >Results</span>
                     </button>
                     <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
                         <span
@@ -55,10 +92,10 @@
                 <span v-click-outside="hide" class="flex align-center">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
-                        class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 ml-2 border-solid border-primary hover:bg-primary focus:outline-none"
+                        class="py-2 px-2 ripple-outlined bg-transparent rounded-md border-2 ml-2 border-solid border-primary hover:text-white focus:outline-none"
                     >
                         <svg
-                            class="transition duration-300 ease-in-out"
+                            class="transition duration-300 ease-in-out fill-current"
                             :class="{ 'transform  rotate-180': dropdownOpen }"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -67,8 +104,7 @@
                             height="24px"
                         >
                             <path
-                                fill="currentColor"
-                                d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+                                d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"
                             />
                         </svg>
                     </button>
@@ -85,7 +121,7 @@
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                             >Results</router-link>
                             <a
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                class="cursor-pointer block lg:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary sm:rounded-t-md hover:text-gray-100"
                                 @click="deleteModal()"
                             >Delete</a>
                             <router-link
@@ -93,16 +129,20 @@
                                     name: 'edit',
                                     params: { projectId: datiProgetto.id },
                                 }"
-                                class="block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
+                                class="block lg:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                             >Edit</router-link>
                             <a
                                 @click="uploadModal(['std'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                            >Upload dati</a>
+                            >Base CSV upload</a>
                             <a
                                 @click="uploadModal(['gld'])"
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
+                            >Gold CSV upload</a>
+                            <a
+                                @click="uploadModal(['hit'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
-                            >Upload gold</a>
+                            >Load HITs</a>
                         </div>
                     </transition>
                 </span>
@@ -142,6 +182,7 @@ import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import modalUpload from '../components/modalUpload.vue'
 import loader from '../components/loader.vue'
+import modalHIT from '../components/modalHIT.vue'
 import axios from 'axios'
 
 export default {
@@ -155,6 +196,7 @@ export default {
         cardAnalytics,
         modalUpload,
         loader,
+        modalHIT,
     },
     data() {
         return {
@@ -184,8 +226,10 @@ export default {
                 siProgress: 0,
                 noProgress: 0,
                 id: '',
-                baseCsv: "not uploaded",
-                goldCsv: "not uploaded",
+                baseCsv:
+                    "<div class='flex flex-row justify-between'><span class='text-red-600'>not uploaded</span></div>",
+                goldCsv:
+                    "<div class='flex flex-row justify-between'><span class='text-red-600'>not uploaded</span></div>",
             },
             titoliCard: {
                 titoli1: [],
@@ -202,6 +246,7 @@ export default {
             modalElim: false,
             modalStd: false,
             modalGld: false,
+            modalHIT: false,
             loading1: true,
             loading: true,
         }
@@ -225,43 +270,37 @@ export default {
         getDatiPrj() {
             this.datiProgetto.id = this.$route.params.projectId
             axios
-                .all([
-                    axios.get(this.APIURL + '?action=getProjectInfo&id=' + this.datiProgetto.id),
-                    axios.get(
-                        this.APIURL + '?action=getData&id=' + this.datiProgetto.id + '&isGold=0'
-                    ),
-                    axios.get(
-                        this.APIURL + '?action=getData&id=' + this.datiProgetto.id + '&isGold=1'
-                    ),
-                ])
-                .then(
-                    axios.spread((...responses) => {
-                        //console.log(responses[0])
-                        //console.log(responses[1].data.result)
-                        //console.log(responses[2].data.result)
-                        this.datiProgetto.nome = responses[0].data.values.name
-                        this.datiProgetto.titolo = responses[0].data.values.title
-                        this.datiProgetto.descrizione = responses[0].data.values.description
-                        this.datiProgetto.keywords = responses[0].data.values.keywords
-                        this.datiProgetto.ricompensa = responses[0].data.values.reward + '$'
-                        this.datiProgetto.tempoMax = parseInt(responses[0].data.values.max_time)
-                        this.datiProgetto.creazione = responses[0].data.values.created_at
-                        this.datiProgetto.scadenza = parseInt(responses[0].data.values.expiry)
-                        this.datiProgetto.autoApproval = parseInt(
-                            responses[0].data.values.auto_approve
-                        )
-                        this.datiProgetto.layoutID = responses[0].data.values.layout_id
-                        this.datiProgetto.parametri = responses[0].data.values.params
-                        this.datiProgetto.numLavoratori = responses[0].data.values.workers
-                        if(responses[1].data.result == "OK"){
-                            this.datiProgetto.baseCsv = "uploaded"
-                        }
-                        if(responses[2].data.result == "OK"){
-                            this.datiProgetto.goldCsv = "uploaded"
-                        }
-                        this.loading = false
-                    })
-                )
+                .get(this.APIURL + '?action=getProjectInfo&id=' + this.datiProgetto.id)
+                .then(res => {
+                    //console.log(res)
+                    //console.log(responses[1].data.result)
+                    //console.log(responses[2].data.result)
+                    this.datiProgetto.nome = res.data.values.name
+                    this.datiProgetto.titolo = res.data.values.title
+                    this.datiProgetto.descrizione = res.data.values.description
+                    this.datiProgetto.keywords = res.data.values.keywords
+                    this.datiProgetto.ricompensa = res.data.values.reward + '$'
+                    this.datiProgetto.tempoMax = parseInt(res.data.values.max_time)
+                    this.datiProgetto.creazione = res.data.values.created_at
+                    this.datiProgetto.scadenza = parseInt(res.data.values.expiry)
+                    this.datiProgetto.autoApproval = parseInt(res.data.values.auto_approve)
+                    this.datiProgetto.layoutID = res.data.values.layout_id
+                    this.datiProgetto.parametri = res.data.values.params
+                    this.datiProgetto.numLavoratori = res.data.values.workers
+                    if (res.data.numData > 0) {
+                        this.datiProgetto.baseCsv =
+                            "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 py-1 bg-transparent transition duration-150 hover:bg-gray-300 rounded' href='#/" +
+                            this.datiProgetto.id +
+                            "/data/standard'>View data</a></div>"
+                    }
+                    if (res.data.numGold == 'OK') {
+                        this.datiProgetto.goldCsv =
+                            "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 bg-transparent transition duration-150 hover:bg-gray-300 rounded' href='#/" +
+                            this.datiProgetto.id +
+                            "/data/gold'>View data</a></div>"
+                    }
+                    this.loading = false
+                })
                 .catch(err => {
                     console.log(err)
                 })
@@ -282,13 +321,7 @@ export default {
         },
         //metodo che imposta i titoli e i dati da inserire nelle card della pagina
         impostaDatiCard() {
-            this.titoliCard.titoli1 = [
-                'Titolo',
-                'Descrizione',
-                'Keywords',
-                'Data creazione',
-                'Stato',
-            ]
+            this.titoliCard.titoli1 = ['Titolo', 'Descrizione', 'Keywords', 'Data creazione', 'Stato']
             this.datiCard.dati1 = [
                 this.datiProgetto.titolo,
                 this.datiProgetto.descrizione,
@@ -310,7 +343,7 @@ export default {
                 this.datiProgetto.scadenza,
                 this.datiProgetto.autoApproval,
             ]
-            this.titoliCard.titoli3 = ['Layout ID', 'Numero parametri']
+            this.titoliCard.titoli3 = ['Layout ID', 'Number of records per HIT']
             this.datiCard.dati3 = [this.datiProgetto.layoutID, this.datiProgetto.parametri]
             this.titoliCard.titoli4 = ['Base CSV status', 'Gold CSV status']
             this.datiCard.dati4 = [this.datiProgetto.baseCsv, this.datiProgetto.goldCsv]
@@ -382,8 +415,10 @@ export default {
         uploadModal(type) {
             if (type[0] == 'std') {
                 this.modalStd = !this.modalStd
-            } else {
+            } else if (type[0] == 'gld') {
                 this.modalGld = !this.modalGld
+            } else {
+                this.modalHIT = !this.modalHIT
             }
             this.hide()
         },
@@ -398,16 +433,12 @@ export default {
         },
         //calcola il numero da utilizzare nei grafici delle analytics
         calcolaProgress() {
-            this.datiProgetto.completateProgress =
-                (100 * this.datiProgetto.HITcompletate) / this.datiProgetto.totaleHIT
+            this.datiProgetto.completateProgress = (100 * this.datiProgetto.HITcompletate) / this.datiProgetto.totaleHIT
             this.datiProgetto.disponibiliProgress =
                 (100 * this.datiProgetto.HITdisponibili) / this.datiProgetto.totaleHIT
-            this.datiProgetto.incorsoProgress =
-                (100 * this.datiProgetto.HITinCorso) / this.datiProgetto.totaleHIT
-            this.datiProgetto.siProgress =
-                (100 * this.datiProgetto.risposteSI) / this.datiProgetto.HITcompletate
-            this.datiProgetto.noProgress =
-                (100 * this.datiProgetto.risposteNO) / this.datiProgetto.HITcompletate
+            this.datiProgetto.incorsoProgress = (100 * this.datiProgetto.HITinCorso) / this.datiProgetto.totaleHIT
+            this.datiProgetto.siProgress = (100 * this.datiProgetto.risposteSI) / this.datiProgetto.HITcompletate
+            this.datiProgetto.noProgress = (100 * this.datiProgetto.risposteNO) / this.datiProgetto.HITcompletate
         },
         elaboraTempo(nomeVar) {
             if (nomeVar == 'tempoMax') {
@@ -432,8 +463,7 @@ export default {
                 } else if (this.datiProgetto.autoApproval < 1440) {
                     this.datiProgetto.autoApproval = this.datiProgetto.autoApproval / 60 + ' ore'
                 } else {
-                    this.datiProgetto.autoApproval =
-                        this.datiProgetto.autoApproval / 1440 + ' giorni'
+                    this.datiProgetto.autoApproval = this.datiProgetto.autoApproval / 1440 + ' giorni'
                 }
             }
         },
@@ -461,5 +491,19 @@ export default {
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
+}
+.tooltip .tooltip-text {
+    visibility: hidden;
+    text-align: center;
+    padding: 2px 6px;
+    z-index: 100;
+    left: 0;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+    transition-delay: 0.15s;
+}
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 85%;
 }
 </style>
