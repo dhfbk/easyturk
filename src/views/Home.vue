@@ -1,26 +1,9 @@
 <template>
     <div class="home mx-8 sm:mt-2 md:mx-16 pb-6">
         <p class="text-3xl sm:text-5xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
-        <modalEliminazione
-            v-if="modalElim"
-            @deleteModal="deleteModal"
-            @deleted="deleted"
-            :id="modalId"
-        />
-        <modalUpload
-            v-if="modalStd"
-            @uploaded="uploaded"
-            @uploadModal="uploadModal"
-            :type="'std'"
-            :id="modalId"
-        />
-        <modalUpload
-            v-if="modalGld"
-            @uploaded="uploaded"
-            @uploadModal="uploadModal"
-            :type="'gld'"
-            :id="modalId"
-        />
+        <modalEliminazione v-if="modalElim" @deleteModal="deleteModal" @deleted="deleted" :id="modalId" />
+        <modalUpload v-if="modalStd" @uploaded="uploaded" @uploadModal="uploadModal" :type="'std'" :id="modalId" />
+        <modalUpload v-if="modalGld" @uploaded="uploaded" @uploadModal="uploadModal" :type="'gld'" :id="modalId" />
         <div class="mb-6">
             <div class="flex content-center flex-col sm:flex-row px-4">
                 <svg style="width:24px;" viewBox="0 0 24 24">
@@ -31,10 +14,11 @@
                 <h2 class="text-lg font-semibold ml-1 tracking-tight text-gray-800">Projects</h2>
             </div>
             <div class="my-1 mx-2 p-2 flex items-center flex-wrap">
-                <div class="hidden w-3/5 md:flex text-center items-center flex-wrap text-lg">
-                    <span class="w-1/3 font-light">Project Id</span>
-                    <span class="w-1/3 font-light">Title</span>
-                    <span class="hidden lg:block w-1/3 font-light">Date</span>
+                <div class="hidden w-2/3 md:flex text-center items-center flex-wrap text-lg">
+                    <span class="w-1/4 font-light">Project Id</span>
+                    <span class="w-1/4 font-light">Title</span>
+                    <span class="hidden lg:block w-1/4 font-light">Created</span>
+                    <span class="hidden xl:block w-1/4 font-light">Last edited</span>
                 </div>
             </div>
             <div class="w-full flex flex-col justify-center" v-if="loading">
@@ -45,9 +29,7 @@
                     <div
                         class="rounded border-4 border-dashed shadow-md my-2 mx-2 p-2 flex items-center flex-wrap bg-white relative"
                     >
-                        <div
-                            class="flex mx-2 contenutoPrj w-full font-bold text-center items-center flex-wrap"
-                        >
+                        <div class="flex mx-2 contenutoPrj w-full font-bold text-center items-center flex-wrap">
                             No projects
                             <svg style="width:24px;height:24px" class="ml-2" viewBox="0 0 24 24">
                                 <path
@@ -58,28 +40,19 @@
                         </div>
                         <div class="font-light mx-2">
                             Your projects will be shown here. You can create a new project
-                            <router-link
-                                to="create"
-                                class="font-normal text-primary hover:underline"
-                                >here</router-link
+                            <router-link to="create" class="font-normal text-primary hover:underline">here</router-link
                             >.
                         </div>
                     </div>
                 </div>
                 <div v-else>
                     <div v-for="i in projects" :key="i.id" class="w-full mx-auto relative">
-                        <projectListItem
-                            :projectData="i"
-                            @deleteThis="deleteModal"
-                            @upload="uploadModal"
-                        />
+                        <projectListItem :projectData="i" @deleteThis="deleteModal" @upload="uploadModal" />
                     </div>
                 </div>
             </div>
         </div>
-        <div
-            class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center"
-        >
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center">
             <!--
             <div class="rounded shadow-md m-2 p-4 col-span-3 row-span-3 bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
@@ -112,9 +85,7 @@
                 >
                     <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
                 </svg>
-                <p class="text-black font-light text-4xl m-1 text-center" v-else>
-                    ${{ userInfo.balance }}
-                </p>
+                <p class="text-black font-light text-4xl m-1 text-center" v-else>${{ userInfo.balance }}</p>
             </div>
             <div class="rounded shadow-md m-2 p-2 flex flex-col justify-around bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
@@ -178,10 +149,7 @@ export default {
         // },
         getData() {
             axios
-                .all([
-                    axios.get(this.APIURL + '?action=listProjects'),
-                    axios.get(this.APIURL + '?action=getUserInfo'),
-                ])
+                .all([axios.get(this.APIURL + '?action=listProjects'), axios.get(this.APIURL + '?action=getUserInfo')])
                 .then(
                     axios.spread((...responses) => {
                         this.projects = responses[0].data.values
@@ -189,6 +157,7 @@ export default {
                         this.$emit('sandbox', this.userInfo.use_sandbox)
                         console.log(responses[0], responses[1])
                         this.loading = false
+                        console.log(this.projects)
                     })
                 )
                 .catch(errors => {

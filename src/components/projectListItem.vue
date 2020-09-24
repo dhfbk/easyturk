@@ -1,9 +1,7 @@
 <template>
     <div class="rounded shadow-md my-2 mx-2 p-2 flex items-center flex-wrap bg-white relative">
-        <div class="w-1/2 md:w-3/5 flex contenutoPrj text-center items-center flex-wrap">
-            <div
-                class="flex flex-col w-1/2 md:w-1/3 justify-center text-center flex-wrap my-1 sm:my-0"
-            >
+        <div class="w-1/2 md:w-2/3 flex contenutoPrj text-center items-center flex-wrap">
+            <div class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold tracking-tight">Project Id:</p>
                 <router-link
                     :to="{
@@ -15,20 +13,20 @@
                     <p>{{ projectData.id }}</p>
                 </router-link>
             </div>
-            <div
-                class="flex flex-col w-1/2 md:w-1/3 justify-center text-center flex-wrap my-1 sm:my-0"
-            >
+            <div class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold tracking-tight">Title:</p>
                 <p class>{{ projectData.title }}</p>
             </div>
-            <div
-                class="hidden lg:flex flex-col w-1/3 justify-center text-center flex-wrap my-1 sm:my-0"
-            >
-                <p class="block md:hidden text-md font-bold tracking-tight">Date:</p>
+            <div class="hidden lg:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+                <p class="block md:hidden text-md font-bold tracking-tight">Created:</p>
                 <p class>{{ date }}</p>
             </div>
+            <div class="hidden xl:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+                <p class="block md:hidden text-md font-bold tracking-tight">Last edited:</p>
+                <p class>{{ lastEdited }}</p>
+            </div>
         </div>
-        <span class="flex-grow flex justify-end w-1/2 md:w-2/5">
+        <span class="flex-grow flex justify-end w-1/2 md:w-1/4">
             <button
                 class="ripple-primary relative tooltip bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
             >
@@ -40,7 +38,8 @@
                 </svg>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
-                >Next Status</span>
+                    >Next Status</span
+                >
             </button>
 
             <button
@@ -55,7 +54,8 @@
                 </svg>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
-                >Upload standard csv</span>
+                    >Upload standard csv</span
+                >
             </button>
             <button
                 @click="upload('gld')"
@@ -69,7 +69,8 @@
                 </svg>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
-                >Upload gold csv</span>
+                    >Upload gold csv</span
+                >
             </button>
             <button
                 @click="upload('gld')"
@@ -83,7 +84,8 @@
                 </svg>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
-                >Edit</span>
+                    >Edit</span
+                >
             </button>
             <button
                 @click="deleteItem()"
@@ -98,19 +100,15 @@
                 <!-- <span class="ml-1">Gold</span> -->
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
-                >Delete</span>
+                    >Delete</span
+                >
             </button>
             <span v-click-outside="hide" class="block md:hidden flex align-center">
                 <button
                     class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded"
                     @click="dropdown = !dropdown"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        width="24"
-                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                         <path d="M0 0h24v24H0z" fill="none" />
                         <path
                             d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
@@ -125,32 +123,38 @@
                         <a
                             @click="upload('std')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md xs:hidden"
-                        >Next status</a>
+                            >Next status</a
+                        >
                         <a
                             @click="upload('std')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md sm:hidden"
-                        >Upload data</a>
+                            >Upload data</a
+                        >
                         <a
                             @click="upload('gld')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white sm:hidden"
-                        >Upload Gold</a>
+                            >Upload Gold</a
+                        >
                         <router-link
                             :to="{
                                 name: 'edit',
                                 params: { projectId: projectData.id },
                             }"
                             class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white sm:rounded-t-md"
-                        >Edit</router-link>
+                            >Edit</router-link
+                        >
                         <a
                             @click="deleteItem()"
                             class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
-                        >Delete</a>
+                            >Delete</a
+                        >
                     </div>
                 </transition>
             </span>
             <button
                 class="bg-white ripple-light py-2 px-2 m-1 rounded focus:outline-none"
                 @click="isOpen = !isOpen"
+                v-if="status == 3"
             >
                 <svg
                     class="transition duration-300 ease-in-out"
@@ -165,11 +169,13 @@
                     <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
                 </svg>
             </button>
-            <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1" v-if="isTherePending">
+            <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span
-                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"
-                ></span>
-                <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
+                    class="relative inline-flex justify-center items-center rounded-full h-3 w-3 bg-blue-500 text-xs text-white"
+                >
+                    <!-- {{ status }} -->
+                </span>
             </span>
         </span>
         <transition name="slide-toggle">
@@ -248,8 +254,9 @@ export default {
             myWidth: 0,
             dropdown: false,
             refreshIcon: false,
-            isTherePending: false,
             date: '',
+            lastEdited: '',
+            status: '',
         }
     },
     created() {
@@ -258,8 +265,10 @@ export default {
         //for (let i = 0; i < this.projectData.length; i++) {}
         //controllare con un loop se ci sono HIT che attendono review
         //se ci sono isTherePending = true
-        this.isTherePending = true
+        // this.isTherePending = true
         this.date = new Date(this.projectData.created_at).toLocaleDateString()
+        this.lastEdited = this.projectData.updated_at
+        this.status = this.projectData.status
     },
     methods: {
         setPieSize() {
