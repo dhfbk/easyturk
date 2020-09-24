@@ -24,57 +24,58 @@
         </div>
         <span class="flex-grow flex justify-end w-2/5">
             <button
-                class="tooltip relative transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:inline-block"
+                class="ripple-primary relative tooltip bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden sm:flex"
             >
                 <svg style="width:24px;" viewBox="0 0 24 24">
-                    <path fill="white" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
+                    <path
+                        fill="white"
+                        d="M18.4,10.6C16.55,9 14.15,8 11.5,8C6.85,8 2.92,11.03 1.54,15.22L3.9,16C4.95,12.81 7.95,10.5 11.5,10.5C13.45,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z"
+                    />
                 </svg>
                 <span
-                    class="tooltip-text bg-white border rounded border-gray-100 text-gray-700 -mt-16 -ml-2"
-                >Publish</span>
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+                    >Next Status</span
+                >
             </button>
 
             <button
                 @click="upload('std')"
-                class="tooltip relative bg-gray-300 hover:bg-gray-400 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden xl:flex flex-row"
+                class="tooltip ripple-light relative bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden xl:flex flex-row"
             >
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path
                         fill="rgba(26, 32, 44, 1)"
-                        d="M14,13V17H10V13H7L12,8L17,13M19.35,10.03C18.67,6.59 15.64,4 12,4C9.11,4 6.6,5.64 5.35,8.03C2.34,8.36 0,10.9 0,14A6,6 0 0,0 6,20H19A5,5 0 0,0 24,15C24,12.36 21.95,10.22 19.35,10.03Z"
+                        d="M20,6A2,2 0 0,1 22,8V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4H10L12,6H20M10.75,13H14V17H16V13H19.25L15,8.75"
                     />
                 </svg>
-                <span class="ml-1">Standard</span>
+                <!-- <span class="ml-1">Standard</span> -->
                 <span
-                    class="tooltip-text bg-white border rounded border-gray-100 text-gray-700 -mt-16"
-                >Upload standard csv</span>
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+                    >Upload standard csv</span
+                >
             </button>
             <button
                 @click="upload('gld')"
-                class="tooltip relative bg-gray-300 hover:bg-gray-400 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden xl:flex flex-row"
+                class="tooltip ripple-light relative bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden xl:flex flex-row"
             >
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path
                         fill="rgba(26, 32, 44, 1)"
-                        d="M14,13V17H10V13H7L12,8L17,13M19.35,10.03C18.67,6.59 15.64,4 12,4C9.11,4 6.6,5.64 5.35,8.03C2.34,8.36 0,10.9 0,14A6,6 0 0,0 6,20H19A5,5 0 0,0 24,15C24,12.36 21.95,10.22 19.35,10.03Z"
+                        d="M1 22L2.5 17H9.5L11 22H1M13 22L14.5 17H21.5L23 22H13M6 15L7.5 10H14.5L16 15H6M23 6.05L19.14 7.14L18.05 11L16.96 7.14L13.1 6.05L16.96 4.96L18.05 1.1L19.14 4.96L23 6.05Z"
                     />
                 </svg>
-                <span class="ml-1">Gold</span>
+                <!-- <span class="ml-1">Gold</span> -->
                 <span
-                    class="tooltip-text bg-white border rounded border-gray-100 text-gray-700 -mt-16"
-                >Upload gold csv</span>
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+                    >Upload gold csv</span
+                >
             </button>
             <span v-click-outside="hide" class="flex align-center">
                 <button
-                    class="py-2 px-2 m-1 focus:outline-none hover:bg-gray-300 bg-white rounded"
+                    class="ripple-light py-2 px-2 m-1 focus:outline-none  bg-white rounded"
                     @click="dropdown = !dropdown"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        width="24"
-                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                         <path d="M0 0h24v24H0z" fill="none" />
                         <path
                             d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
@@ -88,33 +89,35 @@
                     >
                         <a
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md sm:hidden"
-                        >Publish batch</a>
+                            >Next Status</a
+                        >
                         <a
                             @click="upload('std')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md xl:hidden"
-                        >Upload data</a>
+                            >Upload data</a
+                        >
                         <a
                             @click="upload('gld')"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md xl:hidden"
-                        >Upload Gold</a>
+                            >Upload Gold</a
+                        >
                         <router-link
                             :to="{
                                 name: 'edit',
                                 params: { projectId: projectData.id },
                             }"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md"
-                        >Edit</router-link>
+                            >Edit</router-link
+                        >
                         <a
                             @click="deleteItem()"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
-                        >Delete</a>
+                            >Delete</a
+                        >
                     </div>
                 </transition>
             </span>
-            <button
-                class="bg-white hover:bg-gray-300 py-2 px-2 m-1 rounded focus:outline-none"
-                @click="isOpen = !isOpen"
-            >
+            <button class="bg-white ripple-light py-2 px-2 m-1 rounded focus:outline-none" @click="isOpen = !isOpen">
                 <svg
                     class="transition duration-300 ease-in-out"
                     :class="{ 'transform  rotate-180': isOpen }"
@@ -284,11 +287,14 @@ export default {
     visibility: hidden;
     text-align: center;
     padding: 2px 6px;
-    position: absolute;
     z-index: 100;
     left: 0;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+    transition-delay: 0.15s;
 }
 .tooltip:hover .tooltip-text {
     visibility: visible;
+    opacity: 85%;
 }
 </style>

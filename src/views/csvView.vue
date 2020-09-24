@@ -35,7 +35,7 @@
             <button
                 @click="page--"
                 v-if="totalNum > numPerPage && page >= 1"
-                class="bg-gray-300 sm:w-48 w-32 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
+                class="ripple-light sm:w-48 w-32 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
             >
                 Previous
             </button>
@@ -56,7 +56,7 @@
             <button
                 @click="page++"
                 v-if="totalNum > numPerPage && page < pageNum"
-                class="bg-gray-300 sm:w-48 w-32 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
+                class="ripple-light sm:w-48 w-32 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
             >
                 Next
             </button>

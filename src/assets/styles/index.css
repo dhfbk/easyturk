@@ -1,8 +1,8 @@
-@import "tailwindcss/base";
+@import 'tailwindcss/base';
 
-@import "tailwindcss/components";
+@import 'tailwindcss/components';
 
-@import "tailwindcss/utilities";
+@import 'tailwindcss/utilities';
 
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap');
 * {
@@ -24,4 +24,43 @@
 .slide-toggle-leave {
     max-height: 200px;
     overflow: hidden;
+}
+
+.ripple-primary {
+    background-position: center;
+    transition: background 0.5s;
+}
+.ripple-primary:hover {
+    background: #0077ce radial-gradient(circle, transparent 1%, #0077ce 1%) center/15000%;
+}
+.ripple-primary:active {
+    background-color: #6eb9f7;
+    background-size: 100%;
+    transition: background 0s;
+}
+
+.ripple-light {
+    background-position: center;
+    transition: background 0.5s;
+}
+.ripple-light:hover {
+    background: #e2e8f0 radial-gradient(circle, transparent 1%, #e2e8f0 1%) center/15000%;
+}
+.ripple-light:active {
+    background-color: #ffffff;
+    background-size: 100%;
+    transition: background 0s;
+}
+
+.ripple-outlined {
+    background-position: center;
+    transition: background 0.5s;
+}
+.ripple-outlined:hover {
+    background: #0068b4 radial-gradient(circle, transparent 1%, #0068b4 1%) center/15000%;
+}
+.ripple-outlined:active {
+    background-color: #6eb9f7;
+    background-size: 100%;
+    transition: background 0s;
 }
