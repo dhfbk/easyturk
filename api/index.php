@@ -96,6 +96,7 @@ switch ($Action) {
     case "getData":
     case "getUserInfo":
     case "getProjectInfo":
+    case "updateProjectStatus":
 
         // if (!$_SESSION['Admin']) {
         //     $ret['result'] = "ERR";
@@ -145,26 +146,37 @@ switch ($Action) {
                 }
                 $r = $DB->fetch();
 
-                $query = "SELECT line_text FROM file_lines
-                    WHERE file_id = '{$r['id']}'";
-                if (!$num = $DB->querynum($query)) {
-                    $ret['result'] = "ERR";
-                    $ret['error'] = $DB->get_error();
-                    break;
-                }
-
-                $query = "SELECT line_text FROM file_lines
-                    WHERE file_id = '{$r['id']}'
-                    ORDER BY id
+                $query = "SELECT l.line_text, GROUP_CONCAT(c.cluster_index) cluster_index
+                    FROM file_lines l
+                    LEFT JOIN clusters c ON c.line_id = l.id
+                    LEFT JOIN project_files f ON f.id = l.file_id
+                    WHERE f.deleted = '0' AND f.project_id = '{$project['id']}' AND f.is_gold = '$isGold'
+                    GROUP BY l.id
                     LIMIT $offset, $howMany";
+
+                // $query = "SELECT line_text FROM file_lines
+                //     WHERE file_id = '{$r['id']}'";
+                // if (!$num = $DB->querynum($query)) {
+                //     $ret['result'] = "ERR";
+                //     $ret['error'] = $DB->get_error();
+                //     break;
+                // }
+
+                // $query = "SELECT line_text FROM file_lines
+                //     WHERE file_id = '{$r['id']}'
+                //     ORDER BY id
+                //     LIMIT $offset, $howMany";
                 $DB->query($query);
 
                 $data = array();
+                $cluster_indexes = array();
                 while ($row = $DB->fetch()) {
                     $data[] = unserialize($row['line_text']);
+                    $cluster_indexes[] = $row['cluster_index'];
                 }
                 $ret['result'] = "OK";
                 $ret['data'] = $data;
+                $ret['cluster_indexes'] = $cluster_indexes;
                 $ret['num'] = $num;
                 $ret['filename'] = $r['filename'];
                 $ret['fields'] = unserialize($r['fields']);
@@ -302,7 +314,8 @@ switch ($Action) {
                 break;
 
             case "listProjects":
-                $query = "SELECT * FROM projects WHERE deleted = 0";
+                $query = "SELECT * FROM projects
+                    WHERE deleted = 0 AND user_id = '{$UserInfo['id']}'";
                 $res = $mysqli->query($query);
                 $ret['result'] = "OK";
                 $ret['values'] = $res->fetch_all(MYSQLI_ASSOC);
@@ -318,20 +331,175 @@ switch ($Action) {
                 $ret['result'] = "OK";
                 break;
 
+            case "updateProjectStatus":
+                $r = find("projects", $_REQUEST['id'], "Project not found");
+
+                $toStatus = $_REQUEST['toStatus'];
+                $params = $r['params'];
+
+                switch ($toStatus) {
+                    case "0":
+                        if ($r['status'] != 1) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Cannot proceed to status 0 for a project with status {$r['status']}";
+                            break;
+                        }
+
+                        $query = "UPDATE `clusters` c
+                            LEFT JOIN file_lines l ON l.id = c.line_id
+                            LEFT JOIN project_files f ON f.id = l.file_id
+                            SET c.deleted = 1
+                            WHERE c.deleted = 0 AND f.project_id = '{$r['id']}'";
+                        $DB->query($query);
+
+                        $DB->queryupdate("projects", array("status" => 0), array("id" => $r['id']));
+                        $ret['result'] = "OK";
+
+                        break;
+
+                    case "1":
+
+                        $goldSize = $_REQUEST['goldSize'];
+                        $deleteExceedingValues = boolval($_REQUEST['deleteExceedingValues']);
+                        $shuffleGold = boolval($_REQUEST['shuffleGold']);
+                        $shuffleData = boolval($_REQUEST['shuffleData']);
+
+                        if ($r['status'] != 0) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Cannot proceed to status 1 for a project with status {$r['status']}";
+                            break;
+                        }
+                        if (!preg_match("/[0-9]+/", $goldSize)) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Invalid gold size";
+                            break;
+                        }
+                        if ($goldSize >= $params) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Gold size must be less than the number of params";
+                            break;
+                        }
+
+                        $dataBunch = $params - $goldSize;
+
+                        $goldData = array();
+                        $trainData = array();
+                        $query = "SELECT l.line_text, f.is_gold, l.id
+                            FROM file_lines l
+                            LEFT JOIN project_files f ON l.file_id = f.id
+                            WHERE f.project_id = '{$r['id']}' AND f.deleted = '0'
+                            ORDER BY l.id";
+                        $DB->query($query);
+                        while ($row = $DB->fetch()) {
+                            if ($row['is_gold']) {
+                                $goldData[] = $row;
+                            }
+                            else {
+                                $trainData[] = $row;
+                            }
+                        }
+
+                        if (!count($trainData)) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Project has no data";
+                            break;
+                        }
+                        if (!count($goldData) && $goldSize > 0) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Project has no gold data, but gold data is needed for the task";
+                            break;
+                        }
+
+                        if ($shuffleData) {
+                            shuffle($trainData);
+                        }
+                        if ($shuffleGold) {
+                            shuffle($goldData);
+                        }
+
+                        $remain = count($trainData) % $dataBunch;
+                        if ($deleteExceedingValues) {
+                            for ($i = 0; $i < $remain; $i++) {
+                                array_pop($trainData);
+                            }
+                        }
+                        else {
+                            for ($i = 0; $i < $dataBunch - $remain; $i++) {
+                                $trainData[] = $trainData[$i];
+                            }
+                        }
+
+                        $DB->startTransaction();
+                        $success = true;
+
+                        $goldIndex = 0;
+                        for ($i = 0; $i < count($trainData); $i += $dataBunch) {
+                            $clusterIndex = floor($i / 7) + 1;
+                            for ($j = 0; $j < $dataBunch; $j++) {
+                                $index = $i + $j;
+                                $data = array();
+                                $data['cluster_index'] = $clusterIndex;
+                                $data['line_id'] = $trainData[$index]['id'];
+                                if (!$DB->queryinsert("clusters", $data)) {
+                                    $success = false;
+                                }
+
+                                // print("T{$trainData[$index]['id']}\n");
+                            }
+                            for ($j = 0; $j < $goldSize; $j++) {
+                                $index = $goldIndex++ % count($goldData);
+                                $data = array();
+                                $data['cluster_index'] = $clusterIndex;
+                                $data['line_id'] = $goldData[$index]['id'];
+                                if (!$DB->queryinsert("clusters", $data)) {
+                                    $success = false;
+                                }
+
+                                // print("G{$goldData[$index]['id']}\n");
+                            }
+                        }
+
+                        if (!$DB->queryupdate("projects", array("status" => 1), array("id" => $r['id']))) {
+                            $success = false;
+                        }
+                        if (!$success) {
+                            $DB->rollbackTransaction();
+                            $ret['result'] = "ERR";
+                            $ret['error'] = $DB->get_error();
+                            break;
+                        }
+
+                        $DB->commitTransaction();
+                        $ret['result'] = "OK";
+
+                        break;
+
+                    default:
+                        $ret['result'] = "ERR";
+                        $ret['error'] = "Unknown status";
+                }
+                break;
+
             case "getProjectInfo":
                 $r = find("projects", $_REQUEST['id'], "Project not found");
 
                 $ret['issues'] = array();
-                $hasData = false;
-                $hasGold = false;
-                $query = "SELECT * FROM project_files
-                    WHERE project_id = '{$r['id']}' AND deleted = '0' AND is_gold = '0'";
-                if ($DB->querynum($query)) {
-                    $hasData = true;
-                }
-                if (!$hasData) {
+                $numData = false;
+                $numGold = false;
+                $query = "SELECT * FROM file_lines l
+                    LEFT JOIN project_files f ON l.file_id = f.id
+                    WHERE f.project_id = '{$r['id']}' AND f.deleted = '0' AND f.is_gold = '0'";
+                $numData = $DB->querynum($query);
+                if (!$numData) {
                     $ret['issues'][] = "Training file missing";
                 }
+                $query = "SELECT * FROM file_lines l
+                    LEFT JOIN project_files f ON l.file_id = f.id
+                    WHERE f.project_id = '{$r['id']}' AND f.deleted = '0' AND f.is_gold = '1'";
+                $numGold = $DB->querynum($query);
+
+                $ret['numGold'] = $numGold;
+                $ret['numData'] = $numData;
 
                 $ret['result'] = "OK";
                 $ret['values'] = $r;
@@ -352,7 +520,15 @@ switch ($Action) {
                 $r = NULL;
                 if ($_REQUEST['id'] != 0) {
                     $r = find("projects", $_REQUEST['id'], "Project not found");
+                    if ($r['status'] > 1) {
+                        $ret['result'] = "ERR";
+                        $ret['error'] = "A project with status {$ret['status']} cannot be modified";
+                        break;
+                    }
                 }
+
+                // Important to avoid that malicious $_REQUEST indexes
+                // are added to the SQL insert statement
                 $data = array();
                 foreach ($fields as $field) {
                     $data[$field] = $_REQUEST[$field];
@@ -378,14 +554,35 @@ switch ($Action) {
                         break 2;
                     }
                 }
+                if ($data['params'] < 1) {
+                    $ret['result'] = "ERR";
+                    $ret['error'] = "Invalid number of params";
+                    break;
+                }
 
-                // $expiry = strtotime($data['expiry']);
-                // if ($expiry === false) {
-                //     $ret['result'] = "ERR";
-                //     $ret['error'] = "Field '$field' must be a date/time (format 'Y-m-d h:m:s')";
-                //     break;
-                // }
-                // $data['expiry'] = date('Y-m-d H:i:s', $expiry);
+                // A fake HIT is created to get information about the layout
+                try {
+                    $result = $mTurk->createHIT([
+                        "MaxAssignments" => 3,
+                        "LifetimeInSeconds" => 0,
+                        "Reward" => "0",
+                        "Title" => "Title",
+                        "Description" => "Description",
+                        "HITLayoutId" => $data['layout_id'],
+                        "AssignmentDurationInSeconds" => 30
+                    ]);
+                } catch (Exception $e) {
+                    $msg = $e->getMessage();
+                    $ret['debug']['layout_result'] = $msg;
+                    if (preg_match("/Missing parameter names: ([^.]*)\./", $msg, $matches)) {
+                        $data['layout_fields'] = str_replace(",", ", ", $matches[1]);
+                    }
+                    else {
+                        $ret['result'] = "ERR";
+                        $ret['error'] = "Invalid layout ID";
+                        break;
+                    }
+                }
 
                 if ($r === NULL) {
                     $DB->queryinsert("projects", $data);

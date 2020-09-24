@@ -16,13 +16,22 @@ function loadOptions() {
 
 function find($table, $id, $text) {
 	global $mysqli;
+	global $UserInfo;
 	
 	$stmt_up = $mysqli->prepare("SELECT * FROM {$table} WHERE id = ?");
 	$stmt_up->bind_param("s", $id);
 	$stmt_up->execute();
 	$r = $stmt_up->get_result();
 	if ($r->num_rows) {
-		return $r->fetch_assoc();
+		$row = $r->fetch_assoc();
+		if (isset($row['user_id']) && $UserInfo['id'] != $row['user_id']) {
+			$ret = array();
+		    $ret['result'] = "ERR";
+		    $ret['error'] = $text;
+			echo json_encode($ret);
+			exit();
+		}
+		return $row;
 	}
 
 	$ret = array();
