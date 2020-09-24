@@ -29,18 +29,49 @@
                     class="tooltip ripple-outlined hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
-                        <path d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
+                        <path
+                            d="M18.4,10.6C16.55,9 14.15,8 11.5,8C6.85,8 2.92,11.03 1.54,15.22L3.9,16C4.95,12.81 7.95,10.5 11.5,10.5C13.45,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z"
+                        />
                     </svg>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
-                        >Publish</span
-                    >
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
+                    >Publish</span>
+                </button>
+                <router-link
+                    :to="{
+                                    name: 'edit',
+                                    params: { projectId: datiProgetto.id },
+                                }"
+                    class="tooltip relative ripple-outlined hidden lg:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
+                >
+                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                        <path
+                            d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+                        />
+                    </svg>
+                    <span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
+                    >Edit</span>
+                </router-link>
+                <button
+                    @click="deleteModal()"
+                    type="submit"
+                    class="tooltip relative ripple-outlined hidden lg:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
+                >
+                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                        <path
+                            d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                        />
+                    </svg>
+                    <span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
+                    >Delete</span>
                 </button>
                 <div class="relative hidden sm:block">
                     <button
                         @click="open('results')"
                         type="submit"
-                        class="tooltip ripple-outlined hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white  focus:outline-none h-full"
+                        class="tooltip ripple-outlined hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white focus:outline-none h-full mr-2"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -48,9 +79,8 @@
                             />
                         </svg>
                         <span
-                            class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
-                            >Results</span
-                        >
+                            class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
+                        >Results</span>
                     </button>
                     <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
                         <span
@@ -62,7 +92,7 @@
                 <span v-click-outside="hide" class="flex align-center">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
-                        class="py-2 px-2 ripple-outlined bg-transparent rounded-md border-2 ml-2 border-solid border-primary  hover:text-white focus:outline-none"
+                        class="py-2 px-2 ripple-outlined bg-transparent rounded-md border-2 ml-2 border-solid border-primary hover:text-white focus:outline-none"
                     >
                         <svg
                             class="transition duration-300 ease-in-out fill-current"
@@ -85,41 +115,34 @@
                         >
                             <a
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                >Publish</a
-                            >
+                            >Publish</a>
                             <router-link
                                 to="results"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Results</router-link
-                            >
+                            >Results</router-link>
                             <a
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary sm:rounded-t-md hover:text-gray-100"
+                                class="cursor-pointer block lg:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary sm:rounded-t-md hover:text-gray-100"
                                 @click="deleteModal()"
-                                >Delete</a
-                            >
+                            >Delete</a>
                             <router-link
                                 :to="{
                                     name: 'edit',
                                     params: { projectId: datiProgetto.id },
                                 }"
-                                class="block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Edit</router-link
-                            >
+                                class="block lg:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
+                            >Edit</router-link>
                             <a
                                 @click="uploadModal(['std'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Base CSV upload</a
-                            >
+                            >Base CSV upload</a>
                             <a
                                 @click="uploadModal(['gld'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Gold CSV upload</a
-                            >
+                            >Gold CSV upload</a>
                             <a
                                 @click="uploadModal(['hit'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
-                                >Load HITs</a
-                            >
+                            >Load HITs</a>
                         </div>
                     </transition>
                 </span>

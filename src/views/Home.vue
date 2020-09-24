@@ -34,7 +34,7 @@
                 <div class="hidden w-3/5 md:flex text-center items-center flex-wrap text-lg">
                     <span class="w-1/3 font-light">Project Id</span>
                     <span class="w-1/3 font-light">Title</span>
-                    <span class="w-1/3 font-light">Date</span>
+                    <span class="hidden lg:block w-1/3 font-light">Date</span>
                 </div>
             </div>
             <div class="w-full flex flex-col justify-center" v-if="loading">

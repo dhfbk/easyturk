@@ -28,7 +28,7 @@
 
 .ripple-primary {
     background-position: center;
-    transition: background 0.5s;
+    transition: background 0.25s;
 }
 .ripple-primary:hover {
     background: #0077ce radial-gradient(circle, transparent 1%, #0077ce 1%) center/15000%;
@@ -41,7 +41,7 @@
 
 .ripple-light {
     background-position: center;
-    transition: background 0.5s;
+    transition: background 0.25s;
 }
 .ripple-light:hover {
     background: #e2e8f0 radial-gradient(circle, transparent 1%, #e2e8f0 1%) center/15000%;
@@ -54,7 +54,7 @@
 
 .ripple-outlined {
     background-position: center;
-    transition: background 0.5s;
+    transition: background 0.25s;
 }
 .ripple-outlined:hover {
     background: #0068b4 radial-gradient(circle, transparent 1%, #0068b4 1%) center/15000%;

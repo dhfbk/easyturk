@@ -1,10 +1,10 @@
 <template>
-    <div class=" flex items-center flex-col lg:w-5/6 mx-auto mt-4">
+    <div class="flex items-center flex-col lg:w-5/6 mx-auto mt-4">
         <p class="text-2xl text-primary mr-auto ml-2">{{ filename }}</p>
         <div class="flex flex-row justify-start mr-auto mb-1 ml-2">
             <p class="text-md my-auto mr-1">Results per page:</p>
             <input
-                class=" appearance-none h-full w-20 m-2 rounded border block appearance-none bg-white border-gray-400 text-gray-700 pl-2 pr-1 py-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="appearance-none h-full w-20 m-2 rounded border block appearance-none bg-white border-gray-400 text-gray-700 pl-2 pr-1 py-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 type="number"
                 id="quantity"
                 name="quantity"
@@ -17,17 +17,17 @@
         <loader :type="'csvData'" v-if="loading" />
         <table v-else class="shadow-md rounded w-full bg-white">
             <thead>
-                <tr class="text-center text-white bg-primary border-b border-grey uppercase tracking-tight">
-                    <th v-for="x in headers" :key="x">
-                        {{ x }}
-                    </th>
+                <tr
+                    class="text-left text-white bg-primary border-b border-grey uppercase tracking-tight"
+                >
+                    <th v-for="x in headers" :key="x">{{ x }}</th>
+                    <th class="hidden sm:block">Cluster indexes</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(x, index) in current" :key="index" class="border-b hover:bg-gray-100">
-                    <td class="p-1" v-for="i in headers.length" :key="i">
-                        {{ x[i - 1] }}
-                    </td>
+                    <td class="p-1" v-for="i in headers.length" :key="i">{{ x[i - 1] }}</td>
+                    <td class="p-1 hidden sm:block">{{ cluster[index] }}</td>
                 </tr>
             </tbody>
         </table>
@@ -36,14 +36,12 @@
                 @click="page--"
                 v-if="totalNum > numPerPage && page >= 1"
                 class="ripple-light sm:w-48 w-32 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
-            >
-                Previous
-            </button>
+            >Previous</button>
             <div v-else></div>
             <p class="text-center">
                 Page
                 <input
-                    class=" appearance-none w-16 m-2 rounded border appearance-none bg-white border-gray-400 text-gray-700 pl-2 pr-1 py-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    class="appearance-none w-16 m-2 rounded border appearance-none bg-white border-gray-400 text-gray-700 pl-2 pr-1 py-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     type="number"
                     name="quantity"
                     min="1"
@@ -57,9 +55,7 @@
                 @click="page++"
                 v-if="totalNum > numPerPage && page < pageNum"
                 class="ripple-light sm:w-48 w-32 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
-            >
-                Next
-            </button>
+            >Next</button>
             <div v-else></div>
         </div>
     </div>
@@ -74,6 +70,7 @@ export default {
     data() {
         return {
             current: [],
+            cluster: [],
             headers: [],
             projectId: this.$route.params.projectId,
             page: 1,
@@ -112,6 +109,7 @@ export default {
                 .then(res => {
                     console.log(res.data)
                     this.current = res.data.data
+                    this.cluster = res.data.cluster_indexes
                     this.headers = res.data.fields
                     this.totalNum = res.data.num
                     this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
@@ -127,12 +125,14 @@ export default {
         page: function() {
             this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
             this.current = []
+            this.cluster = []
             this.update()
         },
         numPerPage: function() {
             this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
             this.page = 1
             this.current = []
+            this.cluster = []
             this.update()
         },
     },
