@@ -27,89 +27,96 @@
             </div>
         </div>
         <span class="flex-grow flex justify-end w-1/2 md:w-1/4">
-            <button
-                class="ripple-primary relative tooltip bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
-            >
-                <svg style="width:24px;" viewBox="0 0 24 24">
-                    <path
-                        fill="white"
-                        d="M18.4,10.6C16.55,9 14.15,8 11.5,8C6.85,8 2.92,11.03 1.54,15.22L3.9,16C4.95,12.81 7.95,10.5 11.5,10.5C13.45,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z"
-                    />
-                </svg>
+            <span class="tooltip relative">
+                <button
+                    class="ripple hover:bg-blue-600  bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
+                >
+                    <svg style="width:24px;" viewBox="0 0 24 24">
+                        <path
+                            fill="white"
+                            d="M18.4,10.6C16.55,9 14.15,8 11.5,8C6.85,8 2.92,11.03 1.54,15.22L3.9,16C4.95,12.81 7.95,10.5 11.5,10.5C13.45,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z"
+                        />
+                    </svg>
+                </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
                     >Next Status</span
-                >
-            </button>
-
-            <button
-                @click="upload('std')"
-                class="tooltip ripple-light relative bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                ></span
             >
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path
-                        fill="rgba(26, 32, 44, 1)"
-                        d="M20,6A2,2 0 0,1 22,8V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4H10L12,6H20M10.75,13H14V17H16V13H19.25L15,8.75"
-                    />
-                </svg>
-                <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+            <span class="tooltip relative">
+                <button
+                    @click="upload('std')"
+                    class="tooltip ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                >
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path
+                            fill="rgba(26, 32, 44, 1)"
+                            d="M20,6A2,2 0 0,1 22,8V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4H10L12,6H20M10.75,13H14V17H16V13H19.25L15,8.75"
+                        />
+                    </svg></button
+                ><span
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
                     >Upload standard csv</span
-                >
-            </button>
-            <button
-                @click="upload('gld')"
-                class="tooltip ripple-light relative bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                ></span
             >
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path
-                        fill="rgba(26, 32, 44, 1)"
-                        d="M1 22L2.5 17H9.5L11 22H1M13 22L14.5 17H21.5L23 22H13M6 15L7.5 10H14.5L16 15H6M23 6.05L19.14 7.14L18.05 11L16.96 7.14L13.1 6.05L16.96 4.96L18.05 1.1L19.14 4.96L23 6.05Z"
-                    />
-                </svg>
-                <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+            <span class="tooltip relative">
+                <button
+                    @click="upload('gld')"
+                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                >
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path
+                            fill="rgba(26, 32, 44, 1)"
+                            d="M1 22L2.5 17H9.5L11 22H1M13 22L14.5 17H21.5L23 22H13M6 15L7.5 10H14.5L16 15H6M23 6.05L19.14 7.14L18.05 11L16.96 7.14L13.1 6.05L16.96 4.96L18.05 1.1L19.14 4.96L23 6.05Z"
+                        />
+                    </svg></button
+                ><span
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1 "
                     >Upload gold csv</span
                 >
-            </button>
-            <button
-                @click="
-                    $router.push({
-                        name: 'edit',
-                        params: {
-                            projectId: projectData.id,
-                        },
-                    })
-                "
-                class="tooltip ripple-light relative bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
-            >
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path
-                        fill="rgba(26, 32, 44, 1)"
-                        d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
-                    />
-                </svg>
+            </span>
+            <span class="tooltip relative">
+                <button
+                    @click="
+                        $router.push({
+                            name: 'edit',
+                            params: {
+                                projectId: projectData.id,
+                            },
+                        })
+                    "
+                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
+                >
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path
+                            fill="rgba(26, 32, 44, 1)"
+                            d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+                        />
+                    </svg>
+                </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
                     >Edit</span
                 >
-            </button>
-            <button
-                @click="deleteItem()"
-                class="tooltip ripple-light relative bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
-            >
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path
-                        fill="rgba(26, 32, 44, 1)"
-                        d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-                    />
-                </svg>
-                <!-- <span class="ml-1">Gold</span> -->
+            </span>
+            <span class="tooltip relative">
+                <button
+                    @click="deleteItem()"
+                    class=" ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
+                >
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path
+                            fill="rgba(26, 32, 44, 1)"
+                            d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                        />
+                    </svg>
+                    <!-- <span class="ml-1">Gold</span> -->
+                </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1 "
                     >Delete</span
                 >
-            </button>
+            </span>
             <span v-click-outside="hide" class="block md:hidden flex align-center">
                 <button
                     class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded"
