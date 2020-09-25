@@ -27,76 +27,104 @@
             :goldDataStatus="datiProgetto.goldCsvStatus"
             @uploadModal="uploadModal"
         />
-        <modalRevert
-            v-if="modalRevert && !loading1"
-            :id="datiProgetto.id"
-            @uploadModal="uploadModal"
-        />
-        <div class="flex justify-between flex-wrap" v-if="!loading1">
+        <modalRevert v-if="modalRevert && !loading1" :id="datiProgetto.id" @uploadModal="uploadModal" />
+        <div class="flex justify-between items-center flex-wrap" v-if="!loading1">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="flex relative">
-                <button
-                    v-if="datiProgetto.status == 1"
-                    type="submit"
-                    class="tooltip relative ripple-outlined hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
-                >
-                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
-                        <path
-                            d="M19,3H14.82C14.25,1.44 12.53,0.64 11,1.2C10.14,1.5 9.5,2.16 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H15V19H5V5H7V7H17V5H19V14H21V5A2,2 0 0,0 19,3M12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5M17,16V22L22,19L17,16M17,11H7V9H17V11M15,15H7V13H15V15Z"
-                        />
-                    </svg>
+                <span class="tooltip relative">
+                    <button
+                        v-if="datiProgetto.status == 1"
+                        type="submit"
+                        class="ripple hidden bg-primary hover:bg-blue-600 sm:flex flex-row items-center py-2 px-4  border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
+                    >
+                        <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M12.89,3L14.85,3.4L11.11,21L9.15,20.6L12.89,3M19.59,12L16,8.41V5.58L22.42,12L16,18.41V15.58L19.59,12M1.58,12L8,5.58V8.41L4.41,12L8,15.58V18.41L1.58,12Z"
+                            />
+                        </svg>
+                    </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
-                    >Set layout</span>
-                </button>
-                <button
-                    v-if="datiProgetto.status == 1"
-                    @click="uploadModal(['revert', ''])"
-                    type="submit"
-                    class="tooltip relative ripple-outlined hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
-                >
-                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
-                        <path
-                            d="M18.4,10.6C16.55,9 14.15,8 11.5,8C6.85,8 2.92,11.03 1.54,15.22L3.9,16C4.95,12.81 7.95,10.5 11.5,10.5C13.45,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z"
-                        />
-                    </svg>
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        >Set layout</span
+                    >
+                </span>
+                <span class="tooltip relative">
+                    <button
+                        v-if="datiProgetto.status == 0"
+                        :disabled="datiProgetto.baseCsvStatus == 0"
+                        :class="{ 'cursor-not-allowed': datiProgetto.baseCsvStatus == 0 }"
+                        @click="uploadModal(['hit', ''])"
+                        type="submit"
+                        class="ripple hidden bg-primary hover:bg-blue-600 sm:flex flex-row items-center py-2 px-4  border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
+                    >
+                        <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M10,2H14A2,2 0 0,1 16,4V6H20A2,2 0 0,1 22,8V13.53C20.94,12.58 19.54,12 18,12A6,6 0 0,0 12,18C12,19.09 12.29,20.12 12.8,21H4C2.89,21 2,20.1 2,19V8C2,6.89 2.89,6 4,6H8V4C8,2.89 8.89,2 10,2M14,6V4H10V6H14Z"
+                            />
+                        </svg>
+                    </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
-                    >Revert HIT settings</span>
-                </button>
-                <button
-                    @click="$router.push({name: 'edit', params: { projectId: datiProgetto.id}})"
-                    type="submit"
-                    class="tooltip relative ripple-outlined hidden lg:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
-                >
-                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
-                        <path
-                            d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
-                        />
-                    </svg>
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        >Create HITs</span
+                    >
+                </span>
+                <span class="tooltip relative">
+                    <button
+                        v-if="datiProgetto.status == 1"
+                        @click="uploadModal(['revert', ''])"
+                        type="submit"
+                        class="ripple hidden sm:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                    >
+                        <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.15,8 12.5,8Z"
+                            />
+                        </svg>
+                    </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
-                    >Edit</span>
-                </button>
-                <button
-                    @click="deleteModal()"
-                    type="submit"
-                    class="tooltip relative ripple-outlined hidden lg:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
-                >
-                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
-                        <path
-                            d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-                        />
-                    </svg>
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        >Revert HIT settings</span
+                    >
+                </span>
+                <span class="tooltip relative">
+                    <button
+                        @click="$router.push({ name: 'edit', params: { projectId: datiProgetto.id } })"
+                        type="submit"
+                        class="ripple hidden sm:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                    >
+                        <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+                            />
+                        </svg>
+                    </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
-                    >Delete</span>
-                </button>
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        >Edit</span
+                    >
+                </span>
+                <span class="tooltip relative">
+                    <button
+                        @click="deleteModal()"
+                        type="submit"
+                        class="ripple hidden sm:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                    >
+                        <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                            />
+                        </svg>
+                    </button>
+                    <span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        >Delete</span
+                    >
+                </span>
                 <div class="relative hidden sm:block" v-if="datiProgetto.status == 3">
                     <button
                         @click="open('results')"
                         type="submit"
-                        class="tooltip ripple-outlined hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white focus:outline-none h-full mr-2"
+                        class="tooltip ripple-outlined hidden sm:flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white focus:outline-none h-full mr-2"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -105,7 +133,8 @@
                         </svg>
                         <span
                             class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
-                        >Results</span>
+                            >Results</span
+                        >
                     </button>
                     <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
                         <span
@@ -117,11 +146,11 @@
                 <span
                     v-click-outside="hide"
                     class="flex align-center"
-                    :class="datiProgetto.status == 0 ? '':'lg:hidden'"
+                    :class="datiProgetto.status == 0 ? '' : 'lg:hidden'"
                 >
                     <button
                         @click="dropdownOpen = !dropdownOpen"
-                        class="py-2 px-2 ripple-outlined bg-transparent rounded-md border-2 ml-2 border-solid border-primary hover:text-white focus:outline-none"
+                        class="ripple hidden hover:bg-primary sm:flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg
                             class="transition duration-300 ease-in-out fill-current"
@@ -145,44 +174,52 @@
                             <a
                                 v-if="datiProgetto.status == 1"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                            >Set layout</a>
+                                >Set layout</a
+                            >
                             <a
                                 v-if="datiProgetto.status == 1"
                                 @click="uploadModal(['revert', ''])"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                            >Revert HIT settings</a>
+                                >Revert HIT settings</a
+                            >
                             <router-link
                                 v-if="datiProgetto.status == 3"
                                 to="results"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                            >Results</router-link>
+                                >Results</router-link
+                            >
                             <a
                                 class="cursor-pointer block lg:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary sm:rounded-t-md hover:text-gray-100"
                                 @click="deleteModal()"
-                            >Delete</a>
+                                >Delete</a
+                            >
                             <router-link
                                 :to="{
                                     name: 'edit',
                                     params: { projectId: datiProgetto.id },
                                 }"
-                                :class="datiProgetto.status == 0 ? '':'rounded-b-md'"
+                                :class="datiProgetto.status == 0 ? '' : 'rounded-b-md'"
                                 class="block lg:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                            >Edit</router-link>
+                                >Edit</router-link
+                            >
                             <a
                                 v-if="datiProgetto.status == 0"
                                 @click="uploadModal(['std'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary lg:rounded-t-md hover:text-gray-100"
-                            >Base CSV upload</a>
+                                >Base CSV upload</a
+                            >
                             <a
                                 v-if="datiProgetto.status == 0"
                                 @click="uploadModal(['gld'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                            >Gold CSV upload</a>
-                            <a
-                                v-if="datiProgetto.status == 0"
+                                >Gold CSV upload</a
+                            >
+                            <!-- <a
+                                v-if="datiProgetto.status == 0 && datiProgetto.baseCsvStatus == 1"
                                 @click="uploadModal(['hit', ''])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
-                            >Load HITs</a>
+                                >Load HITs</a
+                            > -->
                         </div>
                     </transition>
                 </span>
@@ -195,20 +232,21 @@
                 </div>
                 <div v-else>
                     <cardInfo :titoli="titoliCard.titoli1" :dati="datiCard.dati1" />
-                    <cardInfo :titoli="titoliCard.titoli2" :dati="datiCard.dati2" />
                     <cardInfo :titoli="titoliCard.titoli3" :dati="datiCard.dati3" />
+                    <cardInfo :titoli="titoliCard.titoli5" :dati="datiCard.dati5" />
                 </div>
             </div>
             <div class="mx-0 sm:mx-2">
                 <div class="w-full flex flex-col justify-center" v-if="loading1">
-                    <loader :type="'cardInfoVisualizza'" />
-                    <loader :type="'cardAnalyticsVisualizza'" :num="3" />
-                    <loader :type="'cardAnalyticsVisualizza'" :num="2" />
+                    <loader :type="'cardInfoVisualizza'" v-for="n in 2" :key="n" />
+                    <!-- <loader :type="'cardAnalyticsVisualizza'" :num="3" />
+                    <loader :type="'cardAnalyticsVisualizza'" :num="2" /> -->
                 </div>
                 <div v-else>
+                    <cardInfo :titoli="titoliCard.titoli2" :dati="datiCard.dati2" />
                     <cardInfo :titoli="titoliCard.titoli4" :dati="datiCard.dati4" />
-                    <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
-                    <cardAnalytics :dati="datiCardAnalytics.cardAggregate" />
+                    <!-- <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
+                    <cardAnalytics :dati="datiCardAnalytics.cardAggregate" /> -->
                 </div>
             </div>
         </div>
@@ -219,7 +257,7 @@
 import ClickOutside from 'vue-click-outside'
 import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
-import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
+//import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import modalUpload from '../components/modalUpload.vue'
 import loader from '../components/loader.vue'
 import modalHIT from '../components/modalHIT.vue'
@@ -234,7 +272,7 @@ export default {
     components: {
         modalEliminazione,
         cardInfo,
-        cardAnalytics,
+        //cardAnalytics,
         modalUpload,
         loader,
         modalHIT,
@@ -355,34 +393,30 @@ export default {
         },
         //metodo per aprire il link dei vari button
         open(mode) {
-            if (mode == 'results') {
-                this.$router.push({
-                    name: 'results',
-                    params: { projectId: this.datiProgetto.id },
-                })
-            } else if (mode == 'edit') {
-                this.$router.push({
-                    name: 'edit',
-                    params: { projectId: this.datiProgetto.id },
-                })
-            }
+            this.$router.push({
+                name: mode,
+                params: { projectId: this.datiProgetto.id },
+            })
         },
         //metodo che imposta i titoli e i dati da inserire nelle card della pagina
         impostaDatiCard() {
-            this.titoliCard.titoli1 = ['Title', 'Description', 'Keywords', 'Creation date', 'Status']
+            this.titoliCard.titoli1 = ['Title', 'Description', 'Keywords', 'Creation date']
             var status = ''
-            if (this.datiProgetto.status == 0) {
-                status = 'ready to set HITs'
-            }
-            if (this.datiProgetto.status == 1) {
-                status = 'ready to set layout'
+            if ((this.datiProgetto.status == 0) & (this.datiProgetto.baseCsvStatus == 1)) {
+                status =
+                    '<span class="text-green-500">data uploaded.</span><span> Ready to <span class="font-bold text-primary">create HITs.</span></span>'
+            } else if ((this.datiProgetto.status == 0) & (this.datiProgetto.baseCsvStatus == 0)) {
+                status =
+                    '<span class="text-green-500">project created!</span><span> <span class="font-bold text-primary">Upload csv data </span> and  <span class="font-bold text-primary"> csv gold</span> to advance.</span>'
+            } else if (this.datiProgetto.status == 1) {
+                status =
+                    '<span class="text-green-500">HITs created. </span><span>Ready to <span class="font-bold text-primary"> set the layout.</span></span>'
             }
             this.datiCard.dati1 = [
                 this.datiProgetto.titolo,
                 this.datiProgetto.descrizione,
                 this.datiProgetto.keywords,
                 this.datiProgetto.creazione,
-                status,
             ]
             this.titoliCard.titoli2 = [
                 'Ricompensa per ogni assignment',
@@ -402,6 +436,8 @@ export default {
             this.datiCard.dati3 = [this.datiProgetto.layoutID, this.datiProgetto.parametri]
             this.titoliCard.titoli4 = ['Base CSV status', 'Gold CSV status']
             this.datiCard.dati4 = [this.datiProgetto.baseCsv, this.datiProgetto.goldCsv]
+            this.titoliCard.titoli5 = ['Status']
+            this.datiCard.dati5 = [status]
             this.datiCardAnalytics = {
                 cardHIT: {
                     idPrj: this.datiProgetto.id,

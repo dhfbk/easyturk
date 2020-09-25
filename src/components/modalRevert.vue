@@ -18,13 +18,14 @@
                             />
                         </svg>
                     </div>
-                    <div
-                        class="py-2"
-                    >Are you sure you want to revert your changes? You will have to reupload your files and set your golden standard.</div>
+                    <div class="py-2">
+                        Are you sure you want to revert your changes? You will have to reupload your files and set your
+                        golden standard.
+                    </div>
 
                     <div class="ml-auto flex flex-col sm:flex-row">
                         <button
-                            class="flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="revertProject()"
                         >
                             <svg
@@ -32,13 +33,15 @@
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                            </svg>Proceed
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
+                            >Proceed
                         </button>
                         <button
-                            class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-200 focus:outline-none mt-2 sm:mt-0 sm:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 sm:mt-0 sm:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal('close')"
-                        >Cancel</button>
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>
