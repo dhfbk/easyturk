@@ -7,16 +7,17 @@
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <div class="text-gray-900 font-bold text-lg">Confirm action</div>
-                        <svg
-                            class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 18 18"
-                            @click="toggleModal()"
-                        >
-                            <path
-                                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
-                            />
-                        </svg>
+                        <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal()">
+                            <svg
+                                class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 18 18"
+                            >
+                                <path
+                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+                                />
+                            </svg>
+                        </span>
                     </div>
                     <div class="py-2">
                         Are you sure you want to delete the project? This action is irreversible.
@@ -24,7 +25,7 @@
 
                     <div class="ml-auto flex flex-col sm:flex-row">
                         <button
-                            class="flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="deleteProject()"
                         >
                             <svg
@@ -36,7 +37,7 @@
                             >Delete
                         </button>
                         <button
-                            class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-200 focus:outline-none mt-2 sm:mt-0 sm:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 sm:mt-0 sm:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
                         >
                             Cancel

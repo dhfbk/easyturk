@@ -11,14 +11,7 @@
                 xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
                 class="float-left"
             >
-                <g
-                    id="Slices"
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                    sketch:type="MSPage"
-                >
+                <g id="Slices" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
                     <g
                         id="Logotype---Future"
                         sketch:type="MSArtboardGroup"
@@ -87,13 +80,9 @@
         <div class="block sm:hidden float-right ml-2">
             <button
                 @click="toggle()"
-                class="flex items-center mx-0 px-3 py-2 border rounded transition duration-150 ease-in-out text-black border-black hover:text-white hover:border-white focus:outline-none"
+                class="ripple  items-center mx-0 px-3 py-2 border rounded transition duration-150 ease-in-out text-black border-black hover:text-white hover:border-white focus:outline-none"
             >
-                <svg
-                    class="fill-current h-3 w-3"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <title>Menu</title>
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
                 </svg>

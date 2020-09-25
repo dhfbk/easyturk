@@ -7,16 +7,17 @@
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <h2 class="text-gray-900 font-bold text-lg">Choose the file to upload</h2>
-                        <svg
-                            class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 18 18"
-                            @click="toggleModal()"
-                        >
-                            <path
-                                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
-                            />
-                        </svg>
+                        <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal()">
+                            <svg
+                                class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 18 18"
+                            >
+                                <path
+                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+                                />
+                            </svg>
+                        </span>
                     </div>
                     <p class="py-2" v-if="type == 'std'">File upload for the base csv document</p>
                     <p class="py-2" v-else>File upload for the golden standard csv document</p>
@@ -106,7 +107,7 @@
                                     </div>
                                     <button
                                         @click="emptyFile"
-                                        class="cursor-pointer w-8 h-8 text-center text-xl transition duration-150 ease-in-out hover:bg-gray-300 focus:bg-gray-400 rounded-full focus:outline-none"
+                                        class="ripple cursor-pointer w-8 h-8 text-center text-xl transition duration-150 ease-in-out hover:bg-gray-300 focus:bg-gray-400 rounded-full focus:outline-none"
                                     >
                                         &times;
                                     </button>
@@ -119,13 +120,13 @@
                     </div>
                     <div class="ml-auto">
                         <button
-                            class="transition duration-150 ease-in-out bg-primary hover:bg-primaryDark text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            class="ripple transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="uploadFile()"
                         >
                             Upload
                         </button>
                         <button
-                            class="transition duration-150 ease-in-out border border-solid border-gray-400 hover:bg-gray-200 focus:outline-none ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
                         >
                             Cancel
@@ -222,6 +223,13 @@ export default {
 </script>
 
 <style scoped>
+progress[value]::-webkit-progress-bar {
+    height: 8px;
+    background-color: #eee;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+    border-radius: 2px;
+}
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 0.2s !important;

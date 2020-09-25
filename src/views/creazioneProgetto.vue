@@ -283,7 +283,7 @@
         <div class="w-full flex justify-end flex-row">
             <button
                 type="submit"
-                class="ripple-outlined py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                class="ripple m-1 hover:bg-primary py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
                 v-if="mode == 'modificaProgetto'"
             >
                 <svg
@@ -292,11 +292,11 @@
                     viewBox="0 0 24 24"
                 >
                     <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
-                >Save changes
+                ><span v-if="!loading">Save changes</span>
             </button>
             <button
                 type="submit"
-                class="ripple-outlined py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                class="ripple m-1 hover:bg-primary py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
                 v-else
             >
                 <svg
@@ -310,7 +310,7 @@
             <button
                 @click="goBack"
                 type="button"
-                class="ripple-light bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none"
+                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none"
             >
                 Cancel
             </button>
