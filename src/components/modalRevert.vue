@@ -66,6 +66,7 @@ export default {
     },
     methods: {
         toggleModal(mode) {
+            //cambiare per inserimento id nella posizione 1 dell'array
             if (mode == 'close') {
                 this.$emit('uploadModal', ['revert', ''])
             } else if (mode == 'reverted') {

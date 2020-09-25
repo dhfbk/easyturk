@@ -1,9 +1,35 @@
 <template>
     <div class="home mx-8 sm:mt-2 md:mx-16 pb-6">
         <p class="text-3xl sm:text-5xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
-        <modalEliminazione v-if="modalElim" @deleteModal="deleteModal" @deleted="deleted" :id="modalId" />
-        <modalUpload v-if="modalStd" @uploaded="uploaded" @uploadModal="uploadModal" :type="'std'" :id="modalId" />
-        <modalUpload v-if="modalGld" @uploaded="uploaded" @uploadModal="uploadModal" :type="'gld'" :id="modalId" />
+        <modalEliminazione
+            v-if="modalElim"
+            @deleteModal="deleteModal"
+            @deleted="deleted"
+            :id="modalId"
+        />
+        <modalUpload
+            v-if="modalStd"
+            @uploaded="uploaded"
+            @uploadModal="uploadModal"
+            :type="'std'"
+            :id="modalId"
+        />
+        <modalUpload
+            v-if="modalGld"
+            @uploaded="uploaded"
+            @uploadModal="uploadModal"
+            :type="'gld'"
+            :id="modalId"
+        />
+        <!--sistemare per i due valori del csv-->
+        <modalHIT
+            v-if="modalHIT"
+            :id="modalId"
+            :baseDataStatus="datiProgetto.baseCsvStatus"
+            :goldDataStatus="datiProgetto.goldCsvStatus"
+            @uploadModal="uploadModal"
+        />
+        <modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />
         <div class="mb-6">
             <div class="flex content-center flex-col sm:flex-row px-4">
                 <svg style="width:24px;" viewBox="0 0 24 24">
@@ -29,9 +55,15 @@
                     <div
                         class="rounded border-4 border-dashed shadow-md my-2 mx-2 p-2 flex items-center flex-wrap bg-white relative"
                     >
-                        <div class="flex mx-2 contenutoPrj w-full font-bold text-center items-center flex-wrap">
+                        <div
+                            class="flex mx-2 contenutoPrj w-full font-bold text-center items-center flex-wrap"
+                        >
                             No projects
-                            <svg style="width:24px;height:24px" class="ml-2" viewBox="0 0 24 24">
+                            <svg
+                                style="width:24px;height:24px"
+                                class="ml-2"
+                                viewBox="0 0 24 24"
+                            >
                                 <path
                                     fill="currentColor"
                                     d="M11.46 10.88L12.88 9.46L15 11.59L17.12 9.46L18.54 10.88L16.41 13L18.54 15.12L17.12 16.54L15 14.41L12.88 16.54L11.46 15.12L13.59 13L11.46 10.88M22 8V18C22 19.11 21.11 20 20 20H4C2.9 20 2 19.11 2 18V6C2 4.89 2.9 4 4 4H10L12 6H20C21.11 6 22 6.9 22 8M20 8H4V18H20V8Z"
@@ -40,19 +72,27 @@
                         </div>
                         <div class="font-light mx-2">
                             Your projects will be shown here. You can create a new project
-                            <router-link to="create" class="font-normal text-primary hover:underline">here</router-link
-                            >.
+                            <router-link
+                                to="create"
+                                class="font-normal text-primary hover:underline"
+                            >here</router-link>.
                         </div>
                     </div>
                 </div>
                 <div v-else>
                     <div v-for="i in projects" :key="i.id" class="w-full mx-auto relative">
-                        <projectListItem :projectData="i" @deleteThis="deleteModal" @upload="uploadModal" />
+                        <projectListItem
+                            :projectData="i"
+                            @deleteThis="deleteModal"
+                            @upload="uploadModal"
+                        />
                     </div>
                 </div>
             </div>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center">
+        <div
+            class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center"
+        >
             <!--
             <div class="rounded shadow-md m-2 p-4 col-span-3 row-span-3 bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
@@ -73,9 +113,9 @@
                             d="M21,18V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V6H12C10.89,6 10,6.9 10,8V16A2,2 0 0,0 12,18M12,16H22V8H12M16,13.5A1.5,1.5 0 0,1 14.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,12A1.5,1.5 0 0,1 16,13.5Z"
                         />
                     </svg>
-                    <h2 class="font-semibold text-lg m-1 tracking-tight w-10/12 text-gray-800">
-                        Account balance
-                    </h2>
+                    <h2
+                        class="font-semibold text-lg m-1 tracking-tight w-10/12 text-gray-800"
+                    >Account balance</h2>
                 </div>
                 <svg
                     class="animate-spin mx-auto my-1"
@@ -85,7 +125,10 @@
                 >
                     <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
                 </svg>
-                <p class="text-black font-light text-4xl m-1 text-center" v-else>${{ userInfo.balance }}</p>
+                <p
+                    class="text-black font-light text-4xl m-1 text-center"
+                    v-else
+                >${{ userInfo.balance }}</p>
             </div>
             <div class="rounded shadow-md m-2 p-2 flex flex-col justify-around bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
@@ -94,9 +137,9 @@
                             d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
                         />
                     </svg>
-                    <h2 class="font-semibold text-lg m-1 tracking-tight text-gray-800">
-                        Reviewable results
-                    </h2>
+                    <h2
+                        class="font-semibold text-lg m-1 tracking-tight text-gray-800"
+                    >Reviewable results</h2>
                 </div>
                 <p class="text-black font-light text-5xl m-1 text-center">93</p>
             </div>
@@ -193,12 +236,12 @@ export default {
 
         //metodo che mostra o nasconde il dialog di upload
         uploadModal(arr) {
+            this.modalId = arr[1]
             if (arr[0] == 'std') {
                 this.modalStd = !this.modalStd
             } else {
                 this.modalGld = !this.modalGld
             }
-            this.modalId = arr[1]
         },
         uploaded(msg) {
             this.$emit('snackbar', msg)
