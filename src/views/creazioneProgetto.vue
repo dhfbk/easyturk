@@ -84,7 +84,7 @@
         </div>
         <hr class="solid mb-4" />
         <div class="-mx-3 md:flex md:flex-col xl:flex-row xl:justify-around">
-            <div class="w-auto">
+            <div class="w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
                     <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="ricompensa"
                         >Reward per response</label
@@ -123,7 +123,7 @@
                     </p>
                 </div>
             </div>
-            <div class="w-auto">
+            <div class="w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
                     <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="tempoMax"
                         >Time allotted per Worker</label
@@ -305,7 +305,7 @@
                     viewBox="0 0 24 24"
                 >
                     <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
-                >Save
+                ><span v-if="!loading">Save</span>
             </button>
             <button
                 @click="goBack"
@@ -491,13 +491,23 @@ export default {
                 })
                     .then(response => {
                         this.loading = false
-                        console.log(response.data.result)
+                        console.log(response.data)
                         if (response.data.result == 'OK') {
                             console.log('Inserimento avvenuto')
+                            var msg
+                            if (this.mode == 'edit') {
+                                msg = 'Edit successful'
+                            } else {
+                                msg = 'Project created'
+                            }
                         } else {
                             console.log('Errore')
+                            msg = 'Error. Try Again: ' + response.data.error
                         }
-                        this.goHome()
+                        this.emitSnackbar(msg)
+                        this.$router.push({ path: '/', name: 'Home' })
+
+                        //this.goHome()
                     })
                     .catch(() => {
                         this.loading = false
@@ -509,16 +519,14 @@ export default {
         goBack() {
             this.$router.go(-1)
         },
-        goHome() {
-            var msg
-            if (this.mode == 'edit') {
-                msg = 'Edit successful'
-            } else {
-                msg = 'Project created'
-            }
-            this.emitSnackbar(msg)
-            this.$router.push({ path: '/', name: 'Home' })
-        },
+        // goHome() {
+        //     var msg
+        //     if (this.mode == 'edit') {
+        //         msg = 'Edit successful'
+        //     } else {
+        //         msg = 'Project created'
+        //     }
+        // },
         elaboraTempoGET(nomeVar) {
             if (nomeVar == 'max_time') {
                 if (this.max_time < 60) {

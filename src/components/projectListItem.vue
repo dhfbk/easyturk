@@ -73,7 +73,14 @@
                 >
             </button>
             <button
-                @click="upload('gld')"
+                @click="
+                    $router.push({
+                        name: 'edit',
+                        params: {
+                            projectId: projectData.id,
+                        },
+                    })
+                "
                 class="tooltip ripple-light relative bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
             >
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">

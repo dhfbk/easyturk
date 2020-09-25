@@ -206,7 +206,7 @@ export default {
                         if (res.data.result != 'ERR') {
                             this.$emit('uploaded', 'Upload completed')
                         } else {
-                            this.$emit('uploaded', 'Error. Try again')
+                            this.$emit('uploaded', 'Error. Try again' + res.data.error)
                         }
                         this.toggleModal()
                         console.log(res.data)

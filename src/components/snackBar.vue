@@ -2,7 +2,7 @@
     <div class="absolute right-0 top-1 m-5 z-30">
         <div
             class="flex items-center bg-green-500 border-l-4 border-green-700 py-2 px-3 shadow-md mb-2"
-            v-if="(msg != 'Error') & (msg != 'Error. Try again')"
+            v-if="!isError.test(msg)"
         >
             <div class="text-green-500 rounded-full bg-white mr-3">
                 <svg
@@ -91,6 +91,11 @@ export default {
     name: 'snackBar',
     props: {
         msg: String,
+    },
+    data() {
+        return {
+            isError: /\bError\b/,
+        }
     },
 }
 </script>
