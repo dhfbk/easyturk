@@ -20,13 +20,40 @@
             @uploadModal="uploadModal"
             @uploaded="uploaded"
         />
-        <modalHIT v-if="modalHIT && !loading1" :id="datiProgetto.id" @uploadModal="uploadModal" />
+        <modalHIT
+            v-if="modalHIT && !loading1"
+            :id="datiProgetto.id"
+            :baseDataStatus="datiProgetto.baseCsvStatus"
+            :goldDataStatus="datiProgetto.goldCsvStatus"
+            @uploadModal="uploadModal"
+        />
+        <modalRevert
+            v-if="modalRevert && !loading1"
+            :id="datiProgetto.id"
+            @uploadModal="uploadModal"
+        />
         <div class="flex justify-between flex-wrap" v-if="!loading1">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="flex relative">
                 <button
+                    v-if="datiProgetto.status == 1"
                     type="submit"
-                    class="tooltip ripple-outlined hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
+                    class="tooltip relative ripple-outlined hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
+                >
+                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                        <path
+                            d="M19,3H14.82C14.25,1.44 12.53,0.64 11,1.2C10.14,1.5 9.5,2.16 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H15V19H5V5H7V7H17V5H19V14H21V5A2,2 0 0,0 19,3M12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5M17,16V22L22,19L17,16M17,11H7V9H17V11M15,15H7V13H15V15Z"
+                        />
+                    </svg>
+                    <span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
+                    >Set layout</span>
+                </button>
+                <button
+                    v-if="datiProgetto.status == 1"
+                    @click="uploadModal(['revert', ''])"
+                    type="submit"
+                    class="tooltip relative ripple-outlined hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -35,13 +62,11 @@
                     </svg>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
-                    >Publish</span>
+                    >Revert HIT settings</span>
                 </button>
-                <router-link
-                    :to="{
-                                    name: 'edit',
-                                    params: { projectId: datiProgetto.id },
-                                }"
+                <button
+                    @click="$router.push({name: 'edit', params: { projectId: datiProgetto.id}})"
+                    type="submit"
                     class="tooltip relative ripple-outlined hidden lg:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 focus:outline-none"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
@@ -52,7 +77,7 @@
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
                     >Edit</span>
-                </router-link>
+                </button>
                 <button
                     @click="deleteModal()"
                     type="submit"
@@ -67,7 +92,7 @@
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
                     >Delete</span>
                 </button>
-                <div class="relative hidden sm:block">
+                <div class="relative hidden sm:block" v-if="datiProgetto.status == 3">
                     <button
                         @click="open('results')"
                         type="submit"
@@ -89,7 +114,11 @@
                         <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
                     </span>
                 </div>
-                <span v-click-outside="hide" class="flex align-center">
+                <span
+                    v-click-outside="hide"
+                    class="flex align-center"
+                    :class="datiProgetto.status == 0 ? '':'lg:hidden'"
+                >
                     <button
                         @click="dropdownOpen = !dropdownOpen"
                         class="py-2 px-2 ripple-outlined bg-transparent rounded-md border-2 ml-2 border-solid border-primary hover:text-white focus:outline-none"
@@ -114,9 +143,16 @@
                             class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"
                         >
                             <a
+                                v-if="datiProgetto.status == 1"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                            >Publish</a>
+                            >Set layout</a>
+                            <a
+                                v-if="datiProgetto.status == 1"
+                                @click="uploadModal(['revert', ''])"
+                                class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                            >Revert HIT settings</a>
                             <router-link
+                                v-if="datiProgetto.status == 3"
                                 to="results"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                             >Results</router-link>
@@ -129,18 +165,22 @@
                                     name: 'edit',
                                     params: { projectId: datiProgetto.id },
                                 }"
+                                :class="datiProgetto.status == 0 ? '':'rounded-b-md'"
                                 class="block lg:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                             >Edit</router-link>
                             <a
+                                v-if="datiProgetto.status == 0"
                                 @click="uploadModal(['std'])"
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary lg:rounded-t-md hover:text-gray-100"
                             >Base CSV upload</a>
                             <a
+                                v-if="datiProgetto.status == 0"
                                 @click="uploadModal(['gld'])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                             >Gold CSV upload</a>
                             <a
-                                @click="uploadModal(['hit'])"
+                                v-if="datiProgetto.status == 0"
+                                @click="uploadModal(['hit', ''])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
                             >Load HITs</a>
                         </div>
@@ -183,6 +223,7 @@ import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import modalUpload from '../components/modalUpload.vue'
 import loader from '../components/loader.vue'
 import modalHIT from '../components/modalHIT.vue'
+import modalRevert from '../components/modalRevert.vue'
 import axios from 'axios'
 
 export default {
@@ -197,6 +238,7 @@ export default {
         modalUpload,
         loader,
         modalHIT,
+        modalRevert,
     },
     data() {
         return {
@@ -212,7 +254,7 @@ export default {
                 scadenza: 0,
                 autoApproval: 0,
                 layoutID: '',
-                stato: 'In corso',
+                status: 0,
                 parametri: 0,
                 totaleHIT: 400,
                 HITcompletate: 200,
@@ -228,8 +270,10 @@ export default {
                 id: '',
                 baseCsv:
                     "<div class='flex flex-row justify-between'><span class='text-red-600'>not uploaded</span></div>",
+                baseCsvStatus: 0,
                 goldCsv:
                     "<div class='flex flex-row justify-between'><span class='text-red-600'>not uploaded</span></div>",
+                goldCsvStatus: 0,
             },
             titoliCard: {
                 titoli1: [],
@@ -246,6 +290,7 @@ export default {
             modalElim: false,
             modalStd: false,
             modalGld: false,
+            modalRevert: false,
             modalHIT: false,
             loading1: true,
             loading: true,
@@ -287,17 +332,20 @@ export default {
                     this.datiProgetto.layoutID = res.data.values.layout_id
                     this.datiProgetto.parametri = res.data.values.params
                     this.datiProgetto.numLavoratori = res.data.values.workers
+                    this.datiProgetto.status = res.data.values.status
                     if (res.data.numData > 0) {
                         this.datiProgetto.baseCsv =
                             "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 py-1 bg-transparent transition duration-150 hover:bg-gray-300 rounded' href='#/" +
                             this.datiProgetto.id +
                             "/data/standard'>View data</a></div>"
+                        this.datiProgetto.baseCsvStatus = 1
                     }
-                    if (res.data.numGold == 'OK') {
+                    if (res.data.numGold > 0) {
                         this.datiProgetto.goldCsv =
                             "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 bg-transparent transition duration-150 hover:bg-gray-300 rounded' href='#/" +
                             this.datiProgetto.id +
                             "/data/gold'>View data</a></div>"
+                        this.datiProgetto.goldCsvStatus = 1
                     }
                     this.loading = false
                 })
@@ -321,13 +369,20 @@ export default {
         },
         //metodo che imposta i titoli e i dati da inserire nelle card della pagina
         impostaDatiCard() {
-            this.titoliCard.titoli1 = ['Titolo', 'Descrizione', 'Keywords', 'Data creazione', 'Stato']
+            this.titoliCard.titoli1 = ['Title', 'Description', 'Keywords', 'Creation date', 'Status']
+            var status = ''
+            if (this.datiProgetto.status == 0) {
+                status = 'ready to set HITs'
+            }
+            if (this.datiProgetto.status == 1) {
+                status = 'ready to set layout'
+            }
             this.datiCard.dati1 = [
                 this.datiProgetto.titolo,
                 this.datiProgetto.descrizione,
                 this.datiProgetto.keywords,
                 this.datiProgetto.creazione,
-                this.datiProgetto.stato,
+                status,
             ]
             this.titoliCard.titoli2 = [
                 'Ricompensa per ogni assignment',
@@ -417,8 +472,26 @@ export default {
                 this.modalStd = !this.modalStd
             } else if (type[0] == 'gld') {
                 this.modalGld = !this.modalGld
-            } else {
+            } else if (type[0] == 'hit') {
                 this.modalHIT = !this.modalHIT
+                if (type[1] != '') {
+                    this.uploaded(type[1])
+                }
+                if (type[2] == true) {
+                    this.loading = true
+                    this.loading1 = true
+                    this.getDatiPrj()
+                }
+            } else {
+                this.modalRevert = !this.modalRevert
+                if (type[1] != '') {
+                    this.uploaded(type[1])
+                }
+                if (type[2] == true) {
+                    this.loading = true
+                    this.loading1 = true
+                    this.getDatiPrj()
+                }
             }
             this.hide()
         },
