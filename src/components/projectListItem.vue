@@ -1,9 +1,7 @@
 <template>
     <div class="rounded shadow-md my-2 mx-2 p-2 flex items-center flex-wrap bg-white relative">
         <div class="w-1/2 md:w-2/3 flex contenutoPrj text-center items-center flex-wrap">
-            <div
-                class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0"
-            >
+            <div class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold tracking-tight">Project Id:</p>
                 <router-link
                     :to="{
@@ -15,21 +13,15 @@
                     <p>{{ projectData.id }}</p>
                 </router-link>
             </div>
-            <div
-                class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0"
-            >
+            <div class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold tracking-tight">Title:</p>
                 <p class>{{ projectData.title }}</p>
             </div>
-            <div
-                class="hidden lg:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0"
-            >
+            <div class="hidden lg:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold tracking-tight">Created:</p>
                 <p class>{{ date }}</p>
             </div>
-            <div
-                class="hidden xl:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0"
-            >
+            <div class="hidden xl:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden text-md font-bold tracking-tight">Last edited:</p>
                 <p class>{{ lastEdited }}</p>
             </div>
@@ -48,11 +40,12 @@
                 </button>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
-                >Set layout</span>
+                    >Set layout</span
+                >
             </span>
             <span class="tooltip relative">
                 <button
-                    @click="upload('hit')"
+                    @click="createHIT()"
                     v-if="projectData.status == 0"
                     :disabled="baseCsvStatus == 0"
                     :class="{ 'cursor-not-allowed': baseCsvStatus == 0 }"
@@ -66,9 +59,10 @@
                 </button>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
-                >Create HIts</span>
+                    >Create HIts</span
+                >
             </span>
-            <span class="tooltip relative">
+            <span class="tooltip relative" v-if="projectData.status < 1">
                 <button
                     @click="upload('std')"
                     class="tooltip ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
@@ -82,9 +76,10 @@
                 </button>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
-                >Upload standard csv</span>
+                    >Upload standard csv</span
+                >
             </span>
-            <span class="tooltip relative">
+            <span class="tooltip relative" v-if="projectData.status < 1">
                 <button
                     @click="upload('gld')"
                     class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
@@ -98,7 +93,8 @@
                 </button>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
-                >Upload gold csv</span>
+                    >Upload gold csv</span
+                >
             </span>
             <span class="tooltip relative">
                 <button
@@ -121,7 +117,8 @@
                 </button>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
-                >Edit</span>
+                    >Edit</span
+                >
             </span>
             <span class="tooltip relative">
                 <button
@@ -137,19 +134,15 @@
                 </button>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
-                >Delete</span>
+                    >Delete</span
+                >
             </span>
             <span v-click-outside="hide" class="block md:hidden flex align-center">
                 <button
                     class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded"
                     @click="dropdown = !dropdown"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        width="24"
-                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                         <path d="M0 0h24v24H0z" fill="none" />
                         <path
                             d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
@@ -163,34 +156,42 @@
                     >
                         <a
                             v-if="projectData.status == 1"
-                            :class="projectData.status == 1 ? 'rounded-t-md':''"
+                            :class="projectData.status == 1 ? 'rounded-t-md' : ''"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
-                        >Set layout</a>
+                            >Set layout</a
+                        >
                         <a
                             @click="upload('hit')"
                             v-if="projectData.status == 0"
-                            :class="projectData.status == 0 ? 'rounded-t-md':''"
+                            :class="projectData.status == 0 ? 'rounded-t-md' : ''"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
-                        >Create HITs</a>
+                            >Create HITs</a
+                        >
                         <a
                             @click="upload('std')"
+                            v-if="projectData.status < 1"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:rounded-t-md sm:hidden"
-                        >Upload data</a>
+                            >Upload data</a
+                        >
                         <a
                             @click="upload('gld')"
+                            v-if="projectData.status < 1"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white sm:hidden"
-                        >Upload Gold</a>
+                            >Upload Gold</a
+                        >
                         <router-link
                             :to="{
                                 name: 'edit',
                                 params: { projectId: projectData.id },
                             }"
                             class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white sm:rounded-t-md"
-                        >Edit</router-link>
+                            >Edit</router-link
+                        >
                         <a
                             @click="deleteItem()"
                             class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
-                        >Delete</a>
+                            >Delete</a
+                        >
                     </div>
                 </transition>
             </span>
@@ -213,9 +214,7 @@
                 </svg>
             </button>
             <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
-                <span
-                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"
-                ></span>
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span
                     class="relative inline-flex justify-center items-center rounded-full h-3 w-3 bg-blue-500 text-xs text-white"
                 >
@@ -347,7 +346,13 @@ export default {
             if (this.dropdown) {
                 this.dropdown = !this.dropdown
             }
-            this.$emit('upload', [type, this.projectData.id, this.projectData.count_train, this.projectData.count_gold])
+            this.$emit('upload', [
+                type,
+                this.projectData.id, // this.projectData.count_train, this.projectData.count_gold
+            ])
+        },
+        createHIT() {
+            this.$emit('createHit', [this.projectData.id, this.projectData.count_train, this.projectData.count_gold])
         },
         refresh() {
             console.log('refreshing...')

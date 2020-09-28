@@ -18,21 +18,18 @@
         <div class="overflow-x-auto" v-else>
             <table class="shadow-md rounded xs2:w-5/6 bg-white mx-auto">
                 <thead>
-                    <tr
-                        class="text-left text-white bg-primary border-b border-gray-300 uppercase tracking-tight"
-                    >
+                    <tr class="text-left text-white bg-primary border-b border-gray-300 uppercase tracking-tight">
                         <th class="px-2" v-for="x in headers" :key="x">{{ x }}</th>
-                        <th class="px-2">Cluster indexes</th>
+                        <th class="px-2" v-if="cluster.length > 0">Cluster indexes</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr
-                        v-for="(x, index) in current"
-                        :key="index"
-                        class="border-b border-gray-300 hover:bg-gray-100"
-                    >
-                        <td class="p-1 px-2 border-r border-gray-300" v-for="i in headers.length" :key="i">{{ x[i - 1] }}</td>
-                        <td class="p-1 px-2">{{ cluster[index] }}</td>
+                    <tr v-for="(x, index) in current" :key="index" class="border-b border-gray-300 hover:bg-gray-100">
+                        <td class="p-1 px-2 border-r border-gray-300" v-for="i in headers.length" :key="i">
+                            {{ x[i - 1] }}
+                        </td>
+                        <td class="p-1 px-2" v-if="cluster[index]">{{ cluster[index] }}</td>
+                        <td class="p-1 px-2" v-else>No cluster</td>
                     </tr>
                 </tbody>
             </table>
@@ -42,7 +39,9 @@
                 @click="page--"
                 v-if="totalNum > numPerPage && page >= 1"
                 class="ripple-light sm:w-48 w-32 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
-            >Previous</button>
+            >
+                Previous
+            </button>
             <div v-else></div>
             <p class="text-center">
                 Page
@@ -61,7 +60,9 @@
                 @click="page++"
                 v-if="totalNum > numPerPage && page < pageNum"
                 class="ripple-light sm:w-48 w-32 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
-            >Next</button>
+            >
+                Next
+            </button>
             <div v-else></div>
         </div>
     </div>
