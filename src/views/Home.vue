@@ -22,11 +22,9 @@
             :id="modalId"
         />
         <!--sistemare per i due valori del csv-->
-        <modalHIT
+        <modalHit
             v-if="modalHIT"
             :id="modalId"
-            :baseDataStatus="datiProgetto.baseCsvStatus"
-            :goldDataStatus="datiProgetto.goldCsvStatus"
             @uploadModal="uploadModal"
         />
         <modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />
@@ -152,6 +150,8 @@ import projectListItem from '../components/projectListItem.vue'
 //import tabellaWorker from '../components/tabellaWorker.vue'
 import modalEliminazione from '../components/modalEliminazione.vue'
 import modalUpload from '../components/modalUpload.vue'
+import modalRevert from '../components/modalRevert.vue'
+import modalHit from '../components/modalHIT.vue'
 import loader from '../components/loader.vue'
 import axios from 'axios'
 
@@ -161,7 +161,9 @@ export default {
         projectListItem,
         //tabellaWorker,
         modalEliminazione,
+        modalRevert,
         modalUpload,
+        modalHit,
         loader,
     },
     data() {
@@ -172,6 +174,8 @@ export default {
             modalElim: false,
             modalStd: false,
             modalGld: false,
+            modalHIT: false,
+            modalRevert: false,
             loading: true,
         }
     },

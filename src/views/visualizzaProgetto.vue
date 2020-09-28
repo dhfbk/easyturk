@@ -36,12 +36,12 @@
         />
         <div class="flex justify-between items-center flex-wrap" v-if="!loading1">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
-            <div class="flex relative">
+            <div class="w-full sm:w-auto flex relative justify-between content-center items-center">
                 <span class="tooltip relative">
                     <button
                         v-if="datiProgetto.status == 1"
                         type="submit"
-                        class="ripple hidden bg-primary hover:bg-blue-600 sm:flex flex-row items-center py-2 px-4  border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -51,8 +51,7 @@
                     </button>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Set layout</span
-                    >
+                    >Set layout</span>
                 </span>
                 <span class="tooltip relative">
                     <button
@@ -61,7 +60,7 @@
                         :class="{ 'cursor-not-allowed': datiProgetto.baseCsvStatus == 0 }"
                         @click="hitModal()"
                         type="submit"
-                        class="ripple hidden bg-primary hover:bg-blue-600 sm:flex flex-row items-center py-2 px-4  border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -71,15 +70,14 @@
                     </button>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Create HITs</span
-                    >
+                    >Create HITs</span>
                 </span>
                 <span class="tooltip relative">
                     <button
                         v-if="datiProgetto.status == 1"
                         @click="revertModal()"
                         type="submit"
-                        class="ripple hidden sm:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -89,14 +87,13 @@
                     </button>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Revert HIT settings</span
-                    >
+                    >Revert HIT settings</span>
                 </span>
                 <span class="tooltip relative">
                     <button
                         @click="$router.push({ name: 'edit', params: { projectId: datiProgetto.id } })"
                         type="submit"
-                        class="ripple hidden sm:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -106,14 +103,13 @@
                     </button>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Edit</span
-                    >
+                    >Edit</span>
                 </span>
                 <span class="tooltip relative">
                     <button
                         @click="deleteModal()"
                         type="submit"
-                        class="ripple hidden sm:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -123,14 +119,13 @@
                     </button>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Delete</span
-                    >
+                    >Delete</span>
                 </span>
-                <div class="relative hidden sm:block" v-if="datiProgetto.status == 3">
+                <div class="relative hidden md:block" v-if="datiProgetto.status == 3">
                     <button
                         @click="open('results')"
                         type="submit"
-                        class="tooltip ripple-outlined hidden sm:flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white focus:outline-none h-full mr-2"
+                        class="tooltip ripple-outlined hidden md:flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white focus:outline-none h-full mr-2"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -139,8 +134,7 @@
                         </svg>
                         <span
                             class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
-                            >Results</span
-                        >
+                        >Results</span>
                     </button>
                     <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
                         <span
@@ -149,14 +143,10 @@
                         <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
                     </span>
                 </div>
-                <span
-                    v-click-outside="hide"
-                    class="flex align-center"
-                    :class="datiProgetto.status == 0 ? '' : 'lg:hidden'"
-                >
+                <span v-click-outside="hide">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
-                        class="ripple hidden hover:bg-primary sm:flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg
                             class="transition duration-300 ease-in-out fill-current"
@@ -175,57 +165,54 @@
                     <transition name="slide-toggle">
                         <div
                             v-show="dropdownOpen"
-                            class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"
+                            class="absolute bottom-1 right-0 mt-1 w-56 bg-white rounded-md shadow-xl z-20"
                         >
                             <a
+                                v-if="datiProgetto.status == 0"
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                            >Set HITs</a>
+                            <a
                                 v-if="datiProgetto.status == 1"
-                                class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                >Set layout</a
-                            >
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                            >Set layout</a>
                             <a
                                 v-if="datiProgetto.status == 1"
                                 @click="revertModal()"
-                                class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                >Revert HIT settings</a
-                            >
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
+                            >Revert HIT settings</a>
                             <router-link
                                 v-if="datiProgetto.status == 3"
                                 to="results"
-                                class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Results</router-link
-                            >
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
+                            >Results</router-link>
                             <a
-                                class="cursor-pointer block lg:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary sm:rounded-t-md hover:text-gray-100"
+                                class="cursor-pointer block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 @click="deleteModal()"
-                                >Delete</a
-                            >
+                            >Delete</a>
                             <router-link
                                 :to="{
                                     name: 'edit',
                                     params: { projectId: datiProgetto.id },
                                 }"
                                 :class="datiProgetto.status == 0 ? '' : 'rounded-b-md'"
-                                class="block lg:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Edit</router-link
-                            >
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
+                            >Edit</router-link>
                             <a
                                 v-if="datiProgetto.status == 0"
                                 @click="uploadModal(['std'])"
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary lg:rounded-t-md hover:text-gray-100"
-                                >Base CSV upload</a
-                            >
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary md:rounded-t-md hover:text-gray-100"
+                            >Base CSV upload</a>
                             <a
                                 v-if="datiProgetto.status == 0"
                                 @click="uploadModal(['gld'])"
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Gold CSV upload</a
-                            >
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
+                            >Gold CSV upload</a>
                             <!-- <a
                                 v-if="datiProgetto.status == 0 && datiProgetto.baseCsvStatus == 1"
                                 @click="uploadModal(['hit', ''])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
                                 >Load HITs</a
-                            > -->
+                            >-->
                         </div>
                     </transition>
                 </span>
@@ -246,13 +233,13 @@
                 <div class="w-full flex flex-col justify-center" v-if="loading1">
                     <loader :type="'cardInfoVisualizza'" v-for="n in 2" :key="n" />
                     <!-- <loader :type="'cardAnalyticsVisualizza'" :num="3" />
-                    <loader :type="'cardAnalyticsVisualizza'" :num="2" /> -->
+                    <loader :type="'cardAnalyticsVisualizza'" :num="2" />-->
                 </div>
                 <div v-else>
                     <cardInfo :titoli="titoliCard.titoli2" :dati="datiCard.dati2" />
                     <cardInfo :titoli="titoliCard.titoli4" :dati="datiCard.dati4" />
                     <!-- <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
-                    <cardAnalytics :dati="datiCardAnalytics.cardAggregate" /> -->
+                    <cardAnalytics :dati="datiCardAnalytics.cardAggregate" />-->
                 </div>
             </div>
         </div>
@@ -379,14 +366,14 @@ export default {
                     this.datiProgetto.status = res.data.values.status
                     if (res.data.numData > 0) {
                         this.datiProgetto.baseCsv =
-                            "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 py-1 bg-transparent transition duration-150 hover:bg-gray-300 rounded' href='#/" +
+                            "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 py-1 bg-transparent transition duration-150 hover:bg-gray-300 rounded focus:outline-none' href='#/" +
                             this.datiProgetto.id +
                             "/data/standard'>View data</a></div>"
                         this.datiProgetto.baseCsvStatus = 1
                     }
                     if (res.data.numGold > 0) {
                         this.datiProgetto.goldCsv =
-                            "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 bg-transparent transition duration-150 hover:bg-gray-300 rounded' href='#/" +
+                            "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 bg-transparent transition duration-150 hover:bg-gray-300 rounded focus:outline-none' href='#/" +
                             this.datiProgetto.id +
                             "/data/gold'>View data</a></div>"
                         this.datiProgetto.goldCsvStatus = 1

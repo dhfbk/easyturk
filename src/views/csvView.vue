@@ -1,6 +1,6 @@
 <template>
-    <div class="flex items-center flex-col lg:w-5/6 mx-auto mt-4">
-        <p class="text-2xl text-primary mr-auto ml-2">{{ filename }}</p>
+    <div class="block lg:w-5/6 mx-auto mt-4">
+        <p class="text-md sm:text-lg md:text-2xl text-primary mr-auto ml-2">{{ filename }}</p>
         <div class="flex flex-row justify-start mr-auto mb-1 ml-2">
             <p class="text-md my-auto mr-1">Results per page:</p>
             <input
@@ -15,22 +15,28 @@
             />
         </div>
         <loader :type="'csvData'" v-if="loading" />
-        <table v-else class="shadow-md rounded w-full bg-white">
-            <thead>
-                <tr
-                    class="text-left text-white bg-primary border-b border-grey uppercase tracking-tight"
-                >
-                    <th v-for="x in headers" :key="x">{{ x }}</th>
-                    <th class="hidden sm:block">Cluster indexes</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(x, index) in current" :key="index" class="border-b hover:bg-gray-100">
-                    <td class="p-1" v-for="i in headers.length" :key="i">{{ x[i - 1] }}</td>
-                    <td class="p-1 hidden sm:block">{{ cluster[index] }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="overflow-x-auto" v-else>
+            <table class="shadow-md rounded xs2:w-5/6 bg-white mx-auto">
+                <thead>
+                    <tr
+                        class="text-left text-white bg-primary border-b border-gray-300 uppercase tracking-tight"
+                    >
+                        <th class="px-2" v-for="x in headers" :key="x">{{ x }}</th>
+                        <th class="px-2">Cluster indexes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="(x, index) in current"
+                        :key="index"
+                        class="border-b border-gray-300 hover:bg-gray-100"
+                    >
+                        <td class="p-1 px-2 border-r border-gray-300" v-for="i in headers.length" :key="i">{{ x[i - 1] }}</td>
+                        <td class="p-1 px-2">{{ cluster[index] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="grid grid-cols-3 mt-2" v-if="totalNum > numPerPage">
             <button
                 @click="page--"
