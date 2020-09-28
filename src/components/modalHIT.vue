@@ -22,16 +22,10 @@
                         <p class="text-red-500 text-md px-3 py-2">Base CSV hasn't been uploaded</p>
                     </div>
                     <div v-if="goldDataStatus == 0">
-                        <p
-                            class="text-teal-500 text-md px-3 py-2"
-                        >Golden standard CSV hasn't been uploaded</p>
+                        <p class="text-teal-500 text-md px-3 py-2">Golden standard CSV hasn't been uploaded</p>
                     </div>
-                    <div
-                        class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2"
-                    >
-                        <h2
-                            class="block tracking-wide text-gray-900 text-md font-bold mr-2"
-                        >Shuffle base CSV data:</h2>
+                    <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2">
+                        <h2 class="block tracking-wide text-gray-900 text-md font-bold mr-2">Shuffle base CSV data:</h2>
                         <label class="inline-flex content-center items-center mr-0 sm:mr-2">
                             <input
                                 type="radio"
@@ -56,15 +50,16 @@
                             <span class="ml-2 text-gray-700">No</span>
                         </label>
                     </div>
-                    <div
-                        class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2"
-                    >
-                        <label
-                            class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2"
-                            for="gold"
-                        >Golden data per HIT:</label>
+                    <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2">
+                        <label class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2" for="gold"
+                            >Golden data per HIT:</label
+                        >
                         <input
-                            :class="goldDataStatus == 0 || baseDataStatus == 0 ? 'bg-gray-400 text-gray-800' : 'bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500'"
+                            :class="
+                                goldDataStatus == 0 || baseDataStatus == 0
+                                    ? 'bg-gray-400 text-gray-800'
+                                    : 'bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500'
+                            "
                             class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4"
                             id="gold"
                             type="number"
@@ -76,12 +71,8 @@
                             required
                         />
                     </div>
-                    <div
-                        class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2"
-                    >
-                        <h2
-                            class="block tracking-wide text-gray-900 text-md font-bold mr-2"
-                        >Shuffle gold CSV data:</h2>
+                    <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2">
+                        <h2 class="block tracking-wide text-gray-900 text-md font-bold mr-2">Shuffle gold CSV data:</h2>
                         <label class="inline-flex content-center items-center mr-0 sm:mr-2">
                             <input
                                 type="radio"
@@ -106,16 +97,17 @@
                             <span class="ml-2 text-gray-700">No</span>
                         </label>
                     </div>
-                    <div
-                        class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2 mb-2"
-                    >
-                        <label
-                            class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2"
-                            for="gold"
-                        >Action for the leftover HITs:</label>
+                    <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2 mb-2">
+                        <label class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2" for="gold"
+                            >Action for the leftover HITs:</label
+                        >
                         <div class="relative mt-1 sm:mt-0 sm:ml-2">
                             <select
-                                :class="goldDataStatus == 0 || baseDataStatus == 0 ? 'bg-gray-400 text-gray-800' : 'bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500'"
+                                :class="
+                                    goldDataStatus == 0 || baseDataStatus == 0
+                                        ? 'bg-gray-400 text-gray-800'
+                                        : 'bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500'
+                                "
                                 class="block border border-gray-200 appearance-none w-full py-2 pl-2 pr-8 rounded"
                                 id="gold"
                                 v-model="leftover"
@@ -124,14 +116,8 @@
                                 <option selected value="no_use">Don't use</option>
                                 <option value="reuse">Reuse previous gold</option>
                             </select>
-                            <div
-                                class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900"
-                            >
-                                <svg
-                                    class="h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
+                            <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path
                                         d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
                                     />
@@ -147,11 +133,15 @@
                             @click="confirm()"
                             class="transition duration-150 mt-1 ease-in-out bg-primary hover:bg-primaryDark text-gray-100 py-2 px-4 rounded focus:outline-none"
                             :disabled="baseDataStatus == 0"
-                        >Launch project</button>
+                        >
+                            Launch project
+                        </button>
                         <button
                             class="transition duration-150 ease-in-out border mt-1 border-solid border-gray-400 hover:bg-gray-200 focus:outline-none ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal('close')"
-                        >Cancel</button>
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>
@@ -188,11 +178,9 @@ export default {
         toggleModal(mode) {
             //cambiare per inserimento id nella posizione 1 dell'array
             if (mode == 'close') {
-                this.$emit('uploadModal', ['hit', ''])
-            } else if (mode == 'error') {
-                this.$emit('uploadModal', ['hit', 'Error', false])
+                this.$emit('hitModal')
             } else {
-                this.$emit('uploadModal', ['hit', 'HIT setup completed', true])
+                this.$emit('hitCreated', 'Error: API call failed')
             }
         },
         confirm() {
@@ -216,9 +204,12 @@ export default {
                 .then(response => {
                     console.log(response.data)
                     if (response.data.result == 'OK') {
-                        this.toggleModal('')
+                        this.$emit('hitCreated', 'HIT setup completed')
+                        this.toggleModal('close')
                     } else {
-                        this.toggleModal('error')
+                        //this.toggleModal('error')
+                        this.toggleModal('close')
+                        this.$emit('hitCreated', 'Error: ' + response.data.error)
                     }
                 })
                 .catch(() => {

@@ -25,9 +25,15 @@
             :id="datiProgetto.id"
             :baseDataStatus="datiProgetto.baseCsvStatus"
             :goldDataStatus="datiProgetto.goldCsvStatus"
-            @uploadModal="uploadModal"
+            @hitModal="hitModal"
+            @hitCreated="hitCreated"
         />
-        <modalRevert v-if="modalRevert && !loading1" :id="datiProgetto.id" @uploadModal="uploadModal" />
+        <modalRevert
+            v-if="modalRevert && !loading1"
+            :id="datiProgetto.id"
+            @revertModal="revertModal"
+            @reverted="reverted"
+        />
         <div class="flex justify-between items-center flex-wrap" v-if="!loading1">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="flex relative">
@@ -53,7 +59,7 @@
                         v-if="datiProgetto.status == 0"
                         :disabled="datiProgetto.baseCsvStatus == 0"
                         :class="{ 'cursor-not-allowed': datiProgetto.baseCsvStatus == 0 }"
-                        @click="uploadModal(['hit', ''])"
+                        @click="hitModal()"
                         type="submit"
                         class="ripple hidden bg-primary hover:bg-blue-600 sm:flex flex-row items-center py-2 px-4  border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
                     >
@@ -71,7 +77,7 @@
                 <span class="tooltip relative">
                     <button
                         v-if="datiProgetto.status == 1"
-                        @click="uploadModal(['revert', ''])"
+                        @click="revertModal()"
                         type="submit"
                         class="ripple hidden sm:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
@@ -178,7 +184,7 @@
                             >
                             <a
                                 v-if="datiProgetto.status == 1"
-                                @click="uploadModal(['revert', ''])"
+                                @click="revertModal()"
                                 class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 >Revert HIT settings</a
                             >
@@ -356,7 +362,7 @@ export default {
                 .get(this.APIURL + '?action=getProjectInfo&id=' + this.datiProgetto.id)
                 .then(res => {
                     //console.log(res)
-                    //console.log(responses[1].data.result)
+                    console.log(res.data)
                     //console.log(responses[2].data.result)
                     this.datiProgetto.nome = res.data.values.name
                     this.datiProgetto.titolo = res.data.values.title
@@ -496,44 +502,62 @@ export default {
                 },
             }
         },
+        //methods for modal to delete a project
+        //for simply opening and closing
         deleteModal() {
             this.modalElim = !this.modalElim
         },
-        deleted() {
+        //for when an action gets completed (success or error)
+        deleted(msg) {
             this.$router.push('/')
+            this.$emit('snackbar', msg)
         },
-        //metodo che mostra o nasconde il dialog
+        //
+
+        //methods for modal to upload data and gold
+        //for simply opening and closing
         uploadModal(type) {
             if (type[0] == 'std') {
                 this.modalStd = !this.modalStd
             } else if (type[0] == 'gld') {
                 this.modalGld = !this.modalGld
-            } else if (type[0] == 'hit') {
-                this.modalHIT = !this.modalHIT
-                if (type[1] != '') {
-                    this.uploaded(type[1])
-                }
-                if (type[2] == true) {
-                    this.loading = true
-                    this.loading1 = true
-                    this.getDatiPrj()
-                }
-            } else {
-                this.modalRevert = !this.modalRevert
-                if (type[1] != '') {
-                    this.uploaded(type[1])
-                }
-                if (type[2] == true) {
-                    this.loading = true
-                    this.loading1 = true
-                    this.getDatiPrj()
-                }
             }
             this.hide()
         },
+        //for when an action gets completed (success or error)
         uploaded(msg) {
             this.$emit('snackbar', msg)
         },
+        //
+
+        //methods modal to revert the project status from 1 to 0
+        //for simply opening and closing
+        revertModal() {
+            this.modalRevert = !this.modalRevert
+        },
+        //for when an action gets completed (success or error)
+        reverted(msg) {
+            this.uploaded(msg)
+            this.loading = true
+            this.loading1 = true
+            this.getDatiPrj()
+        },
+        //
+
+        //methods for modal to create the HITs
+        //for simply opening and closing
+        hitModal() {
+            this.modalHIT = !this.modalHIT
+        },
+        //for when an action gets completed (success or error)
+        hitCreated(msg) {
+            this.uploaded(msg)
+            this.loading = true
+            this.loading1 = true
+            this.getDatiPrj()
+        },
+        //
+
         //nasconde il dropdown
         hide() {
             if (this.dropdownOpen) {

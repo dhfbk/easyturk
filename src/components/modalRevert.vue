@@ -68,11 +68,9 @@ export default {
         toggleModal(mode) {
             //cambiare per inserimento id nella posizione 1 dell'array
             if (mode == 'close') {
-                this.$emit('uploadModal', ['revert', ''])
-            } else if (mode == 'reverted') {
-                this.$emit('uploadModal', ['revert', 'Reverted', true])
+                this.$emit('revertModal')
             } else {
-                this.$emit('uploadModal', ['revert', 'Error', false])
+                this.$emit('revertModal', 'Error')
             }
         },
         revertProject() {
@@ -85,9 +83,15 @@ export default {
                 },
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             })
-                .then(() => {
+                .then(res => {
                     this.loading = false
-                    this.toggleModal('reverted')
+                    if (res.data.result == 'OK') {
+                        this.$emit('reverted', 'Project succesfully reverted.')
+                    } else {
+                        this.$emit('reverted', 'Error: ' + res.data.error)
+                    }
+                    this.toggleModal('close')
+                    console.log(res.data.result)
                 })
                 .catch(() => {
                     this.toggleModal('error')
