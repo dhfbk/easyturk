@@ -25,7 +25,7 @@
             :id="datiProgetto.id"
             :baseDataStatus="datiProgetto.baseCsvStatus"
             :goldDataStatus="datiProgetto.goldCsvStatus"
-            @hitModal="hitModal"
+            @uploadModal="hitModal"
             @hitCreated="hitCreated"
         />
         <modalRevert
@@ -146,6 +146,7 @@
                 <span v-click-outside="hide">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
+                        :class="datiProgetto.status != 0 ? 'md:hidden':''"
                         class="ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg

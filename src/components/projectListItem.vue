@@ -37,6 +37,22 @@
         <span class="flex-grow flex justify-end w-1/2 md:w-1/4">
             <span class="tooltip relative">
                 <button
+                    v-if="projectData.status == 1"
+                    class="ripple hover:bg-blue-600 bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
+                >
+                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                        <path
+                            d="M12.89,3L14.85,3.4L11.11,21L9.15,20.6L12.89,3M19.59,12L16,8.41V5.58L22.42,12L16,18.41V15.58L19.59,12M1.58,12L8,5.58V8.41L4.41,12L8,15.58V18.41L1.58,12Z"
+                        />
+                    </svg>
+                </button>
+                <span
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                >Set layout</span>
+            </span>
+            <span class="tooltip relative">
+                <button
+                    @click="upload('hit')"
                     v-if="projectData.status == 0"
                     :disabled="baseCsvStatus == 0"
                     :class="{ 'cursor-not-allowed': baseCsvStatus == 0 }"
@@ -146,12 +162,19 @@
                         class="absolute right-0 w-40 sm:w-56 bg-white rounded-md shadow-xl z-20 mr-4 mt-12 sm:mr-20"
                     >
                         <a
-                            @click="upload('std')"
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md xs:hidden"
+                            v-if="projectData.status == 1"
+                            :class="projectData.status == 1 ? 'rounded-t-md':''"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
+                        >Set layout</a>
+                        <a
+                            @click="upload('hit')"
+                            v-if="projectData.status == 0"
+                            :class="projectData.status == 0 ? 'rounded-t-md':''"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
                         >Create HITs</a>
                         <a
                             @click="upload('std')"
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md sm:hidden"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:rounded-t-md sm:hidden"
                         >Upload data</a>
                         <a
                             @click="upload('gld')"
@@ -291,6 +314,12 @@ export default {
         // this.isTherePending = true
         this.date = new Date(this.projectData.created_at).toLocaleDateString()
         this.lastEdited = this.projectData.updated_at
+        if (this.projectData.count_train > 0) {
+            this.baseCsvStatus = 1
+        }
+        if (this.projectData.count_gold > 0) {
+            this.goldCsvStatus = 1
+        }
         //inserire controllo che se il projectData contiene anche il csv per base o gold cambiano i valori baseCsvStatus e goldCsvStatus nei data
     },
     methods: {
@@ -318,7 +347,7 @@ export default {
             if (this.dropdown) {
                 this.dropdown = !this.dropdown
             }
-            this.$emit('upload', [type, this.projectData.id])
+            this.$emit('upload', [type, this.projectData.id, this.projectData.count_train, this.projectData.count_gold])
         },
         refresh() {
             console.log('refreshing...')

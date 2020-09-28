@@ -26,8 +26,11 @@
             v-if="modalHIT"
             :id="modalId"
             @uploadModal="uploadModal"
+            @hitCreated="reloadAfterHIT"
+            :baseDataStatus="dataPresent"
+            :goldDataStatus="gldPresent"
         />
-        <modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />
+        <!--<modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />-->
         <div class="mb-6">
             <div class="flex content-center flex-col sm:flex-row px-4">
                 <svg style="width:24px;" viewBox="0 0 24 24">
@@ -45,7 +48,7 @@
                     <span class="hidden xl:block w-1/4 font-light">Last edited</span>
                 </div>
             </div>
-            <div class="w-full flex flex-col justify-center" v-if="loading">
+            <div class="w-full flex flex-col justify-center" v-if="loadingProjects">
                 <loader :type="'homePrj'" v-for="n in 2" :key="n" />
             </div>
             <div v-else>
@@ -119,7 +122,7 @@
                     class="animate-spin mx-auto my-1"
                     style="width:4rem;height:4rem"
                     viewBox="0 0 24 24"
-                    v-if="loading"
+                    v-if="loadingOther"
                 >
                     <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
                 </svg>
@@ -150,7 +153,7 @@ import projectListItem from '../components/projectListItem.vue'
 //import tabellaWorker from '../components/tabellaWorker.vue'
 import modalEliminazione from '../components/modalEliminazione.vue'
 import modalUpload from '../components/modalUpload.vue'
-import modalRevert from '../components/modalRevert.vue'
+//import modalRevert from '../components/modalRevert.vue'
 import modalHit from '../components/modalHIT.vue'
 import loader from '../components/loader.vue'
 import axios from 'axios'
@@ -161,7 +164,7 @@ export default {
         projectListItem,
         //tabellaWorker,
         modalEliminazione,
-        modalRevert,
+        //modalRevert,
         modalUpload,
         modalHit,
         loader,
@@ -177,6 +180,10 @@ export default {
             modalHIT: false,
             modalRevert: false,
             loading: true,
+            loadingProjects: true,
+            loadingOther: true,
+            gldPresent: 0,
+            dataPresent: 0,
         }
     },
 
@@ -186,6 +193,11 @@ export default {
         this.getData()
     },
     methods: {
+        reloadAfterHIT(msg) {
+            this.uploaded(msg)
+            this.loadingProjects = true
+            this.getPrjData()
+        },
         // getProjects() {
         //     axios({
         //         url: this.APIURL + '?action=listProjects',
@@ -194,6 +206,17 @@ export default {
         //         this.projects = res.data.values
         //     })
         // },
+        getPrjData() {
+            axios
+                .get(this.APIURL + '?action=listProjects')
+                .then(res => {
+                    this.projects = res.data.values
+                    this.loadingProjects = false
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
         getData() {
             axios
                 .all([axios.get(this.APIURL + '?action=listProjects'), axios.get(this.APIURL + '?action=getUserInfo')])
@@ -203,7 +226,8 @@ export default {
                         this.userInfo = responses[1].data.data
                         this.$emit('sandbox', this.userInfo.use_sandbox)
                         console.log(responses[0], responses[1])
-                        this.loading = false
+                        this.loadingProjects = false
+                        this.loadingOther = false
                         console.log(this.projects)
                     })
                 )
@@ -243,8 +267,14 @@ export default {
             this.modalId = arr[1]
             if (arr[0] == 'std') {
                 this.modalStd = !this.modalStd
-            } else {
+            } else if (arr[0] == 'gld') {
                 this.modalGld = !this.modalGld
+            } else {
+                this.modalHIT = !this.modalHIT
+                if (arr[2] != undefined) {
+                    this.dataPresent = parseInt(arr[2])
+                    this.gldPresent = parseInt(arr[3])
+                }
             }
         },
         uploaded(msg) {
