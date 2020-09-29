@@ -25,11 +25,12 @@
         <modalHit
             v-if="modalHIT"
             :id="modalId"
-            @hitModal="hitModal"
+            @hitModal="toggleModal"
             @hitCreated="reloadAfterHIT"
             :baseDataStatus="dataPresent"
             :goldDataStatus="gldPresent"
         />
+        <modalLayout v-if="modalLayout" :id="modalId" @layoutModal="toggleModal" />
         <!--<modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />-->
         <div class="mb-6">
             <div class="flex content-center flex-col sm:flex-row px-4">
@@ -84,9 +85,10 @@
                     <div v-for="i in projects" :key="i.id" class="w-full mx-auto relative">
                         <projectListItem
                             :projectData="i"
-                            @deleteThis="deleteModal"
-                            @upload="uploadModal"
-                            @createHit="hitModal"
+                            @deleteThis="toggleModal"
+                            @upload="toggleModal"
+                            @createHit="toggleModal"
+                            @layoutModal="toggleModal"
                         />
                     </div>
                 </div>
@@ -154,8 +156,8 @@ import projectListItem from '../components/projectListItem.vue'
 //import tabellaWorker from '../components/tabellaWorker.vue'
 import modalEliminazione from '../components/modalEliminazione.vue'
 import modalUpload from '../components/modalUpload.vue'
-//import modalRevert from '../components/modalRevert.vue'
 import modalHit from '../components/modalHIT.vue'
+import modalLayout from '../components/modalLayout.vue'
 import loader from '../components/loader.vue'
 import axios from 'axios'
 
@@ -165,9 +167,9 @@ export default {
         projectListItem,
         //tabellaWorker,
         modalEliminazione,
-        //modalRevert,
         modalUpload,
         modalHit,
+        modalLayout,
         loader,
     },
     data() {
@@ -180,6 +182,7 @@ export default {
             modalGld: false,
             modalHIT: false,
             modalRevert: false,
+            modalLayout: false,
             loading: true,
             loadingProjects: true,
             loadingOther: true,
@@ -235,10 +238,6 @@ export default {
         //     this.toggleModal(['elim', arr[1]])
         // },
         //metodi per aprire e chiudere il modal eliminazione ed eliminare l'elemento dalla lista
-        deleteModal(id) {
-            this.modalId = id
-            this.modalElim = !this.modalElim
-        },
         deleted(msg) {
             var self = this
             this.projects = this.projects.filter(function(el) {
@@ -246,33 +245,28 @@ export default {
             })
             this.$emit('snackbar', msg)
         },
-        //
-
-        //metodo che mostra o nasconde il dialog di upload
-        uploadModal(arr) {
+        toggleModal(arr) {
+            console.log(arr)
             this.modalId = arr[1]
             if (arr[0] == 'std') {
                 this.modalStd = !this.modalStd
             } else if (arr[0] == 'gld') {
                 this.modalGld = !this.modalGld
-            } // else {
-            //     this.modalHIT = !this.modalHIT
-            //     if (arr[2] != undefined) {
-            //         this.dataPresent = parseInt(arr[2])
-            //         this.gldPresent = parseInt(arr[3])
-            //     }
-            // }
+            } else if (arr[0] == 'delete') {
+                this.modalElim = !this.modalElim
+            } else if (arr[0] == 'layout') {
+                this.modalLayout = !this.modalLayout
+            } else {
+                this.modalHIT = !this.modalHIT
+                this.modalId = arr[0]
+                if (arr[1] != undefined) {
+                    this.dataPresent = parseInt(arr[1])
+                    this.gldPresent = parseInt(arr[2])
+                }
+            }
         },
         uploaded(msg) {
             this.$emit('snackbar', msg)
-        },
-        hitModal(arr) {
-            this.modalHIT = !this.modalHIT
-            this.modalId = arr[0]
-            if (arr[1] != undefined) {
-                this.dataPresent = parseInt(arr[1])
-                this.gldPresent = parseInt(arr[2])
-            }
         },
         reloadAfterHIT(msg) {
             this.uploaded(msg)

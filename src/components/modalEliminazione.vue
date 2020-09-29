@@ -66,7 +66,7 @@ export default {
     },
     methods: {
         toggleModal() {
-            this.$emit('deleteModal', '')
+            this.$emit('deleteModal', ['delete', ''])
         },
         deleteProject() {
             //var self = this

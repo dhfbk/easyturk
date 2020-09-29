@@ -18,9 +18,7 @@
                             />
                         </svg>
                     </div>
-                    <div class="py-2">
-                        *do things*
-                    </div>
+                    <div class="py-2">*do things*</div>
 
                     <div class="ml-auto flex flex-col sm:flex-row">
                         <button
@@ -57,7 +55,7 @@ export default {
     methods: {
         toggleModal(mode) {
             if (mode == 'close') {
-                this.$emit('layoutModal')
+                this.$emit('layoutModal', ['layout', ''])
             }
         },
     },
