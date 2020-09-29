@@ -6,7 +6,7 @@
             <div class="bg-white rounded-lg w-1/2">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
-                        <div class="text-gray-900 font-bold text-lg">Confirm action</div>
+                        <div class="text-gray-900 font-bold text-lg">Set layout for the project</div>
                         <svg
                             class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
@@ -19,29 +19,25 @@
                         </svg>
                     </div>
                     <div class="py-2">
-                        Are you sure you want to revert your changes? You will have to reupload your files and set your
-                        golden standard.
+                        *do things*
                     </div>
 
                     <div class="ml-auto flex flex-col sm:flex-row">
                         <button
                             class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
-                            @click="revertProject()"
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1' : 'hidden'"
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
-                            >Proceed
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                            </svg>Proceed
                         </button>
                         <button
                             class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 sm:mt-0 sm:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal('close')"
-                        >
-                            Cancel
-                        </button>
+                        >Cancel</button>
                     </div>
                 </div>
             </div>
@@ -50,10 +46,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
-    name: 'modalRevert',
+    name: 'modalLayout',
     props: { id: String },
     data() {
         return {
@@ -63,34 +57,8 @@ export default {
     methods: {
         toggleModal(mode) {
             if (mode == 'close') {
-                this.$emit('revertModal')
-            } else {
-                this.$emit('revertModal', 'Error')
+                this.$emit('layoutModal')
             }
-        },
-        revertProject() {
-            this.loading = true
-            axios({
-                method: 'post',
-                url: this.APIURL + '?action=updateProjectStatus&id=' + this.id,
-                data: {
-                    toStatus: 0,
-                },
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            })
-                .then(res => {
-                    this.loading = false
-                    if (res.data.result == 'OK') {
-                        this.$emit('reverted', 'Project succesfully reverted.')
-                    } else {
-                        this.$emit('reverted', 'Error: ' + res.data.error)
-                    }
-                    this.toggleModal('close')
-                    console.log(res.data.result)
-                })
-                .catch(() => {
-                    this.toggleModal('error')
-                })
         },
     },
 }

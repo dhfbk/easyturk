@@ -2,7 +2,7 @@
     <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
         <modalEliminazione
             v-if="modalElim && !loading1"
-            @deleteModal="deleteModal"
+            @deleteModal="toggleModal('delete')"
             @deleted="deleted"
             :id="datiProgetto.id"
         />
@@ -10,14 +10,14 @@
             v-if="modalStd && !loading1"
             :type="'std'"
             :id="datiProgetto.id"
-            @uploadModal="uploadModal"
+            @uploadModal="toggleModal('std')"
             @uploaded="uploaded"
         />
         <modalUpload
             v-if="modalGld && !loading1"
             :type="'gld'"
             :id="datiProgetto.id"
-            @uploadModal="uploadModal"
+            @uploadModal="toggleModal('gld')"
             @uploaded="uploaded"
         />
         <modalHIT
@@ -25,14 +25,19 @@
             :id="datiProgetto.id"
             :baseDataStatus="datiProgetto.baseCsvStatus"
             :goldDataStatus="datiProgetto.goldCsvStatus"
-            @hitModal="hitModal"
+            @hitModal="toggleModal('hit')"
             @hitCreated="hitCreated"
         />
         <modalRevert
             v-if="modalRevert && !loading1"
             :id="datiProgetto.id"
-            @revertModal="revertModal"
+            @revertModal="toggleModal('revert')"
             @reverted="reverted"
+        />
+        <modalLayout
+            v-if="modalLayout && !loading1"
+            :id="datiProgetto.id"
+            @layoutModal="toggleModal('layout')"
         />
         <div class="flex justify-between items-center flex-wrap" v-if="!loading1">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
@@ -40,6 +45,7 @@
                 <span class="tooltip relative">
                     <button
                         v-if="datiProgetto.status == 1"
+                        @click="toggleModal('layout')"
                         type="submit"
                         class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
                     >
@@ -51,15 +57,14 @@
                     </button>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Set layout</span
-                    >
+                    >Set layout</span>
                 </span>
                 <span class="tooltip relative">
                     <button
                         v-if="datiProgetto.status == 0"
                         :disabled="datiProgetto.baseCsvStatus == 0"
                         :class="{ 'cursor-not-allowed': datiProgetto.baseCsvStatus == 0 }"
-                        @click="hitModal()"
+                        @click="toggleModal('hit')"
                         type="submit"
                         class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
                     >
@@ -71,13 +76,12 @@
                     </button>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Create HITs</span
-                    >
+                    >Create HITs</span>
                 </span>
                 <span class="tooltip relative">
                     <button
                         v-if="datiProgetto.status == 1"
-                        @click="revertModal()"
+                        @click="toggleModal('revert')"
                         type="submit"
                         class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
@@ -89,8 +93,7 @@
                     </button>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Revert HIT settings</span
-                    >
+                    >Revert HIT settings</span>
                 </span>
                 <span class="tooltip relative">
                     <button
@@ -106,12 +109,11 @@
                     </button>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Edit</span
-                    >
+                    >Edit</span>
                 </span>
                 <span class="tooltip relative">
                     <button
-                        @click="deleteModal()"
+                        @click="toggleModal('delete')"
                         type="submit"
                         class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
@@ -123,8 +125,7 @@
                     </button>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Delete</span
-                    >
+                    >Delete</span>
                 </span>
                 <div class="relative hidden md:block" v-if="datiProgetto.status == 3">
                     <button
@@ -139,8 +140,7 @@
                         </svg>
                         <span
                             class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-20"
-                            >Results</span
-                        >
+                        >Results</span>
                     </button>
                     <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
                         <span
@@ -175,32 +175,29 @@
                             class="absolute bottom-1 right-0 mt-1 w-56 bg-white rounded-md shadow-xl z-20"
                         >
                             <a
+                                @click="toggleModal('hit')"
                                 v-if="datiProgetto.status == 0"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                >Set HITs</a
-                            >
+                            >Set HITs</a>
                             <a
+                                @click="toggleModal('layout')"
                                 v-if="datiProgetto.status == 1"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                >Set layout</a
-                            >
+                            >Set layout</a>
                             <a
                                 v-if="datiProgetto.status == 1"
-                                @click="revertModal()"
+                                @click="toggleModal('revert')"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Revert HIT settings</a
-                            >
+                            >Revert HIT settings</a>
                             <router-link
                                 v-if="datiProgetto.status == 3"
                                 to="results"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Results</router-link
-                            >
+                            >Results</router-link>
                             <a
                                 class="cursor-pointer block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                @click="deleteModal()"
-                                >Delete</a
-                            >
+                                @click="toggleModal('delete')"
+                            >Delete</a>
                             <router-link
                                 :to="{
                                     name: 'edit',
@@ -208,20 +205,17 @@
                                 }"
                                 :class="datiProgetto.status == 0 ? '' : 'rounded-b-md'"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
-                                >Edit</router-link
-                            >
+                            >Edit</router-link>
                             <a
                                 v-if="datiProgetto.status == 0"
-                                @click="uploadModal(['std'])"
+                                @click="toggleModal('std')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary md:rounded-t-md hover:text-gray-100"
-                                >Base CSV upload</a
-                            >
+                            >Base CSV upload</a>
                             <a
                                 v-if="datiProgetto.status == 0"
-                                @click="uploadModal(['gld'])"
+                                @click="toggleModal('gld')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
-                                >Gold CSV upload</a
-                            >
+                            >Gold CSV upload</a>
                             <!-- <a
                                 v-if="datiProgetto.status == 0 && datiProgetto.baseCsvStatus == 1"
                                 @click="uploadModal(['hit', ''])"
@@ -270,6 +264,7 @@ import modalUpload from '../components/modalUpload.vue'
 import loader from '../components/loader.vue'
 import modalHIT from '../components/modalHIT.vue'
 import modalRevert from '../components/modalRevert.vue'
+import modalLayout from '../components/modalLayout.vue'
 import axios from 'axios'
 
 export default {
@@ -285,6 +280,7 @@ export default {
         loader,
         modalHIT,
         modalRevert,
+        modalLayout,
     },
     data() {
         return {
@@ -338,6 +334,7 @@ export default {
             modalGld: false,
             modalRevert: false,
             modalHIT: false,
+            modalLayout: false,
             loading1: true,
             loading: true,
         }
@@ -504,27 +501,26 @@ export default {
                 },
             }
         },
-        //methods for modal to delete a project
-        //for simply opening and closing
-        deleteModal() {
-            this.modalElim = !this.modalElim
+        toggleModal(mode) {
+            if (mode == 'delete') {
+                this.modalElim = !this.modalElim
+            } else if (mode == 'std') {
+                this.modalStd = !this.modalStd
+            } else if (mode == 'gld') {
+                this.modalGld = !this.modalGld
+            } else if (mode == 'revert') {
+                this.modalRevert = !this.modalRevert
+            } else if (mode == 'hit') {
+                this.modalHIT = !this.modalHIT
+            } else if (mode == 'layout') {
+                this.modalLayout = !this.modalLayout
+            }
+            this.hide()
         },
         //for when an action gets completed (success or error)
         deleted(msg) {
             this.$router.push('/')
             this.$emit('snackbar', msg)
-        },
-        //
-
-        //methods for modal to upload data and gold
-        //for simply opening and closing
-        uploadModal(type) {
-            if (type[0] == 'std') {
-                this.modalStd = !this.modalStd
-            } else if (type[0] == 'gld') {
-                this.modalGld = !this.modalGld
-            }
-            this.hide()
         },
         //for when an action gets completed (success or error)
         uploaded(msg) {
@@ -533,26 +529,12 @@ export default {
             this.loading1 = true
             this.getDatiPrj()
         },
-        //
-
-        //methods modal to revert the project status from 1 to 0
-        //for simply opening and closing
-        revertModal() {
-            this.modalRevert = !this.modalRevert
-        },
         //for when an action gets completed (success or error)
         reverted(msg) {
             this.uploaded(msg)
             this.loading = true
             this.loading1 = true
             this.getDatiPrj()
-        },
-        //
-
-        //methods for modal to create the HITs
-        //for simply opening and closing
-        hitModal() {
-            this.modalHIT = !this.modalHIT
         },
         //for when an action gets completed (success or error)
         hitCreated(msg) {
