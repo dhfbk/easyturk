@@ -6,10 +6,7 @@
         <p class="text-2xl mb-4 text-primary">{{ pageTitle }}</p>
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
-                <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="nome"
-                >Project Name</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="nome">Project Name</label>
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="nome"
@@ -22,10 +19,7 @@
                 <p class="text-gray-700 text-xs italic">This name is not displayed to Workers.</p>
             </div>
             <div class="w-full px-3 mb-4">
-                <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="titolo"
-                >Title</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="titolo">Title</label>
                 <input
                     :class="errorTitolo ? 'border-red-600' : 'border-gray-200'"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -40,16 +34,12 @@
                     Describe the survey to Workers. Be as specific as possible, e.g. "answer a survey about movies",
                     instead of "short survey", so Workers know what to expect.
                 </p>
-                <p
-                    :class="errorTitolo ? '' : 'hidden'"
-                    class="text-red-600 text-xs italic"
-                >Si è pregati di inserire il titolo</p>
+                <p :class="errorTitolo ? '' : 'hidden'" class="text-red-600 text-xs italic">
+                    Si è pregati di inserire il titolo
+                </p>
             </div>
             <div class="md:w-full px-3 mb-4">
-                <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="keywords"
-                >Keywords</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="keywords">Keywords</label>
                 <input
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="keywords"
@@ -58,9 +48,9 @@
                     v-model.trim="$v.keywords.$model"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >Provide keywords that will help Workers search for your tasks.</p>
+                <p class="text-gray-700 text-xs italic">
+                    Provide keywords that will help Workers search for your tasks.
+                </p>
             </div>
             <div class="w-full px-3 mb-4">
                 <label
@@ -68,7 +58,8 @@
                     for="descrizione"
                     @mouseover="hoverDesc = true"
                     @mouseleave="hoverDesc = false"
-                >Description</label>
+                    >Description</label
+                >
                 <div class id="descrizione">
                     <div
                         :class="hoverDesc ? 'border-gray-500' : 'border-gray-200'"
@@ -95,10 +86,9 @@
         <div class="-mx-3 md:flex md:flex-col xl:flex-row xl:justify-around">
             <div class="w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label
-                        class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                        for="ricompensa"
-                    >Reward per response</label>
+                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="ricompensa"
+                        >Reward per response</label
+                    >
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="ricompensa"
@@ -115,10 +105,9 @@
                     </p>
                 </div>
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label
-                        class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                        for="lavoratori"
-                    >Number of respondents</label>
+                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="lavoratori"
+                        >Number of respondents</label
+                    >
                     <input
                         class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="lavoratori"
@@ -129,17 +118,16 @@
                         v-model.trim="$v.workers.$model"
                         required
                     />
-                    <p
-                        class="text-gray-700 text-xs italic"
-                    >How many unique Workers do you want to complete your survey?</p>
+                    <p class="text-gray-700 text-xs italic">
+                        How many unique Workers do you want to complete your survey?
+                    </p>
                 </div>
             </div>
             <div class="w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label
-                        class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                        for="tempoMax"
-                    >Time allotted per Worker</label>
+                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="tempoMax"
+                        >Time allotted per Worker</label
+                    >
                     <div class="flex flex-col flex-grow sm:flex-row">
                         <input
                             class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -163,14 +151,8 @@
                                 <option value="hours">Hours</option>
                                 <option value="minutes">Minutes</option>
                             </select>
-                            <div
-                                class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900"
-                            >
-                                <svg
-                                    class="h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
+                            <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path
                                         d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
                                     />
@@ -178,15 +160,14 @@
                             </div>
                         </div>
                     </div>
-                    <p
-                        class="text-gray-700 text-xs italic"
-                    >Maximum time a Worker has to complete the survey. Be generous so that Workers are not rushed.</p>
+                    <p class="text-gray-700 text-xs italic">
+                        Maximum time a Worker has to complete the survey. Be generous so that Workers are not rushed.
+                    </p>
                 </div>
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label
-                        class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                        for="scadenza"
-                    >Survey expires in</label>
+                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="scadenza"
+                        >Survey expires in</label
+                    >
                     <div class="flex flex-col flex-grow sm:flex-row">
                         <input
                             class="appearance-none block w-full sm:w-32 bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -210,14 +191,8 @@
                                 <option value="hours">Hours</option>
                                 <option value="minutes">Minutes</option>
                             </select>
-                            <div
-                                class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900"
-                            >
-                                <svg
-                                    class="h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
+                            <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path
                                         d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
                                     />
@@ -225,15 +200,14 @@
                             </div>
                         </div>
                     </div>
-                    <p
-                        class="text-gray-700 text-xs italic"
-                    >Maximum time your survey will be available to Workers on Mechanical Turk.</p>
+                    <p class="text-gray-700 text-xs italic">
+                        Maximum time your survey will be available to Workers on Mechanical Turk.
+                    </p>
                 </div>
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label
-                        class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                        for="autoApproval"
-                    >Auto-approve and pay Workers in</label>
+                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="autoApproval"
+                        >Auto-approve and pay Workers in</label
+                    >
                     <div class="flex flex-col flex-grow sm:flex-row">
                         <input
                             class="appearance-none block w-full sm:w-32 bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -257,14 +231,8 @@
                                 <option value="hours">Hours</option>
                                 <option value="minutes">Minutes</option>
                             </select>
-                            <div
-                                class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900"
-                            >
-                                <svg
-                                    class="h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
+                            <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path
                                         d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
                                     />
@@ -282,10 +250,7 @@
         <hr class="solid mb-4" />
         <div class="-mx-3 md:flex md:flex-col lg:flex-row lg:justify-around">
             <div class="w-full lg:w-auto px-3 mb-4">
-                <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="layoutId"
-                >Layout ID</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="layoutId">Layout ID</label>
                 <input
                     :class="status != 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -297,15 +262,14 @@
                     v-model.trim="$v.layout_id.$model"
                     required
                 />
-                <p
-                    class="text-gray-700 text-xs italic"
-                >This is the id of the layout that will be shown to the Worker.</p>
+                <p class="text-gray-700 text-xs italic">
+                    This is the id of the layout that will be shown to the Worker.
+                </p>
             </div>
             <div class="w-full lg:w-auto px-3 mb-4">
-                <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="parametri"
-                >Parameters number</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="parametri"
+                    >Parameters number</label
+                >
                 <input
                     :class="status != 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -353,7 +317,9 @@
                 @click="goBack"
                 type="button"
                 class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none"
-            >Cancel</button>
+            >
+                Cancel
+            </button>
         </div>
     </form>
 </template>
