@@ -132,7 +132,7 @@
                     <div class="px-3 py-1">
                         <p class="font-light italic">You'll be able to revert these changes and re-upload your files</p>
                     </div>
-                    <div class="ml-auto flex flex-row justify-end flex-wrap">
+                    <div class="ml-auto flex flex-col xs2:flex-row justify-end flex-wrap">
                         <button
                             @click="confirm()"
                             class="ripple transition duration-150 mt-1 ease-in-out bg-primary hover:bg-primaryDark text-gray-100 py-2 px-4 rounded focus:outline-none"
@@ -141,7 +141,7 @@
                             Launch project
                         </button>
                         <button
-                            class="ripple transition duration-150 ease-in-out  mt-1  hover:bg-gray-300 focus:outline-none ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="ripple transition duration-150 ease-in-out mt-2 xs2:mt-0 xs2:ml-2 hover:bg-gray-300 focus:outline-none bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal('close')"
                         >
                             Cancel

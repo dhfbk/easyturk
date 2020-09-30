@@ -118,7 +118,7 @@
                     <div class="w-full mb-2">
                         <progress class="w-full" max="100" :value.prop="uploadPercentage"></progress>
                     </div>
-                    <div class="ml-auto">
+                    <div class="ml-auto flex flex-col xs2:flex-row">
                         <button
                             class="ripple transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="uploadFile()"
@@ -126,7 +126,7 @@
                             Upload
                         </button>
                         <button
-                            class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
                         >
                             Cancel

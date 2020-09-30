@@ -23,7 +23,7 @@
                         Are you sure you want to delete the project? This action is irreversible.
                     </div>
 
-                    <div class="ml-auto flex flex-col sm:flex-row">
+                    <div class="ml-auto flex flex-col xs2:flex-row">
                         <button
                             class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="deleteProject()"
@@ -37,7 +37,7 @@
                             >Delete
                         </button>
                         <button
-                            class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 sm:mt-0 sm:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
                         >
                             Cancel
