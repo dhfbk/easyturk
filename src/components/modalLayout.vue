@@ -5,7 +5,7 @@
         >
             <div class="bg-white rounded-lg w-3/5 max-h-80 overflow-y-auto">
                 <div class="flex flex-col p-4">
-                    <div class="flex w-full">
+                    <div class="flex w-full mb-2">
                         <div class="text-gray-900 font-bold text-lg">Set layout for the project</div>
                         <svg
                             class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
@@ -31,15 +31,22 @@
                         @removeElement="removeElement"
                         @updateArr="updateArr('first')"
                     />
-                    <hr />
+                    <hr class="my-2" />
                     <secondPart
                         :secondPartData="secondPartData"
                         @newElement="newElement"
                         @removeElement="removeElement"
                         @updateArr="updateArr('second')"
+                        :isGold="project[0].count_gold"
+                    />
+                    <hr class="my-2" />
+                    <thirdPart
+                        :thirdPartData="thirdPartData"
+                        @updateArr="updateArr('third')"
+                        :isGold="project[0].count_gold"
                     />
 
-                    <div class="ml-auto flex flex-col xs2:flex-row">
+                    <div class="ml-auto flex flex-col xs2:flex-row mt-2">
                         <button
                             class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
                         >
@@ -48,15 +55,13 @@
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
-                            >Proceed
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                            </svg>Proceed
                         </button>
                         <button
                             class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal('close')"
-                        >
-                            Cancel
-                        </button>
+                        >Cancel</button>
                     </div>
                 </div>
             </div>
@@ -67,12 +72,14 @@
 <script>
 import firstPart from '../components/firstPartLayoutModal.vue'
 import secondPart from '../components/secondPartLayoutModal.vue'
+import thirdPart from '../components/thirdPartLayoutModal.vue'
 export default {
     name: 'modalLayout',
     props: { project: Array },
     components: {
         firstPart,
         secondPart,
+        thirdPart,
     },
     data() {
         return {
@@ -95,6 +102,10 @@ export default {
                     varValueTo: '',
                 },
             ],
+            thirdPartData: {
+                assignNumber: this.project[0].params,
+                watDo: '',
+            },
         }
     },
     methods: {
@@ -141,6 +152,8 @@ export default {
                 this.firstPartData = arr
             } else if (type == 'second') {
                 this.secondPartData = arr
+            } else if (type == 'third') {
+                this.thirdPartData = arr
             }
         },
     },

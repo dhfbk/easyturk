@@ -165,7 +165,7 @@ export default {
     },
     data() {
         return {
-            goldNum: 1,
+            goldNum: 0,
             leftover: 'no_use',
             shuffleBase: 1,
             shuffleGold: 1,
@@ -211,7 +211,6 @@ export default {
                         this.$emit('hitCreated', 'HIT setup completed')
                         this.toggleModal('close')
                     } else {
-                        //this.toggleModal('error')
                         this.toggleModal('close')
                         this.$emit('hitCreated', 'Error: ' + response.data.error)
                     }

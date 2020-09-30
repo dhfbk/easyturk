@@ -4,7 +4,7 @@
             class="flex flex-col md:flex-row items-center md:items-end content-center py-2"
             v-for="first in dataArr"
             :key="first.id"
-            @change="prova()"
+            @change="update()"
         >
             <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center items-center">
                 <label for="sortBy" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Field:</label>
@@ -126,7 +126,7 @@ export default {
         removeElement(arr, id) {
             this.$emit('removeElement', [arr, id])
         },
-        prova() {
+        update() {
             this.$emit('updateArr', this.dataArr)
         },
     },
