@@ -19,9 +19,9 @@
                         </svg>
                     </div>
                     <div class="hidden md:grid grid-cols-4">
-                        <p class="font-semibold text-sm w-auto mr-2 md:mr-0">Field:</p>
+                        <p class="font-semibold text-sm w-auto">Field:</p>
                         <p></p>
-                        <p class="font-semibold text-sm w-auto mr-2 md:mr-0">Value:</p>
+                        <p class="font-semibold text-sm w-auto -ml-6">Value:</p>
                         <p></p>
                     </div>
                     <firstPart
@@ -29,7 +29,9 @@
                         :splitFields="splitFields"
                         @newElement="newElement"
                         @removeElement="removeElement"
+                        @updateArr="updateArr('first')"
                     />
+                    <hr />
 
                     <div class="ml-auto flex flex-col xs2:flex-row">
                         <button
@@ -99,6 +101,11 @@ export default {
                 this.firstPartData = this.firstPartData.filter(function(obj) {
                     return obj.id !== arr[1]
                 })
+            }
+        },
+        updateArr(arr, type) {
+            if (type == 'first') {
+                this.firstPartData = arr
             }
         },
     },

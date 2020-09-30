@@ -2,8 +2,9 @@
     <div>
         <div
             class="flex flex-col md:flex-row items-center md:items-end content-center py-2"
-            v-for="first in firstPartData"
+            v-for="first in dataArr"
             :key="first.id"
+            @change="prova()"
         >
             <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center items-center">
                 <label
@@ -137,12 +138,23 @@ export default {
         firstPartData: Array,
         splitFields: Array,
     },
+    data() {
+        return {
+            dataArr: [],
+        }
+    },
+    created() {
+        this.dataArr = this.firstPartData
+    },
     methods: {
         newElement(arr) {
             this.$emit('newElement', arr)
         },
         removeElement(arr, id) {
             this.$emit('removeElement', [arr, id])
+        },
+        prova() {
+            this.$emit('updateArr', this.dataArr)
         },
     },
 }
