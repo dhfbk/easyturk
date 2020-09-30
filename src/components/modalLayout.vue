@@ -32,6 +32,12 @@
                         @updateArr="updateArr('first')"
                     />
                     <hr />
+                    <secondPart
+                        :secondPartData="secondPartData"
+                        @newElement="newElement"
+                        @removeElement="removeElement"
+                        @updateArr="updateArr('second')"
+                    />
 
                     <div class="ml-auto flex flex-col xs2:flex-row">
                         <button
@@ -42,13 +48,15 @@
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                            </svg>Proceed
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
+                            >Proceed
                         </button>
                         <button
                             class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal('close')"
-                        >Cancel</button>
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>
@@ -58,11 +66,13 @@
 
 <script>
 import firstPart from '../components/firstPartLayoutModal.vue'
+import secondPart from '../components/secondPartLayoutModal.vue'
 export default {
     name: 'modalLayout',
     props: { project: Array },
     components: {
         firstPart,
+        secondPart,
     },
     data() {
         return {
@@ -76,6 +86,15 @@ export default {
                     valueFrom: 'prj',
                 },
             ],
+            secondPartData: [
+                {
+                    id: 0,
+                    varName: '',
+                    varValue: '',
+                    varNameTo: '',
+                    varValueTo: '',
+                },
+            ],
         }
     },
     methods: {
@@ -86,7 +105,7 @@ export default {
         },
         newElement(arr) {
             if (arr == 'first') {
-                var tmp = {
+                let tmp = {
                     id: this.firstPartData[this.firstPartData.length - 1].id + 1,
                     field: '',
                     isHandWritten: false,
@@ -94,6 +113,15 @@ export default {
                     valueFrom: 'prj',
                 }
                 this.firstPartData.push(tmp)
+            } else if (arr == 'second') {
+                let tmp = {
+                    id: this.secondPartData[this.secondPartData.length - 1].id + 1,
+                    varName: '',
+                    varValue: '',
+                    varNameTo: '',
+                    varValueTo: '',
+                }
+                this.secondPartData.push(tmp)
             }
         },
         removeElement(arr) {
@@ -101,11 +129,18 @@ export default {
                 this.firstPartData = this.firstPartData.filter(function(obj) {
                     return obj.id !== arr[1]
                 })
+            } else if (arr[0] == 'second') {
+                this.secondPartData = this.secondPartData.filter(function(obj) {
+                    return obj.id !== arr[1]
+                })
             }
         },
+
         updateArr(arr, type) {
             if (type == 'first') {
                 this.firstPartData = arr
+            } else if (type == 'second') {
+                this.secondPartData = arr
             }
         },
     },
