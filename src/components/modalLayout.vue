@@ -3,7 +3,7 @@
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
         >
-            <div class="bg-white rounded-lg w-3/5 max-h-80 overflow-y-auto">
+            <div class="bg-white rounded-lg w-5/6 max-h-80 overflow-y-auto">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
                         <div class="text-gray-900 font-bold text-lg">Set layout for the project</div>
@@ -27,23 +27,25 @@
                     <firstPart
                         :firstPartData="firstPartData"
                         :splitFields="splitFields"
+                        :csvValues="csvValues"
+                        :loadingCsv="loadingCsv"
                         @newElement="newElement"
                         @removeElement="removeElement"
                         @updateArr="updateArr('first')"
                     />
-                    <hr class="my-2" />
+                    <hr class="mb-1 mt-1 md:mt-2" />
+                    <p class="font-semibold text-sm w-auto">How to convert answers:</p>
                     <secondPart
                         :secondPartData="secondPartData"
                         @newElement="newElement"
                         @removeElement="removeElement"
                         @updateArr="updateArr('second')"
-                        :isGold="project[0].count_gold"
                     />
-                    <hr class="my-2" />
+                    <hr class="mb-1 mt-1 md:mt-2" />
                     <thirdPart
                         :thirdPartData="thirdPartData"
                         @updateArr="updateArr('third')"
-                        :isGold="project[0].count_gold"
+                        :isGold="parseInt(project[0].count_gold)"
                     />
 
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
@@ -73,6 +75,7 @@
 import firstPart from '../components/firstPartLayoutModal.vue'
 import secondPart from '../components/secondPartLayoutModal.vue'
 import thirdPart from '../components/thirdPartLayoutModal.vue'
+import axios from 'axios'
 export default {
     name: 'modalLayout',
     props: { project: Array },
@@ -84,13 +87,15 @@ export default {
     data() {
         return {
             loading: false,
+            loadingCsv: true,
+            csvValues: [],
             firstPartData: [
                 {
                     id: 0,
                     field: '',
                     isHandWritten: false,
                     customValue: '',
-                    valueFrom: 'prj',
+                    valueFrom: '',
                 },
             ],
             secondPartData: [
@@ -103,12 +108,24 @@ export default {
                 },
             ],
             thirdPartData: {
-                assignNumber: this.project[0].params,
+                assignNumber: this.project[0].workers,
                 watDo: '',
             },
         }
     },
     methods: {
+        getCsvFields() {
+            var url = this.APIURL + '?action=getData&id=' + this.project[0].id + '&howMany=1&page=1&isGold=0'
+            axios
+                .get(url)
+                .then(res => {
+                    this.csvValues = res.data.fields
+                    this.loadingCsv = false
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
         toggleModal(mode) {
             if (mode == 'close') {
                 this.$emit('layoutModal', ['layout', ''])
@@ -158,8 +175,7 @@ export default {
         },
     },
     created() {
-        console.log(this.project[0])
-        console.log(this.splitFields)
+        this.getCsvFields()
     },
     computed: {
         splitFields: function() {
@@ -177,5 +193,8 @@ export default {
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
+}
+option {
+    font-family: 'Work Sans', sans-serif !important;
 }
 </style>

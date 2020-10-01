@@ -1,13 +1,16 @@
 <template>
     <div>
         <div
-            class="flex flex-col md:flex-row items-center md:items-end content-center py-2"
+            class="flex flex-col md:flex-row items-center md:items-end content-center"
             v-for="first in dataArr"
             :key="first.id"
             @change="update()"
         >
             <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center items-center">
-                <label for="sortBy" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Field:</label>
+                <label
+                    for="sortBy"
+                    class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0"
+                >Field:</label>
                 <div class="relative w-full md:block">
                     <select
                         class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
@@ -15,11 +18,20 @@
                         id="sortBy"
                         v-model="first.field"
                     >
+                        <option selected value>Select...</option>
                         <option v-for="item in splitFields" :key="item" :value="item">{{ item }}</option>
                     </select>
-                    <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
-                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    <div
+                        class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900"
+                    >
+                        <svg
+                            class="h-4 w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                            />
                         </svg>
                     </div>
                 </div>
@@ -40,17 +52,19 @@
                 </span>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
-                    >Handwritten value</span
-                >
+                >Handwritten value</span>
             </span>
 
             <div
                 class="flex flex-col xs2:flex-row md:flex-col w-full content-center items-center"
                 v-if="first.isHandWritten"
             >
-                <label for="value" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Value:</label>
+                <label
+                    for="value"
+                    class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0"
+                >Value:</label>
                 <input
-                    class="appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded  px-4 mt-2 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 mt-2 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="value"
                     name="value"
                     type="text"
@@ -59,21 +73,51 @@
                     v-model="first.customValue"
                 />
             </div>
-            <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center items-center" v-else>
-                <label for="selectFrom" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Value:</label>
-                <div class="relative w-full block mt-2 md:mt-0">
+            <div
+                class="flex flex-col xs2:flex-row md:flex-col mt-2 md:mt-0 w-full content-center items-center"
+                v-else
+            >
+                <label
+                    for="selectFrom"
+                    class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0"
+                >Value:</label>
+                <div class="relative w-full block md:mt-0">
                     <select
                         class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="selectFrom"
                         name="selectFrom"
                         v-model="first.valueFrom"
                     >
-                        <option selected value="prj">From project</option>
-                        <option value="csv">From CSV</option>
+                        <option value>Select...</option>
+                        <optgroup label="From project">
+                            <option value="name">Name</option>
+                            <option value="title">Title</option>
+                            <option value="description">Description</option>
+                            <option value="keywords">Keywords</option>
+                        </optgroup>
+                        <optgroup
+                            label="From CSV"
+                            v-if="loadingCsv || (!loadingCsv && csvValues.length > 0)"
+                        >
+                            <option value="loading" v-if="loadingCsv">Loading...</option>
+                            <option
+                                v-for="field in csvValues"
+                                :key="field"
+                                :value="field"
+                            >{{ field }}</option>
+                        </optgroup>
                     </select>
-                    <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
-                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    <div
+                        class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900"
+                    >
+                        <svg
+                            class="h-4 w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                            />
                         </svg>
                     </div>
                 </div>
@@ -110,6 +154,8 @@ export default {
     props: {
         firstPartData: Array,
         splitFields: Array,
+        csvValues: Array,
+        loadingCsv: Boolean,
     },
     data() {
         return {

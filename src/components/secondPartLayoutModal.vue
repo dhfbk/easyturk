@@ -1,96 +1,70 @@
 <template>
     <div>
-        <div v-if="isGold == 0">
-            <p class="text-teal-500 text-md text-center pt-2">Golden standard CSV hasn't been uploaded</p>
-        </div>
         <div
-            class="flex flex-col md:flex-row items-center content-center py-2"
+            class="flex flex-col md:flex-row items-center content-center"
             v-for="second in secondPartData"
             :key="second.id"
             @change="prova()"
         >
             <span>If</span>
-            <div
-                class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
-            >
+            <div class="flex flex-col xs2:flex-row content-center items-center">
                 <div
-                    class="flex flex-col xs2:flex-row md:flex-col w-full content-center items-center"
+                    class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
                 >
-                    <label
-                        for="value"
-                        class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0"
-                    >Value:</label>
                     <input
-                        :class="isGold == 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         name="value"
                         type="text"
                         placeholder="Var name"
                         maxlength="255"
-                        :disabled="isGold == 0"
                         v-model="second.varName"
                     />
                 </div>
-            </div>
-            <span>=</span>
+                <span>=</span>
 
-            <div
-                class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
-            >
-                <label
-                    for="value"
-                    class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0"
-                >Value:</label>
-                <input
-                    :class="isGold == 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                    name="value"
-                    type="text"
-                    placeholder="Var value"
-                    maxlength="255"
-                    :disabled="isGold == 0"
-                    v-model="second.varValue"
-                />
+                <div
+                    class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
+                >
+                    <input
+                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        name="value"
+                        type="text"
+                        placeholder="Var value"
+                        maxlength="255"
+                        v-model="second.varValue"
+                    />
+                </div>
             </div>
+
             <span>then</span>
 
-            <div
-                class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
-            >
-                <label
-                    for="value"
-                    class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0"
-                >Value:</label>
-                <input
-                    :class="isGold == 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                    name="value"
-                    type="text"
-                    placeholder="Var name"
-                    maxlength="255"
-                    :disabled="isGold == 0"
-                    v-model="second.varNameTo"
-                />
-            </div>
-            <span>=</span>
+            <div class="flex flex-col xs2:flex-row content-center items-center">
+                <div
+                    class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
+                >
+                    <input
+                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        name="value"
+                        type="text"
+                        placeholder="Var name"
+                        maxlength="255"
+                        v-model="second.varNameTo"
+                    />
+                </div>
+                <span>=</span>
 
-            <div
-                class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
-            >
-                <label
-                    for="value"
-                    class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0"
-                >Value:</label>
-                <input
-                    :class="isGold == 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                    name="value"
-                    type="text"
-                    placeholder="Var value"
-                    maxlength="255"
-                    :disabled="isGold == 0"
-                    v-model="second.varValueTo"
-                />
+                <div
+                    class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
+                >
+                    <input
+                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        name="value"
+                        type="text"
+                        placeholder="Var value"
+                        maxlength="255"
+                        v-model="second.varValueTo"
+                    />
+                </div>
             </div>
 
             <span class="flex flex-row mx-2 text-gray-800 mt-2 md:mt-0">
@@ -123,7 +97,6 @@
 export default {
     props: {
         secondPartData: Array,
-        isGold: Number,
     },
     data() {
         return {
