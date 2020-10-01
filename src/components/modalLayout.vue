@@ -53,7 +53,7 @@
                             class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
                         >
                             <svg
-                                :class="loading ? 'animate-spin mr-1' : 'hidden'"
+                                :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >

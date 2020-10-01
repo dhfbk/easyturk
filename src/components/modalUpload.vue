@@ -134,7 +134,7 @@
                             @click="uploadFile()"
                         >
                             <svg
-                                :class="loading ? 'animate-spin mr-1' : 'hidden'"
+                                :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >
@@ -254,9 +254,6 @@ progress[value]::-webkit-progress-bar {
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
-}
-path {
-    fill: rgba(45, 55, 72, 1);
 }
 .customFlex {
     flex-direction: column;
