@@ -215,14 +215,40 @@
                     <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
                 </svg>
             </button>
-            <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <!-- <span
+                class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1"
+                v-if="projectData.status == 0 && baseCsvStatus == 1 && goldCsvStatus == 0"
+            >
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
+                ></span>
                 <span
                     class="relative inline-flex justify-center items-center rounded-full h-3 w-3 bg-blue-500 text-xs text-white"
                 >
-                    <!-- {{ status }} -->
                 </span>
             </span>
+            <span
+                class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1"
+                v-if="projectData.status == 0 && baseCsvStatus == 1 && goldCsvStatus == 1"
+            >
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
+                ></span>
+                <span
+                    class="relative inline-flex justify-center items-center rounded-full h-3 w-3 bg-green-500 text-xs text-white"
+                >
+                </span>
+            </span>
+            <span
+                class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1"
+                v-if="projectData.status == 0 && baseCsvStatus == 0 && goldCsvStatus == 0"
+            >
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span
+                    class="relative inline-flex justify-center items-center rounded-full h-3 w-3 bg-red-500 text-xs text-white"
+                >
+                </span>
+            </span> -->
         </span>
         <transition name="slide-toggle">
             <div v-if="isOpen" class="content w-full flex flex-wrap justify-center relative">
