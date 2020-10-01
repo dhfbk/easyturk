@@ -64,6 +64,7 @@
                             @upload="toggleModal"
                             @createHit="toggleModal"
                             @layoutModal="toggleModal"
+                            @snackbar="uploaded"
                         />
                     </div>
                 </div>
