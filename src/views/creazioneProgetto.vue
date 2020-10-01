@@ -515,6 +515,7 @@ export default {
                 this.layout_id = res.data.values.layout_id
                 this.params = res.data.values.params
                 this.status = res.data.values.status
+                this.params_fields = res.data.values.params_fields
                 this.elaboraTempoGET('max_time')
                 this.elaboraTempoGET('expiry')
                 this.elaboraTempoGET('auto_approve')
@@ -547,6 +548,7 @@ export default {
                         auto_approve: this.auto_approve_send,
                         layout_id: this.layout_id,
                         params: this.params,
+                        params_fields: this.params_fields,
                     },
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
