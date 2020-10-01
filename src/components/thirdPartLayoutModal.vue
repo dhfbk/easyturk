@@ -18,7 +18,7 @@
                         id="whatDo"
                         name="whatDo"
                         :disabled="isGold == 0"
-                        v-model="dataObj.watDo"
+                        v-model="dataObj.whatToDo"
                     >
                         <option selected value="">Select...</option>
                         <option value="reject">Reject</option>

@@ -51,6 +51,7 @@
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
                         <button
                             class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            @click="invia()"
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
@@ -109,11 +110,31 @@ export default {
             ],
             thirdPartData: {
                 assignNumber: this.project[0].workers,
-                watDo: '',
+                whatToDo: '',
             },
         }
     },
     methods: {
+        invia() {
+            var url = this.APIURL + '?action=debug'
+            axios({
+                method: 'post',
+                url: url,
+                data: {
+                    layoutData: this.firstPartData,
+                    answerData: this.secondPartData,
+                    assignNumber: this.thirdPartData.assignNumber,
+                    whatToDo: this.thirdPartData.whatToDo
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            })
+                .then(response => {
+                    console.log(response.data)
+                })
+                .catch(() => {
+                    this.toggleModal('error')
+                })
+        },
         getCsvFields() {
             var url = this.APIURL + '?action=getData&id=' + this.project[0].id + '&howMany=1&page=1&isGold=0'
             axios
