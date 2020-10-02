@@ -1,5 +1,5 @@
 <template>
-    <div class="home mx-8 sm:mt-2 md:mx-16 pb-6">
+    <div class="home mx-2 xs2:mx-4 md:mx-16 pt-2 pb-6 overflow-x-hidden">
         <p class="text-3xl sm:text-5xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
         <modalEliminazione v-if="modalElim" @deleteModal="toggleModal" @deleted="deleted" :id="modalId" />
         <modalUpload v-if="modalStd" @uploaded="uploaded" @uploadModal="toggleModal" :type="'std'" :id="modalId" />
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div v-else>
-                    <div v-for="i in projects" :key="i.id" class="w-full mx-auto relative">
+                    <div v-for="i in projects" :key="i.id" class="w-full relative">
                         <projectListItem
                             :projectData="i"
                             @deleteThis="toggleModal"
@@ -101,7 +101,7 @@
                 >
                     <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
                 </svg>
-                <p class="text-black font-light text-4xl m-1 text-center" v-else>${{ userInfo.balance }}</p>
+                <p class="text-black font-light text-2xl xs2:text-4xl m-1 text-center overflow-ellipsis" v-else>${{ userInfo.balance }}</p>
             </div>
             <div class="rounded shadow-md m-2 p-2 flex flex-col justify-around bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
@@ -112,7 +112,7 @@
                     </svg>
                     <h2 class="font-semibold text-lg m-1 tracking-tight text-gray-800">Reviewable results</h2>
                 </div>
-                <p class="text-black font-light text-5xl m-1 text-center">93</p>
+                <p class="text-black font-light text-2xl xs2:text-4xl m-1 text-center">93</p>
             </div>
         </div>
     </div>

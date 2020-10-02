@@ -26,7 +26,7 @@
                 <p class>{{ lastEdited }}</p>
             </div>
         </div>
-        <span class="flex-grow flex justify-end w-1/2 md:w-1/4">
+        <span class="flex-grow flex justify-end md:w-1/4">
             <span class="tooltip relative">
                 <button
                     @click="layout()"
@@ -138,7 +138,7 @@
                     >Delete</span
                 >
             </span>
-            <span v-click-outside="hide" class="block md:hidden flex align-center">
+            <span v-click-outside="hide" class="md:hidden flex align-center">
                 <button
                     class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded"
                     @click="dropdown = !dropdown"
@@ -333,8 +333,8 @@ export default {
         }
     },
     created() {
-        this.displayWindowSize()
-        window.onresize = this.displayWindowSize
+        //this.displayWindowSize()
+        //window.onresize = this.displayWindowSize
         //for (let i = 0; i < this.projectData.length; i++) {}
         //controllare con un loop se ci sono HIT che attendono review
         //se ci sono isTherePending = true
@@ -426,15 +426,6 @@ export default {
 @media screen and (min-width: 500px) {
     .contenutoPrj {
         flex-direction: row;
-    }
-}
-.widthElem {
-    width: 33.33%;
-    width: calc(100% / 3);
-}
-@media screen and (max-width: 500px) {
-    .widthElem {
-        width: auto;
     }
 }
 .tooltip .tooltip-text {

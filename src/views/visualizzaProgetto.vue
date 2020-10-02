@@ -1,5 +1,5 @@
 <template>
-    <div class="relative lg:w-5/6 px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto">
+    <div class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <modalEliminazione
             v-if="modalElim && !loading1"
             @deleteModal="toggleModal('delete')"
@@ -34,7 +34,7 @@
             @revertModal="toggleModal('revert')"
             @reverted="reverted"
         />
-        <modalLayout v-if="modalLayout && !loading1" :id="datiProgetto.id" @layoutModal="toggleModal('layout')" />
+        <modalLayout v-if="modalLayout && !loading1" :project="project" @layoutModal="toggleModal('layout')" />
         <div class="flex justify-between items-center flex-wrap" v-if="!loading1">
             <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
             <div class="w-full sm:w-auto flex relative justify-between content-center items-center">
@@ -236,8 +236,8 @@
                 </span>
             </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 mt-2">
-            <div class="mx-0 sm:mx-2">
+        <div class="grid grid-cols-1 xs2:grid-cols-2 mt-2">
+            <div class="mx-0 xs2:mx-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading1">
                     <loader :type="'cardInfoVisualizza'" v-for="n in 3" :key="n" />
                 </div>
@@ -247,7 +247,7 @@
                     <cardInfo :titoli="titoliCard.titoli5" :dati="datiCard.dati5" />
                 </div>
             </div>
-            <div class="mx-0 sm:mx-2">
+            <div class="mx-0 xs2:mx-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading1">
                     <loader :type="'cardInfoVisualizza'" v-for="n in 2" :key="n" />
                     <!-- <loader :type="'cardAnalyticsVisualizza'" :num="3" />
@@ -346,6 +346,7 @@ export default {
             modalLayout: false,
             loading1: true,
             loading: true,
+            project: [],
         }
     },
     created() {
@@ -369,6 +370,7 @@ export default {
             axios
                 .get(this.APIURL + '?action=getProjectInfo&id=' + this.datiProgetto.id)
                 .then(res => {
+                    this.project[0] = res.data.values
                     //console.log(res)
                     console.log(res.data)
                     //console.log(responses[2].data.result)
@@ -434,7 +436,7 @@ export default {
             ]
             this.titoliCard.titoli2 = [
                 'Ricompensa per ogni assignment',
-                'Numero di lavoratori/assignment per task',
+                'Numero di lavoratori / assignment per task',
                 'Tempo massimo',
                 'Scadenza',
                 'Auto approva e paga lavoratori in',

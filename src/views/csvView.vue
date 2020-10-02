@@ -1,5 +1,5 @@
 <template>
-    <div class="block lg:w-5/6 mx-auto mt-4">
+    <div class="block lg:w-5/6 mx-2 xs2:mx-4 lg:mx-auto pt-2">
         <p class="text-md sm:text-lg md:text-2xl text-primary mr-auto ml-2">{{ filename }}</p>
         <div class="flex flex-row justify-start mr-auto mb-1 ml-2">
             <p class="text-md my-auto mr-1">Results per page:</p>

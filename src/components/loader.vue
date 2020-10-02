@@ -1,5 +1,5 @@
 <template>
-    <div v-if="type == 'homePrj'" class="rounded shadow-md my-2 mx-2 bg-white rounded-md p-4 w-full">
+    <div v-if="type == 'homePrj'" class="rounded shadow-md my-2 mx-2 bg-white rounded-md p-4 w-auto">
         <div class="animate-pulse flex flex-col xs2:flex-row justify-center content-center items-center">
             <div class="h-2 w-full bg-gray-500 rounded"></div>
             <div class="xs2:hidden mt-6 h-2 w-3/4 bg-gray-500 rounded"></div>

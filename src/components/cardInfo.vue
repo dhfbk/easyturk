@@ -2,7 +2,8 @@
     <div class="bg-white rounded-md shadow-md p-4 mb-4">
         <div v-for="(n, i) in length" :key="n">
             <span class="font-bold tracking-tight">{{ titoli[i] }}:&nbsp;</span>
-            <span v-html="dati[i]"></span>
+            <p class="overflow-ellipsis" v-html="dati[i]"></p>
+            <hr v-if="n != length" />
         </div>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            class="flex flex-col md:flex-row items-center md:items-end content-center"
+            class="flex flex-col md:flex-row items-center md:items-end content-center mb-1"
             v-for="first in dataArr"
             :key="first.id"
             @change="update()"

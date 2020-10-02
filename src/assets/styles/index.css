@@ -5,51 +5,62 @@
 @import 'tailwindcss/utilities';
 
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap');
+
 * {
     font-family: 'Work Sans', sans-serif !important;
 }
+
 .slide-toggle-enter-active,
 .slide-toggle-leave-active {
     transition: max-height 0.3s;
 }
+
 .slide-toggle-enter-active {
     max-height: 200px;
-    overflow: hidden;
+    overflow  : hidden;
 }
+
 .slide-toggle-enter,
 .slide-toggle-leave-active {
     max-height: 0;
-    overflow: hidden;
+    overflow  : hidden;
 }
+
 .slide-toggle-leave {
     max-height: 200px;
-    overflow: hidden;
+    overflow  : hidden;
 }
 
 .ripple {
-    position: relative;
-    overflow: hidden;
+    position : relative;
+    overflow : hidden;
     transform: translate3d(0, 0, 0);
 }
 
 .ripple:after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
-    background-repeat: no-repeat;
+    content            : '';
+    display            : block;
+    position           : absolute;
+    width              : 100%;
+    height             : 100%;
+    top                : 0;
+    left               : 0;
+    pointer-events     : none;
+    background-image   : radial-gradient(circle, #000 10%, transparent 10.01%);
+    background-repeat  : no-repeat;
     background-position: 50%;
-    transform: scale(10, 10);
-    opacity: 0;
-    transition: transform 0.5s, opacity 1s;
+    transform          : scale(10, 10);
+    opacity            : 0;
+    transition         : transform 0.5s, opacity 1s;
 }
+
 .ripple:active:after {
-    transform: scale(0, 0);
-    opacity: 0.2;
+    transform : scale(0, 0);
+    opacity   : 0.2;
     transition: 0s;
+}
+
+.overflow-ellipsis {
+    text-overflow: ellipsis;
+    overflow     : hidden;
 }
