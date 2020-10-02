@@ -8,15 +8,55 @@
                     <div class="flex w-full">
                         <h2 class="text-gray-900 font-bold text-lg">HIT settings</h2>
                         <svg
-                            class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
+                            class="ml-auto fill-current text-gray-700 hover:bg-gray-300 rounded w-6 h-6 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 18 18"
-                            @click="toggleModal()"
+                            @click="toggleModal('close')"
                         >
                             <path
                                 d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
                             />
                         </svg>
+                    </div>
+                    <div v-if="baseDataStatus == 0">
+                        <p class="text-red-500 text-md px-3 py-2">Base CSV hasn't been uploaded</p>
+                    </div>
+                    <div v-if="goldDataStatus == 0">
+                        <p
+                            class="text-teal-500 text-md px-3 py-2"
+                        >Golden standard CSV hasn't been uploaded</p>
+                    </div>
+                    <div
+                        class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2"
+                    >
+                        <h2
+                            class="block tracking-wide text-gray-900 text-md font-bold mr-2"
+                        >Shuffle base CSV data:</h2>
+                        <label class="inline-flex content-center items-center mr-0 sm:mr-2">
+                            <input
+                                type="radio"
+                                id="auto"
+                                :value="1"
+                                class="form-radio"
+                                checked
+                                :disabled="baseDataStatus == 0"
+                                :class="{ 'cursor-not-allowed': baseDataStatus == 0 }"
+                                v-model="shuffleBase"
+                            />
+                            <span class="ml-2 text-gray-700">Yes</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input
+                                type="radio"
+                                id="custom"
+                                :value="0"
+                                class="form-radio"
+                                :disabled="baseDataStatus == 0"
+                                :class="{ 'cursor-not-allowed': baseDataStatus == 0 }"
+                                v-model="shuffleBase"
+                            />
+                            <span class="ml-2 text-gray-700">No</span>
+                        </label>
                     </div>
                     <div
                         class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2"
@@ -24,17 +64,55 @@
                         <label
                             class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2"
                             for="gold"
-                        >Golden data per HIT</label>
+                        >Golden data per HIT:</label>
                         <input
-                            class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            :class="
+                                goldDataStatus == 0 || baseDataStatus == 0
+                                    ? 'cursor-not-allowed bg-gray-400 text-gray-800 '
+                                    : ' bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500'
+                            "
+                            class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4"
                             id="gold"
                             type="number"
                             min="1"
                             step="1"
                             placeholder="1"
+                            :disabled="goldDataStatus == 0 || baseDataStatus == 0"
                             v-model.trim="$v.goldNum.$model"
                             required
                         />
+                    </div>
+                    <div
+                        class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2"
+                    >
+                        <h2
+                            class="block tracking-wide text-gray-900 text-md font-bold mr-2"
+                        >Shuffle gold CSV data:</h2>
+                        <label class="inline-flex content-center items-center mr-0 sm:mr-2">
+                            <input
+                                type="radio"
+                                id="auto"
+                                :value="1"
+                                class="form-radio"
+                                checked
+                                :disabled="goldDataStatus == 0 || baseDataStatus == 0"
+                                :class="{ 'cursor-not-allowed': goldDataStatus == 0 || baseDataStatus == 0 }"
+                                v-model="shuffleGold"
+                            />
+                            <span class="ml-2 text-gray-700">Yes</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input
+                                type="radio"
+                                id="custom"
+                                :value="0"
+                                class="form-radio"
+                                :disabled="goldDataStatus == 0 || baseDataStatus == 0"
+                                :class="{ 'cursor-not-allowed': goldDataStatus == 0 || baseDataStatus == 0 }"
+                                v-model="shuffleGold"
+                            />
+                            <span class="ml-2 text-gray-700">No</span>
+                        </label>
                     </div>
                     <div
                         class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2 mb-2"
@@ -42,12 +120,18 @@
                         <label
                             class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2"
                             for="gold"
-                        >Action for the leftover HITs</label>
+                        >Action for the leftover HITs:</label>
                         <div class="relative mt-1 sm:mt-0 sm:ml-2">
                             <select
-                                class="block appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 py-2 pl-2 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                :class="
+                                    goldDataStatus == 0 || baseDataStatus == 0
+                                        ? 'cursor-not-allowed bg-gray-400 text-gray-800'
+                                        : 'bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500'
+                                "
+                                class="block border border-gray-200 appearance-none w-full py-2 pl-2 pr-8 rounded"
                                 id="gold"
                                 v-model="leftover"
+                                :disabled="goldDataStatus == 0 || baseDataStatus == 0"
                             >
                                 <option selected value="no_use">Don't use</option>
                                 <option value="reuse">Reuse previous gold</option>
@@ -67,13 +151,28 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ml-auto flex flex-row justify-end flex-wrap">
+                    <div class="px-3 py-1">
+                        <p
+                            class="font-light italic"
+                        >You'll be able to revert these changes and re-upload your files</p>
+                    </div>
+                    <div class="ml-auto flex flex-col xs2:flex-row justify-end flex-wrap">
                         <button
-                            class="transition duration-150 mt-1 ease-in-out bg-primary hover:bg-primaryDark text-gray-100 py-2 px-4 rounded focus:outline-none"
-                        >Launch project</button>
+                            class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            @click="confirm()"
+                            :disabled="baseDataStatus == 0"
+                        >
+                            <svg
+                                :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
+                                style="width:24px;height:24px"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                            </svg>Launch project
+                        </button>
                         <button
-                            class="transition duration-150 ease-in-out border mt-1 border-solid border-gray-400 hover:bg-gray-200 focus:outline-none ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
-                            @click="toggleModal()"
+                            class="ripple transition duration-150 ease-in-out mt-2 xs2:mt-0 xs2:ml-2 hover:bg-gray-300 focus:outline-none bg-transparent text-gray-800 py-2 px-4 rounded"
+                            @click="toggleModal('close')"
                         >Cancel</button>
                     </div>
                 </div>
@@ -83,13 +182,22 @@
 </template>
 
 <script>
+import axios from 'axios'
 const { required } = require('vuelidate/lib/validators')
 export default {
     name: 'modalHIT',
+    props: {
+        id: String,
+        baseDataStatus: Number,
+        goldDataStatus: Number,
+    },
     data() {
         return {
-            goldNum: 1,
+            goldNum: 0,
             leftover: 'no_use',
+            shuffleBase: 1,
+            shuffleGold: 1,
+            loading: false,
         }
     },
     validations() {
@@ -100,8 +208,47 @@ export default {
         }
     },
     methods: {
-        toggleModal() {
-            this.$emit('uploadModal', ['hit', ''])
+        toggleModal(mode) {
+            //cambiare per inserimento id nella posizione 1 dell'array
+            if (mode == 'close') {
+                this.$emit('hitModal', [])
+            } else {
+                this.$emit('hitCreated', 'Error: API call failed')
+            }
+        },
+        confirm() {
+            this.loading = true
+            var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
+            var deleteExceedingValues = 0
+            if (this.leftover == 'no_use') {
+                deleteExceedingValues = 1
+            }
+            axios({
+                method: 'post',
+                url: url,
+                data: {
+                    toStatus: 1,
+                    goldSize: this.goldNum,
+                    deleteExceedingValues: deleteExceedingValues,
+                    shuffleData: this.shuffleBase,
+                    shuffleGold: this.shuffleGold,
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            })
+                .then(response => {
+                    console.log(response.data)
+                    if (response.data.result == 'OK') {
+                        this.$emit('hitCreated', 'HIT setup completed')
+                        this.toggleModal('close')
+                    } else {
+                        this.toggleModal('close')
+                        this.$emit('hitCreated', 'Error: ' + response.data.error)
+                    }
+                    this.loading = false
+                })
+                .catch(() => {
+                    this.toggleModal('error')
+                })
         },
     },
 }
@@ -116,14 +263,62 @@ export default {
 .fade-leave-to {
     opacity: 0;
 }
-path {
-    fill: rgba(45, 55, 72, 1);
-}
 .pin-r {
     right: 0;
 }
 .pin-y {
     top: 0;
     bottom: 0;
+}
+.form-radio {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    display: inline-block;
+    vertical-align: middle;
+    background-origin: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    flex-shrink: 0;
+    border-radius: 100%;
+    height: 1em;
+    width: 1em;
+    color: #0068b4;
+    background-color: #fff;
+    border-color: #003e84;
+    border-width: 1px;
+}
+.form-radio:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+    border-color: transparent;
+    background-color: currentColor;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.form-radio:disabled {
+    border-color: transparent;
+    background-color: grey;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@media not print {
+    .form-radio::-ms-check {
+        border-width: 1px;
+        color: transparent;
+        background: inherit;
+        border-color: inherit;
+        border-radius: inherit;
+    }
+}
+
+.form-radio:focus {
+    outline: none;
 }
 </style>

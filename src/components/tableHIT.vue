@@ -33,7 +33,7 @@
         </div>
         <table class="w-full shadow-lg rounded">
             <thead>
-                <tr class="text-center bg-primary border-b border-grey uppercase tracking-tight">
+                <tr class="text-center bg-primary border-b border-gray-300 uppercase tracking-tight">
                     <th class="py-2 px-2 text-sm text-white">HIT ID</th>
                     <th class="py-2 px-2 text-sm text-white">Status</th>
                     <th class="py-2 px-2 hidden sm:table-cell text-sm text-white">Creation</th>
@@ -45,17 +45,17 @@
             </thead>
             <tbody class="bg-white text-center">
                 <tr
-                    class="border-b border-grey-light hover:bg-gray-100"
+                    class="border-b border-gray-300 hover:bg-gray-100"
                     v-for="hit in hitDaMostrare"
                     :key="hit.HITId"
                 >
-                    <td class="table-cell py-2 border-r border-grey-light">
+                    <td class="table-cell py-2 border-r border-gray-300">
                         <router-link to="/hit">
                             <p class="text-sm text-gray-700 font-medium">{{ hit.HITId }}</p>
                         </router-link>
                     </td>
                     <td
-                        class="table-cell py-2 border-r border-grey-light whitespace-no-wrap text-blue-900 text-sm leading-5"
+                        class="table-cell py-2 border-r border-gray-300 whitespace-no-wrap text-blue-900 text-sm leading-5"
                     >
                         <span class="relative inline-block px-3 py-1 italic text-green-900">
                             <span
@@ -76,18 +76,18 @@
                             <span class="relative text-xs">{{ hit.HITStatus }}</span>
                         </span>
                     </td>
-                    <td class="hidden sm:table-cell py-2 border-r border-grey-light">
+                    <td class="hidden sm:table-cell py-2 border-r border-gray-300">
                         <p class="text-sm text-gray-700 font-medium">{{ hit.CreationTime }}</p>
                     </td>
-                    <td class="hidden md:table-cell py-2 border-r border-grey-light">
+                    <td class="hidden md:table-cell py-2 border-r border-gray-300">
                         <p class="text-sm text-gray-700 font-medium">{{ hit.MaxAssignments }}</p>
                     </td>
-                    <td class="hidden md:table-cell py-2 border-r border-grey-light">
+                    <td class="hidden md:table-cell py-2 border-r border-gray-300">
                         <p
                             class="text-sm text-gray-700 font-medium"
                         >{{ hit.NumberOfAssignmentsSubmitted }}</p>
                     </td>
-                    <td class="hidden lg:table-cell py-2 border-r border-grey-light">
+                    <td class="hidden lg:table-cell py-2 border-r border-gray-300">
                         <p
                             class="text-sm text-gray-700 font-medium"
                         >{{ hit.NumberOfAssignmentsApproved }}</p>

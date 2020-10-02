@@ -26,84 +26,119 @@
                 <p class>{{ lastEdited }}</p>
             </div>
         </div>
-        <span class="flex-grow flex justify-end w-1/2 md:w-1/4">
-            <button
-                class="ripple-primary relative tooltip bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
-            >
-                <svg style="width:24px;" viewBox="0 0 24 24">
-                    <path
-                        fill="white"
-                        d="M18.4,10.6C16.55,9 14.15,8 11.5,8C6.85,8 2.92,11.03 1.54,15.22L3.9,16C4.95,12.81 7.95,10.5 11.5,10.5C13.45,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z"
-                    />
-                </svg>
-                <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
-                    >Next Status</span
+        <span class="flex-grow flex justify-end md:w-1/4">
+            <span class="tooltip relative">
+                <button
+                    @click="layout()"
+                    v-if="projectData.status == 1"
+                    class="ripple hover:bg-blue-600 bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
-            </button>
-
-            <button
-                @click="upload('std')"
-                class="tooltip ripple-light relative bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
-            >
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path
-                        fill="rgba(26, 32, 44, 1)"
-                        d="M20,6A2,2 0 0,1 22,8V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4H10L12,6H20M10.75,13H14V17H16V13H19.25L15,8.75"
-                    />
-                </svg>
+                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                        <path
+                            d="M12.89,3L14.85,3.4L11.11,21L9.15,20.6L12.89,3M19.59,12L16,8.41V5.58L22.42,12L16,18.41V15.58L19.59,12M1.58,12L8,5.58V8.41L4.41,12L8,15.58V18.41L1.58,12Z"
+                        />
+                    </svg>
+                </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                    >Set layout</span
+                >
+            </span>
+            <span class="tooltip relative">
+                <button
+                    @click="createHIT()"
+                    v-if="projectData.status == 0"
+                    :class="{ 'cursor-not-allowed': baseCsvStatus == 0 }"
+                    class="ripple hover:bg-blue-600 bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
+                >
+                    <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                        <path
+                            d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M10,2H14A2,2 0 0,1 16,4V6H20A2,2 0 0,1 22,8V13.53C20.94,12.58 19.54,12 18,12A6,6 0 0,0 12,18C12,19.09 12.29,20.12 12.8,21H4C2.89,21 2,20.1 2,19V8C2,6.89 2.89,6 4,6H8V4C8,2.89 8.89,2 10,2M14,6V4H10V6H14Z"
+                        />
+                    </svg>
+                </button>
+                <span
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                    >Create HIts</span
+                >
+            </span>
+            <span class="tooltip relative" v-if="projectData.status < 1">
+                <button
+                    @click="upload('std')"
+                    class="tooltip ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                >
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path
+                            fill="rgba(26, 32, 44, 1)"
+                            d="M20,6A2,2 0 0,1 22,8V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4H10L12,6H20M10.75,13H14V17H16V13H19.25L15,8.75"
+                        />
+                    </svg>
+                </button>
+                <span
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
                     >Upload standard csv</span
                 >
-            </button>
-            <button
-                @click="upload('gld')"
-                class="tooltip ripple-light relative bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
-            >
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path
-                        fill="rgba(26, 32, 44, 1)"
-                        d="M1 22L2.5 17H9.5L11 22H1M13 22L14.5 17H21.5L23 22H13M6 15L7.5 10H14.5L16 15H6M23 6.05L19.14 7.14L18.05 11L16.96 7.14L13.1 6.05L16.96 4.96L18.05 1.1L19.14 4.96L23 6.05Z"
-                    />
-                </svg>
+            </span>
+            <span class="tooltip relative" v-if="projectData.status < 1">
+                <button
+                    :class="{ 'cursor-not-allowed': baseCsvStatus == 0 }"
+                    @click="upload('gld')"
+                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                >
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path
+                            fill="rgba(26, 32, 44, 1)"
+                            d="M1 22L2.5 17H9.5L11 22H1M13 22L14.5 17H21.5L23 22H13M6 15L7.5 10H14.5L16 15H6M23 6.05L19.14 7.14L18.05 11L16.96 7.14L13.1 6.05L16.96 4.96L18.05 1.1L19.14 4.96L23 6.05Z"
+                        />
+                    </svg>
+                </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
                     >Upload gold csv</span
                 >
-            </button>
-            <button
-                @click="upload('gld')"
-                class="tooltip ripple-light relative bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
-            >
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path
-                        fill="rgba(26, 32, 44, 1)"
-                        d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
-                    />
-                </svg>
+            </span>
+            <span class="tooltip relative">
+                <button
+                    @click="
+                        $router.push({
+                            name: 'edit',
+                            params: {
+                                projectId: projectData.id,
+                            },
+                        })
+                    "
+                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
+                >
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path
+                            fill="rgba(26, 32, 44, 1)"
+                            d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+                        />
+                    </svg>
+                </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
                     >Edit</span
                 >
-            </button>
-            <button
-                @click="deleteItem()"
-                class="tooltip ripple-light relative bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
-            >
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path
-                        fill="rgba(26, 32, 44, 1)"
-                        d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-                    />
-                </svg>
-                <!-- <span class="ml-1">Gold</span> -->
+            </span>
+            <span class="tooltip relative">
+                <button
+                    @click="deleteItem()"
+                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
+                >
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path
+                            fill="rgba(26, 32, 44, 1)"
+                            d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                        />
+                    </svg>
+                </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-10"
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
                     >Delete</span
                 >
-            </button>
-            <span v-click-outside="hide" class="block md:hidden flex align-center">
+            </span>
+            <span v-click-outside="hide" class="md:hidden flex align-center">
                 <button
                     class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded"
                     @click="dropdown = !dropdown"
@@ -121,17 +156,28 @@
                         class="absolute right-0 w-40 sm:w-56 bg-white rounded-md shadow-xl z-20 mr-4 mt-12 sm:mr-20"
                     >
                         <a
-                            @click="upload('std')"
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md xs:hidden"
-                            >Next status</a
+                            @click="layout()"
+                            v-if="projectData.status == 1"
+                            :class="projectData.status == 1 ? 'rounded-t-md' : ''"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
+                            >Set layout</a
+                        >
+                        <a
+                            @click="createHIT()"
+                            v-if="projectData.status == 0"
+                            :class="projectData.status == 0 ? 'rounded-t-md' : ''"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
+                            >Create HITs</a
                         >
                         <a
                             @click="upload('std')"
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-t-md sm:hidden"
+                            v-if="projectData.status < 1"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:rounded-t-md sm:hidden"
                             >Upload data</a
                         >
                         <a
                             @click="upload('gld')"
+                            v-if="projectData.status < 1"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white sm:hidden"
                             >Upload Gold</a
                         >
@@ -154,7 +200,7 @@
             <button
                 class="bg-white ripple-light py-2 px-2 m-1 rounded focus:outline-none"
                 @click="isOpen = !isOpen"
-                v-if="status == 3"
+                v-if="projectData.status == 3"
             >
                 <svg
                     class="transition duration-300 ease-in-out"
@@ -169,14 +215,40 @@
                     <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
                 </svg>
             </button>
-            <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <!-- <span
+                class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1"
+                v-if="projectData.status == 0 && baseCsvStatus == 1 && goldCsvStatus == 0"
+            >
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
+                ></span>
                 <span
                     class="relative inline-flex justify-center items-center rounded-full h-3 w-3 bg-blue-500 text-xs text-white"
                 >
-                    <!-- {{ status }} -->
                 </span>
             </span>
+            <span
+                class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1"
+                v-if="projectData.status == 0 && baseCsvStatus == 1 && goldCsvStatus == 1"
+            >
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
+                ></span>
+                <span
+                    class="relative inline-flex justify-center items-center rounded-full h-3 w-3 bg-green-500 text-xs text-white"
+                >
+                </span>
+            </span>
+            <span
+                class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1"
+                v-if="projectData.status == 0 && baseCsvStatus == 0 && goldCsvStatus == 0"
+            >
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span
+                    class="relative inline-flex justify-center items-center rounded-full h-3 w-3 bg-red-500 text-xs text-white"
+                >
+                </span>
+            </span> -->
         </span>
         <transition name="slide-toggle">
             <div v-if="isOpen" class="content w-full flex flex-wrap justify-center relative">
@@ -256,19 +328,26 @@ export default {
             refreshIcon: false,
             date: '',
             lastEdited: '',
-            status: '',
+            baseCsvStatus: 0,
+            goldCsvStatus: 0,
         }
     },
     created() {
-        this.displayWindowSize()
-        window.onresize = this.displayWindowSize
+        //this.displayWindowSize()
+        //window.onresize = this.displayWindowSize
         //for (let i = 0; i < this.projectData.length; i++) {}
         //controllare con un loop se ci sono HIT che attendono review
         //se ci sono isTherePending = true
         // this.isTherePending = true
         this.date = new Date(this.projectData.created_at).toLocaleDateString()
         this.lastEdited = this.projectData.updated_at
-        this.status = this.projectData.status
+        if (this.projectData.count_train > 0) {
+            this.baseCsvStatus = 1
+        }
+        if (this.projectData.count_gold > 0) {
+            this.goldCsvStatus = 1
+        }
+        //inserire controllo che se il projectData contiene anche il csv per base o gold cambiano i valori baseCsvStatus e goldCsvStatus nei data
     },
     methods: {
         setPieSize() {
@@ -289,13 +368,39 @@ export default {
             if (this.dropdown) {
                 this.dropdown = !this.dropdown
             }
-            this.$emit('deleteThis', this.projectData.id)
+            this.$emit('deleteThis', ['delete', this.projectData.id])
         },
         upload(type) {
             if (this.dropdown) {
                 this.dropdown = !this.dropdown
             }
-            this.$emit('upload', [type, this.projectData.id])
+            if (type == 'std') {
+                this.$emit('upload', [
+                    type,
+                    this.projectData.id, // this.projectData.count_train, this.projectData.count_gold
+                ])
+            } else if (type == 'gld' && this.baseCsvStatus == 0) {
+                this.$emit('snackbar', 'Warning. To upload the gold CSV, you first have to uplaod the standard.')
+            } else if (type == 'gld' && this.baseCsvStatus == 1) {
+                this.$emit('upload', [
+                    type,
+                    this.projectData.id, // this.projectData.count_train, this.projectData.count_gold
+                ])
+            }
+        },
+        createHIT() {
+            if (this.baseCsvStatus == 0) {
+                this.$emit('snackbar', 'Warning. To create the HITs, you first have to upload CSV data.')
+            } else {
+                this.$emit('createHit', [
+                    this.projectData.id,
+                    this.projectData.count_train,
+                    this.projectData.count_gold,
+                ])
+            }
+        },
+        layout() {
+            this.$emit('layoutModal', ['layout', this.projectData.id])
         },
         refresh() {
             console.log('refreshing...')
@@ -321,15 +426,6 @@ export default {
 @media screen and (min-width: 500px) {
     .contenutoPrj {
         flex-direction: row;
-    }
-}
-.widthElem {
-    width: 33.33%;
-    width: calc(100% / 3);
-}
-@media screen and (max-width: 500px) {
-    .widthElem {
-        width: auto;
     }
 }
 .tooltip .tooltip-text {

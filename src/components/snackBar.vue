@@ -1,26 +1,5 @@
 <template>
     <div class="absolute right-0 top-1 m-5 z-30">
-        <div
-            class="flex items-center bg-green-500 border-l-4 border-green-700 py-2 px-3 shadow-md mb-2"
-            v-if="(msg != 'Error') & (msg != 'Error. Try again')"
-        >
-            <div class="text-green-500 rounded-full bg-white mr-3">
-                <svg
-                    width="24px"
-                    height="24px"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        fill="evenodd"
-                        d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                    />
-                </svg>
-            </div>
-            <div class="text-white max-w-xs">{{ msg }}</div>
-        </div>
-
         <!--
             //INFO
         <div
@@ -42,11 +21,12 @@
                 </svg>
             </div>
             <div class="text-white max-w-xs">ini pesan ketika ada informasi</div>
-        </div>
+        </div>-->
 
-        //WARNING
+        <!-- //WARNING -->
         <div
             class="flex items-center bg-orange-400 border-l-4 border-orange-700 py-2 px-3 shadow-md mb-2"
+            v-if="isWarning.test(msg)"
         >
             <div class="text-orange-500 rounded-full bg-white mr-3">
                 <svg
@@ -62,11 +42,13 @@
                     />
                 </svg>
             </div>
-            <div class="text-white max-w-xs">ini pesan ketika ada warning</div>
+            <div class="text-white max-w-xs">{{ msg }}</div>
         </div>
-        -->
 
-        <div class="flex items-center bg-red-500 border-l-4 border-red-700 py-2 px-3 shadow-md mb-2" v-else>
+        <div
+            class="flex items-center bg-red-500 border-l-4 border-red-700 py-2 px-3 shadow-md mb-2"
+            v-else-if="isError.test(msg)"
+        >
             <div class="text-red-500 rounded-full bg-white mr-3">
                 <svg
                     width="24px"
@@ -83,6 +65,23 @@
             </div>
             <div class="text-white max-w-xs">{{ msg }}</div>
         </div>
+        <div class="flex items-center bg-green-500 border-l-4 border-green-700 py-2 px-3 shadow-md mb-2" v-else>
+            <div class="text-green-500 rounded-full bg-white mr-3">
+                <svg
+                    width="24px"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        fill="evenodd"
+                        d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                    />
+                </svg>
+            </div>
+            <div class="text-white max-w-xs">{{ msg }}</div>
+        </div>
     </div>
 </template>
 
@@ -91,6 +90,12 @@ export default {
     name: 'snackBar',
     props: {
         msg: String,
+    },
+    data() {
+        return {
+            isError: /\bError\b/,
+            isWarning: /\bWarning\b/,
+        }
     },
 }
 </script>

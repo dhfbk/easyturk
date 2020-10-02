@@ -1,6 +1,6 @@
 <template>
     <form
-        class="md:w-5/6 bg-white shadow-md rounded px-8 pt-6 pb-8 flex flex-col mt-4 mx-auto"
+        class="md:w-5/6 bg-white shadow-md rounded pt-2 pb-8 flex flex-col mt-4 mx-2 md:mx-auto px-8"
         @submit.prevent="caricaProgetto"
     >
         <p class="text-2xl mb-4 text-primary">{{ pageTitle }}</p>
@@ -84,7 +84,7 @@
         </div>
         <hr class="solid mb-4" />
         <div class="-mx-3 md:flex md:flex-col xl:flex-row xl:justify-around">
-            <div class="w-auto">
+            <div class="w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
                     <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="ricompensa"
                         >Reward per response</label
@@ -123,7 +123,7 @@
                     </p>
                 </div>
             </div>
-            <div class="w-auto">
+            <div class="w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
                     <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="tempoMax"
                         >Time allotted per Worker</label
@@ -252,11 +252,13 @@
             <div class="w-full lg:w-auto px-3 mb-4">
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="layoutId">Layout ID</label>
                 <input
-                    class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    :class="status != 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="layoutId"
                     type="text"
                     placeholder="Layout ID"
                     maxlength="255"
+                    :disabled="status != 0"
                     v-model.trim="$v.layout_id.$model"
                     required
                 />
@@ -266,16 +268,32 @@
             </div>
             <div class="w-full lg:w-auto px-3 mb-4">
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="parametri"
-                    >Parameters number</label
+                    >Number of examples per HIT</label
                 >
                 <input
-                    class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    :class="status != 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="parametri"
                     type="number"
                     min="1"
                     step="1"
                     placeholder="1"
+                    :disabled="status != 0"
                     v-model.trim="$v.params.$model"
+                    required
+                />
+            </div>
+            <div class="w-full lg:w-auto px-3 mb-4">
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="params_fields"
+                    >Params fields</label
+                >
+                <input
+                    :class="status != 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    id="params_fields"
+                    type="text"
+                    :disabled="status != 0"
+                    v-model.trim="$v.params_fields.$model"
                     required
                 />
             </div>
@@ -283,7 +301,7 @@
         <div class="w-full flex justify-end flex-row">
             <button
                 type="submit"
-                class="ripple-outlined py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                class="ripple m-1 hover:bg-primary py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
                 v-if="mode == 'modificaProgetto'"
             >
                 <svg
@@ -291,12 +309,19 @@
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
-                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
-                >Save changes
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                </svg>
+                <span v-if="!loading">Save changes</span>
             </button>
             <button
                 type="submit"
-                class="ripple-outlined py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                :disabled="disableBtn"
+                :class="
+                    disableBtn
+                        ? 'cursor-not-allowed bg-gray-400 text-gray-800 border-none hover:bg-gray-600'
+                        : 'ripple hover:bg-primary bg-transparent border-primary hover:text-white'
+                "
+                class="m-1 py-2 px-4 rounded-md border-2 border-solid focus:outline-none"
                 v-else
             >
                 <svg
@@ -304,13 +329,14 @@
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
-                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
-                >Save
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                </svg>
+                <span v-if="!loading">Save</span>
             </button>
             <button
                 @click="goBack"
                 type="button"
-                class="ripple-light bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none"
+                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none"
             >
                 Cancel
             </button>
@@ -344,6 +370,7 @@ export default {
             auto_approve_send: 1,
             layout_id: '',
             params: 3,
+            params_fields: '',
             /*
             pageTitle: '',
             name: '',
@@ -369,10 +396,15 @@ export default {
             max3: 364,
             mode: 'nuovoProgetto',
             loading: false,
+            status: 0,
+            disableBtn: true,
         }
     },
     validations() {
         return {
+            params_fields: {
+                required,
+            },
             name: {
                 required,
             },
@@ -428,6 +460,7 @@ export default {
         if (this.$route.path == '/create') {
             this.mode = this.$route.name
             this.pageTitle = 'Create new project'
+            this.disableBtn = false
         } else {
             this.pageTitle = 'Edit project ' + this.$route.params.projectId
             this.getDatiPrj()
@@ -441,23 +474,31 @@ export default {
             axios({
                 url: this.APIURL + '?action=getProjectInfo&id=' + this.$route.params.projectId,
                 method: 'get',
-            }).then(res => {
-                console.log(res.data)
-                this.id = res.data.values.id
-                this.name = res.data.values.name
-                this.title = res.data.values.title
-                this.description = res.data.values.description
-                this.keywords = res.data.values.keywords
-                this.reward = res.data.values.reward
-                this.max_time = parseInt(res.data.values.max_time)
-                this.expiry = parseInt(res.data.values.expiry)
-                this.auto_approve = parseInt(res.data.values.auto_approve)
-                this.layout_id = res.data.values.layout_id
-                this.params = res.data.values.params
-                this.elaboraTempoGET('max_time')
-                this.elaboraTempoGET('expiry')
-                this.elaboraTempoGET('auto_approve')
             })
+                .then(res => {
+                    console.log(res.data)
+                    this.id = res.data.values.id
+                    this.name = res.data.values.name
+                    this.title = res.data.values.title
+                    this.description = res.data.values.description
+                    this.keywords = res.data.values.keywords
+                    this.reward = res.data.values.reward
+                    this.max_time = parseInt(res.data.values.max_time)
+                    this.expiry = parseInt(res.data.values.expiry)
+                    this.auto_approve = parseInt(res.data.values.auto_approve)
+                    this.layout_id = res.data.values.layout_id
+                    this.params = res.data.values.params
+                    this.status = res.data.values.status
+                    this.params_fields = res.data.values.params_fields
+                    this.elaboraTempoGET('max_time')
+                    this.elaboraTempoGET('expiry')
+                    this.elaboraTempoGET('auto_approve')
+                    this.disableBtn = false
+                })
+                .catch(() => {
+                    var msg = 'Error. Project not found'
+                    this.emitSnackbar(msg)
+                })
         },
         caricaProgetto() {
             this.$v.$touch()
@@ -486,18 +527,27 @@ export default {
                         auto_approve: this.auto_approve_send,
                         layout_id: this.layout_id,
                         params: this.params,
+                        params_fields: this.params_fields,
                     },
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
                     .then(response => {
                         this.loading = false
-                        console.log(response.data.result)
+                        console.log(response.data)
                         if (response.data.result == 'OK') {
                             console.log('Inserimento avvenuto')
+                            var msg
+                            if (this.mode == 'edit') {
+                                msg = 'Edit successful'
+                            } else {
+                                msg = 'Project created'
+                            }
+                            this.$router.push({ path: '/', name: 'Home' })
                         } else {
                             console.log('Errore')
+                            msg = 'Error. Try Again: ' + response.data.error
                         }
-                        this.goHome()
+                        this.emitSnackbar(msg)
                     })
                     .catch(() => {
                         this.loading = false
@@ -509,16 +559,14 @@ export default {
         goBack() {
             this.$router.go(-1)
         },
-        goHome() {
-            var msg
-            if (this.mode == 'edit') {
-                msg = 'Edit successful'
-            } else {
-                msg = 'Project created'
-            }
-            this.emitSnackbar(msg)
-            this.$router.push({ path: '/', name: 'Home' })
-        },
+        // goHome() {
+        //     var msg
+        //     if (this.mode == 'edit') {
+        //         msg = 'Edit successful'
+        //     } else {
+        //         msg = 'Project created'
+        //     }
+        // },
         elaboraTempoGET(nomeVar) {
             if (nomeVar == 'max_time') {
                 if (this.max_time < 60) {

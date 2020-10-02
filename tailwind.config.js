@@ -1,8 +1,17 @@
 module.exports = {
     purge: ['./src//*.html', './src//*.vue'],
     theme: {
+        maxHeight: {
+            '0': '0',
+            '1/4': '25%',
+            '1/2': '50%',
+            '3/4': '75%',
+            'full': '100%',
+            '80': '80%'
+        },
         screens: {
             'xs': '270px',
+            'xs2': '400px',
             'sm': '640px',
             'md': '768px',
             'lg': '1024px',

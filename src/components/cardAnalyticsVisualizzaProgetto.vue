@@ -62,7 +62,7 @@
             >
                 <button
                     type="submit"
-                    class="ripple-outlined flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white  focus:outline-none h-full"
+                    class="ripple hover:bg-primary flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white  focus:outline-none h-full"
                 >
                     Go to HITs
                 </button>
