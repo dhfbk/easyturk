@@ -15,11 +15,11 @@ location / {
 
 */
 
-header("Access-Control-Allow-Origin: *");
+// header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Accept, Referer, User-Agent, Content-Type, Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+// header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE");
+// header("Access-Control-Max-Age: 3600");
+// header("Access-Control-Allow-Headers: Accept, Referer, User-Agent, Content-Type, Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 // ini_set("display_errors", "On");
 
@@ -53,7 +53,6 @@ $Options = $_SESSION['Options'];
 
 $ret = array();
 $ret['debug'] = array();
-$ret['debug']['request'] = $_REQUEST;
 
 $json_params = file_get_contents("php://input");
 if (strlen($json_params) > 0 && isValidJSON($json_params)) {
@@ -64,6 +63,8 @@ if (strlen($json_params) > 0 && isValidJSON($json_params)) {
         $_REQUEST[$key] = $value;
     }
 }
+
+$ret['debug']['request'] = $_REQUEST;
 
 $Delimiters = array("tab" => '\t', "comma" => ',', "semicolon" => ';');
 $Enclosures = array("single" => '\'', "double" => '\"', "none" => chr(8));
@@ -146,6 +147,14 @@ switch ($Action) {
                 }
                 $r = $DB->fetch();
 
+                $query = "SELECT line_text FROM file_lines
+                    WHERE file_id = '{$r['id']}'";
+                if (!$num = $DB->querynum($query)) {
+                    $ret['result'] = "ERR";
+                    $ret['error'] = $DB->get_error();
+                    break;
+                }
+
                 $query = "SELECT l.line_text, GROUP_CONCAT(c.cluster_index) cluster_index
                     FROM file_lines l
                     LEFT JOIN clusters c ON c.line_id = l.id
@@ -153,14 +162,6 @@ switch ($Action) {
                     WHERE f.deleted = '0' AND f.project_id = '{$project['id']}' AND f.is_gold = '$isGold'
                     GROUP BY l.id
                     LIMIT $offset, $howMany";
-
-                // $query = "SELECT line_text FROM file_lines
-                //     WHERE file_id = '{$r['id']}'";
-                // if (!$num = $DB->querynum($query)) {
-                //     $ret['result'] = "ERR";
-                //     $ret['error'] = $DB->get_error();
-                //     break;
-                // }
 
                 // $query = "SELECT line_text FROM file_lines
                 //     WHERE file_id = '{$r['id']}'
@@ -196,6 +197,7 @@ switch ($Action) {
                 break;
 
             case "uploadFile":
+                $r = find("projects", $_REQUEST['id'], "Project not found");
 
                 $delimiter = @$_REQUEST['char'];
                 if (!$delimiter) {
@@ -231,9 +233,6 @@ switch ($Action) {
                     break;
                 }
 
-                $delimiter = $Delimiters[$delimiter];
-                $enclosure = $Enclosures[$enclosure];
-
                 $fields = array();
                 $fieldCount = -1;
                 if (!$fieldsTitlesInFirstLine) {
@@ -241,6 +240,9 @@ switch ($Action) {
                     $fields = array_map('trim', $fields);
                     $fieldCount = count($fields);
                 }
+
+                $delimiter = $Delimiters[$delimiter];
+                $enclosure = $Enclosures[$enclosure];
 
                 // if ($type != "text/csv") {
                 //     $ret['result'] = "ERR";
@@ -268,6 +270,28 @@ switch ($Action) {
 
                 if ($fieldsTitlesInFirstLine) {
                     $fields = array_shift($okData);
+                }
+
+                if ($isGold) {
+                    $query = "SELECT * FROM project_files WHERE project_id = '{$r['id']}' AND deleted = '0' AND is_gold = '0'";
+                    if (!$DB->querynum($query)) {
+                        $ret['result'] = "ERR";
+                        $ret['error'] = "You must insert training file before gold file.";
+                        break;
+                    }
+                    $rT = $DB->fetch();
+                    $fieldsT = unserialize($rT['fields']);
+                    if (count(array_intersect($fieldsT, $fields)) != count($fieldsT)) {
+                        $ret['result'] = "ERR";
+                        $ret['error'] = "Fields in the training file are not included in the gold file.";
+                        break;
+                    }
+                    $diff = array_diff($fields, $fieldsT);
+                    if (!count($diff)) {
+                        $ret['result'] = "ERR";
+                        $ret['error'] = "The gold file must contain at least one field more than the training file.";
+                        break;
+                    }
                 }
 
                 $DB->startTransaction();
@@ -314,8 +338,17 @@ switch ($Action) {
                 break;
 
             case "listProjects":
-                $query = "SELECT * FROM projects
-                    WHERE deleted = 0 AND user_id = '{$UserInfo['id']}'";
+                $query = "SELECT p.*,
+                        (SELECT COUNT(fl1.id) FROM file_lines fl1
+                         LEFT JOIN project_files pf1 ON pf1.id = fl1.file_id
+                         WHERE pf1.is_gold = '0' AND pf1.deleted = '0' AND pf1.project_id = p.id) count_train,
+                        (SELECT COUNT(fl2.id) FROM file_lines fl2
+                         LEFT JOIN project_files pf2 ON pf2.id = fl2.file_id
+                         WHERE pf2.is_gold = '1' AND pf2.deleted = '0' AND pf2.project_id = p.id) count_gold
+                    FROM projects p
+                    WHERE p.deleted = 0 AND p.user_id = '1' AND user_id = '{$UserInfo['id']}'";
+                // $query = "SELECT * FROM projects
+                //     WHERE deleted = 0 AND user_id = '{$UserInfo['id']}'";
                 $res = $mysqli->query($query);
                 $ret['result'] = "OK";
                 $ret['values'] = $res->fetch_all(MYSQLI_ASSOC);
@@ -474,6 +507,66 @@ switch ($Action) {
 
                         break;
 
+                    case "2":
+                        if ($r['status'] != 1) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Cannot proceed to status 2 for a project with status {$r['status']}";
+                            break;
+                        }
+
+                        if (!count($_REQUEST['layoutData'])) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "No layoutData found";
+                            break;
+                        }
+
+                        $goldInfo = false;
+                        $trainingInfo = false;
+                        $query = "SELECT * FROM project_files WHERE project_id = '{$r['id']}' AND deleted = '0'";
+                        $DB->query($query);
+                        while ($row = $DB->fetch()) {
+                            if ($row['is_gold']) {
+                                $goldInfo = $row;
+                            }
+                            else {
+                                $trainingInfo = $row;
+                            }
+                        }
+
+                        $allowedFields = array();
+                        $allowedFields[] = "_name";
+                        $allowedFields[] = "_title";
+                        $allowedFields[] = "_description";
+                        $allowedFields[] = "_keywords";
+                        $allowedFields = array_merge($allowedFields, unserialize($trainingInfo['fields']));
+
+                        $layout_fields = explode("\n", $r['layout_fields']);
+                        $layout_fields = array_map('trim', $layout_fields);
+
+                        foreach ($_REQUEST['layoutData'] as $layoutData) {
+                            if (!in_array($layoutData['field'], $layout_fields)) {
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "Unable to find {$layoutData['field']} in layout fields";
+                                break 2;
+                            }
+                            if ($layoutData['handwritten']) {
+                                if (!$layoutData['customValue']) {
+                                    $ret['result'] = "ERR";
+                                    $ret['error'] = "Custom value is mandatory for handwritten fields";
+                                    break 2;
+                                }
+                            }
+                            else {
+                                if (!in_array($layoutData['valueFrom'], $allowedFields)) {
+                                    $ret['result'] = "ERR";
+                                    $ret['error'] = "Invalid field name {$layoutData['valueFrom']}";
+                                    break 2;
+                                }
+                            }
+                        }
+
+                        break;
+
                     default:
                         $ret['result'] = "ERR";
                         $ret['error'] = "Unknown status";
@@ -498,6 +591,20 @@ switch ($Action) {
                     WHERE f.project_id = '{$r['id']}' AND f.deleted = '0' AND f.is_gold = '1'";
                 $numGold = $DB->querynum($query);
 
+                $ret['goldFields'] = array();
+                $ret['dataFields'] = array();
+                $query = "SELECT * FROM project_files WHERE project_id = '{$r['id']}' AND deleted = '0'";
+                $DB->query($query);
+                while ($row = $DB->fetch()) {
+                    if ($row['is_gold']) {
+                        $ret['goldFields'] = unserialize($row['fields']);
+                    }
+                    else {
+                        $ret['dataFields'] = unserialize($row['fields']);
+                    }
+                }
+                $ret['goldFields'] = array_diff($ret['goldFields'], $ret['dataFields']);
+
                 $ret['numGold'] = $numGold;
                 $ret['numData'] = $numData;
 
@@ -514,7 +621,8 @@ switch ($Action) {
 
             case "addProject":
                 $fields = array("name", "title", "description", "keywords", "reward",
-                    "workers", "max_time", "expiry", "auto_approve", "layout_id", "params");
+                    "workers", "max_time", "expiry", "auto_approve", "layout_id", "params",
+                    "params_fields");
                 $integers = array("workers", "max_time", "params", "auto_approve", "expiry");
 
                 $r = NULL;
@@ -524,6 +632,10 @@ switch ($Action) {
                         $ret['result'] = "ERR";
                         $ret['error'] = "A project with status {$ret['status']} cannot be modified";
                         break;
+                    }
+                    if ($r['status'] == 1) {
+                        $fields.remove("params");
+                        $integers.remove("params");
                     }
                 }
 
@@ -583,6 +695,34 @@ switch ($Action) {
                         break;
                     }
                 }
+
+                $layout_fields = explode(",", $data['layout_fields']);
+                $layout_fields = array_map("trim", $layout_fields);
+                $params_fields = explode(",", $data['params_fields']);
+                $params_fields = array_map("trim", $params_fields);
+
+                $all_included = true;
+                foreach ($params_fields as $param_field) {
+                    for ($i = 1; $i <= $data['params']; $i++) {
+                        $p = $param_field . $i;
+                        $found_key = array_search($p, $layout_fields);
+                        if ($found_key === false) {
+                            $all_included = false;
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "$p is not included in layout";
+                            break 3;
+                        }
+                        array_splice($layout_fields, $found_key, 1);
+                    }
+                    $layout_fields[] = $param_field . "#";
+                }
+
+                $data['layout_fields'] = implode(', ', $layout_fields);
+                $data['params_fields'] = implode(', ', $params_fields);
+
+                // $ret['layout_fields'] = $layout_fields;
+
+                // $ret['data'] = $data;
 
                 if ($r === NULL) {
                     $DB->queryinsert("projects", $data);
