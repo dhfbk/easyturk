@@ -397,11 +397,19 @@ switch ($Action) {
                         $shuffleGold = boolval($_REQUEST['shuffleGold']);
                         $shuffleData = boolval($_REQUEST['shuffleData']);
 
-                        if ($r['status'] != 0) {
+                        if ($r['status'] != 0 && $r['status'] != 2) {
                             $ret['result'] = "ERR";
                             $ret['error'] = "Cannot proceed to status 1 for a project with status {$r['status']}";
                             break;
                         }
+
+                        if ($r['status'] == 2) {
+                            $query = "UPDATE projects SET hit_details = NULL, status = 1 WHERE id = '{$r['id']}'";
+                            $DB->query($query);
+                            $ret['result'] = "OK";
+                            break;
+                        }
+
                         if (!preg_match("/[0-9]+/", $goldSize)) {
                             $ret['result'] = "ERR";
                             $ret['error'] = "Invalid gold size";
@@ -533,6 +541,11 @@ switch ($Action) {
                             }
                         }
 
+                        $allowedGoldWrong = array();
+                        $allowedGoldWrong[] = "accept";
+                        $allowedGoldWrong[] = "reject";
+                        $allowedGoldWrong[] = "wait";
+
                         $allowedFields = array();
                         $allowedFields[] = "_name";
                         $allowedFields[] = "_title";
@@ -542,6 +555,12 @@ switch ($Action) {
 
                         $layout_fields = explode("\n", $r['layout_fields']);
                         $layout_fields = array_map('trim', $layout_fields);
+
+                        if (!count($_REQUEST['layoutData'])) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "No layout data specified";
+                            break;
+                        }
 
                         foreach ($_REQUEST['layoutData'] as $layoutData) {
                             if (!in_array($layoutData['field'], $layout_fields)) {
@@ -564,6 +583,49 @@ switch ($Action) {
                                 }
                             }
                         }
+
+                        if ($goldInfo) {
+                            if (!count($_REQUEST['answerData'])) {
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "No layout data specified";
+                                break;
+                            }
+
+                            foreach ($_REQUEST['answerData'] as $answerData) {
+                                foreach (["varName", "varValue", "varNameTo", "varValueTo"] as $key) {
+                                    if (!isset($answerData[$key]) || !isset($answerData[$key])) {
+                                        $ret['result'] = "ERR";
+                                        $ret['error'] = "Field $key is not defined";
+                                        break 3;
+                                    }
+                                }
+                            }
+
+                            if (!in_array($_REQUEST['whatToDo'], $allowedGoldWrong)) {
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "Invalid value {$_REQUEST['whatToDo']} for whatToDo";
+                                break;
+                            }
+
+                            if (!preg_match("/[0-9]+/", $_REQUEST['assignNumber'])) {
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "Invalid value {$_REQUEST['assignNumber']} for assignNumber";
+                                break;
+                            }
+                            if ($_REQUEST['assignNumber'] < $r['workers']) {
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "assignNumber must be more than {$r['workers']} in this project";
+                                break;
+                            }
+                        }
+
+                        $toSave = array();
+                        $toSave['layoutData'] = $_REQUEST['layoutData'];
+                        $toSave['answerData'] = $_REQUEST['answerData'];
+                        $toSave['assignNumber'] = $_REQUEST['assignNumber'];
+                        $toSave['whatToDo'] = $_REQUEST['whatToDo'];
+
+                        $DB->queryupdate("projects", array("hit_details" => $toSave, "status" => 2), array("id" => $r['id']));
 
                         break;
 
