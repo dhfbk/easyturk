@@ -90,10 +90,10 @@
                     >
                         <option value>Select...</option>
                         <optgroup label="From project">
-                            <option value="name">Name</option>
-                            <option value="title">Title</option>
-                            <option value="description">Description</option>
-                            <option value="keywords">Keywords</option>
+                            <option value="_name">Name</option>
+                            <option value="_title">Title</option>
+                            <option value="_description">Description</option>
+                            <option value="_keywords">Keywords</option>
                         </optgroup>
                         <optgroup
                             label="From CSV"

@@ -116,11 +116,13 @@ export default {
     },
     methods: {
         invia() {
-            var url = this.APIURL + '?action=debug'
+            var url = this.APIURL + '?action=updateProjectStatus'
             axios({
                 method: 'post',
                 url: url,
                 data: {
+                    id: this.project[0].id,
+                    toStatus: 2,
                     layoutData: this.firstPartData,
                     answerData: this.secondPartData,
                     assignNumber: this.thirdPartData.assignNumber,
