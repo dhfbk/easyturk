@@ -25,3 +25,4 @@ pnpm-debug.log*
 api/composer.lock
 api/vendor
 api/config.php
+api/test.php
