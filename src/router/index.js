@@ -1,66 +1,65 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import creazioneProgetto from '../views/creazioneProgetto.vue'
-import visualizzaProgetto from '../views/visualizzaProgetto.vue'
-import reviewResults from '../views/reviewResults.vue'
-import HITList from '../views/HITList.vue'
-import viewHIT from '../views/viewHIT.vue'
-import workerList from '../views/workerList.vue'
-import csvView from '../views/csvView.vue'
 
 Vue.use(VueRouter)
+
+function lazyLoad(view) {
+    return () => import(`@/views/${view}.vue`)
+}
 
 const routes = [
     {
         path: '/',
         name: 'Home',
-        component: Home,
+        component: lazyLoad('Home'),
     },
     {
         path: '/create',
         name: 'new',
-        component: creazioneProgetto,
+        component: lazyLoad('creazioneProgetto'),
     },
     {
         path: '/:projectId/edit',
         name: 'edit',
-        component: creazioneProgetto,
+        component: lazyLoad('creazioneProgetto'),
     },
     {
         path: '/:projectId',
         name: 'projectView',
-        component: visualizzaProgetto,
+        component: lazyLoad('visualizzaProgetto'),
     },
     {
         path: '/:projectId/hitlist',
         name: 'HITlist',
-        component: HITList,
+        component: lazyLoad('HITlist'),
     },
     {
         path: '/:projectId/results',
         name: 'results',
-        component: reviewResults,
+        component: lazyLoad('reviewResults'),
     },
     {
         path: '/:projectId/hitlist/hit',
         name: 'viewHIT',
-        component: viewHIT,
+        component: lazyLoad('viewHIT'),
     },
     {
         path: '/workers',
         name: 'workerList',
-        component: workerList,
+        component: lazyLoad('workerList'),
     },
     {
         path: '/:projectId/data/:type',
         name: 'csv',
-        component: csvView,
+        component: lazyLoad('csvView'),
     },
 ]
 
 const router = new VueRouter({
-    routes,
+    saveScrollPosition: false,
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes: routes,
 })
 
 export default router
