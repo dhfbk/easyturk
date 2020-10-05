@@ -11,7 +11,7 @@
                             class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 18 18"
-                            @click="toggleModal('close')"
+                            @click="toggleModal()"
                         >
                             <path
                                 d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
@@ -51,20 +51,22 @@
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
                         <button
                             class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
-                            @click="invia()"
+                            @click="submit()"
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                            </svg>Proceed
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
+                            >Proceed
                         </button>
                         <button
                             class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
-                            @click="toggleModal('close')"
-                        >Cancel</button>
+                            @click="toggleModal()"
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>
@@ -114,25 +116,42 @@ export default {
             },
         }
     },
+    mounted() {
+        window.addEventListener('keyup', this.esc)
+    },
     methods: {
-        invia() {
-            var url = this.APIURL + '?action=debug'
+        esc(event) {
+            if (event.keyCode === 27) {
+                this.toggleModal()
+            }
+        },
+        submit() {
+            var url = this.APIURL + '?action=updateProjectStatus'
             axios({
                 method: 'post',
                 url: url,
                 data: {
+                    id: this.project[0].id,
+                    toStatus: 2,
                     layoutData: this.firstPartData,
                     answerData: this.secondPartData,
                     assignNumber: this.thirdPartData.assignNumber,
-                    whatToDo: this.thirdPartData.whatToDo
+                    whatToDo: this.thirdPartData.whatToDo,
                 },
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             })
                 .then(response => {
                     console.log(response.data)
+                    if (response.result == 'ERR') {
+                        this.$emit('snackbar', 'Error: ' + response.error)
+                    } else {
+                        this.$emit('snackbar', 'Layout successfully set.')
+                    }
+                    this.toggleModal()
                 })
-                .catch(() => {
-                    this.toggleModal('error')
+                .catch(err => {
+                    this.toggleModal()
+                    console.log(err)
                 })
         },
         getCsvFields() {
@@ -147,10 +166,8 @@ export default {
                     console.log(err)
                 })
         },
-        toggleModal(mode) {
-            if (mode == 'close') {
-                this.$emit('layoutModal', ['layout', ''])
-            }
+        toggleModal() {
+            this.$emit('layoutModal', ['layout', ''])
         },
         newElement(arr) {
             if (arr == 'first') {
@@ -202,6 +219,9 @@ export default {
         splitFields: function() {
             return this.project[0].layout_fields.replace(/\s/g, '').split(',')
         },
+    },
+    beforeDestroy() {
+        window.removeEventListener('keyup', this.esc)
     },
 }
 </script>

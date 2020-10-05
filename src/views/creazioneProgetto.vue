@@ -8,12 +8,14 @@
             <div class="w-full px-3 mb-4">
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="nome">Project Name</label>
                 <input
-                    class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="nome"
                     type="text"
                     placeholder="Nome progetto"
                     maxlength="255"
                     v-model.trim="$v.name.$model"
+                    :disabled="status > 2"
                     required
                 />
                 <p class="text-gray-700 text-xs italic">This name is not displayed to Workers.</p>
@@ -21,31 +23,31 @@
             <div class="w-full px-3 mb-4">
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="titolo">Title</label>
                 <input
-                    :class="errorTitolo ? 'border-red-600' : 'border-gray-200'"
-                    class="appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    class="appearance-none block w-full border rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="titolo"
                     type="text"
                     placeholder="Titolo"
                     maxlength="255"
                     v-model.trim="$v.title.$model"
+                    :disabled="status > 2"
                     required
                 />
                 <p class="text-gray-700 text-xs italic">
                     Describe the survey to Workers. Be as specific as possible, e.g. "answer a survey about movies",
                     instead of "short survey", so Workers know what to expect.
                 </p>
-                <p :class="errorTitolo ? '' : 'hidden'" class="text-red-600 text-xs italic">
-                    Si è pregati di inserire il titolo
-                </p>
             </div>
             <div class="md:w-full px-3 mb-4">
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="keywords">Keywords</label>
                 <input
-                    class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="keywords"
                     type="text"
                     placeholder="Keywords"
                     v-model.trim="$v.keywords.$model"
+                    :disabled="status > 2"
                     required
                 />
                 <p class="text-gray-700 text-xs italic">
@@ -67,11 +69,17 @@
                     >
                         <textarea
                             placeholder="Description"
-                            class="w-full text-gray-700 py-2 bg-transparent px-4 focus:outline-none"
+                            :class="
+                                status > 2
+                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                    : 'bg-gray-100 text-gray-700'
+                            "
+                            class="w-full py-2 px-4 focus:outline-none"
                             id="descrizione"
                             @focus="hoverDesc = true"
                             @blur="hoverDesc = false"
                             v-model.trim="$v.description.$model"
+                            :disabled="status > 2"
                             required
                         ></textarea>
                     </div>
@@ -90,13 +98,17 @@
                         >Reward per response</label
                     >
                     <input
-                        class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        :class="
+                            status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
+                        "
+                        class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="ricompensa"
                         type="number"
                         min="0.01"
                         step="0.01"
                         placeholder="0.01 $"
                         v-model.trim="$v.reward.$model"
+                        :disabled="status > 1"
                         required
                     />
                     <p class="text-gray-700 text-xs italic">
@@ -109,13 +121,17 @@
                         >Number of respondents</label
                     >
                     <input
-                        class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        :class="
+                            status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
+                        "
+                        class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="lavoratori"
                         type="number"
                         min="1"
                         step="1"
                         placeholder="1"
                         v-model.trim="$v.workers.$model"
+                        :disabled="status > 1"
                         required
                     />
                     <p class="text-gray-700 text-xs italic">
@@ -130,7 +146,12 @@
                     >
                     <div class="flex flex-col flex-grow sm:flex-row">
                         <input
-                            class="appearance-none block w-full sm:max-w-xs bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            :class="
+                                status > 1
+                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                    : 'bg-gray-100 text-gray-700'
+                            "
+                            class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                             id="tempoMax"
                             type="number"
                             min="1"
@@ -138,14 +159,21 @@
                             step="1"
                             placeholder="1"
                             v-model.trim="$v.max_time.$model"
+                            :disabled="status > 1"
                             required
                         />
                         <div class="relative mt-1 sm:mt-0 sm:ml-2">
                             <select
-                                class="block appearance-none w-full sm:w-32 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                :class="
+                                    status > 1
+                                        ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                        : 'bg-gray-100 text-gray-700'
+                                "
+                                class="block appearance-none w-full sm:w-32 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                 id="selectorTempoMax"
                                 v-model="selectTempoMax"
                                 @change="fixMax(1)"
+                                :disabled="status > 1"
                             >
                                 <option selected value="days">Days</option>
                                 <option value="hours">Hours</option>
@@ -170,7 +198,12 @@
                     >
                     <div class="flex flex-col flex-grow sm:flex-row">
                         <input
-                            class="appearance-none block w-full sm:w-32 bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            :class="
+                                status > 1
+                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                    : 'bg-gray-100 text-gray-700'
+                            "
+                            class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                             id="scadenza"
                             type="number"
                             min="1"
@@ -178,14 +211,21 @@
                             step="1"
                             placeholder="1"
                             v-model.trim="$v.expiry.$model"
+                            :disabled="status > 1"
                             required
                         />
                         <div class="relative mt-1 sm:mt-0 sm:ml-2">
                             <select
-                                class="block appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                :class="
+                                    status > 1
+                                        ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                        : 'bg-gray-100 text-gray-700'
+                                "
+                                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                 id="selectorScadenza"
                                 v-model="selectExpiry"
                                 @change="fixMax(2)"
+                                :disabled="status > 1"
                             >
                                 <option selected value="days">Days</option>
                                 <option value="hours">Hours</option>
@@ -210,7 +250,12 @@
                     >
                     <div class="flex flex-col flex-grow sm:flex-row">
                         <input
-                            class="appearance-none block w-full sm:w-32 bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            :class="
+                                status > 1
+                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                    : 'bg-gray-100 text-gray-700'
+                            "
+                            class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                             id="autoApproval"
                             type="number"
                             min="1"
@@ -218,14 +263,21 @@
                             step="1"
                             placeholder="1"
                             v-model.trim="$v.auto_approve.$model"
+                            :disabled="status > 1"
                             required
                         />
                         <div class="relative mt-1 sm:mt-0 sm:ml-2">
                             <select
-                                class="block appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                :class="
+                                    status > 1
+                                        ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                        : 'bg-gray-100 text-gray-700'
+                                "
+                                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                 id="selectorApproval"
                                 v-model="selectAutoApprove"
                                 @change="fixMax(3)"
+                                :disabled="status > 1"
                             >
                                 <option selected value="days">Days</option>
                                 <option value="hours">Hours</option>
@@ -302,7 +354,7 @@
             <button
                 type="submit"
                 class="ripple m-1 hover:bg-primary py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
-                v-if="mode == 'modificaProgetto'"
+                v-if="mode == 'edit'"
             >
                 <svg
                     :class="loading ? 'animate-spin mr-1' : 'hidden'"
@@ -354,7 +406,6 @@ export default {
     data() {
         return {
             hoverDesc: false,
-            errorTitolo: false,
             id: '',
             name: '',
             title: '',
@@ -394,7 +445,7 @@ export default {
             max1: 23,
             max2: 364,
             max3: 364,
-            mode: 'nuovoProgetto',
+            mode: 'new',
             loading: false,
             status: 0,
             disableBtn: true,
@@ -466,7 +517,15 @@ export default {
             this.getDatiPrj()
         }
     },
+    mounted() {
+        window.addEventListener('keyup', this.esc)
+    },
     methods: {
+        esc(event) {
+            if (event.keyCode === 27) {
+                this.goBack()
+            }
+        },
         emitSnackbar(msg) {
             this.$emit('snackbar', msg)
         },
@@ -476,6 +535,7 @@ export default {
                 method: 'get',
             })
                 .then(res => {
+                    this.disableBtn = false
                     console.log(res.data)
                     this.id = res.data.values.id
                     this.name = res.data.values.name
@@ -493,7 +553,11 @@ export default {
                     this.elaboraTempoGET('max_time')
                     this.elaboraTempoGET('expiry')
                     this.elaboraTempoGET('auto_approve')
-                    this.disableBtn = false
+                })
+                .then(() => {
+                    this.fixMax(1)
+                    this.fixMax(2)
+                    this.fixMax(3)
                 })
                 .catch(() => {
                     var msg = 'Error. Project not found'
@@ -503,11 +567,12 @@ export default {
         caricaProgetto() {
             this.$v.$touch()
             if (!this.$v.$invalid) {
+                console.log('ok')
                 this.loading = true
+                this.parseNumbers()
                 this.elaboraTempo('max_time')
                 this.elaboraTempo('expiry')
                 this.elaboraTempo('auto_approve')
-                this.parseNumbers()
                 var url = this.APIURL + '?action=addProject'
                 if (this.mode == 'edit') {
                     url = url + '&id=' + this.id
@@ -554,10 +619,12 @@ export default {
                         var msg = 'Error. Try Again'
                         this.emitSnackbar(msg)
                     })
+            } else {
+                console.log('error')
             }
         },
         goBack() {
-            this.$router.go(-1)
+            this.$router.push('/')
         },
         // goHome() {
         //     var msg
@@ -607,18 +674,24 @@ export default {
                     this.max_time_send = this.max_time * 60
                 } else if (this.selectTempoMax == 'days') {
                     this.max_time_send = this.max_time * 1440
+                } else {
+                    this.max_time_send = this.max_time
                 }
             } else if (nomeVar == 'expiry') {
                 if (this.selectExpiry == 'hours') {
                     this.expiry_send = this.expiry * 60
                 } else if (this.selectExpiry == 'days') {
                     this.expiry_send = this.expiry * 1440
+                } else {
+                    this.expiry_send = this.expiry
                 }
             } else {
                 if (this.selectAutoApprove == 'hours') {
                     this.auto_approvesend = this.auto_approve * 60
                 } else if (this.selectAutoApprove == 'days') {
                     this.auto_approvesend = this.auto_approve * 1440
+                } else {
+                    this.auto_approvesend = this.auto_approve
                 }
             }
         },
@@ -662,17 +735,13 @@ export default {
             this.params = parseInt(this.params)
         },
     },
+    beforeDestroy() {
+        window.removeEventListener('keyup', this.esc)
+    },
 }
 </script>
 
 <style scoped>
-.pin-r {
-    right: 0;
-}
-.pin-y {
-    top: 0;
-    bottom: 0;
-}
 hr.solid {
     border-top: 1px solid #bbb;
 }

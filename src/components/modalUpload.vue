@@ -3,7 +3,7 @@
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
         >
-            <div class="bg-white rounded-lg w-auto mx-2 lg:w-1/2">
+            <div class="bg-white rounded-lg w-full md:w-auto mx-2 xl:w-3/5">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <h2 class="text-gray-900 font-bold text-lg">Choose the file to upload</h2>
@@ -23,24 +23,11 @@
                     <p class="py-2" v-else>File upload for the golden standard csv document</p>
                     <h2 class="font-light">Titles:</h2>
                     <label class="inline-flex items-center mt-2">
-                        <input
-                            type="radio"
-                            id="auto"
-                            :value="1"
-                            class="form-radio"
-                            checked
-                            v-model="picked"
-                        />
+                        <input type="radio" id="auto" :value="1" class="form-radio" checked v-model="picked" />
                         <span class="ml-2 text-gray-700">Auto-select titles</span>
                     </label>
                     <label class="inline-flex items-center mt-2">
-                        <input
-                            type="radio"
-                            id="custom"
-                            :value="0"
-                            class="form-radio"
-                            v-model="picked"
-                        />
+                        <input type="radio" id="custom" :value="0" class="form-radio" v-model="picked" />
                         <span class="ml-2 text-gray-700">Use custom titles (separated by comma)</span>
                     </label>
 
@@ -53,34 +40,57 @@
                         placeholder="Titles"
                     />
 
-                    <div class="flex customFlex my-1">
-                        <label class="inline-flex items-center customWidth">
-                            <span class="font-light mr-2">Separator:</span>
-
-                            <select
-                                class="block appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                                id="separator"
-                                v-model="separated"
-                            >
-                                <option selected value="comma">Comma</option>
-                                <option value="tab">Tab</option>
-                                <option value="semicolon">Semicolon</option>
-                                <!--<option value="space">Space</option>-->
-                            </select>
-                        </label>
-                        <label class="inline-flex items-center customWidth">
-                            <span class="font-light mr-2">String delimiter:</span>
-
-                            <select
-                                class="block appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                                id="separator"
-                                v-model="delimiter"
-                            >
-                                <option selected value="double">"</option>
-                                <option value="single">'</option>
-                                <!--<option value="none">None</option>-->
-                            </select>
-                        </label>
+                    <div class="flex customFlex justify-between my-1">
+                        <div class="flex flex-col xs2:flex-row items-center content-center firstMargin">
+                            <label for="separator" class="font-light mr-2">Separator:</label>
+                            <div class="relative mt-1 sm:mt-0 sm:ml-2">
+                                <select
+                                    class="block w-full xs2:w-64 appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                    id="separator"
+                                    name="separator"
+                                    v-model="separated"
+                                >
+                                    <option value="" disabled selected hidden>Choose separator...</option>
+                                    <option value="comma">Comma</option>
+                                    <option value="tab">Tab</option>
+                                    <option value="semicolon">Semicolon</option>
+                                    <!--<option value="space">Space</option>-->
+                                </select>
+                                <div
+                                    class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900"
+                                >
+                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                        />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col xs2:flex-row items-center content-center secondMargin">
+                            <label for="delimiter" class="font-light mr-2">String delimiter:</label>
+                            <div class="relative mt-1 sm:mt-0 sm:ml-2">
+                                <select
+                                    class="block w-full xs2:w-64 appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                    id="separator"
+                                    v-model="delimiter"
+                                >
+                                    <option value="" disabled selected hidden>Choose delimiter...</option>
+                                    <option value="double">"</option>
+                                    <option value="single">'</option>
+                                    <!--<option value="none">None</option>-->
+                                </select>
+                                <div
+                                    class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900"
+                                >
+                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                        />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <hr />
 
@@ -93,7 +103,8 @@
                                     : 'bg-secondary cursor-pointer hover:bg-blue-700'
                             "
                             class="inline-block text-white rounded-md px-4 py-2"
-                        >Choose file</label>
+                            >Choose file</label
+                        >
                         <input
                             id="file"
                             name="upload_csv"
@@ -106,9 +117,7 @@
                         />
                         <transition name="fade" mode="out-in" appear>
                             <div class="w-1/2 mt-2 mx-auto text-left" v-if="file != ''">
-                                <div
-                                    class="flex items-center bg-gray-200 pl-2 pr-4 py-2 rounded-lg my-1"
-                                >
+                                <div class="flex items-center bg-gray-200 pl-2 pr-4 py-2 rounded-lg my-1">
                                     <svg viewBox="0 0 24 24" class="w-12 h-10">
                                         <path
                                             d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M15.8,20H14L12,16.6L10,20H8.2L11.1,15.5L8.2,11H10L12,14.4L14,11H15.8L12.9,15.5L15.8,20M13,9V3.5L18.5,9H13Z"
@@ -120,7 +129,9 @@
                                     <button
                                         @click="emptyFile"
                                         class="ripple cursor-pointer w-8 h-8 text-center text-xl transition duration-150 ease-in-out hover:bg-gray-300 focus:bg-gray-400 rounded-full focus:outline-none"
-                                    >&times;</button>
+                                    >
+                                        &times;
+                                    </button>
                                 </div>
                             </div>
                         </transition>
@@ -138,13 +149,15 @@
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                            </svg>Upload
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
+                            >Upload
                         </button>
                         <button
                             class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
-                        >Cancel</button>
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>
@@ -166,13 +179,21 @@ export default {
             inputLocked: false,
             picked: 1,
             customTitles: '',
-            separated: 'comma',
-            delimiter: 'double',
+            separated: '',
+            delimiter: '',
             uploadPercentage: 0,
             loading: false,
         }
     },
+    mounted() {
+        window.addEventListener('keyup', this.esc)
+    },
     methods: {
+        esc(event) {
+            if (event.keyCode === 27) {
+                this.toggleModal('close')
+            }
+        },
         toggleModal() {
             console.log(this.type)
             if (this.type == 'std') {
@@ -236,6 +257,9 @@ export default {
             }
         },
     },
+    beforeDestroy() {
+        window.removeEventListener('keyup', this.esc)
+    },
 }
 </script>
 
@@ -258,16 +282,15 @@ progress[value]::-webkit-progress-bar {
 .customFlex {
     flex-direction: column;
 }
-.customWidth {
-    width: fit-content;
-}
-@media screen and (min-width: 512px) {
+@media screen and (min-width: 745px) {
     .customFlex {
         flex-direction: row;
     }
-
-    .customWidth {
-        width: 50%;
+    .firstMargin {
+        margin-right: 0.5rem;
+    }
+    .secondMargin {
+        margin-left: 0.5rem;
     }
 }
 .form-radio {
