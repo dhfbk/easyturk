@@ -33,13 +33,15 @@
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                            </svg>Proceed
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
+                            >Proceed
                         </button>
                         <button
                             class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal('close')"
-                        >Cancel</button>
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>
@@ -58,7 +60,15 @@ export default {
             loading: false,
         }
     },
+    mounted() {
+        window.addEventListener('keyup', this.esc)
+    },
     methods: {
+        esc(event) {
+            if (event.keyCode === 27) {
+                this.toggleModal('close')
+            }
+        },
         toggleModal(mode) {
             if (mode == 'close') {
                 this.$emit('revertModal')
@@ -90,6 +100,9 @@ export default {
                     this.toggleModal('error')
                 })
         },
+    },
+    beforeDestroy() {
+        window.removeEventListener('keyup', this.esc)
     },
 }
 </script>

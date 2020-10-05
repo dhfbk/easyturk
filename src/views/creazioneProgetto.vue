@@ -302,7 +302,7 @@
             <button
                 type="submit"
                 class="ripple m-1 hover:bg-primary py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
-                v-if="mode == 'modificaProgetto'"
+                v-if="mode == 'edit'"
             >
                 <svg
                     :class="loading ? 'animate-spin mr-1' : 'hidden'"
@@ -466,7 +466,15 @@ export default {
             this.getDatiPrj()
         }
     },
+    mounted() {
+        window.addEventListener('keyup', this.esc)
+    },
     methods: {
+        esc(event) {
+            if (event.keyCode === 27) {
+                this.goBack()
+            }
+        },
         emitSnackbar(msg) {
             this.$emit('snackbar', msg)
         },
@@ -476,6 +484,7 @@ export default {
                 method: 'get',
             })
                 .then(res => {
+                    this.disableBtn = false
                     console.log(res.data)
                     this.id = res.data.values.id
                     this.name = res.data.values.name
@@ -493,7 +502,6 @@ export default {
                     this.elaboraTempoGET('max_time')
                     this.elaboraTempoGET('expiry')
                     this.elaboraTempoGET('auto_approve')
-                    this.disableBtn = false
                 })
                 .catch(() => {
                     var msg = 'Error. Project not found'
@@ -503,6 +511,7 @@ export default {
         caricaProgetto() {
             this.$v.$touch()
             if (!this.$v.$invalid) {
+                console.log('ok')
                 this.loading = true
                 this.elaboraTempo('max_time')
                 this.elaboraTempo('expiry')
@@ -554,10 +563,12 @@ export default {
                         var msg = 'Error. Try Again'
                         this.emitSnackbar(msg)
                     })
+            } else {
+                console.log('error')
             }
         },
         goBack() {
-            this.$router.go(-1)
+            this.$router.push('/')
         },
         // goHome() {
         //     var msg
@@ -661,6 +672,9 @@ export default {
             this.auto_approve = parseInt(this.auto_approve)
             this.params = parseInt(this.params)
         },
+    },
+    beforeDestroy() {
+        window.removeEventListener('keyup', this.esc)
     },
 }
 </script>

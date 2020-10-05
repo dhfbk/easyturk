@@ -58,13 +58,15 @@
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                            </svg>Proceed
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
+                            >Proceed
                         </button>
                         <button
                             class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal('close')"
-                        >Cancel</button>
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>
@@ -114,7 +116,15 @@ export default {
             },
         }
     },
+    mounted() {
+        window.addEventListener('keyup', this.esc)
+    },
     methods: {
+        esc(event) {
+            if (event.keyCode === 27) {
+                this.toggleModal('close')
+            }
+        },
         invia() {
             var url = this.APIURL + '?action=updateProjectStatus'
             axios({
@@ -126,7 +136,7 @@ export default {
                     layoutData: this.firstPartData,
                     answerData: this.secondPartData,
                     assignNumber: this.thirdPartData.assignNumber,
-                    whatToDo: this.thirdPartData.whatToDo
+                    whatToDo: this.thirdPartData.whatToDo,
                 },
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             })
@@ -204,6 +214,9 @@ export default {
         splitFields: function() {
             return this.project[0].layout_fields.replace(/\s/g, '').split(',')
         },
+    },
+    beforeDestroy() {
+        window.removeEventListener('keyup', this.esc)
     },
 }
 </script>
