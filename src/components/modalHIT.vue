@@ -253,13 +253,6 @@ export default {
 .fade-leave-to {
     opacity: 0;
 }
-.pin-r {
-    right: 0;
-}
-.pin-y {
-    top: 0;
-    bottom: 0;
-}
 .form-radio {
     -webkit-appearance: none;
     -moz-appearance: none;

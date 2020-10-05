@@ -554,6 +554,11 @@ export default {
                     this.elaboraTempoGET('expiry')
                     this.elaboraTempoGET('auto_approve')
                 })
+                .then(() => {
+                    this.fixMax(1)
+                    this.fixMax(2)
+                    this.fixMax(3)
+                })
                 .catch(() => {
                     var msg = 'Error. Project not found'
                     this.emitSnackbar(msg)
@@ -564,10 +569,10 @@ export default {
             if (!this.$v.$invalid) {
                 console.log('ok')
                 this.loading = true
+                this.parseNumbers()
                 this.elaboraTempo('max_time')
                 this.elaboraTempo('expiry')
                 this.elaboraTempo('auto_approve')
-                this.parseNumbers()
                 var url = this.APIURL + '?action=addProject'
                 if (this.mode == 'edit') {
                     url = url + '&id=' + this.id
@@ -669,18 +674,24 @@ export default {
                     this.max_time_send = this.max_time * 60
                 } else if (this.selectTempoMax == 'days') {
                     this.max_time_send = this.max_time * 1440
+                } else {
+                    this.max_time_send = this.max_time
                 }
             } else if (nomeVar == 'expiry') {
                 if (this.selectExpiry == 'hours') {
                     this.expiry_send = this.expiry * 60
                 } else if (this.selectExpiry == 'days') {
                     this.expiry_send = this.expiry * 1440
+                } else {
+                    this.expiry_send = this.expiry
                 }
             } else {
                 if (this.selectAutoApprove == 'hours') {
                     this.auto_approvesend = this.auto_approve * 60
                 } else if (this.selectAutoApprove == 'days') {
                     this.auto_approvesend = this.auto_approve * 1440
+                } else {
+                    this.auto_approvesend = this.auto_approve
                 }
             }
         },
@@ -731,13 +742,6 @@ export default {
 </script>
 
 <style scoped>
-.pin-r {
-    right: 0;
-}
-.pin-y {
-    top: 0;
-    bottom: 0;
-}
 hr.solid {
     border-top: 1px solid #bbb;
 }

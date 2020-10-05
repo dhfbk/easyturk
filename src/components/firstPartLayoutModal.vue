@@ -151,13 +151,6 @@ export default {
 </script>
 
 <style scoped>
-.pin-r {
-    right: 0;
-}
-.pin-y {
-    top: 0;
-    bottom: 0;
-}
 .tooltip .tooltip-text {
     visibility: hidden;
     text-align: center;

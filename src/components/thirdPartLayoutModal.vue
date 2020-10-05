@@ -82,13 +82,3 @@ export default {
     },
 }
 </script>
-
-<style scoped>
-.pin-r {
-    right: 0;
-}
-.pin-y {
-    top: 0;
-    bottom: 0;
-}
-</style>
