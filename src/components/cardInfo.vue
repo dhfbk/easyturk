@@ -23,6 +23,12 @@ export default {
     created() {
         this.length = this.dati.length
     },
+    methods: {
+        modal() {
+            console.log('preso!')
+            this.$emit('modal', 'instructions')
+        },
+    },
 }
 </script>
 
