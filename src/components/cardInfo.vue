@@ -10,11 +10,11 @@
                             <span class="text-green-600">uploaded</span>
                         </span>
                         <button
-                            class="px-2 py-1 bg-transparent transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
+                            class="px-2 py-1 ripple bg-transparent transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
                             @click="
                                 $router.push({
                                     name: 'csv',
-                                    params: { projectId: this.projectData.id, type: 'data' },
+                                    params: { projectId: projectData.id, type: 'data' },
                                 })
                             "
                         >
@@ -26,18 +26,18 @@
             </div>
             <hr />
             <div class="mt-1">
-                <span v-if="projectData.numData > 0">
+                <span v-if="projectData.numGold > 0">
                     <div class="flex flex-row flex-wrap justify-between content-center items-center">
                         <span>
                             <span>Gold:&nbsp;</span>
                             <span class="text-green-600">uploaded</span>
                         </span>
                         <button
-                            class="px-2 py-1 bg-transparent transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
+                            class="px-2 py-1 ripple bg-transparent transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
                             @click="
                                 $router.push({
                                     name: 'csv',
-                                    params: { projectId: this.projectData.id, type: 'gold' },
+                                    params: { projectId: projectData.id, type: 'gold' },
                                 })
                             "
                         >
@@ -135,7 +135,7 @@ export default {
                 break
             case 'csv':
                 this.titles = ['Base CSV status', 'Gold CSV status']
-                this.data = [this.projectData.numData, this.projectData.numGold]
+                this.data = [this.projectData.numData, parseInt(this.projectData.numGold)]
                 break
         }
     },
