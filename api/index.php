@@ -553,7 +553,7 @@ switch ($Action) {
                         $allowedFields[] = "_keywords";
                         $allowedFields = array_merge($allowedFields, unserialize($trainingInfo['fields']));
 
-                        $layout_fields = explode("\n", $r['layout_fields']);
+                        $layout_fields = explode(",", $r['layout_fields']);
                         $layout_fields = array_map('trim', $layout_fields);
 
                         if (!count($_REQUEST['layoutData'])) {
@@ -563,6 +563,11 @@ switch ($Action) {
                         }
 
                         foreach ($_REQUEST['layoutData'] as $layoutData) {
+                            if (!$layoutData['field']) {
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "Field in layoutData is missing";
+                                break 2;
+                            }
                             if (!in_array($layoutData['field'], $layout_fields)) {
                                 $ret['result'] = "ERR";
                                 $ret['error'] = "Unable to find {$layoutData['field']} in layout fields";
@@ -593,12 +598,18 @@ switch ($Action) {
 
                             foreach ($_REQUEST['answerData'] as $answerData) {
                                 foreach (["varName", "varValue", "varNameTo", "varValueTo"] as $key) {
-                                    if (!isset($answerData[$key]) || !isset($answerData[$key])) {
+                                    if (!isset($answerData[$key]) || !$answerData[$key]) {
                                         $ret['result'] = "ERR";
                                         $ret['error'] = "Field $key is not defined";
                                         break 3;
                                     }
                                 }
+                            }
+
+                            if (!$_REQUEST['whatToDo']) {
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "Field whatToDo is missing";
+                                break;
                             }
 
                             if (!in_array($_REQUEST['whatToDo'], $allowedGoldWrong)) {
@@ -625,7 +636,9 @@ switch ($Action) {
                         $toSave['assignNumber'] = $_REQUEST['assignNumber'];
                         $toSave['whatToDo'] = $_REQUEST['whatToDo'];
 
-                        $DB->queryupdate("projects", array("hit_details" => $toSave, "status" => 2), array("id" => $r['id']));
+                        $DB->queryupdate("projects", array("hit_details" => serialize($toSave), "status" => 2), array("id" => $r['id']));
+
+                        $ret['result'] = "OK";
 
                         break;
 
@@ -690,14 +703,25 @@ switch ($Action) {
                 $r = NULL;
                 if ($_REQUEST['id'] != 0) {
                     $r = find("projects", $_REQUEST['id'], "Project not found");
-                    if ($r['status'] > 1) {
+                    if ($r['status'] > 2) {
                         $ret['result'] = "ERR";
-                        $ret['error'] = "A project with status {$ret['status']} cannot be modified";
+                        $ret['error'] = "A project with status {$r['status']} cannot be modified";
                         break;
                     }
                     if ($r['status'] == 1) {
-                        $fields.remove("params");
-                        $integers.remove("params");
+                        if (($key = array_search("params", $fields)) !== false) {
+                            unset($fields[$key]);
+                        }
+                        if (($key = array_search("params", $integers)) !== false) {
+                            unset($integers[$key]);
+                        }
+                        if (($key = array_search("params_fields", $fields)) !== false) {
+                            unset($fields[$key]);
+                        }
+                    }
+                    if ($r['status'] == 2) {
+                        $fields = array("name", "title", "description", "keywords");
+                        $integers = array();
                     }
                 }
 
@@ -716,7 +740,7 @@ switch ($Action) {
                     }
                 }
 
-                if (!is_numeric($data['reward'])) {
+                if (isset($data['reward']) && !is_numeric($data['reward'])) {
                     $ret['result'] = "ERR";
                     $ret['error'] = "Field 'reward' must be numeric";
                     break;
@@ -728,63 +752,63 @@ switch ($Action) {
                         break 2;
                     }
                 }
-                if ($data['params'] < 1) {
+                if (isset($data['params']) && $data['params'] < 1) {
                     $ret['result'] = "ERR";
                     $ret['error'] = "Invalid number of params";
                     break;
                 }
 
                 // A fake HIT is created to get information about the layout
-                try {
-                    $result = $mTurk->createHIT([
-                        "MaxAssignments" => 3,
-                        "LifetimeInSeconds" => 0,
-                        "Reward" => "0",
-                        "Title" => "Title",
-                        "Description" => "Description",
-                        "HITLayoutId" => $data['layout_id'],
-                        "AssignmentDurationInSeconds" => 30
-                    ]);
-                } catch (Exception $e) {
-                    $msg = $e->getMessage();
-                    $ret['debug']['layout_result'] = $msg;
-                    if (preg_match("/Missing parameter names: ([^.]*)\./", $msg, $matches)) {
-                        $data['layout_fields'] = str_replace(",", ", ", $matches[1]);
-                    }
-                    else {
-                        $ret['result'] = "ERR";
-                        $ret['error'] = "Invalid layout ID";
-                        break;
-                    }
-                }
-
-                $layout_fields = explode(",", $data['layout_fields']);
-                $layout_fields = array_map("trim", $layout_fields);
-                $params_fields = explode(",", $data['params_fields']);
-                $params_fields = array_map("trim", $params_fields);
-
-                $all_included = true;
-                foreach ($params_fields as $param_field) {
-                    for ($i = 1; $i <= $data['params']; $i++) {
-                        $p = $param_field . $i;
-                        $found_key = array_search($p, $layout_fields);
-                        if ($found_key === false) {
-                            $all_included = false;
-                            $ret['result'] = "ERR";
-                            $ret['error'] = "$p is not included in layout";
-                            break 3;
+                if (isset($data['layout_id'])) {
+                    try {
+                        $result = $mTurk->createHIT([
+                            "MaxAssignments" => 3,
+                            "LifetimeInSeconds" => 0,
+                            "Reward" => "0",
+                            "Title" => "Title",
+                            "Description" => "Description",
+                            "HITLayoutId" => $data['layout_id'],
+                            "AssignmentDurationInSeconds" => 30
+                        ]);
+                    } catch (Exception $e) {
+                        $msg = $e->getMessage();
+                        $ret['debug']['layout_result'] = $msg;
+                        if (preg_match("/Missing parameter names: ([^.]*)\./", $msg, $matches)) {
+                            $data['layout_fields'] = str_replace(",", ", ", $matches[1]);
                         }
-                        array_splice($layout_fields, $found_key, 1);
+                        else {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Invalid layout ID";
+                            break;
+                        }
                     }
-                    $layout_fields[] = $param_field . "#";
                 }
 
-                $data['layout_fields'] = implode(', ', $layout_fields);
-                $data['params_fields'] = implode(', ', $params_fields);
+                if (isset($data['layout_fields']) && isset($data['params_fields'])) {
+                    $layout_fields = explode(",", $data['layout_fields']);
+                    $layout_fields = array_map("trim", $layout_fields);
+                    $params_fields = explode(",", $data['params_fields']);
+                    $params_fields = array_map("trim", $params_fields);
 
-                // $ret['layout_fields'] = $layout_fields;
+                    $all_included = true;
+                    foreach ($params_fields as $param_field) {
+                        for ($i = 1; $i <= $data['params']; $i++) {
+                            $p = $param_field . $i;
+                            $found_key = array_search($p, $layout_fields);
+                            if ($found_key === false) {
+                                $all_included = false;
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "$p is not included in layout";
+                                break 3;
+                            }
+                            array_splice($layout_fields, $found_key, 1);
+                        }
+                        $layout_fields[] = $param_field . "#";
+                    }
 
-                // $ret['data'] = $data;
+                    $data['layout_fields'] = implode(', ', $layout_fields);
+                    $data['params_fields'] = implode(', ', $params_fields);
+                }
 
                 if ($r === NULL) {
                     $DB->queryinsert("projects", $data);
