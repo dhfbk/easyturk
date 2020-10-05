@@ -117,7 +117,8 @@
                                 v-model="leftover"
                                 :disabled="goldDataStatus == 0 || baseDataStatus == 0"
                             >
-                                <option selected value="no_use">Don't use</option>
+                                <option value="" disabled selected hidden>Choose action...</option>
+                                <option value="no_use">Don't use</option>
                                 <option value="reuse">Reuse previous gold</option>
                             </select>
                             <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
@@ -172,7 +173,7 @@ export default {
     data() {
         return {
             goldNum: 0,
-            leftover: 'no_use',
+            leftover: '',
             shuffleBase: 1,
             shuffleGold: 1,
             loading: false,

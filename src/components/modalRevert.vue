@@ -19,8 +19,7 @@
                         </svg>
                     </div>
                     <div class="py-2">
-                        Are you sure you want to revert your changes? You will have to reupload your files and set your
-                        golden standard.
+                        Are you sure you want to revert your changes to the previous state?
                     </div>
 
                     <div class="ml-auto flex flex-col xs2:flex-row">
@@ -54,7 +53,7 @@ import axios from 'axios'
 
 export default {
     name: 'modalRevert',
-    props: { id: String },
+    props: { id: String, toStatus: Number },
     data() {
         return {
             loading: false,
@@ -82,7 +81,7 @@ export default {
                 method: 'post',
                 url: this.APIURL + '?action=updateProjectStatus&id=' + this.id,
                 data: {
-                    toStatus: 0,
+                    toStatus: this.toStatus,
                 },
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             })

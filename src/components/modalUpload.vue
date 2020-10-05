@@ -3,7 +3,7 @@
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
         >
-            <div class="bg-white rounded-lg w-auto mx-2 lg:w-1/2">
+            <div class="bg-white rounded-lg w-full md:w-auto mx-2 lg:w-1/2">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <h2 class="text-gray-900 font-bold text-lg">Choose the file to upload</h2>
@@ -41,33 +41,31 @@
                     />
 
                     <div class="flex customFlex my-1">
-                        <label class="inline-flex items-center customWidth">
-                            <span class="font-light mr-2">Separator:</span>
-
-                            <select
-                                class="block appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                                id="separator"
-                                v-model="separated"
-                            >
-                                <option selected value="comma">Comma</option>
-                                <option value="tab">Tab</option>
-                                <option value="semicolon">Semicolon</option>
-                                <!--<option value="space">Space</option>-->
-                            </select>
-                        </label>
-                        <label class="inline-flex items-center customWidth">
-                            <span class="font-light mr-2">String delimiter:</span>
-
-                            <select
-                                class="block appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                                id="separator"
-                                v-model="delimiter"
-                            >
-                                <option selected value="double">"</option>
-                                <option value="single">'</option>
-                                <!--<option value="none">None</option>-->
-                            </select>
-                        </label>
+                        <label for="separator" class="font-light mr-2">Separator:</label>
+                        <select
+                            class="block appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            id="separator"
+                            name="separator"
+                            v-model="separated"
+                        >
+                            <option value="" disabled selected hidden>Choose separator...</option>
+                            <option value="comma">Comma</option>
+                            <option value="tab">Tab</option>
+                            <option value="semicolon">Semicolon</option>
+                            <!--<option value="space">Space</option>-->
+                        </select>
+                        <label for="delimiter" class="font-light mr-2">String delimiter:</label>
+                        <select
+                            class="block appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            id="separator"
+                            v-model="delimiter"
+                        >
+                            <option value="" disabled selected hidden>Choose delimiter...</option>
+                            <option value="double">"</option>
+                            <option value="single">'</option>
+                            <!--<option value="none">None</option>-->
+                        </select>
+                        <label class="inline-flex items-center customWidth"> </label>
                     </div>
                     <hr />
 
@@ -156,8 +154,8 @@ export default {
             inputLocked: false,
             picked: 1,
             customTitles: '',
-            separated: 'comma',
-            delimiter: 'double',
+            separated: '',
+            delimiter: '',
             uploadPercentage: 0,
             loading: false,
         }
@@ -262,7 +260,7 @@ progress[value]::-webkit-progress-bar {
 .customWidth {
     width: fit-content;
 }
-@media screen and (min-width: 512px) {
+@media screen and (min-width: 640px) {
     .customFlex {
         flex-direction: row;
     }
