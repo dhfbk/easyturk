@@ -4,43 +4,61 @@
             v-if="modalElim && !loading1"
             @deleteModal="toggleModal('delete')"
             @deleted="deleted"
-            :id="datiProgetto.id"
+            :id="ProjectData.id"
         />
         <modalUpload
             v-if="modalStd && !loading1"
             :type="'std'"
-            :id="datiProgetto.id"
+            :id="ProjectData.id"
             @uploadModal="toggleModal('std')"
             @uploaded="uploaded"
         />
         <modalUpload
             v-if="modalGld && !loading1"
             :type="'gld'"
-            :id="datiProgetto.id"
+            :id="ProjectData.id"
             @uploadModal="toggleModal('gld')"
             @uploaded="uploaded"
         />
         <modalHIT
             v-if="modalHIT && !loading1"
-            :id="datiProgetto.id"
-            :baseDataStatus="datiProgetto.baseCsvStatus"
-            :goldDataStatus="datiProgetto.goldCsvStatus"
+            :id="ProjectData.id"
+            :baseDataStatus="ProjectData.baseCsvStatus"
+            :goldDataStatus="ProjectData.goldCsvStatus"
             @hitModal="toggleModal('hit')"
             @hitCreated="hitCreated"
         />
         <modalRevert
             v-if="modalRevert && !loading1"
-            :id="datiProgetto.id"
+            :id="ProjectData.id"
             @revertModal="toggleModal('revert')"
             @reverted="reverted"
         />
         <modalLayout v-if="modalLayout && !loading1" :project="project" @layoutModal="toggleModal('layout')" />
         <div class="flex justify-between items-center flex-wrap" v-if="!loading1">
-            <h1 class="text-2xl mb-4 text-primary">{{ datiProgetto.nome }}</h1>
+            <h1 class="text-2xl mb-4 text-primary">{{ ProjectData.nome }}</h1>
             <div class="w-full sm:w-auto flex relative justify-between content-center items-center">
                 <span class="tooltip relative">
                     <button
-                        v-if="datiProgetto.status == 1"
+                        v-if="ProjectData.status == 2"
+                        @click="toggleModal('launch')"
+                        type="submit"
+                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
+                    >
+                        <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.79 17.45 10.61 17.63 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z"
+                            />
+                        </svg>
+                    </button>
+                    <span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        >Launch project</span
+                    >
+                </span>
+                <span class="tooltip relative">
+                    <button
+                        v-if="ProjectData.status == 1"
                         @click="toggleModal('layout')"
                         type="submit"
                         class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
@@ -58,8 +76,8 @@
                 </span>
                 <span class="tooltip relative">
                     <button
-                        v-if="datiProgetto.status == 0"
-                        :class="{ 'cursor-not-allowed': datiProgetto.baseCsvStatus == 0 }"
+                        v-if="ProjectData.status == 0"
+                        :class="{ 'cursor-not-allowed': ProjectData.baseCsvStatus == 0 }"
                         @click="toggleModal('hit')"
                         type="submit"
                         class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
@@ -77,7 +95,7 @@
                 </span>
                 <span class="tooltip relative">
                     <button
-                        v-if="datiProgetto.status == 1"
+                        v-if="ProjectData.status == 1"
                         @click="toggleModal('revert')"
                         type="submit"
                         class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
@@ -95,7 +113,7 @@
                 </span>
                 <span class="tooltip relative">
                     <button
-                        @click="$router.push({ name: 'edit', params: { projectId: datiProgetto.id } })"
+                        @click="$router.push({ name: 'edit', params: { projectId: ProjectData.id } })"
                         type="submit"
                         class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
@@ -127,7 +145,7 @@
                         >Delete</span
                     >
                 </span>
-                <div class="relative hidden md:block" v-if="datiProgetto.status == 3">
+                <div class="relative hidden md:block" v-if="ProjectData.status == 3">
                     <button
                         @click="open('results')"
                         type="submit"
@@ -153,7 +171,7 @@
                 <span v-click-outside="hide">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
-                        :class="datiProgetto.status != 0 ? 'md:hidden' : ''"
+                        :class="ProjectData.status != 0 ? 'md:hidden' : ''"
                         class="ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg
@@ -177,24 +195,24 @@
                         >
                             <a
                                 @click="toggleModal('hit')"
-                                v-if="datiProgetto.status == 0"
+                                v-if="ProjectData.status == 0"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 >Set HITs</a
                             >
                             <a
                                 @click="toggleModal('layout')"
-                                v-if="datiProgetto.status == 1"
+                                v-if="ProjectData.status == 1"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 >Set layout</a
                             >
                             <a
-                                v-if="datiProgetto.status == 1"
+                                v-if="ProjectData.status == 1"
                                 @click="toggleModal('revert')"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 >Revert HIT settings</a
                             >
                             <router-link
-                                v-if="datiProgetto.status == 3"
+                                v-if="ProjectData.status == 3"
                                 to="results"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 >Results</router-link
@@ -207,26 +225,26 @@
                             <router-link
                                 :to="{
                                     name: 'edit',
-                                    params: { projectId: datiProgetto.id },
+                                    params: { projectId: ProjectData.id },
                                 }"
-                                :class="datiProgetto.status == 0 ? '' : 'rounded-b-md'"
+                                :class="ProjectData.status == 0 ? '' : 'rounded-b-md'"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 >Edit</router-link
                             >
                             <a
-                                v-if="datiProgetto.status == 0"
+                                v-if="ProjectData.status == 0"
                                 @click="toggleModal('std')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary md:rounded-t-md hover:text-gray-100"
                                 >Base CSV upload</a
                             >
                             <a
-                                v-if="datiProgetto.status == 0"
+                                v-if="ProjectData.status == 0"
                                 @click="toggleModal('gld')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
                                 >Gold CSV upload</a
                             >
                             <!-- <a
-                                v-if="datiProgetto.status == 0 && datiProgetto.baseCsvStatus == 1"
+                                v-if="ProjectData.status == 0 && ProjectData.baseCsvStatus == 1"
                                 @click="uploadModal(['hit', ''])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
                                 >Load HITs</a
@@ -293,7 +311,7 @@ export default {
     },
     data() {
         return {
-            datiProgetto: {
+            ProjectData: {
                 nome: '',
                 titolo: '',
                 descrizione: '',
@@ -366,40 +384,40 @@ export default {
         // },
 
         getDatiPrj() {
-            this.datiProgetto.id = this.$route.params.projectId
+            this.ProjectData.id = this.$route.params.projectId
             axios
-                .get(this.APIURL + '?action=getProjectInfo&id=' + this.datiProgetto.id)
+                .get(this.APIURL + '?action=getProjectInfo&id=' + this.ProjectData.id)
                 .then(res => {
                     this.project[0] = res.data.values
                     //console.log(res)
                     console.log(res.data)
                     //console.log(responses[2].data.result)
-                    this.datiProgetto.nome = res.data.values.name
-                    this.datiProgetto.titolo = res.data.values.title
-                    this.datiProgetto.descrizione = res.data.values.description
-                    this.datiProgetto.keywords = res.data.values.keywords
-                    this.datiProgetto.ricompensa = res.data.values.reward + '$'
-                    this.datiProgetto.tempoMax = parseInt(res.data.values.max_time)
-                    this.datiProgetto.creazione = res.data.values.created_at
-                    this.datiProgetto.scadenza = parseInt(res.data.values.expiry)
-                    this.datiProgetto.autoApproval = parseInt(res.data.values.auto_approve)
-                    this.datiProgetto.layoutID = res.data.values.layout_id
-                    this.datiProgetto.parametri = res.data.values.params
-                    this.datiProgetto.numLavoratori = res.data.values.workers
-                    this.datiProgetto.status = res.data.values.status
+                    this.ProjectData.nome = res.data.values.name
+                    this.ProjectData.titolo = res.data.values.title
+                    this.ProjectData.descrizione = res.data.values.description
+                    this.ProjectData.keywords = res.data.values.keywords
+                    this.ProjectData.ricompensa = res.data.values.reward + '$'
+                    this.ProjectData.tempoMax = parseInt(res.data.values.max_time)
+                    this.ProjectData.creazione = res.data.values.created_at
+                    this.ProjectData.scadenza = parseInt(res.data.values.expiry)
+                    this.ProjectData.autoApproval = parseInt(res.data.values.auto_approve)
+                    this.ProjectData.layoutID = res.data.values.layout_id
+                    this.ProjectData.parametri = res.data.values.params
+                    this.ProjectData.numLavoratori = res.data.values.workers
+                    this.ProjectData.status = res.data.values.status
                     if (res.data.numData > 0) {
-                        this.datiProgetto.baseCsv =
+                        this.ProjectData.baseCsv =
                             "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 py-1 bg-transparent transition duration-150 hover:bg-gray-300 rounded focus:outline-none' href='#/" +
-                            this.datiProgetto.id +
+                            this.ProjectData.id +
                             "/data/standard'>View data</a></div>"
-                        this.datiProgetto.baseCsvStatus = 1
+                        this.ProjectData.baseCsvStatus = 1
                     }
                     if (res.data.numGold > 0) {
-                        this.datiProgetto.goldCsv =
+                        this.ProjectData.goldCsv =
                             "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 py-1 bg-transparent transition duration-150 hover:bg-gray-300 rounded focus:outline-none' href='#/" +
-                            this.datiProgetto.id +
+                            this.ProjectData.id +
                             "/data/gold'>View data</a></div>"
-                        this.datiProgetto.goldCsvStatus = 1
+                        this.ProjectData.goldCsvStatus = 1
                     }
                     this.loading = false
                 })
@@ -411,28 +429,31 @@ export default {
         open(mode) {
             this.$router.push({
                 name: mode,
-                params: { projectId: this.datiProgetto.id },
+                params: { projectId: this.ProjectData.id },
             })
         },
         //metodo che imposta i titoli e i dati da inserire nelle card della pagina
         impostaDatiCard() {
             this.titoliCard.titoli1 = ['Title', 'Description', 'Keywords', 'Creation date']
             var status = ''
-            if ((this.datiProgetto.status == 0) & (this.datiProgetto.baseCsvStatus == 1)) {
+            if ((this.ProjectData.status == 0) & (this.ProjectData.baseCsvStatus == 1)) {
                 status =
-                    '<span class="text-green-500">data uploaded.</span><span> Ready to <span class="font-bold text-primary">create HITs.</span></span>'
-            } else if ((this.datiProgetto.status == 0) & (this.datiProgetto.baseCsvStatus == 0)) {
+                    '<span class="flex justify-between items-center"><span><span class="text-green-500">data uploaded. </span><span>Ready to <span class="font-bold text-primary"> create HITs.</span></span></span><button class="ripple px-2 py-1 bg-white hover:bg-gray-300 rounded focus:outline-none transition duration-150">Need help?</button></span>'
+            } else if ((this.ProjectData.status == 0) & (this.ProjectData.baseCsvStatus == 0)) {
                 status =
-                    '<span class="text-green-500">project created!</span><span> <span class="font-bold text-primary">Upload csv data </span> and  <span class="font-bold text-primary"> csv gold</span> to advance.</span>'
-            } else if (this.datiProgetto.status == 1) {
+                    '<span class="flex justify-between items-center"><span><span class="text-green-500">project created. </span><span><span class="font-bold text-primary">Upload csv data </span>and<span class="font-bold text-primary"> csv gold</span> to advance.</span></span><button class="ripple px-2 py-1 bg-white hover:bg-gray-300 rounded focus:outline-none transition duration-150">Need help?</button></span>'
+            } else if (this.ProjectData.status == 1) {
                 status =
-                    '<span class="text-green-500">HITs created. </span><span>Ready to <span class="font-bold text-primary"> set the layout.</span></span>'
+                    '<span class="flex justify-between items-center"><span><span class="text-green-500">HITs created. </span><span>Ready to <span class="font-bold text-primary"> set the layout.</span></span></span><button class="ripple px-2 py-1 bg-white hover:bg-gray-300 rounded focus:outline-none transition duration-150">Need help?</button></span>'
+            } else if (this.ProjectData.status == 2) {
+                status =
+                    '<span class="flex justify-between items-center"><span><span class="text-green-500">HIT layout set. </span><span>Ready to finally<span class="font-bold text-primary"> publish the project!</span></span></span><button class="ripple px-2 py-1 bg-white hover:bg-gray-300 rounded focus:outline-none transition duration-150">Need help?</button></span>'
             }
             this.datiCard.dati1 = [
-                this.datiProgetto.titolo,
-                this.datiProgetto.descrizione,
-                this.datiProgetto.keywords,
-                this.datiProgetto.creazione,
+                this.ProjectData.titolo,
+                this.ProjectData.descrizione,
+                this.ProjectData.keywords,
+                this.ProjectData.creazione,
             ]
             this.titoliCard.titoli2 = [
                 'Ricompensa per ogni assignment',
@@ -442,44 +463,44 @@ export default {
                 'Auto approva e paga lavoratori in',
             ]
             this.datiCard.dati2 = [
-                this.datiProgetto.ricompensa,
-                this.datiProgetto.numLavoratori,
-                this.datiProgetto.tempoMax,
-                this.datiProgetto.scadenza,
-                this.datiProgetto.autoApproval,
+                this.ProjectData.ricompensa,
+                this.ProjectData.numLavoratori,
+                this.ProjectData.tempoMax,
+                this.ProjectData.scadenza,
+                this.ProjectData.autoApproval,
             ]
             this.titoliCard.titoli3 = ['Layout ID', 'Number of records per HIT']
-            this.datiCard.dati3 = [this.datiProgetto.layoutID, this.datiProgetto.parametri]
+            this.datiCard.dati3 = [this.ProjectData.layoutID, this.ProjectData.parametri]
             this.titoliCard.titoli4 = ['Base CSV status', 'Gold CSV status']
-            this.datiCard.dati4 = [this.datiProgetto.baseCsv, this.datiProgetto.goldCsv]
+            this.datiCard.dati4 = [this.ProjectData.baseCsv, this.ProjectData.goldCsv]
             this.titoliCard.titoli5 = ['Status']
             this.datiCard.dati5 = [status]
             this.datiCardAnalytics = {
                 cardHIT: {
-                    idPrj: this.datiProgetto.id,
+                    idPrj: this.ProjectData.id,
                     titolo: 'Totale HIT',
-                    totale: this.datiProgetto.totaleHIT,
+                    totale: this.ProjectData.totaleHIT,
                     type: 'HIT',
                     ellipse_progress: {
                         progress1: {
-                            progress: this.datiProgetto.completateProgress,
-                            legend_value: this.datiProgetto.HITcompletate,
+                            progress: this.ProjectData.completateProgress,
+                            legend_value: this.ProjectData.HITcompletate,
                             color: '#f6ad55',
                             half: true,
                             angle: 0,
                             caption: 'Completate',
                         },
                         progress2: {
-                            progress: this.datiProgetto.disponibiliProgress,
-                            legend_value: this.datiProgetto.HITdisponibili,
+                            progress: this.ProjectData.disponibiliProgress,
+                            legend_value: this.ProjectData.HITdisponibili,
                             color: '#f6ad55',
                             half: true,
                             angle: 0,
                             caption: 'Disponibili',
                         },
                         progress3: {
-                            progress: this.datiProgetto.incorsoProgress,
-                            legend_value: this.datiProgetto.HITinCorso,
+                            progress: this.ProjectData.incorsoProgress,
+                            legend_value: this.ProjectData.HITinCorso,
                             color: '#f6ad55',
                             half: true,
                             angle: 0,
@@ -489,20 +510,20 @@ export default {
                 },
                 cardAggregate: {
                     titolo: 'Risposte aggregate',
-                    totale: this.datiProgetto.HITcompletate,
+                    totale: this.ProjectData.HITcompletate,
                     type: 'aggregate',
                     ellipse_progress: {
                         progress1: {
-                            progress: this.datiProgetto.siProgress,
-                            legend_value: this.datiProgetto.risposteSI,
+                            progress: this.ProjectData.siProgress,
+                            legend_value: this.ProjectData.risposteSI,
                             color: '#f6ad55',
                             half: false,
                             angle: 0,
                             caption: 'SI',
                         },
                         progress2: {
-                            progress: this.datiProgetto.noProgress,
-                            legend_value: this.datiProgetto.risposteNO,
+                            progress: this.ProjectData.noProgress,
+                            legend_value: this.ProjectData.risposteNO,
                             color: '#f6ad55',
                             half: false,
                             angle: 0,
@@ -518,7 +539,7 @@ export default {
             } else if (mode == 'std') {
                 this.modalStd = !this.modalStd
             } else if (mode == 'gld') {
-                if (this.datiProgetto.baseCsvStatus == 0) {
+                if (this.ProjectData.baseCsvStatus == 0) {
                     this.$emit('snackbar', 'Warning. To upload the gold CSV, you first have to uplaod the standard.')
                 } else {
                     this.modalGld = !this.modalGld
@@ -526,7 +547,7 @@ export default {
             } else if (mode == 'revert') {
                 this.modalRevert = !this.modalRevert
             } else if (mode == 'hit') {
-                if (this.datiProgetto.baseCsvStatus == 0) {
+                if (this.ProjectData.baseCsvStatus == 0) {
                     this.$emit('snackbar', 'Warning. To create the HITs, you first have to upload CSV data.')
                 } else {
                     this.modalHIT = !this.modalHIT
@@ -572,37 +593,36 @@ export default {
         },
         //calcola il numero da utilizzare nei grafici delle analytics
         calcolaProgress() {
-            this.datiProgetto.completateProgress = (100 * this.datiProgetto.HITcompletate) / this.datiProgetto.totaleHIT
-            this.datiProgetto.disponibiliProgress =
-                (100 * this.datiProgetto.HITdisponibili) / this.datiProgetto.totaleHIT
-            this.datiProgetto.incorsoProgress = (100 * this.datiProgetto.HITinCorso) / this.datiProgetto.totaleHIT
-            this.datiProgetto.siProgress = (100 * this.datiProgetto.risposteSI) / this.datiProgetto.HITcompletate
-            this.datiProgetto.noProgress = (100 * this.datiProgetto.risposteNO) / this.datiProgetto.HITcompletate
+            this.ProjectData.completateProgress = (100 * this.ProjectData.HITcompletate) / this.ProjectData.totaleHIT
+            this.ProjectData.disponibiliProgress = (100 * this.ProjectData.HITdisponibili) / this.ProjectData.totaleHIT
+            this.ProjectData.incorsoProgress = (100 * this.ProjectData.HITinCorso) / this.ProjectData.totaleHIT
+            this.ProjectData.siProgress = (100 * this.ProjectData.risposteSI) / this.ProjectData.HITcompletate
+            this.ProjectData.noProgress = (100 * this.ProjectData.risposteNO) / this.ProjectData.HITcompletate
         },
         elaboraTempo(nomeVar) {
             if (nomeVar == 'tempoMax') {
-                if (this.datiProgetto.tempoMax < 60) {
-                    this.datiProgetto.tempoMax += ' minuti'
-                } else if (this.datiProgetto.tempoMax < 1440) {
-                    this.datiProgetto.tempoMax = this.datiProgetto.tempoMax / 60 + ' ore'
+                if (this.ProjectData.tempoMax < 60) {
+                    this.ProjectData.tempoMax += ' minuti'
+                } else if (this.ProjectData.tempoMax < 1440) {
+                    this.ProjectData.tempoMax = this.ProjectData.tempoMax / 60 + ' ore'
                 } else {
-                    this.datiProgetto.tempoMax = this.datiProgetto.tempoMax / 1440 + ' giorni'
+                    this.ProjectData.tempoMax = this.ProjectData.tempoMax / 1440 + ' giorni'
                 }
             } else if (nomeVar == 'scadenza') {
-                if (this.datiProgetto.scadenza < 60) {
-                    this.datiProgetto.scadenza += ' minuti'
-                } else if (this.datiProgetto.scadenza < 1440) {
-                    this.datiProgetto.scadenza = this.datiProgetto.scadenza / 60 + ' ore'
+                if (this.ProjectData.scadenza < 60) {
+                    this.ProjectData.scadenza += ' minuti'
+                } else if (this.ProjectData.scadenza < 1440) {
+                    this.ProjectData.scadenza = this.ProjectData.scadenza / 60 + ' ore'
                 } else {
-                    this.datiProgetto.scadenza = this.datiProgetto.scadenza / 1440 + ' giorni'
+                    this.ProjectData.scadenza = this.ProjectData.scadenza / 1440 + ' giorni'
                 }
             } else {
-                if (this.datiProgetto.autoApproval < 60) {
-                    this.datiProgetto.autoApproval += ' minuti'
-                } else if (this.datiProgetto.autoApproval < 1440) {
-                    this.datiProgetto.autoApproval = this.datiProgetto.autoApproval / 60 + ' ore'
+                if (this.ProjectData.autoApproval < 60) {
+                    this.ProjectData.autoApproval += ' minuti'
+                } else if (this.ProjectData.autoApproval < 1440) {
+                    this.ProjectData.autoApproval = this.ProjectData.autoApproval / 60 + ' ore'
                 } else {
-                    this.datiProgetto.autoApproval = this.datiProgetto.autoApproval / 1440 + ' giorni'
+                    this.ProjectData.autoApproval = this.ProjectData.autoApproval / 1440 + ' giorni'
                 }
             }
         },

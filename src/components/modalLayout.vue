@@ -11,7 +11,7 @@
                             class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 18 18"
-                            @click="toggleModal('close')"
+                            @click="toggleModal()"
                         >
                             <path
                                 d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
@@ -51,7 +51,7 @@
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
                         <button
                             class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
-                            @click="invia()"
+                            @click="submit()"
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
@@ -63,7 +63,7 @@
                         </button>
                         <button
                             class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
-                            @click="toggleModal('close')"
+                            @click="toggleModal()"
                         >
                             Cancel
                         </button>
@@ -122,10 +122,10 @@ export default {
     methods: {
         esc(event) {
             if (event.keyCode === 27) {
-                this.toggleModal('close')
+                this.toggleModal()
             }
         },
-        invia() {
+        submit() {
             var url = this.APIURL + '?action=updateProjectStatus'
             axios({
                 method: 'post',
@@ -142,9 +142,16 @@ export default {
             })
                 .then(response => {
                     console.log(response.data)
+                    if (response.result == 'ERR') {
+                        this.$emit('snackbar', 'Error: ' + response.error)
+                    } else {
+                        this.$emit('snackbar', 'Layout successfully set.')
+                    }
+                    this.toggleModal()
                 })
-                .catch(() => {
-                    this.toggleModal('error')
+                .catch(err => {
+                    this.toggleModal()
+                    console.log(err)
                 })
         },
         getCsvFields() {
@@ -159,10 +166,8 @@ export default {
                     console.log(err)
                 })
         },
-        toggleModal(mode) {
-            if (mode == 'close') {
-                this.$emit('layoutModal', ['layout', ''])
-            }
+        toggleModal() {
+            this.$emit('layoutModal', ['layout', ''])
         },
         newElement(arr) {
             if (arr == 'first') {
