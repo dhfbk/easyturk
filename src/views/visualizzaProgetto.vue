@@ -101,7 +101,7 @@
                 </span>
                 <span class="tooltip relative">
                     <button
-                        v-if="project.status > 1 && project.status != 3"
+                        v-if="project.status >= 1 && project.status != 3"
                         @click="toggleModal('revert')"
                         type="submit"
                         class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
@@ -213,7 +213,7 @@
                                 >Set layout</a
                             >
                             <a
-                                v-if="project.status > 1 && project.status != 3"
+                                v-if="project.status >= 1 && project.status != 3"
                                 @click="toggleModal('revert')"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 >Revert HIT settings</a
