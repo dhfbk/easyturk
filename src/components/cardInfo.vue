@@ -73,6 +73,7 @@
                     <span class="font-bold text-primary"> publish the project!</span>
                 </span>
                 <button
+                    @click="$emit('modal', 'instructions')"
                     class="ripple px-2 py-1 bg-white hover:bg-gray-300 rounded focus:outline-none transition duration-150"
                 >
                     Need help?
@@ -139,9 +140,6 @@ export default {
         }
     },
     methods: {
-        modal() {
-            this.$emit('modal', 'instructions')
-        },
         time(num) {
             if (num < 60) {
                 num += ' minuti'

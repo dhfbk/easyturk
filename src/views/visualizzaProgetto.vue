@@ -36,6 +36,11 @@
             @reverted="reverted"
         />
         <modalLayout v-if="modalLayout && !loading" :project="project" @layoutModal="toggleModal('layout')" />
+        <modalInstructions
+            v-if="modalInstructions && !loading"
+            :status="project.status"
+            @modal="toggleModal('instructions')"
+        />
         <div class="flex justify-between items-center flex-wrap" v-if="!loading">
             <h1 class="text-2xl mb-4 text-primary">{{ project.name }}</h1>
             <div class="w-full sm:w-auto flex relative justify-between content-center items-center">
@@ -264,7 +269,7 @@
                 <div v-else>
                     <cardInfo :projectData="project" :mode="'general'" />
                     <cardInfo :projectData="project" :mode="'layout'" />
-                    <cardInfo :projectData="project" :mode="'status'" />
+                    <cardInfo :projectData="project" :mode="'status'" @modal="toggleModal" />
                 </div>
             </div>
             <div class="mx-0 xs2:mx-1">
@@ -293,6 +298,7 @@ import modalRevert from '../components/modalRevert.vue'
 import modalLayout from '../components/modalLayout.vue'
 import loader from '../components/loader.vue'
 import axios from 'axios'
+import modalInstructions from '../components/modalInstructions.vue'
 
 export default {
     name: 'visualizzaProgetto',
@@ -307,6 +313,7 @@ export default {
         modalHIT,
         modalRevert,
         modalLayout,
+        modalInstructions,
         loader,
     },
     data() {
@@ -319,6 +326,8 @@ export default {
             modalRevert: false,
             modalHIT: false,
             modalLayout: false,
+            modalInstructions: false,
+
             loading1: true,
             loading: true,
             project: [],
@@ -375,6 +384,8 @@ export default {
                 }
             } else if (mode == 'layout') {
                 this.modalLayout = !this.modalLayout
+            } else if (mode == 'instructions') {
+                this.modalInstructions = !this.modalInstructions
             }
             this.hide()
         },

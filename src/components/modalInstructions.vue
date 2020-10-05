@@ -6,7 +6,7 @@
             <div class="bg-white rounded-lg w-1/2">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
-                        <div class="text-gray-900 font-bold text-lg">Confirm action</div>
+                        <div class="text-gray-900 font-bold text-lg">Help</div>
                         <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="modal()">
                             <svg
                                 class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
