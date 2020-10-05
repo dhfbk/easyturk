@@ -1,47 +1,47 @@
 <template>
     <div class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <modalEliminazione
-            v-if="modalElim && !loading1"
+            v-if="modalElim && !loading"
             @deleteModal="toggleModal('delete')"
             @deleted="deleted"
-            :id="ProjectData.id"
+            :id="id"
         />
         <modalUpload
-            v-if="modalStd && !loading1"
+            v-if="modalStd && !loading"
             :type="'std'"
-            :id="ProjectData.id"
+            :id="id"
             @uploadModal="toggleModal('std')"
             @uploaded="uploaded"
         />
         <modalUpload
-            v-if="modalGld && !loading1"
+            v-if="modalGld && !loading"
             :type="'gld'"
-            :id="ProjectData.id"
+            :id="id"
             @uploadModal="toggleModal('gld')"
             @uploaded="uploaded"
         />
         <modalHIT
-            v-if="modalHIT && !loading1"
-            :id="ProjectData.id"
-            :baseDataStatus="ProjectData.baseCsvStatus"
-            :goldDataStatus="ProjectData.goldCsvStatus"
+            v-if="modalHIT && !loading"
+            :id="id"
+            :baseDataStatus="project.numData"
+            :goldDataStatus="project.numGold"
             @hitModal="toggleModal('hit')"
             @hitCreated="hitCreated"
         />
         <modalRevert
-            v-if="modalRevert && !loading1"
-            :id="ProjectData.id"
+            v-if="modalRevert && !loading"
+            :id="id"
             :toStatus="ProjectData.status"
             @revertModal="toggleModal('revert')"
             @reverted="reverted"
         />
-        <modalLayout v-if="modalLayout && !loading1" :project="project" @layoutModal="toggleModal('layout')" />
-        <div class="flex justify-between items-center flex-wrap" v-if="!loading1">
-            <h1 class="text-2xl mb-4 text-primary">{{ ProjectData.nome }}</h1>
+        <modalLayout v-if="modalLayout && !loading" :project="project" @layoutModal="toggleModal('layout')" />
+        <div class="flex justify-between items-center flex-wrap" v-if="!loading">
+            <h1 class="text-2xl mb-4 text-primary">{{ project.name }}</h1>
             <div class="w-full sm:w-auto flex relative justify-between content-center items-center">
                 <span class="tooltip relative">
                     <button
-                        v-if="ProjectData.status == 2"
+                        v-if="project.status == 2"
                         @click="toggleModal('launch')"
                         type="submit"
                         class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
@@ -59,7 +59,7 @@
                 </span>
                 <span class="tooltip relative">
                     <button
-                        v-if="ProjectData.status == 1"
+                        v-if="project.status == 1"
                         @click="toggleModal('layout')"
                         type="submit"
                         class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
@@ -77,8 +77,8 @@
                 </span>
                 <span class="tooltip relative">
                     <button
-                        v-if="ProjectData.status == 0"
-                        :class="{ 'cursor-not-allowed': ProjectData.baseCsvStatus == 0 }"
+                        v-if="project.status == 0"
+                        :class="{ 'cursor-not-allowed': project.numData == 0 }"
                         @click="toggleModal('hit')"
                         type="submit"
                         class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
@@ -96,7 +96,7 @@
                 </span>
                 <span class="tooltip relative">
                     <button
-                        v-if="ProjectData.status > 1 && ProjectData.status != 3"
+                        v-if="project.status > 1 && project.status != 3"
                         @click="toggleModal('revert')"
                         type="submit"
                         class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
@@ -114,8 +114,8 @@
                 </span>
                 <span class="tooltip relative">
                     <button
-                        v-if="ProjectData.status != 3"
-                        @click="$router.push({ name: 'edit', params: { projectId: ProjectData.id } })"
+                        v-if="project.status != 3"
+                        @click="$router.push({ name: 'edit', params: { projectId: id } })"
                         type="submit"
                         class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
@@ -147,7 +147,7 @@
                         >Delete</span
                     >
                 </span>
-                <div class="relative hidden md:block" v-if="ProjectData.status == 3">
+                <div class="relative hidden md:block" v-if="project.status == 3">
                     <button
                         @click="open('results')"
                         type="submit"
@@ -173,7 +173,7 @@
                 <span v-click-outside="hide">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
-                        :class="ProjectData.status != 0 ? 'md:hidden' : ''"
+                        :class="project.status != 0 ? 'md:hidden' : ''"
                         class="ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg
@@ -197,24 +197,24 @@
                         >
                             <a
                                 @click="toggleModal('hit')"
-                                v-if="ProjectData.status == 0"
+                                v-if="project.status == 0"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 >Set HITs</a
                             >
                             <a
                                 @click="toggleModal('layout')"
-                                v-if="ProjectData.status == 1"
+                                v-if="project.status == 1"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 >Set layout</a
                             >
                             <a
-                                v-if="ProjectData.status > 1 && ProjectData.status != 3"
+                                v-if="project.status > 1 && project.status != 3"
                                 @click="toggleModal('revert')"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 >Revert HIT settings</a
                             >
                             <router-link
-                                v-if="ProjectData.status == 3"
+                                v-if="project.status == 3"
                                 to="results"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 >Results</router-link
@@ -227,26 +227,26 @@
                             <router-link
                                 :to="{
                                     name: 'edit',
-                                    params: { projectId: ProjectData.id },
+                                    params: { projectId: id },
                                 }"
-                                :class="ProjectData.status == 0 && ProjectData.status != 3 ? '' : 'rounded-b-md'"
+                                :class="project.status == 0 && project.status != 3 ? '' : 'rounded-b-md'"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 >Edit</router-link
                             >
                             <a
-                                v-if="ProjectData.status == 0"
+                                v-if="project.status == 0"
                                 @click="toggleModal('std')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary md:rounded-t-md hover:text-gray-100"
                                 >Base CSV upload</a
                             >
                             <a
-                                v-if="ProjectData.status == 0"
+                                v-if="project.status == 0"
                                 @click="toggleModal('gld')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
                                 >Gold CSV upload</a
                             >
                             <!-- <a
-                                v-if="ProjectData.status == 0 && ProjectData.baseCsvStatus == 1"
+                                v-if="project.status == 0 && projectbaseCsvStatus == 1"
                                 @click="uploadModal(['hit', ''])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
                                 >Load HITs</a
@@ -258,24 +258,22 @@
         </div>
         <div class="grid grid-cols-1 xs2:grid-cols-2 mt-2">
             <div class="mx-0 xs2:mx-1">
-                <div class="w-full flex flex-col justify-center" v-if="loading1">
+                <div class="w-full flex flex-col justify-center" v-if="loading">
                     <loader :type="'cardInfoVisualizza'" v-for="n in 3" :key="n" />
                 </div>
                 <div v-else>
-                    <cardInfo :titoli="titoliCard.titoli1" :dati="datiCard.dati1" />
-                    <cardInfo :titoli="titoliCard.titoli3" :dati="datiCard.dati3" />
-                    <cardInfo :titoli="titoliCard.titoli5" :dati="datiCard.dati5" />
+                    <cardInfo :projectData="project" :mode="'general'" />
+                    <cardInfo :projectData="project" :mode="'layout'" />
+                    <cardInfo :projectData="project" :mode="'status'" />
                 </div>
             </div>
             <div class="mx-0 xs2:mx-1">
-                <div class="w-full flex flex-col justify-center" v-if="loading1">
+                <div class="w-full flex flex-col justify-center" v-if="loading">
                     <loader :type="'cardInfoVisualizza'" v-for="n in 2" :key="n" />
-                    <!-- <loader :type="'cardAnalyticsVisualizza'" :num="3" />
-                    <loader :type="'cardAnalyticsVisualizza'" :num="2" />-->
                 </div>
                 <div v-else>
-                    <cardInfo :titoli="titoliCard.titoli2" :dati="datiCard.dati2" />
-                    <cardInfo :titoli="titoliCard.titoli4" :dati="datiCard.dati4" />
+                    <cardInfo :projectData="project" :mode="'payment'" />
+                    <cardInfo :projectData="project" :mode="'csv'" />
                     <!-- <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
                     <cardAnalytics :dati="datiCardAnalytics.cardAggregate" />-->
                 </div>
@@ -290,10 +288,10 @@ import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
 //import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import modalUpload from '../components/modalUpload.vue'
-import loader from '../components/loader.vue'
 import modalHIT from '../components/modalHIT.vue'
 import modalRevert from '../components/modalRevert.vue'
 import modalLayout from '../components/modalLayout.vue'
+import loader from '../components/loader.vue'
 import axios from 'axios'
 
 export default {
@@ -306,57 +304,14 @@ export default {
         cardInfo,
         //cardAnalytics,
         modalUpload,
-        loader,
         modalHIT,
         modalRevert,
         modalLayout,
+        loader,
     },
     data() {
         return {
-            ProjectData: {
-                nome: '',
-                titolo: '',
-                descrizione: '',
-                keywords: '',
-                ricompensa: '',
-                creazione: '',
-                numLavoratori: 0,
-                tempoMax: 0,
-                scadenza: 0,
-                autoApproval: 0,
-                layoutID: '',
-                status: 0,
-                parametri: 0,
-                totaleHIT: 400,
-                HITcompletate: 200,
-                HITdisponibili: 90,
-                HITinCorso: 110,
-                risposteSI: 180,
-                risposteNO: 20,
-                completateProgress: 0,
-                disponibiliProgress: 0,
-                incorsoProgress: 0,
-                siProgress: 0,
-                noProgress: 0,
-                id: '',
-                baseCsv:
-                    "<div class='flex flex-row justify-between'><span class='text-red-600'>not uploaded</span></div>",
-                baseCsvStatus: 0,
-                goldCsv:
-                    "<div class='flex flex-row justify-between'><span class='text-red-600'>not uploaded</span></div>",
-                goldCsvStatus: 0,
-            },
-            titoliCard: {
-                titoli1: [],
-                titoli2: [],
-                titoli3: [],
-            },
-            datiCard: {
-                dati1: [],
-                dati2: [],
-                dati3: [],
-            },
-            datiCardAnalytics: {},
+            id: '',
             dropdownOpen: false,
             modalElim: false,
             modalStd: false,
@@ -376,51 +331,15 @@ export default {
         this.popupItem = this.$el
     },
     methods: {
-        // emitSnackbar(arr) {
-        //     if (arr[3] == 'std') {
-        //         this.toggleModal('std')
-        //     } else if (arr[3] == 'gld') {
-        //         this.toggleModal('gld')
-        //     }
-        //     this.$emit('snackbar', arr)
-        // },
-
         getDatiPrj() {
-            this.ProjectData.id = this.$route.params.projectId
+            this.id = this.$route.params.projectId
             axios
-                .get(this.APIURL + '?action=getProjectInfo&id=' + this.ProjectData.id)
+                .get(this.APIURL + '?action=getProjectInfo&id=' + this.id)
                 .then(res => {
-                    this.project[0] = res.data.values
-                    //console.log(res)
+                    this.project = res.data.values
+                    this.project.numGold = res.data.numGold
+                    this.project.numData = res.data.numData
                     console.log(res.data)
-                    //console.log(responses[2].data.result)
-                    this.ProjectData.nome = res.data.values.name
-                    this.ProjectData.titolo = res.data.values.title
-                    this.ProjectData.descrizione = res.data.values.description
-                    this.ProjectData.keywords = res.data.values.keywords
-                    this.ProjectData.ricompensa = res.data.values.reward + '$'
-                    this.ProjectData.tempoMax = parseInt(res.data.values.max_time)
-                    this.ProjectData.creazione = res.data.values.created_at
-                    this.ProjectData.scadenza = parseInt(res.data.values.expiry)
-                    this.ProjectData.autoApproval = parseInt(res.data.values.auto_approve)
-                    this.ProjectData.layoutID = res.data.values.layout_id
-                    this.ProjectData.parametri = res.data.values.params
-                    this.ProjectData.numLavoratori = res.data.values.workers
-                    this.ProjectData.status = res.data.values.status
-                    if (res.data.numData > 0) {
-                        this.ProjectData.baseCsv =
-                            "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 py-1 bg-transparent transition duration-150 hover:bg-gray-300 rounded focus:outline-none' href='#/" +
-                            this.ProjectData.id +
-                            "/data/standard'>View data</a></div>"
-                        this.ProjectData.baseCsvStatus = 1
-                    }
-                    if (res.data.numGold > 0) {
-                        this.ProjectData.goldCsv =
-                            "<div class='flex flex-row flex-wrap justify-between content-center items-center'><span class='text-green-600'>uploaded</span><a class='px-2 py-1 bg-transparent transition duration-150 hover:bg-gray-300 rounded focus:outline-none' href='#/" +
-                            this.ProjectData.id +
-                            "/data/gold'>View data</a></div>"
-                        this.ProjectData.goldCsvStatus = 1
-                    }
                     this.loading = false
                 })
                 .catch(err => {
@@ -431,117 +350,17 @@ export default {
         open(mode) {
             this.$router.push({
                 name: mode,
-                params: { projectId: this.ProjectData.id },
+                params: { projectId: this.projectid },
             })
         },
-        //metodo che imposta i titoli e i dati da inserire nelle card della pagina
-        impostaDatiCard() {
-            this.titoliCard.titoli1 = ['Title', 'Description', 'Keywords', 'Creation date']
-            var status = ''
-            if ((this.ProjectData.status == 0) & (this.ProjectData.baseCsvStatus == 1)) {
-                status =
-                    '<span class="flex justify-between items-center"><span><span class="text-green-500">data uploaded. </span><span>Ready to <span class="font-bold text-primary"> create HITs.</span></span></span><button class="ripple px-2 py-1 bg-white hover:bg-gray-300 rounded focus:outline-none transition duration-150">Need help?</button></span>'
-            } else if ((this.ProjectData.status == 0) & (this.ProjectData.baseCsvStatus == 0)) {
-                status =
-                    '<span class="flex justify-between items-center"><span><span class="text-green-500">project created. </span><span><span class="font-bold text-primary">Upload csv data </span>and<span class="font-bold text-primary"> csv gold</span> to advance.</span></span><button class="ripple px-2 py-1 bg-white hover:bg-gray-300 rounded focus:outline-none transition duration-150">Need help?</button></span>'
-            } else if (this.ProjectData.status == 1) {
-                status =
-                    '<span class="flex justify-between items-center"><span><span class="text-green-500">HITs created. </span><span>Ready to <span class="font-bold text-primary"> set the layout.</span></span></span><button class="ripple px-2 py-1 bg-white hover:bg-gray-300 rounded focus:outline-none transition duration-150">Need help?</button></span>'
-            } else if (this.ProjectData.status == 2) {
-                status =
-                    '<span class="flex justify-between items-center"><span><span class="text-green-500">HIT layout set. </span><span>Ready to finally<span class="font-bold text-primary"> publish the project!</span></span></span><button class="ripple px-2 py-1 bg-white hover:bg-gray-300 rounded focus:outline-none transition duration-150">Need help?</button></span>'
-            }
-            this.datiCard.dati1 = [
-                this.ProjectData.titolo,
-                this.ProjectData.descrizione,
-                this.ProjectData.keywords,
-                this.ProjectData.creazione,
-            ]
-            this.titoliCard.titoli2 = [
-                'Ricompensa per ogni assignment',
-                'Numero di lavoratori / assignment per task',
-                'Tempo massimo',
-                'Scadenza',
-                'Auto approva e paga lavoratori in',
-            ]
-            this.datiCard.dati2 = [
-                this.ProjectData.ricompensa,
-                this.ProjectData.numLavoratori,
-                this.ProjectData.tempoMax,
-                this.ProjectData.scadenza,
-                this.ProjectData.autoApproval,
-            ]
-            this.titoliCard.titoli3 = ['Layout ID', 'Number of records per HIT']
-            this.datiCard.dati3 = [this.ProjectData.layoutID, this.ProjectData.parametri]
-            this.titoliCard.titoli4 = ['Base CSV status', 'Gold CSV status']
-            this.datiCard.dati4 = [this.ProjectData.baseCsv, this.ProjectData.goldCsv]
-            this.titoliCard.titoli5 = ['Status']
-            this.datiCard.dati5 = [status]
-            this.datiCardAnalytics = {
-                cardHIT: {
-                    idPrj: this.ProjectData.id,
-                    titolo: 'Totale HIT',
-                    totale: this.ProjectData.totaleHIT,
-                    type: 'HIT',
-                    ellipse_progress: {
-                        progress1: {
-                            progress: this.ProjectData.completateProgress,
-                            legend_value: this.ProjectData.HITcompletate,
-                            color: '#f6ad55',
-                            half: true,
-                            angle: 0,
-                            caption: 'Completate',
-                        },
-                        progress2: {
-                            progress: this.ProjectData.disponibiliProgress,
-                            legend_value: this.ProjectData.HITdisponibili,
-                            color: '#f6ad55',
-                            half: true,
-                            angle: 0,
-                            caption: 'Disponibili',
-                        },
-                        progress3: {
-                            progress: this.ProjectData.incorsoProgress,
-                            legend_value: this.ProjectData.HITinCorso,
-                            color: '#f6ad55',
-                            half: true,
-                            angle: 0,
-                            caption: 'In corso',
-                        },
-                    },
-                },
-                cardAggregate: {
-                    titolo: 'Risposte aggregate',
-                    totale: this.ProjectData.HITcompletate,
-                    type: 'aggregate',
-                    ellipse_progress: {
-                        progress1: {
-                            progress: this.ProjectData.siProgress,
-                            legend_value: this.ProjectData.risposteSI,
-                            color: '#f6ad55',
-                            half: false,
-                            angle: 0,
-                            caption: 'SI',
-                        },
-                        progress2: {
-                            progress: this.ProjectData.noProgress,
-                            legend_value: this.ProjectData.risposteNO,
-                            color: '#f6ad55',
-                            half: false,
-                            angle: 0,
-                            caption: 'NO',
-                        },
-                    },
-                },
-            }
-        },
+
         toggleModal(mode) {
             if (mode == 'delete') {
                 this.modalElim = !this.modalElim
             } else if (mode == 'std') {
                 this.modalStd = !this.modalStd
             } else if (mode == 'gld') {
-                if (this.ProjectData.baseCsvStatus == 0) {
+                if (this.project.numGold == 0) {
                     this.$emit('snackbar', 'Warning. To upload the gold CSV, you first have to uplaod the standard.')
                 } else {
                     this.modalGld = !this.modalGld
@@ -549,7 +368,7 @@ export default {
             } else if (mode == 'revert') {
                 this.modalRevert = !this.modalRevert
             } else if (mode == 'hit') {
-                if (this.ProjectData.baseCsvStatus == 0) {
+                if (this.project.numData == 0) {
                     this.$emit('snackbar', 'Warning. To create the HITs, you first have to upload CSV data.')
                 } else {
                     this.modalHIT = !this.modalHIT
@@ -591,53 +410,6 @@ export default {
         hide() {
             if (this.dropdownOpen) {
                 this.dropdownOpen = false
-            }
-        },
-        //calcola il numero da utilizzare nei grafici delle analytics
-        calcolaProgress() {
-            this.ProjectData.completateProgress = (100 * this.ProjectData.HITcompletate) / this.ProjectData.totaleHIT
-            this.ProjectData.disponibiliProgress = (100 * this.ProjectData.HITdisponibili) / this.ProjectData.totaleHIT
-            this.ProjectData.incorsoProgress = (100 * this.ProjectData.HITinCorso) / this.ProjectData.totaleHIT
-            this.ProjectData.siProgress = (100 * this.ProjectData.risposteSI) / this.ProjectData.HITcompletate
-            this.ProjectData.noProgress = (100 * this.ProjectData.risposteNO) / this.ProjectData.HITcompletate
-        },
-        elaboraTempo(nomeVar) {
-            if (nomeVar == 'tempoMax') {
-                if (this.ProjectData.tempoMax < 60) {
-                    this.ProjectData.tempoMax += ' minuti'
-                } else if (this.ProjectData.tempoMax < 1440) {
-                    this.ProjectData.tempoMax = this.ProjectData.tempoMax / 60 + ' ore'
-                } else {
-                    this.ProjectData.tempoMax = this.ProjectData.tempoMax / 1440 + ' giorni'
-                }
-            } else if (nomeVar == 'scadenza') {
-                if (this.ProjectData.scadenza < 60) {
-                    this.ProjectData.scadenza += ' minuti'
-                } else if (this.ProjectData.scadenza < 1440) {
-                    this.ProjectData.scadenza = this.ProjectData.scadenza / 60 + ' ore'
-                } else {
-                    this.ProjectData.scadenza = this.ProjectData.scadenza / 1440 + ' giorni'
-                }
-            } else {
-                if (this.ProjectData.autoApproval < 60) {
-                    this.ProjectData.autoApproval += ' minuti'
-                } else if (this.ProjectData.autoApproval < 1440) {
-                    this.ProjectData.autoApproval = this.ProjectData.autoApproval / 60 + ' ore'
-                } else {
-                    this.ProjectData.autoApproval = this.ProjectData.autoApproval / 1440 + ' giorni'
-                }
-            }
-        },
-    },
-    watch: {
-        loading() {
-            if (!this.loading) {
-                this.elaboraTempo('tempoMax')
-                this.elaboraTempo('scadenza')
-                this.elaboraTempo('autoApproval')
-                this.calcolaProgress()
-                this.impostaDatiCard()
-                this.loading1 = false
             }
         },
     },
