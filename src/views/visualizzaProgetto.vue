@@ -31,7 +31,7 @@
         <modalRevert
             v-if="modalRevert && !loading"
             :id="id"
-            :toStatus="ProjectData.status"
+            :toStatus="project.status"
             @revertModal="toggleModal('revert')"
             @reverted="reverted"
         />
