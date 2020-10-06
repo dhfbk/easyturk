@@ -26,16 +26,21 @@
             :baseDataStatus="project.numData"
             :goldDataStatus="project.numGold"
             @hitModal="toggleModal('hit')"
-            @hitCreated="hitCreated"
+            @hitCreated="uploaded"
         />
         <modalRevert
             v-if="modalRevert && !loading"
             :id="id"
             :toStatus="project.status - 1"
             @revertModal="toggleModal('revert')"
-            @reverted="reverted"
+            @reverted="uploaded"
         />
-        <modalLayout v-if="modalLayout && !loading" :project="project" @layoutModal="toggleModal('layout')" />
+        <modalLayout
+            v-if="modalLayout && !loading"
+            :project="project"
+            @layoutModal="toggleModal('layout')"
+            @snackbar="uploaded"
+        />
         <modalInstructions
             v-if="modalInstructions && !loading"
             :status="project.status"
@@ -401,21 +406,6 @@ export default {
             this.loading1 = true
             this.getDatiPrj()
         },
-        //for when an action gets completed (success or error)
-        reverted(msg) {
-            this.uploaded(msg)
-            this.loading = true
-            this.loading1 = true
-            this.getDatiPrj()
-        },
-        //for when an action gets completed (success or error)
-        hitCreated(msg) {
-            this.uploaded(msg)
-            this.loading = true
-            this.loading1 = true
-            this.getDatiPrj()
-        },
-        //
 
         //nasconde il dropdown
         hide() {

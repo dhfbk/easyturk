@@ -8,7 +8,7 @@
                     <div class="flex w-full mb-2">
                         <div class="text-gray-900 font-bold text-lg">Set layout for the project</div>
                         <svg
-                            class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
+                            class="ml-auto fill-current text-gray-700 w-6 h-6 rounded ripple hover:bg-gray-300 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 18 18"
                             @click="toggleModal()"
@@ -33,7 +33,7 @@
                         @removeElement="removeElement"
                         @updateArr="updateArr('first')"
                     />
-                    <hr class="mb-1 mt-1 md:mt-2" />
+                    <hr class="my-2 md:mt-2" />
                     <p class="font-semibold text-sm w-auto">How to convert answers:</p>
                     <secondPart
                         :secondPartData="secondPartData"
@@ -41,11 +41,11 @@
                         @removeElement="removeElement"
                         @updateArr="updateArr('second')"
                     />
-                    <hr class="mb-1 mt-1 md:mt-2" />
+                    <hr class="my-2 md:mt-2" />
                     <thirdPart
                         :thirdPartData="thirdPartData"
                         @updateArr="updateArr('third')"
-                        :isGold="parseInt(project[0].count_gold)"
+                        :isGold="parseInt(project.count_gold)"
                     />
 
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
@@ -81,7 +81,7 @@ import thirdPart from '../components/thirdPartLayoutModal.vue'
 import axios from 'axios'
 export default {
     name: 'modalLayout',
-    props: { project: Array },
+    props: { project: Object },
     components: {
         firstPart,
         secondPart,
@@ -111,7 +111,7 @@ export default {
                 },
             ],
             thirdPartData: {
-                assignNumber: this.project[0].workers,
+                assignNumber: this.project.workers,
                 whatToDo: '',
             },
         }
@@ -131,7 +131,7 @@ export default {
                 method: 'post',
                 url: url,
                 data: {
-                    id: this.project[0].id,
+                    id: this.project.id,
                     toStatus: 2,
                     layoutData: this.firstPartData,
                     answerData: this.secondPartData,
@@ -155,7 +155,7 @@ export default {
                 })
         },
         getCsvFields() {
-            var url = this.APIURL + '?action=getData&id=' + this.project[0].id + '&howMany=1&page=1&isGold=0'
+            var url = this.APIURL + '?action=getData&id=' + this.project.id + '&howMany=1&page=1&isGold=0'
             axios
                 .get(url)
                 .then(res => {
@@ -217,7 +217,7 @@ export default {
     },
     computed: {
         splitFields: function() {
-            return this.project[0].layout_fields.replace(/\s/g, '').split(',')
+            return this.project.layout_fields.replace(/\s/g, '').split(',')
         },
     },
     beforeDestroy() {

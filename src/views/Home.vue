@@ -13,7 +13,7 @@
             :baseDataStatus="dataPresent"
             :goldDataStatus="gldPresent"
         />
-        <modalLayout v-if="modalLayout" :project="project" @layoutModal="toggleModal" />
+        <modalLayout v-if="modalLayout" :project="project[0]" @layoutModal="toggleModal" />
         <!--<modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />-->
         <div class="mb-6">
             <div class="flex content-center flex-col sm:flex-row px-4">
@@ -101,7 +101,9 @@
                 >
                     <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
                 </svg>
-                <p class="text-black font-light text-2xl xs2:text-4xl m-1 text-center overflow-ellipsis" v-else>${{ userInfo.balance }}</p>
+                <p class="text-black font-light text-2xl xs2:text-4xl m-1 text-center overflow-ellipsis" v-else>
+                    ${{ userInfo.balance }}
+                </p>
             </div>
             <div class="rounded shadow-md m-2 p-2 flex flex-col justify-around bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
