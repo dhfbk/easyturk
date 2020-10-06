@@ -1,27 +1,10 @@
 <template>
     <div class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
-        <modalEliminazione
-            v-if="modalElim && !loading"
-            @deleteModal="toggleModal('delete')"
-            @deleted="deleted"
-            :id="id"
-        />
-        <modalUpload
-            v-if="modalStd && !loading"
-            :type="'std'"
-            :id="id"
-            @uploadModal="toggleModal('std')"
-            @uploaded="uploaded"
-        />
-        <modalUpload
-            v-if="modalGld && !loading"
-            :type="'gld'"
-            :id="id"
-            @uploadModal="toggleModal('gld')"
-            @uploaded="uploaded"
-        />
+        <modalEliminazione v-if="modalElim" @deleteModal="toggleModal('delete')" @deleted="deleted" :id="id" />
+        <modalUpload v-if="modalStd" :type="'std'" :id="id" @uploadModal="toggleModal('std')" @uploaded="uploaded" />
+        <modalUpload v-if="modalGld" :type="'gld'" :id="id" @uploadModal="toggleModal('gld')" @uploaded="uploaded" />
         <modalHIT
-            v-if="modalHIT && !loading"
+            v-if="modalHIT"
             :id="id"
             :baseDataStatus="project.numData"
             :goldDataStatus="project.numGold"
@@ -29,23 +12,15 @@
             @hitCreated="uploaded"
         />
         <modalRevert
-            v-if="modalRevert && !loading"
+            v-if="modalRevert"
             :id="id"
             :toStatus="project.status - 1"
             @revertModal="toggleModal('revert')"
             @reverted="uploaded"
         />
-        <modalLayout
-            v-if="modalLayout && !loading"
-            :project="project"
-            @layoutModal="toggleModal('layout')"
-            @snackbar="uploaded"
-        />
-        <modalInstructions
-            v-if="modalInstructions && !loading"
-            :status="project.status"
-            @modal="toggleModal('instructions')"
-        />
+        <modalLayout v-if="modalLayout" :project="project" @layoutModal="toggleModal('layout')" @snackbar="uploaded" />
+        <modalInstructions v-if="modalInstructions" :status="project.status" @modal="toggleModal('instructions')" />
+        <modalLaunch v-if="modalLaunch" @launchModal="toggleModal('launch')" />
         <div class="flex justify-between items-center flex-wrap" v-if="!loading">
             <h1 class="text-2xl mb-4 text-primary">{{ project.name }}</h1>
             <div class="w-full sm:w-auto flex relative justify-between content-center items-center">
@@ -301,6 +276,7 @@ import modalUpload from '../components/modalUpload.vue'
 import modalHIT from '../components/modalHIT.vue'
 import modalRevert from '../components/modalRevert.vue'
 import modalLayout from '../components/modalLayout.vue'
+import modalLaunch from '../components/modalLaunch.vue'
 import loader from '../components/loader.vue'
 import axios from 'axios'
 import modalInstructions from '../components/modalInstructions.vue'
@@ -319,6 +295,7 @@ export default {
         modalRevert,
         modalLayout,
         modalInstructions,
+        modalLaunch,
         loader,
     },
     data() {
@@ -332,8 +309,7 @@ export default {
             modalHIT: false,
             modalLayout: false,
             modalInstructions: false,
-
-            loading1: true,
+            modalLaunch: false,
             loading: true,
             project: [],
         }
@@ -343,8 +319,15 @@ export default {
     },
     mounted() {
         this.popupItem = this.$el
+        window.addEventListener('keyup', this.esc)
     },
     methods: {
+        esc(event) {
+            if (event.keyCode === 27) {
+                //tenere un push o fare go(-1)?
+                this.$router.push('/')
+            }
+        },
         getDatiPrj() {
             this.id = this.$route.params.projectId
             axios
@@ -391,6 +374,8 @@ export default {
                 this.modalLayout = !this.modalLayout
             } else if (mode == 'instructions') {
                 this.modalInstructions = !this.modalInstructions
+            } else if (mode == 'launch') {
+                this.modalLaunch = !this.modalLaunch
             }
             this.hide()
         },
@@ -403,7 +388,6 @@ export default {
         uploaded(msg) {
             this.$emit('snackbar', msg)
             this.loading = true
-            this.loading1 = true
             this.getDatiPrj()
         },
 
@@ -413,6 +397,9 @@ export default {
                 this.dropdownOpen = false
             }
         },
+    },
+    beforeDestroy() {
+        window.removeEventListener('keyup', this.esc)
     },
 }
 </script>

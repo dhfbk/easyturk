@@ -3,7 +3,7 @@
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
         >
-            <div class="bg-white rounded-lg w-1/2">
+            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <div class="text-gray-900 font-bold text-lg">Confirm action</div>

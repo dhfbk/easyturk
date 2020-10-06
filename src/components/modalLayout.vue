@@ -3,7 +3,7 @@
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
         >
-            <div class="bg-white rounded-lg w-5/6 max-h-80 overflow-y-auto">
+            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
                         <div class="text-gray-900 font-bold text-lg">Set layout for the project</div>

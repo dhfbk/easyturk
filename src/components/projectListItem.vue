@@ -1,31 +1,38 @@
 <template>
-    <div class="rounded shadow-md my-2 mx-2 p-2 flex items-center flex-wrap bg-white relative">
-        <div class="w-1/2 md:w-2/3 flex contenutoPrj text-center items-center flex-wrap">
-            <div class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                <p class="block md:hidden text-md font-bold tracking-tight">Project Id:</p>
-                <router-link
-                    :to="{
-                        name: 'projectView',
-                        params: { projectId: projectData.id },
-                    }"
-                    class="focus:outline-none"
-                >
+    <div
+        class="rounded shadow-md transition duration-150 my-4 mx-2 p-2 flex items-center flex-wrap bg-white relative"
+        :class="hoverMain ? 'shadow-lg' : ''"
+    >
+        <router-link
+            :to="{
+                name: 'projectView',
+                params: { projectId: projectData.id },
+            }"
+            class="w-full xs2:w-1/2 md:w-2/3 focus:outline-none"
+        >
+            <div
+                class="flex contenutoPrj text-center items-center flex-wrap text-lg"
+                @mouseover="hoverMain = true"
+                @mouseleave="hoverMain = false"
+            >
+                <div class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+                    <p class="block md:hidden font-bold tracking-tight">Project Id:</p>
                     <p>{{ projectData.id }}</p>
-                </router-link>
+                </div>
+                <div class="block w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+                    <p class="block md:hidden font-bold tracking-tight">Title:</p>
+                    <p class="overflow-ellipsis">{{ projectData.title }}</p>
+                </div>
+                <div class="hidden lg:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+                    <p class="block md:hidden font-bold tracking-tight">Created:</p>
+                    <p>{{ date }}</p>
+                </div>
+                <div class="hidden xl:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+                    <p class="block md:hidden font-bold tracking-tight">Last edited:</p>
+                    <p>{{ lastEdited }}</p>
+                </div>
             </div>
-            <div class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                <p class="block md:hidden text-md font-bold tracking-tight">Title:</p>
-                <p class>{{ projectData.title }}</p>
-            </div>
-            <div class="hidden lg:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                <p class="block md:hidden text-md font-bold tracking-tight">Created:</p>
-                <p class>{{ date }}</p>
-            </div>
-            <div class="hidden xl:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                <p class="block md:hidden text-md font-bold tracking-tight">Last edited:</p>
-                <p class>{{ lastEdited }}</p>
-            </div>
-        </div>
+        </router-link>
         <span class="flex-grow flex justify-end md:w-1/4">
             <span class="tooltip relative">
                 <button
@@ -353,6 +360,7 @@ export default {
             lastEdited: '',
             baseCsvStatus: 0,
             goldCsvStatus: 0,
+            hoverMain: false,
         }
     },
     created() {

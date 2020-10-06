@@ -7,12 +7,12 @@
                 <div class="hidden sm:block rounded bg-gray-500 h-10 w-16 mr-2"></div>
                 <div class="hidden sm:block rounded bg-gray-500 h-10 w-16 mr-2"></div>
                 <div class="hidden md:block rounded bg-gray-500 h-10 w-16 mr-2"></div>
-                <div class="rounded bg-gray-500 h-10 w-16 mr-2"></div>
+                <div class="hidden xs:block rounded bg-gray-500 h-10 w-16 mr-2"></div>
                 <div class="rounded bg-gray-500 h-10 w-16"></div>
             </div>
         </div>
     </div>
-    <div v-else-if="type == 'cardInfoVisualizza'" class="rounded shadow-md my-2 mx-2 bg-white rounded-md p-4 w-full">
+    <div v-else-if="type == 'cardInfoVisualizza'" class="rounded shadow-md my-2 bg-white rounded-md p-4 w-full">
         <div class="animate-pulse flex flex-col">
             <div class="h-2 w-full bg-gray-500 rounded"></div>
             <div class="mt-2 h-2 w-3/4 bg-gray-500 rounded"></div>
@@ -24,7 +24,7 @@
     </div>
     <div
         v-else-if="type == 'cardAnalyticsVisualizza'"
-        class="rounded shadow-md my-2 mx-2 bg-white rounded-md p-4 w-full"
+        class="rounded shadow-md my-2 bg-white rounded-md p-4 w-full"
     >
         <div class="animate-pulse flex flex-col">
             <div class="h-2 w-1/2 bg-gray-500 rounded"></div>

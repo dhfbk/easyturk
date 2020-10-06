@@ -3,12 +3,12 @@
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
         >
-            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80">
+            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto">
                 <div class="flex flex-col p-4">
-                    <div class="flex w-full">
-                        <div class="text-gray-900 font-bold text-lg">Confirm action</div>
+                    <div class="flex w-full mb-2">
+                        <div class="text-gray-900 font-bold text-lg">Final settings</div>
                         <svg
-                            class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
+                            class="ml-auto fill-current text-gray-700 w-6 h-6 rounded ripple hover:bg-gray-300 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 18 18"
                             @click="toggleModal('close')"
@@ -18,14 +18,27 @@
                             />
                         </svg>
                     </div>
-                    <div class="py-2">
-                        Are you sure you want to revert your changes to the previous state?
+
+                    <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2">
+                        <label class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2" for="hitNum"
+                            >How many HITs do you want to launch?</label
+                        >
+                        <input
+                            class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4"
+                            id="hitNum"
+                            type="number"
+                            min="1"
+                            step="1"
+                            placeholder="100"
+                            v-model.trim="$v.hitNum.$model"
+                            required
+                        />
                     </div>
 
-                    <div class="ml-auto flex flex-col xs2:flex-row">
+                    <div class="ml-auto flex flex-col xs2:flex-row mt-2">
                         <button
                             class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
-                            @click="revertProject()"
+                            @click="submit()"
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
@@ -49,70 +62,30 @@
 </template>
 
 <script>
-import axios from 'axios'
-
+const { required } = require('vuelidate/lib/validators')
 export default {
-    name: 'modalRevert',
-    props: { id: String, toStatus: Number },
+    name: 'modalLaunch',
     data() {
         return {
-            loading: false,
+            hitNum: 0,
+            loading: false
         }
     },
-    mounted() {
-        window.addEventListener('keyup', this.esc)
+    validations() {
+        return {
+            hitNum: {
+                required,
+            },
+        }
     },
     methods: {
-        esc(event) {
-            if (event.keyCode === 27) {
-                this.toggleModal('close')
-            }
-        },
         toggleModal(mode) {
             if (mode == 'close') {
-                this.$emit('revertModal')
+                this.$emit('launchModal')
             } else {
-                this.$emit('revertModal', 'Error. Try again')
+                this.$emit('launchModal', 'Error')
             }
         },
-        revertProject() {
-            this.loading = true
-            axios({
-                method: 'post',
-                url: this.APIURL + '?action=updateProjectStatus&id=' + this.id,
-                data: {
-                    toStatus: this.toStatus,
-                },
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            })
-                .then(res => {
-                    this.loading = false
-                    if (res.data.result == 'OK') {
-                        this.$emit('reverted', 'Project succesfully reverted.')
-                    } else {
-                        this.$emit('reverted', 'Error: ' + res.data.error)
-                    }
-                    this.toggleModal('close')
-                    console.log(res.data.result)
-                })
-                .catch(() => {
-                    this.toggleModal('error')
-                })
-        },
-    },
-    beforeDestroy() {
-        window.removeEventListener('keyup', this.esc)
     },
 }
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.2s !important;
-}
-.fade-enter,
-.fade-leave-to {
-    opacity: 0;
-}
-</style>

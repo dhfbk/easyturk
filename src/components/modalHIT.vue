@@ -3,7 +3,7 @@
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
         >
-            <div class="bg-white rounded-lg w-auto mx-2">
+            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 mx-2">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <h2 class="text-gray-900 font-bold text-lg">HIT settings</h2>
@@ -102,7 +102,7 @@
                         </label>
                     </div>
                     <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2 mb-2">
-                        <label class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2" for="gold"
+                        <label class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2" for="action"
                             >Action for the leftover HITs:</label
                         >
                         <div class="relative mt-1 sm:mt-0 sm:ml-2">
@@ -113,7 +113,8 @@
                                         : 'bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500'
                                 "
                                 class="block border border-gray-200 appearance-none w-full py-2 pl-2 pr-8 rounded"
-                                id="gold"
+                                id="action"
+                                name="action"
                                 v-model="leftover"
                                 :disabled="goldDataStatus == 0 || baseDataStatus == 0"
                             >
@@ -145,7 +146,7 @@
                                 viewBox="0 0 24 24"
                             >
                                 <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
-                            >Launch project
+                            >Proceed
                         </button>
                         <button
                             class="ripple transition duration-150 ease-in-out mt-2 xs2:mt-0 xs2:ml-2 hover:bg-gray-300 focus:outline-none bg-transparent text-gray-800 py-2 px-4 rounded"

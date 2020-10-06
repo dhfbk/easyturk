@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="flex flex-col items-center md:items-end content-center" @change="update()">
-            <div class="flex flex-col w-full content-center items-center">
-                <div v-if="isGold == 0">
-                    <p class="text-teal-500 text-md">Golden standard CSV hasn't been uploaded</p>
-                </div>
+        <div v-if="isGold == 0">
+            <p class="text-teal-500 text-md text-center">Golden standard CSV hasn't been uploaded</p>
+        </div>
+        <div class="flex flex-col md:flex-row items-center md:items-end content-center" @change="update()">
+            <div class="flex flex-col w-full content-center items-center md:mr-2">
                 <label for="whatDo" class="font-semibold text-sm md:mr-0 text-left w-full"
                     >What to do if gold is wrong:</label
                 >
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col w-full content-center items-center mt-1">
+            <div class="flex flex-col w-full content-center items-center mt-1 md:mt-0 md:ml-2">
                 <label for="assNumber" class="font-semibold text-sm md:mr-0 text-left w-full"
                     >Maximum number of assignments (in the project it's {{ min }}):</label
                 >
