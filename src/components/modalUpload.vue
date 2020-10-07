@@ -3,7 +3,7 @@
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
         >
-            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 mx-2">
+            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 mx-2 overflow-y-auto">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <h2 class="text-gray-900 font-bold text-lg">Choose the file to upload</h2>
@@ -45,7 +45,7 @@
                             <label for="separator" class="font-light mr-2">Separator:</label>
                             <div class="relative mt-1 sm:mt-0 sm:ml-2">
                                 <select
-                                    class="block w-full xs2:w-64 appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                    class="block w-full appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 pl-2 pr-12 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                     id="separator"
                                     name="separator"
                                     v-model="separated"
@@ -68,11 +68,12 @@
                             </div>
                         </div>
                         <div class="flex flex-col xs2:flex-row items-center content-center secondMargin">
-                            <label for="delimiter" class="font-light mr-2">String delimiter:</label>
+                            <label for="delimiter" class="font-light mr-2">Delimiter:</label>
                             <div class="relative mt-1 sm:mt-0 sm:ml-2">
                                 <select
-                                    class="block w-full xs2:w-64 appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                                    id="separator"
+                                    class="block w-full appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 pl-2 pr-12 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                    id="delimiter"
+                                    name="delimiter"
                                     v-model="delimiter"
                                 >
                                     <option value="" disabled selected hidden>Choose delimiter...</option>
@@ -110,7 +111,7 @@
                             name="upload_csv"
                             type="file"
                             ref="file"
-                            accept=".csv, text/csv"
+                            accept=".csv, text/csv, .txt, .tsv"
                             style="display:none;"
                             :disabled="inputLocked"
                             @change="displayFile"
@@ -290,7 +291,7 @@ progress[value]::-webkit-progress-bar {
 .customFlex {
     flex-direction: column;
 }
-@media screen and (min-width: 745px) {
+@media screen and (min-width: 777px) {
     .customFlex {
         flex-direction: row;
     }
