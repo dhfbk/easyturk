@@ -1,9 +1,9 @@
 <?php
 
-require_once("config.php");
-require_once("inc/include.php");
-require_once("inc/Mysql_connector.class.php");
-require_once("vendor/autoload.php");
+require_once("../inc/config.php");
+require_once("../inc/include.php");
+require_once("../inc/Mysql_connector.class.php");
+require_once("../inc/vendor/autoload.php");
 
 use Aws\Sns\Message;
 use Aws\Sns\MessageValidator;

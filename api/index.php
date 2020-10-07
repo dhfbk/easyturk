@@ -30,10 +30,10 @@ $script_uri = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" 
 
 session_start();
 
-require_once("config.php");
-require_once("inc/include.php");
-require_once("inc/Mysql_connector.class.php");
-require_once("vendor/autoload.php");
+require_once("../inc/config.php");
+require_once("../inc/include.php");
+require_once("../inc/Mysql_connector.class.php");
+require_once("../inc/vendor/autoload.php");
 
 $Action = isset($_REQUEST['action']) ? $_REQUEST['action'] : "";
 $User = 1;
@@ -88,6 +88,22 @@ if ($UseSandbox) {
 $mTurk = new Aws\MTurk\MTurkClient($mTurkOptions);
 
 switch ($Action) {
+    case "getOptions":
+        $ret['defaults'] = array();
+        $ret['defaults']['reward'] = "0.05";
+        $ret['defaults']['assignments'] = 3;
+        $ret['defaults']['time_per_worker'] = 60;
+        $ret['defaults']['survey_expiration'] = 60 * 24;
+        $ret['defaults']['auto_approve'] = 10;
+        $ret['defaults']['examples_per_hit'] = 5;
+        $ret['defaults']['gold_data_per_hit'] = 1;
+        $ret['defaults']['shuffle_base_data'] = 1;
+        $ret['defaults']['shuffle_gold_data'] = 1;
+        $ret['defaults']['delete_exceeding_values'] = 0;
+        $ret['defaults']['gold_wrong'] = "reject";
+
+        break;
+
     case "listProjects":
     case "addProject":
     case "deleteProject":
@@ -516,9 +532,26 @@ switch ($Action) {
                         break;
 
                     case "2":
+                        if ($UseSandbox && $r['status'] == 3) {
+                            $query = "UPDATE cluster_to_hit SET deleted = '1' WHERE id_project = '{$r['id']}'";
+                            $DB->query($query);
+
+                            $query = "UPDATE projects SET hit_details = NULL, status = 2 WHERE id = '{$r['id']}'";
+                            $DB->query($query);
+
+                            $ret['result'] = "OK";
+                            break;
+                        }
+
                         if ($r['status'] != 1) {
                             $ret['result'] = "ERR";
                             $ret['error'] = "Cannot proceed to status 2 for a project with status {$r['status']}";
+                            break;
+                        }
+
+                        if (!$r['layout_id']) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Layout ID missing";
                             break;
                         }
 
@@ -637,6 +670,48 @@ switch ($Action) {
                         $toSave['whatToDo'] = $_REQUEST['whatToDo'];
 
                         $DB->queryupdate("projects", array("hit_details" => serialize($toSave), "status" => 2), array("id" => $r['id']));
+                        $ret['result'] = "OK";
+
+                        break;
+
+                    case 3:
+                        if ($r['status'] != 2 && $r['status'] != 3) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Cannot proceed to status 3 for a project with status {$r['status']}";
+                            break;
+                        }
+
+                        $num = intval($_REQUEST['num']);
+                        if ($num <= 0) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Invalid value for num";
+                            break;
+                        }
+
+                        $DB->queryupdate("projects", array("status" => 3), array("id" => $r['id']));
+
+                        $DB->startTransaction();
+                        $query = "SELECT DISTINCT c.cluster_index
+                            FROM `clusters` c
+                            LEFT JOIN file_lines l ON c.line_id = l.id
+                            LEFT JOIN project_files f ON f.id = l.file_id
+                            LEFT JOIN cluster_to_hit h ON h.id_cluster = c.cluster_index AND h.id_project = '{$r['id']}' AND h.deleted = '0'
+                            WHERE f.project_id = '{$r['id']}' AND c.deleted = 0 AND h.id IS NULL
+                            FOR UPDATE";
+                        $DB->query($query, 2);
+                        $index = 0;
+                        while ($row = $DB->fetch(2)) {
+                            if ($index++ >= $num) {
+                                break;
+                            }
+                            $cluster_index = $row['cluster_index'];
+
+                            $data = array();
+                            $data['id_cluster'] = $cluster_index;
+                            $data['id_project'] = $r['id'];
+                            $DB->queryinsert("cluster_to_hit", $data);
+                        }
+                        $DB->commitTransaction();
 
                         $ret['result'] = "OK";
 
@@ -645,6 +720,7 @@ switch ($Action) {
                     default:
                         $ret['result'] = "ERR";
                         $ret['error'] = "Unknown status";
+                        break;
                 }
                 break;
 
@@ -652,6 +728,11 @@ switch ($Action) {
                 $r = find("projects", $_REQUEST['id'], "Project not found");
 
                 $ret['issues'] = array();
+
+                if (!$r['layout_id']) {
+                    $ret['issues'][] = "Layout ID missing";
+                }
+
                 $numData = false;
                 $numGold = false;
                 $query = "SELECT * FROM file_lines l
@@ -680,6 +761,23 @@ switch ($Action) {
                 }
                 $ret['goldFields'] = array_diff($ret['goldFields'], $ret['dataFields']);
 
+                $ret['hits_submitted'] = 0;
+                $ret['hits_total'] = 0;
+
+                $query = "SELECT DISTINCT c.cluster_index, h.id
+                    FROM `clusters` c
+                    LEFT JOIN file_lines l ON c.line_id = l.id
+                    LEFT JOIN project_files f ON f.id = l.file_id
+                    LEFT JOIN cluster_to_hit h ON h.id_cluster = c.cluster_index AND h.id_project = '{$r['id']}' AND h.deleted = '0'
+                    WHERE f.project_id = '{$r['id']}' AND c.deleted = 0";
+                $DB->query($query);
+                while ($row = $DB->fetch()) {
+                    $ret['hits_total']++;
+                    if ($row['id']) {
+                        $ret['hits_submitted']++;
+                    }
+                }
+
                 $ret['numGold'] = $numGold;
                 $ret['numData'] = $numData;
 
@@ -698,6 +796,8 @@ switch ($Action) {
                 $fields = array("name", "title", "description", "keywords", "reward",
                     "workers", "max_time", "expiry", "auto_approve", "layout_id", "params",
                     "params_fields");
+                $mandatory_fields = array("name", "title", "description", "keywords", "reward",
+                    "workers", "max_time", "expiry", "auto_approve", "params");
                 $integers = array("workers", "max_time", "params", "auto_approve", "expiry");
 
                 $r = NULL;
@@ -732,7 +832,7 @@ switch ($Action) {
                     $data[$field] = $_REQUEST[$field];
                 }
 
-                foreach ($fields as $field) {
+                foreach ($mandatory_fields as $field) {
                     if (!trim($data[$field])) {
                         $ret['result'] = "ERR";
                         $ret['error'] = "Field '$field' is mandatory";
@@ -760,6 +860,11 @@ switch ($Action) {
 
                 // A fake HIT is created to get information about the layout
                 if (isset($data['layout_id'])) {
+                    if (!isset($data['params_fields']) || !$data['params_fields']) {
+                        $ret['result'] = "ERR";
+                        $ret['error'] = "Layout fields are required when a layout ID is specified";
+                        break;
+                    }
                     try {
                         $result = $mTurk->createHIT([
                             "MaxAssignments" => 3,
@@ -784,7 +889,7 @@ switch ($Action) {
                     }
                 }
 
-                if (isset($data['layout_fields']) && isset($data['params_fields'])) {
+                if (isset($data['layout_fields'])) {
                     $layout_fields = explode(",", $data['layout_fields']);
                     $layout_fields = array_map("trim", $layout_fields);
                     $params_fields = explode(",", $data['params_fields']);
@@ -826,6 +931,11 @@ switch ($Action) {
         }
         
         break;
+
+        default:
+            $ret['result'] = "ERR";
+            $ret['error'] = "Invalid action";
+            break;
 
 }
 
