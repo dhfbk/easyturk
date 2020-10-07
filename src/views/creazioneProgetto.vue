@@ -304,6 +304,7 @@
             <div class="w-full lg:w-auto px-3 mb-4">
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="layoutId">Layout ID</label>
                 <input
+                    v-if="requiredLayout"
                     :class="status != 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="layoutId"
@@ -312,7 +313,19 @@
                     maxlength="255"
                     :disabled="status != 0"
                     v-model.trim="$v.layout_id.$model"
-                    required
+                    :required="requiredLayout"
+                />
+                <input
+                    v-else
+                    :class="status != 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    id="layoutId"
+                    type="text"
+                    placeholder="Layout ID"
+                    maxlength="255"
+                    :disabled="status != 0"
+                    v-model="layout_id"
+                    :required="requiredLayout"
                 />
                 <p class="text-gray-700 text-xs italic">
                     This is the id of the layout that will be shown to the Worker.
@@ -449,46 +462,85 @@ export default {
             loading: false,
             status: 0,
             disableBtn: true,
+            requiredLayout: false,
         }
     },
     validations() {
-        return {
-            params_fields: {
-                required,
-            },
-            name: {
-                required,
-            },
-            title: {
-                required,
-            },
-            description: {
-                required,
-            },
-            keywords: {
-                required,
-            },
-            layout_id: {
-                required,
-            },
-            workers: {
-                required,
-            },
-            max_time: {
-                required,
-            },
-            expiry: {
-                required,
-            },
-            auto_approve: {
-                required,
-            },
-            params: {
-                required,
-            },
-            reward: {
-                required,
-            },
+        if (this.requiredLayout) {
+            return {
+                params_fields: {
+                    required,
+                },
+                name: {
+                    required,
+                },
+                title: {
+                    required,
+                },
+                description: {
+                    required,
+                },
+                keywords: {
+                    required,
+                },
+                workers: {
+                    required,
+                },
+                max_time: {
+                    required,
+                },
+                expiry: {
+                    required,
+                },
+                auto_approve: {
+                    required,
+                },
+                params: {
+                    required,
+                },
+                reward: {
+                    required,
+                },
+                layout_id: {
+                    required,
+                },
+            }
+        } else {
+            return {
+                params_fields: {
+                    required,
+                },
+                name: {
+                    required,
+                },
+                title: {
+                    required,
+                },
+                description: {
+                    required,
+                },
+                keywords: {
+                    required,
+                },
+                workers: {
+                    required,
+                },
+                max_time: {
+                    required,
+                },
+                expiry: {
+                    required,
+                },
+                auto_approve: {
+                    required,
+                },
+                params: {
+                    required,
+                },
+                reward: {
+                    required,
+                },
+            }
         }
 
         /*
@@ -549,6 +601,9 @@ export default {
                     this.layout_id = res.data.values.layout_id
                     this.params = res.data.values.params
                     this.status = res.data.values.status
+                    if (this.status == 1) {
+                        this.requiredLayout = true
+                    }
                     this.params_fields = res.data.values.params_fields
                     this.elaboraTempoGET('max_time')
                     this.elaboraTempoGET('expiry')

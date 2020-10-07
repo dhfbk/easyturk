@@ -6,7 +6,7 @@
             <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
-                        <div class="text-gray-900 font-bold text-lg">Final settings</div>
+                        <div class="text-gray-900 font-bold text-lg">{{title}}</div>
                         <svg
                             class="ml-auto fill-current text-gray-700 w-6 h-6 rounded ripple hover:bg-gray-300 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+//sistemare il numero max di hit da mandare con tot - submitted (probabilmente ricevuto via props), sistemare vuelidate per il max, chiamata del submit da testare
 const { required } = require('vuelidate/lib/validators')
 import axios from 'axios'
 export default {
@@ -69,7 +70,8 @@ export default {
     data() {
         return {
             hitNum: 0,
-            loading: false
+            loading: false,
+            title: "Final settings"
         }
     },
     validations() {
