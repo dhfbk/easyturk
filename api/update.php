@@ -1,5 +1,7 @@
 <?php
 
+exit();
+
 define("CURRENT_VERSION", "0.1.1");
 
 function addVersion($version = "0.1") {

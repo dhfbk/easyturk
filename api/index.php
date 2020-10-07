@@ -30,10 +30,10 @@ $script_uri = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" 
 
 session_start();
 
-require_once("config.php");
-require_once("inc/include.php");
-require_once("inc/Mysql_connector.class.php");
-require_once("vendor/autoload.php");
+require_once("../inc/config.php");
+require_once("../inc/include.php");
+require_once("../inc/Mysql_connector.class.php");
+require_once("../inc/vendor/autoload.php");
 
 $Action = isset($_REQUEST['action']) ? $_REQUEST['action'] : "";
 $User = 1;

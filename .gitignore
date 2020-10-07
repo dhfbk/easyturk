@@ -22,7 +22,8 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-api/composer.lock
-api/vendor
-api/config.php
-api/test.php
+inc/composer.lock
+inc/vendor
+inc/config.php
+
+temp
