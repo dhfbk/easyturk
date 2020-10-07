@@ -12,13 +12,13 @@
                             </div>
                             <div>
                                 <span>Rows:&nbsp;</span>
-                                <span>{{ this.projectData.numData }}</span>
+                                <span>{{ projectData.numData }}</span>
                             </div>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <span class="tooltip relative">
                                 <button
-                                    @click="$emit('modal', 'base')"
+                                    @click="$emit('modal', 'std')"
                                     class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 mr-2 focus:outline-none flex items-center justify-center"
                                 >
                                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -69,7 +69,7 @@
                             </div>
                             <div>
                                 <span>Rows:&nbsp;</span>
-                                <span>{{ this.projectData.numGold }}</span>
+                                <span>{{ projectData.numGold }}</span>
                             </div>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">

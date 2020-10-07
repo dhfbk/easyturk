@@ -17,6 +17,7 @@
 <script>
 import navbar from './components/navBar.vue'
 import snackBar from './components/snackBar.vue'
+import axios from 'axios'
 export default {
     components: {
         navbar,
@@ -30,9 +31,26 @@ export default {
             sandbox: false,
         }
     },
+    created() {
+        axios
+            .get(this.APIURL + '?action=getOptions')
+            .then(res => {
+                this.$store.state.defaults = res.data.defaults
+                //this.loadingProjects = false
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
     methods: {
         setSandbox(show) {
             this.sandbox = show
+            if (show == 1) {
+                this.$store.state.isSandbox = true
+            } else {
+                this.$store.state.isSandbox = false
+            }
+            // console.log(this.$store.state.isSandbox)
         },
         showSnack(msg) {
             //this.snackType = arr[0]

@@ -163,6 +163,7 @@ export default {
 
     created() {
         this.getData()
+        console.log(this.$store.state.defaults)
     },
     methods: {
         getPrjData() {

@@ -158,8 +158,7 @@
                 <span v-click-outside="hide">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
-                        :class="project.status != 0 ? 'md:hidden' : ''"
-                        class="ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                        class="md:hidden ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg
                             class="transition duration-300 ease-in-out fill-current"
@@ -178,7 +177,7 @@
                     <transition name="slide-toggle">
                         <div
                             v-show="dropdownOpen"
-                            class="absolute bottom-1 right-0 mt-1 w-56 bg-white rounded-md shadow-xl z-20"
+                            class=" absolute bottom-1 right-0 mt-1 w-56 bg-white rounded-md shadow-xl z-20"
                         >
                             <a
                                 @click="toggleModal('hit')"
@@ -218,7 +217,7 @@
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 >Edit</router-link
                             >
-                            <a
+                            <!-- <a
                                 v-if="project.status == 0"
                                 @click="toggleModal('std')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary md:rounded-t-md hover:text-gray-100"
@@ -229,7 +228,7 @@
                                 @click="toggleModal('gld')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
                                 >Gold CSV upload</a
-                            >
+                            > -->
                             <!-- <a
                                 v-if="project.status == 0 && projectbaseCsvStatus == 1"
                                 @click="uploadModal(['hit', ''])"
@@ -258,7 +257,7 @@
                 </div>
                 <div v-else>
                     <cardInfo :projectData="project" :mode="'payment'" />
-                    <cardInfo :projectData="project" :mode="'csv'" />
+                    <cardInfo :projectData="project" :mode="'csv'" @modal="toggleModal" />
                     <!-- <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
                     <cardAnalytics :dati="datiCardAnalytics.cardAggregate" />-->
                 </div>
@@ -355,6 +354,7 @@ export default {
             if (mode == 'delete') {
                 this.modalElim = !this.modalElim
             } else if (mode == 'std') {
+                console.log('bruh')
                 this.modalStd = !this.modalStd
             } else if (mode == 'gld') {
                 if (this.project.numGold == 0) {
