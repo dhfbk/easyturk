@@ -63,6 +63,7 @@
 
 <script>
 const { required } = require('vuelidate/lib/validators')
+import axios from 'axios'
 export default {
     name: 'modalLaunch',
     data() {
@@ -85,6 +86,33 @@ export default {
             } else {
                 this.$emit('launchModal', 'Error')
             }
+        },
+        submit() {
+            this.loading = true
+            var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
+            axios({
+                method: 'post',
+                url: url,
+                data: {
+                    toStatus: 3,
+                    num: this.hitNum
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            })
+                .then(response => {
+                    console.log(response.data)
+                    if (response.data.result == 'OK') {
+                        this.$emit('lanched', 'Project launched successfully!')
+                        this.toggleModal('close')
+                    } else {
+                        this.toggleModal('close')
+                        this.$emit('lanched', 'Error: ' + response.data.error)
+                    }
+                    this.loading = false
+                })
+                .catch(() => {
+                    this.toggleModal('lanched')
+                })
         },
     },
 }
