@@ -195,11 +195,10 @@ export default {
             }
         },
         toggleModal() {
-            console.log(this.type)
             if (this.type == 'std') {
-                this.$emit('uploadModal', ['std', ''])
+                this.$emit('uploadModal', ['std', '', 'noSnack'])
             } else {
-                this.$emit('uploadModal', ['gld', ''])
+                this.$emit('uploadModal', ['gld', '', 'noSnack'])
             }
         },
         displayFile() {
@@ -242,17 +241,26 @@ export default {
                     })
                     .then(res => {
                         if (res.data.result != 'ERR') {
-                            this.$emit('uploaded', 'Upload completed')
+                            if (this.type == 'std') {
+                                this.$emit('uploadModal', ['std', '', 'Upload completed'])
+                            } else {
+                                this.$emit('uploadModal', ['gld', '', 'Upload completed'])
+                            }
                         } else {
-                            this.$emit('uploaded', 'Error. Try again' + res.data.error)
+                            if (this.type == 'std') {
+                                this.$emit('uploadModal', ['std', '', 'Error. Try again' + res.data.error])
+                            } else {
+                                this.$emit('uploadModal', ['gld', '', 'Error. Try again' + res.data.error])
+                            }
                         }
                         this.loading = false
-                        this.toggleModal()
-                        console.log(res.data)
                     })
                     .catch(() => {
-                        this.$emit('uploaded', 'Error. Try again')
-                        this.toggleModal()
+                        if (this.type == 'std') {
+                            this.$emit('uploadModal', ['std', '', 'Error. Try again'])
+                        } else {
+                            this.$emit('uploadModal', ['gld', '', 'Error. Try again'])
+                        }
                     })
             }
         },

@@ -20,13 +20,20 @@
         />
         <modalLayout v-if="modalLayout" :project="project" @layoutModal="toggleModal('layout')" @snackbar="uploaded" />
         <modalInstructions v-if="modalInstructions" :status="project.status" @modal="toggleModal('instructions')" />
-        <modalLaunch v-if="modalLaunch" @launchModal="toggleModal('launch')" />
+        <modalLaunch
+            v-if="modalLaunch"
+            :id="id"
+            :hitsSubmitted="hitsSubmitted"
+            :hitsTotal="hitsTotal"
+            @launchModal="toggleModal('launch')"
+            @launched="uploaded"
+        />
         <div class="flex justify-between items-center flex-wrap" v-if="!loading">
             <h1 class="text-2xl mb-4 text-primary">{{ project.name }}</h1>
             <div class="w-full sm:w-auto flex relative justify-between content-center items-center">
                 <span class="tooltip relative">
                     <button
-                        v-if="project.status == 2"
+                        v-if="project.status >= 2"
                         @click="toggleModal('launch')"
                         type="submit"
                         class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
@@ -38,9 +45,16 @@
                         </svg>
                     </button>
                     <span
+                        v-if="hitsSubmitted == 0"
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
                         >Launch project</span
                     >
+                    <span
+                        v-else
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                    >
+                        Launch other HITs
+                    </span>
                 </span>
                 <span class="tooltip relative">
                     <button
@@ -180,6 +194,18 @@
                             class=" absolute bottom-1 right-0 mt-1 w-56 bg-white rounded-md shadow-xl z-20"
                         >
                             <a
+                                v-if="project.status >= 2 && hitsSubmitted == 0"
+                                @click="toggleModal('launch')"
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                >Launch project</a
+                            >
+                            <a
+                                v-else
+                                @click="toggleModal('launch')"
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                >Launch other HITs</a
+                            >
+                            <a
                                 @click="toggleModal('hit')"
                                 v-if="project.status == 0"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
@@ -311,6 +337,8 @@ export default {
             modalLaunch: false,
             loading: true,
             project: [],
+            hitsSubmitted: 0,
+            hitsTotal: 0,
         }
     },
     created() {
@@ -333,6 +361,8 @@ export default {
                 .get(this.APIURL + '?action=getProjectInfo&id=' + this.id)
                 .then(res => {
                     this.project = res.data.values
+                    this.hitsSubmitted = res.data.hits_submitted
+                    this.hitsTotal = res.data.hits_total
                     this.project.numGold = res.data.numGold
                     this.project.numData = res.data.numData
                     console.log(res.data)
@@ -354,7 +384,6 @@ export default {
             if (mode == 'delete') {
                 this.modalElim = !this.modalElim
             } else if (mode == 'std') {
-                console.log('bruh')
                 this.modalStd = !this.modalStd
             } else if (mode == 'gld') {
                 if (this.project.numGold == 0) {

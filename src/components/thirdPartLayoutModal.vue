@@ -37,7 +37,7 @@
                 >
                 <input
                     :class="
-                        isGold == 0 || dataObj.whatToDo != 'accept'
+                        isGold == 0 || dataObj.whatToDo != 'reject'
                             ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                             : 'bg-gray-100 text-gray-700'
                     "
@@ -49,7 +49,7 @@
                     max="5"
                     step="1"
                     placeholder="1"
-                    :disabled="isGold == 0 || dataObj.whatToDo != 'accept'"
+                    :disabled="isGold == 0 || dataObj.whatToDo != 'reject'"
                     required
                     v-model="dataObj.assignNumber"
                 />
