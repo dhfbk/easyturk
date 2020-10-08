@@ -96,7 +96,8 @@ export default {
                     console.log(res.data.result)
                 })
                 .catch(() => {
-                    this.toggleModal('error')
+                    this.$emit('error', 'Error: server unreacheable')
+                    this.loading = false
                 })
         },
     },

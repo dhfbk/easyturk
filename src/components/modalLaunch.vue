@@ -11,7 +11,7 @@
                             class="ml-auto fill-current text-gray-700 w-6 h-6 rounded ripple hover:bg-gray-300 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 18 18"
-                            @click="toggleModal('close')"
+                            @click="toggleModal()"
                         >
                             <path
                                 d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
@@ -53,7 +53,7 @@
                         </button>
                         <button
                             class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
-                            @click="toggleModal('close')"
+                            @click="toggleModal()"
                         >
                             Cancel
                         </button>
@@ -95,12 +95,8 @@ export default {
         }
     },
     methods: {
-        toggleModal(mode) {
-            if (mode == 'close') {
-                this.$emit('launchModal')
-            } else {
-                this.$emit('launchModal', 'Error')
-            }
+        toggleModal() {
+            this.$emit('launchModal')
         },
         submit() {
             this.$v.$touch()
@@ -120,15 +116,15 @@ export default {
                         console.log(response.data)
                         if (response.data.result == 'OK') {
                             this.$emit('launched', 'Project launched successfully!')
-                            this.toggleModal('close')
+                            this.toggleModal()
                         } else {
-                            this.toggleModal('close')
                             this.$emit('launched', 'Error: ' + response.data.error)
                         }
                         this.loading = false
                     })
                     .catch(() => {
-                        this.toggleModal('launched')
+                        this.$emit('launched', 'Error: server unreacheable')
+                        this.loading = false
                     })
             }
         },

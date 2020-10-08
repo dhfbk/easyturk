@@ -141,6 +141,7 @@ export default {
         submit() {
             this.$v.$touch()
             if (!this.$v.$invalid) {
+                this.loading = true
                 var url = this.APIURL + '?action=updateProjectStatus'
                 axios({
                     method: 'post',
@@ -156,8 +157,9 @@ export default {
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
                     .then(response => {
+                        this.loading = false
                         console.log(response.data)
-                        if (response.result == 'ERR') {
+                        if (response.data.result == 'ERR') {
                             this.$emit('snackbar', 'Error: ' + response.error)
                         } else {
                             this.$emit('snackbar', 'Layout successfully set.')
@@ -165,8 +167,9 @@ export default {
                         }
                     })
                     .catch(err => {
-                        this.$emit('snackbar', 'Error: connection error')
+                        this.$emit('snackbar', 'Error: server unreacheable')
                         console.log(err)
+                        this.loading = false
                     })
             }
         },

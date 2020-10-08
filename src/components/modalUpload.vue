@@ -278,6 +278,7 @@ export default {
                             } else {
                                 this.$emit('uploaded', ['gld', '', 'Error. Try again'])
                             }
+                            this.loading = false
                         })
                 }
             } else {

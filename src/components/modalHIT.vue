@@ -239,13 +239,13 @@ export default {
                             this.$emit('hitCreated', 'HIT setup completed')
                             this.toggleModal('close')
                         } else {
-                            this.toggleModal('close')
                             this.$emit('hitCreated', 'Error: ' + response.data.error)
                         }
                         this.loading = false
                     })
                     .catch(() => {
                         this.toggleModal('error')
+                        this.loading = false
                     })
             }
         },

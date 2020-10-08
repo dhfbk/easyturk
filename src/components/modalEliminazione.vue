@@ -82,15 +82,18 @@ export default {
                 .then(res => {
                     console.log(res.data.result)
                     this.loading = false
-                    //console.log(this.$route.name)
-                    this.$emit('deleted', 'Progetto eliminato.')
-                    this.toggleModal()
+                    if (res.data.result == 'OK') {
+                        this.$emit('deleted', 'Project deleted')
+                        this.toggleModal()
+                    } else {
+                        this.$emit('deleted', 'Error: ' + res.data.error)
+                    }
                     // this.$emit('snackbar', ['success', this.id, 'Progetto eliminato'])
                 })
                 .catch(err => {
                     console.log(err)
-                    this.$emit('deleted', 'Errore')
-                    this.toggleModal()
+                    this.$emit('deleted', 'Error: server unreachable')
+                    this.loading = false
                 })
             /*
             $.ajax({
