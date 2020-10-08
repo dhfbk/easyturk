@@ -1,6 +1,15 @@
 <template>
     <div class="block lg:w-5/6 mx-2 xs2:mx-4 lg:mx-auto pt-2">
-        <p class="text-md sm:text-lg md:text-2xl text-primary mr-auto ml-2">{{ filename }}</p>
+        <button
+            @click="$router.push({ name: 'projectView', params: { projectId: projectId } })"
+            class="rounded ripple bg-transparent hover:bg-gray-300 p-2 focus:outline-none"
+        >
+            <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+            </svg>
+            Back to project
+        </button>
+        <span class="text-md sm:text-lg md:text-2xl text-primary mr-auto ml-2">{{ filename }}</span>
         <div class="flex flex-row justify-start mr-auto mb-1 ml-2">
             <p class="text-md my-auto mr-1">Results per page:</p>
             <input
@@ -16,7 +25,7 @@
         </div>
         <loader :type="'csvData'" v-if="loading" />
         <div class="overflow-x-auto" v-else>
-            <table class="shadow-md rounded xs2:w-5/6 bg-white mx-auto">
+            <table class="shadow-md rounded xs2:min-w-5/6 bg-white mx-auto">
                 <thead>
                     <tr class="text-left text-white bg-primary border-b border-gray-300 uppercase tracking-tight">
                         <th class="px-2" v-for="x in headers" :key="x">{{ x }}</th>

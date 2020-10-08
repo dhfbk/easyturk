@@ -16,10 +16,21 @@
                             </div>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
-                            <span class="tooltip relative" v-if="projectData.status < 1">
+                            <button
+                                class="px-2 py-1 ripple bg-gray-200 transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
+                                @click="
+                                    $router.push({
+                                        name: 'csv',
+                                        params: { projectId: projectData.id, type: 'data' },
+                                    })
+                                "
+                            >
+                                View data
+                            </button>
+                            <span class="tooltip relative ml-2" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'std')"
-                                    class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 mr-2 focus:outline-none flex items-center justify-center"
+                                    class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
                                 >
                                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                         <path
@@ -42,17 +53,6 @@
                                     Upload standard csv
                                 </span>
                             </span>
-                            <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
-                                @click="
-                                    $router.push({
-                                        name: 'csv',
-                                        params: { projectId: projectData.id, type: 'data' },
-                                    })
-                                "
-                            >
-                                View data
-                            </button>
                         </span>
                     </div>
                 </span>
@@ -62,10 +62,10 @@
                             <span>Data:&nbsp;</span><span class="text-red-500"> not uploaded</span>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
-                            <span class="tooltip relative" v-if="projectData.status < 1">
+                            <span class="tooltip relative ml-2" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'std')"
-                                    class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 mr-2 focus:outline-none flex items-center justify-center"
+                                    class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
                                 >
                                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                         <path
@@ -99,11 +99,22 @@
                             </div>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
-                            <span class="tooltip relative" v-if="projectData.status < 1">
+                            <button
+                                class="px-2 py-1 ripple bg-gray-200 transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
+                                @click="
+                                    $router.push({
+                                        name: 'csv',
+                                        params: { projectId: projectData.id, type: 'gold' },
+                                    })
+                                "
+                            >
+                                View gold
+                            </button>
+                            <span class="tooltip relative ml-2" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'gld')"
                                     :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                    class="ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 mr-2 focus:outline-none flex items-center justify-center"
+                                    class="ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -135,17 +146,6 @@
                                     Upload gold csv
                                 </span>
                             </span>
-                            <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
-                                @click="
-                                    $router.push({
-                                        name: 'csv',
-                                        params: { projectId: projectData.id, type: 'gold' },
-                                    })
-                                "
-                            >
-                                View gold
-                            </button>
                         </span>
                     </div>
                 </span>
@@ -155,11 +155,11 @@
                             <span>Gold:&nbsp;</span><span class="text-red-500"> not uploaded</span>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
-                            <span class="tooltip relative" v-if="projectData.status < 1">
+                            <span class="tooltip relative ml-2" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'gld')"
                                     :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                    class="ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 mr-2 focus:outline-none flex items-center justify-center"
+                                    class="ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"

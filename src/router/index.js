@@ -49,7 +49,7 @@ const routes = [
         component: lazyLoad('workerList'),
     },
     {
-        path: '/:projectId/data/:type',
+        path: '/:projectId/:type',
         name: 'csv',
         component: lazyLoad('csvView'),
     },
