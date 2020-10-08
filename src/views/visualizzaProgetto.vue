@@ -390,7 +390,7 @@ export default {
             } else if (mode == 'std') {
                 this.modalStd = !this.modalStd
             } else if (mode == 'gld') {
-                if (this.project.numGold == 0) {
+                if (this.project.numData == 0) {
                     this.$emit('snackbar', 'Warning. To upload the gold CSV, you first have to uplaod the standard.')
                 } else {
                     this.modalGld = !this.modalGld

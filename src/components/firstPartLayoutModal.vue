@@ -14,6 +14,7 @@
                         name="sortBy"
                         id="sortBy"
                         v-model="first.field"
+                        @change="prova"
                     >
                         <option value="" disabled selected hidden>Choose field...</option>
                         <option v-for="item in splitFields" :key="item" :value="item">{{ item }}</option>
@@ -132,6 +133,9 @@ export default {
         this.dataArr = this.firstPartData
     },
     methods: {
+        prova(ev) {
+            console.log(ev)
+        },
         newElement(arr) {
             this.$emit('newElement', arr)
         },

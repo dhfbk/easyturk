@@ -61,7 +61,7 @@
                                 goldDataStatus == 0 || baseDataStatus == 0
                                     ? 'cursor-not-allowed bg-gray-400 text-gray-800 '
                                     : ' bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500',
-                                $v.goldNum.$error ? 'shadowRed' : '',
+                                $v.goldPerHit.$error ? 'shadowRed' : '',
                             ]"
                             class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4"
                             id="gold"
@@ -70,7 +70,7 @@
                             step="1"
                             placeholder="1"
                             :disabled="goldDataStatus == 0 || baseDataStatus == 0"
-                            v-model.trim="$v.goldNum.$model"
+                            v-model.trim="$v.goldPerHit.$model"
                             required
                         />
                     </div>
@@ -182,17 +182,17 @@ export default {
     },
     data() {
         return {
-            goldNum: this.$store.state.defaults.gold_data_per_hit,
             leftover: '',
             shuffleBase: 1,
             shuffleGold: 1,
             loading: false,
             hitInfo: 0,
+            goldPerHit: 1,
         }
     },
     validations() {
         return {
-            goldNum: {
+            goldPerHit: {
                 required,
             },
             leftover: {
@@ -201,7 +201,14 @@ export default {
         }
     },
     created() {
-        this.hitInfo = Math.floor(this.baseDataStatus / this.params - this.goldDataStatus)
+        this.goldPerHit = this.goldNum
+        console.log(this.params, this.baseDataStatus, this.goldDataStatus)
+        if (this.goldDataStatus != 0) {
+            this.hitInfo = Math.floor(this.baseDataStatus / (this.params - this.goldPerHit))
+        } else {
+            this.hitInfo = Math.floor(this.baseDataStatus / this.params)
+        }
+        //console.log(this.baseDataStatus / this.params)
     },
     mounted() {
         window.addEventListener('keyup', this.esc)
@@ -261,12 +268,21 @@ export default {
     watch: {
         leftover() {
             if (this.leftover == 'no_use') {
-                this.hitInfo = Math.floor(this.baseDataStatus / this.params - this.goldDataStatus)
+                this.hitInfo = Math.floor(this.baseDataStatus / (this.params - this.goldPerHit))
             } else {
-                this.hitInfo = Math.round(this.baseDataStatus / this.params - this.goldDataStatus)
+                this.hitInfo = Math.round(this.baseDataStatus / (this.params - this.goldPerHit))
             }
         },
+        goldPerHit: function() {
+            this.hitInfo = Math.floor(this.baseDataStatus / (this.params - this.goldPerHit))
+        },
     },
+    computed: {
+        goldNum() {
+            return this.$store.state.defaults.gold_data_per_hit
+        },
+    },
+
     beforeDestroy() {
         window.removeEventListener('keyup', this.esc)
     },

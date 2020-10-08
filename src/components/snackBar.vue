@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed right-0 top-1 m-5 z-30">
+    <div class="fixed right-0 top-1 m-5 z-40">
         <div
             class="flex items-center bg-orange-400 border-l-4 border-orange-700 py-2 px-3 shadow-md mb-2"
             v-if="isWarning.test(msg)"
