@@ -657,12 +657,12 @@ switch ($Action) {
                         $allowedGoldWrong[] = "reject";
                         $allowedGoldWrong[] = "wait";
 
-                        $allowedFields = array();
-                        $allowedFields[] = "_name";
-                        $allowedFields[] = "_title";
-                        $allowedFields[] = "_description";
-                        $allowedFields[] = "_keywords";
-                        $allowedFields = array_merge($allowedFields, unserialize($trainingInfo['fields']));
+                        $projectFields = array();
+                        $projectFields[] = "_name";
+                        $projectFields[] = "_title";
+                        $projectFields[] = "_description";
+                        $projectFields[] = "_keywords";
+                        $allowedFields = array_merge($projectFields, unserialize($trainingInfo['fields']));
 
                         $layout_fields = explode(",", $r['layout_fields']);
                         $layout_fields = array_map('trim', $layout_fields);
@@ -693,27 +693,42 @@ switch ($Action) {
                             }
                             $outFields[] = $layoutData['field'];
 
-                            $difference = array_diff($layout_fields, $outFields);
-                            if (count($difference)) {
-                                $ret['result'] = "ERR";
-                                $ret['error'] = "Missing template fields: " . implode(', ', $difference);
-                                break 2;
-                            }
-
                             if ($layoutData['isHandWritten']) {
                                 if (!$layoutData['customValue']) {
                                     $ret['result'] = "ERR";
                                     $ret['error'] = "Custom value is mandatory for handwritten fields";
                                     break 2;
                                 }
+                                if (substr($layoutData['field'], -1) === "#") {
+                                    $ret['result'] = "ERR";
+                                    $ret['error'] = "Fields ending with # cannot be user in handwritten mode";
+                                    break 2;
+                                }
                             }
                             else {
+                                if (substr($layoutData['field'], -1) === "#" && in_array($layoutData['valueFrom'], $projectFields)) {
+                                    $ret['result'] = "ERR";
+                                    $ret['error'] = "Fields ending with # can be used only with CSV fields";
+                                    break 2;
+                                }
+                                if (substr($layoutData['field'], -1) !== "#" && !in_array($layoutData['valueFrom'], $projectFields)) {
+                                    $ret['result'] = "ERR";
+                                    $ret['error'] = "Fields not ending with # can be used only with project fields";
+                                    break 2;
+                                }
                                 if (!in_array($layoutData['valueFrom'], $allowedFields)) {
                                     $ret['result'] = "ERR";
                                     $ret['error'] = "Invalid field name {$layoutData['valueFrom']}";
                                     break 2;
                                 }
                             }
+                        }
+
+                        $difference = array_diff($layout_fields, $outFields);
+                        if (count($difference)) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Missing template fields: " . implode(', ', $difference);
+                            break 2;
                         }
 
                         if ($goldInfo) {
@@ -758,10 +773,17 @@ switch ($Action) {
                         }
 
                         $toSave = array();
-                        $toSave['layoutData'] = $_REQUEST['layoutData'];
+
+                        $toSave['layoutData'] = array();
+                        foreach ($_REQUEST['layoutData'] as $layoutData) {
+                            $toSave['layoutData'][$layoutData['field']] = $layoutData;
+                        }
+
                         $toSave['answerData'] = $_REQUEST['answerData'];
                         $toSave['assignNumber'] = $_REQUEST['assignNumber'];
                         $toSave['whatToDo'] = $_REQUEST['whatToDo'];
+
+                        $ret['toSave'] = $toSave;
 
                         $DB->queryupdate("projects", array("hit_details" => serialize($toSave), "status" => 2), array("id" => $r['id']));
                         $ret['result'] = "OK";
