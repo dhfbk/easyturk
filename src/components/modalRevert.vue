@@ -87,12 +87,12 @@ export default {
             })
                 .then(res => {
                     this.loading = false
-                    if (res.data.result == 'OK') {
-                        this.$emit('reverted', 'Project succesfully reverted.')
-                    } else {
+                    if (res.data.result == 'ERR') {
                         this.$emit('reverted', 'Error: ' + res.data.error)
+                    } else {
+                        this.$emit('reverted', 'Project succesfully reverted.')
+                        this.toggleModal('close')
                     }
-                    this.toggleModal('close')
                     console.log(res.data.result)
                 })
                 .catch(() => {

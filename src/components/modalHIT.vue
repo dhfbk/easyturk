@@ -134,8 +134,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="py-1">
-                        <p class="font-light italic">You'll be able to revert these changes and re-upload your files</p>
+                    <p>With these settings you'll have {{ hitInfo }} HITs</p>
+                    <div class="pt-2 pb-1">
+                        <p class="font-light italic text-center">
+                            You'll be able to revert these changes and re-upload your files
+                        </p>
                     </div>
                     <div class="ml-auto flex flex-col xs2:flex-row justify-end flex-wrap">
                         <button
@@ -175,6 +178,7 @@ export default {
         id: String,
         baseDataStatus: Number,
         goldDataStatus: Number,
+        params: Number,
     },
     data() {
         return {
@@ -183,6 +187,7 @@ export default {
             shuffleBase: 1,
             shuffleGold: 1,
             loading: false,
+            hitInfo: 0,
         }
     },
     validations() {
@@ -194,6 +199,9 @@ export default {
                 notEmpty,
             },
         }
+    },
+    created() {
+        this.hitInfo = Math.floor(this.baseDataStatus / this.params - this.goldDataStatus)
     },
     mounted() {
         window.addEventListener('keyup', this.esc)
@@ -235,11 +243,11 @@ export default {
                 })
                     .then(response => {
                         console.log(response.data)
-                        if (response.data.result == 'OK') {
+                        if (response.data.result == 'ERR') {
+                            this.$emit('hitCreated', 'Error: ' + response.data.error)
+                        } else {
                             this.$emit('hitCreated', 'HIT setup completed')
                             this.toggleModal('close')
-                        } else {
-                            this.$emit('hitCreated', 'Error: ' + response.data.error)
                         }
                         this.loading = false
                     })
@@ -247,6 +255,15 @@ export default {
                         this.toggleModal('error')
                         this.loading = false
                     })
+            }
+        },
+    },
+    watch: {
+        leftover() {
+            if (this.leftover == 'no_use') {
+                this.hitInfo = Math.floor(this.baseDataStatus / this.params - this.goldDataStatus)
+            } else {
+                this.hitInfo = Math.round(this.baseDataStatus / this.params - this.goldDataStatus)
             }
         },
     },

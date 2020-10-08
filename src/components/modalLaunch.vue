@@ -114,11 +114,11 @@ export default {
                 })
                     .then(response => {
                         console.log(response.data)
-                        if (response.data.result == 'OK') {
+                        if (response.data.result == 'ERR') {
+                            this.$emit('launched', 'Error: ' + response.data.error)
+                        } else {
                             this.$emit('launched', 'Project launched successfully!')
                             this.toggleModal()
-                        } else {
-                            this.$emit('launched', 'Error: ' + response.data.error)
                         }
                         this.loading = false
                     })

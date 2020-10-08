@@ -82,11 +82,11 @@ export default {
                 .then(res => {
                     console.log(res.data.result)
                     this.loading = false
-                    if (res.data.result == 'OK') {
+                    if (res.data.result == 'ERR') {
+                        this.$emit('deleted', 'Error: ' + res.data.error)
+                    } else {
                         this.$emit('deleted', 'Project deleted')
                         this.toggleModal()
-                    } else {
-                        this.$emit('deleted', 'Error: ' + res.data.error)
                     }
                     // this.$emit('snackbar', ['success', this.id, 'Progetto eliminato'])
                 })

@@ -425,6 +425,7 @@ export default {
                     this.projectData.id,
                     this.projectData.count_train,
                     this.projectData.count_gold,
+                    this.projectData.params,
                 ])
             }
         },

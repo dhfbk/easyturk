@@ -8,6 +8,7 @@
             :id="id"
             :baseDataStatus="project.numData"
             :goldDataStatus="project.numGold"
+            :params="project.params"
             @hitModal="toggleModal('hit')"
             @hitCreated="uploaded"
         />

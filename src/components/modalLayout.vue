@@ -160,7 +160,7 @@ export default {
                         this.loading = false
                         console.log(response.data)
                         if (response.data.result == 'ERR') {
-                            this.$emit('snackbar', 'Error: ' + response.error)
+                            this.$emit('snackbar', 'Error: ' + response.data.error)
                         } else {
                             this.$emit('snackbar', 'Layout successfully set.')
                             this.toggleModal()

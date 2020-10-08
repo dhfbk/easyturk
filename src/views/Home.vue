@@ -20,8 +20,9 @@
             @hitCreated="reloadAfterHIT"
             :baseDataStatus="dataPresent"
             :goldDataStatus="gldPresent"
+            :params="params"
         />
-        <modalLayout v-if="modalLayout" :project="project[0]" @layoutModal="toggleModal" />
+        <modalLayout v-if="modalLayout" :project="project[0]" @layoutModal="toggleModal" @snackbar="uploaded" />
         <!--<modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />-->
         <div class="mb-6">
             <div class="flex content-center flex-col sm:flex-row px-4">
@@ -173,6 +174,7 @@ export default {
             isError: /\bError\b/,
             hitsSubmitted: 0,
             hitsTotal: 0,
+            params: 0,
         }
     },
 
@@ -285,6 +287,7 @@ export default {
                 if (arr[1] != undefined) {
                     this.dataPresent = parseInt(arr[1])
                     this.gldPresent = parseInt(arr[2])
+                    this.params = parseInt(arr[3])
                 }
             }
             if (this.modalLayout) {
