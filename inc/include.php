@@ -1,5 +1,13 @@
 <?php
 
+require_once("config.php");
+require_once("Mysql_connector.class.php");
+require_once("vendor/autoload.php");
+
+$DB = new Mysql_connector($DB_HOST, $DB_USERNAME, $DB_PASSWORD);
+$DB->select_db($DB_NAME);
+$mysqli = $DB->connection;
+
 // Functions
 
 function loadOptions() {

@@ -1,18 +1,10 @@
 <?php
 
-require_once("../inc/config.php");
 require_once("../inc/include.php");
-require_once("../inc/Mysql_connector.class.php");
-require_once("../inc/vendor/autoload.php");
 
 use Aws\Sns\Message;
 use Aws\Sns\MessageValidator;
 
-$DB = new Mysql_connector($DB_HOST, $DB_USERNAME, $DB_PASSWORD);
-$DB->select_db($DB_NAME);
-
-// $mysqli = $DB->connection;
- 
 $message = Message::fromRawPostData();
 
 $validator = new MessageValidator();

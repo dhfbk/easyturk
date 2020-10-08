@@ -30,18 +30,10 @@ $script_uri = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" 
 
 session_start();
 
-require_once("../inc/config.php");
 require_once("../inc/include.php");
-require_once("../inc/Mysql_connector.class.php");
-require_once("../inc/vendor/autoload.php");
 
 $Action = isset($_REQUEST['action']) ? $_REQUEST['action'] : "";
 $User = 1;
-
-$DB = new Mysql_connector($DB_HOST, $DB_USERNAME, $DB_PASSWORD);
-$DB->select_db($DB_NAME);
-
-$mysqli = $DB->connection;
 
 $_SESSION['Options'] = loadOptions();
 if (!isset($_SESSION['Options'])) {
@@ -73,7 +65,7 @@ $Enclosures = array("single" => '\'', "double" => '\"', "none" => chr(8));
 // $ret['post'] = print_r($_POST, true);
 
 $UserInfo = find("users", $User, "User not found");
-$UseSandbox = true;
+$UseSandbox = $UserInfo['use_sandbox'];
 $mTurkOptions = [
     'version' => 'latest',
     'region'  => $UserInfo['region_name'],
@@ -88,6 +80,52 @@ if ($UseSandbox) {
 $mTurk = new Aws\MTurk\MTurkClient($mTurkOptions);
 
 switch ($Action) {
+
+    case "emptyTrash":
+        $success = true;
+        $db_error = "";
+
+        $DB->startTransaction();
+        $query = "DELETE FROM clusters WHERE deleted = '1'";
+        if (!$DB->query($query)) {
+            $success = false;
+            $db_error = $DB->get_error();
+        }
+        $query = "DELETE FROM cluster_to_hit WHERE deleted = '1'";
+        if (!$DB->query($query)) {
+            $success = false;
+            $db_error = $DB->get_error();
+        }
+        $query = "DELETE l FROM `file_lines` l
+            LEFT JOIN project_files f ON f.id = l.file_id
+            WHERE f.deleted = '1'";
+        if (!$DB->query($query)) {
+            $success = false;
+            $db_error = $DB->get_error();
+        }
+        $query = "DELETE FROM projects WHERE deleted = '1'";
+        if (!$DB->query($query)) {
+            $success = false;
+            $db_error = $DB->get_error();
+        }
+        $query = "DELETE FROM project_files WHERE deleted = '1'";
+        if (!$DB->query($query)) {
+            $success = false;
+            $db_error = $DB->get_error();
+        }
+
+        if ($success) {
+            $DB->commitTransaction();
+            $ret['result'] = "OK";
+        }
+        else {
+            $DB->rollBackTransaction();
+            $ret['result'] = "ERR";
+            $ret['error'] = $db_error;
+        }
+
+        break;
+
     case "getOptions":
         $ret['defaults'] = array();
         $ret['defaults']['reward'] = "0.05";
@@ -101,6 +139,9 @@ switch ($Action) {
         $ret['defaults']['shuffle_gold_data'] = 1;
         $ret['defaults']['delete_exceeding_values'] = 0;
         $ret['defaults']['gold_wrong'] = "reject";
+        $ret['defaults']['separator'] = "comma";
+        $ret['defaults']['delimiter'] = "double";
+        $ret['result'] = "OK";
 
         break;
 
@@ -203,6 +244,11 @@ switch ($Action) {
             case "deleteFile":
                 $isGold = boolval($_REQUEST['isGold']);
                 $project = find("projects", $_REQUEST['id'], "Project not found");
+                if ($project['status'] > 0) {
+                    $ret['result'] = "ERR";
+                    $ret['error'] = "Files can be uploaded only in projects with status 0.";
+                    break;
+                }
                 $isGold = $isGold ? 1 : 0;
                 if ($stmt = $mysqli->prepare("UPDATE project_files SET deleted=1 WHERE project_id=? AND is_gold=?")) {
                     $stmt->bind_param("si", $_REQUEST['id'], $isGold);
@@ -214,6 +260,11 @@ switch ($Action) {
 
             case "uploadFile":
                 $r = find("projects", $_REQUEST['id'], "Project not found");
+                if ($r['status'] > 0) {
+                    $ret['result'] = "ERR";
+                    $ret['error'] = "Files can be uploaded only in projects with status 0.";
+                    break;
+                }
 
                 $delimiter = @$_REQUEST['char'];
                 if (!$delimiter) {
@@ -312,6 +363,7 @@ switch ($Action) {
 
                 $DB->startTransaction();
                 $success = true;
+                $db_error = "";
 
                 if ($stmt = $mysqli->prepare("UPDATE project_files
                         SET deleted = 1
@@ -330,6 +382,7 @@ switch ($Action) {
                 $data['fields'] = serialize($fields);
                 if (!$DB->queryinsert("project_files", $data)) {
                     $success = false;
+                    $db_error = $DB->get_error();
                 }
                 $file_id = $DB->last_id;
 
@@ -339,13 +392,14 @@ switch ($Action) {
                     $data['line_text'] = serialize($row);
                     if (!$DB->queryinsert("file_lines", $data)) {
                         $success = false;
+                        $db_error = $DB->get_error();
                     }
                 }
 
                 if (!$success) {
                     $DB->rollbackTransaction();
                     $ret['result'] = "ERR";
-                    $ret['error'] = $DB->get_error();
+                    $ret['error'] = $db_error;
                     break;
                 }
 
@@ -360,9 +414,22 @@ switch ($Action) {
                          WHERE pf1.is_gold = '0' AND pf1.deleted = '0' AND pf1.project_id = p.id) count_train,
                         (SELECT COUNT(fl2.id) FROM file_lines fl2
                          LEFT JOIN project_files pf2 ON pf2.id = fl2.file_id
-                         WHERE pf2.is_gold = '1' AND pf2.deleted = '0' AND pf2.project_id = p.id) count_gold
+                         WHERE pf2.is_gold = '1' AND pf2.deleted = '0' AND pf2.project_id = p.id) count_gold,
+                        COALESCE((SELECT COUNT(h.id IS NOT NULL) hits_submitted
+                         FROM `clusters` c
+                         LEFT JOIN file_lines l ON c.line_id = l.id
+                         LEFT JOIN project_files f ON f.id = l.file_id
+                         LEFT JOIN cluster_to_hit h ON h.id_cluster = c.cluster_index AND h.deleted = '0'
+                         WHERE f.project_id = p.id AND c.deleted = 0 AND h.id IS NOT NULL AND h.id_project = p.id
+                         GROUP BY (h.id IS NOT NULL)), 0) DIV p.params hits_submitted,
+                        COALESCE((SELECT COUNT(*)
+                         FROM `clusters` c
+                         LEFT JOIN file_lines l ON c.line_id = l.id
+                         LEFT JOIN project_files f ON f.id = l.file_id
+                         WHERE f.project_id = p.id AND c.deleted = 0), 0) DIV p.params hits_total
                     FROM projects p
-                    WHERE p.deleted = 0 AND p.user_id = '1' AND user_id = '{$UserInfo['id']}'";
+                    WHERE p.deleted = 0 AND user_id = '{$UserInfo['id']}'
+                    ORDER BY p.created_at DESC";
                 // $query = "SELECT * FROM projects
                 //     WHERE deleted = 0 AND user_id = '{$UserInfo['id']}'";
                 $res = $mysqli->query($query);
@@ -372,6 +439,11 @@ switch ($Action) {
 
             case "deleteProject":
                 $r = find("projects", $_REQUEST['id'], "Project not found");
+                if ($r['status'] > 2) {
+                    $ret['result'] = "ERR";
+                    $ret['error'] = "A project with status greater than 2 cannot be deleted.";
+                    break;
+                }
                 if ($stmt = $mysqli->prepare("UPDATE projects SET deleted = 1 WHERE id = ?")) {
                     $stmt->bind_param("s", $_REQUEST['id']);
                     $stmt->execute();
@@ -486,12 +558,18 @@ switch ($Action) {
                             }
                         }
 
+                        // $ret['dataBunch'] = $dataBunch;
+                        // $ret['trainData'] = $trainData;
+                        // $ret['goldData'] = $goldData;
+                        // $ret['trainDataSize'] = count($trainData);
+                        // $ret['goldDataSize'] = count($goldData);
+
                         $DB->startTransaction();
                         $success = true;
 
                         $goldIndex = 0;
                         for ($i = 0; $i < count($trainData); $i += $dataBunch) {
-                            $clusterIndex = floor($i / 7) + 1;
+                            $clusterIndex = floor($i / $dataBunch) + 1;
                             for ($j = 0; $j < $dataBunch; $j++) {
                                 $index = $i + $j;
                                 $data = array();
@@ -606,7 +684,7 @@ switch ($Action) {
                                 $ret['error'] = "Unable to find {$layoutData['field']} in layout fields";
                                 break 2;
                             }
-                            if ($layoutData['handwritten']) {
+                            if ($layoutData['isHandWritten']) {
                                 if (!$layoutData['customValue']) {
                                     $ret['result'] = "ERR";
                                     $ret['error'] = "Custom value is mandatory for handwritten fields";
@@ -631,7 +709,7 @@ switch ($Action) {
 
                             foreach ($_REQUEST['answerData'] as $answerData) {
                                 foreach (["varName", "varValue", "varNameTo", "varValueTo"] as $key) {
-                                    if (!isset($answerData[$key]) || !$answerData[$key]) {
+                                    if (!isset($answerData[$key]) || strlen($answerData[$key]) == 0) {
                                         $ret['result'] = "ERR";
                                         $ret['error'] = "Field $key is not defined";
                                         break 3;
@@ -781,13 +859,6 @@ switch ($Action) {
                 $ret['numGold'] = $numGold;
                 $ret['numData'] = $numData;
 
-                $ret['result'] = "OK";
-                $ret['values'] = $r;
-                break;
-
-            // Deprecated
-            case "editProject":
-                $r = find("projects", $_REQUEST['id'], "Project not found");
                 $ret['result'] = "OK";
                 $ret['values'] = $r;
                 break;
