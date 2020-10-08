@@ -214,7 +214,7 @@ switch ($Action) {
 
                 $query = "SELECT l.line_text, GROUP_CONCAT(c.cluster_index) cluster_index
                     FROM file_lines l
-                    LEFT JOIN clusters c ON c.line_id = l.id
+                    LEFT JOIN clusters c ON c.line_id = l.id AND c.deleted = 0
                     LEFT JOIN project_files f ON f.id = l.file_id
                     WHERE f.deleted = '0' AND f.project_id = '{$project['id']}' AND f.is_gold = '$isGold'
                     GROUP BY l.id
@@ -673,6 +673,7 @@ switch ($Action) {
                             break;
                         }
 
+                        $outFields = array();
                         foreach ($_REQUEST['layoutData'] as $layoutData) {
                             if (!$layoutData['field']) {
                                 $ret['result'] = "ERR";
@@ -684,6 +685,21 @@ switch ($Action) {
                                 $ret['error'] = "Unable to find {$layoutData['field']} in layout fields";
                                 break 2;
                             }
+
+                            if (in_array($layoutData['field'], $outFields)) {
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "Duplicate entry {$layoutData['field']}";
+                                break 2;
+                            }
+                            $outFields[] = $layoutData['field'];
+
+                            $difference = array_diff($layout_fields, $outFields);
+                            if (count($difference)) {
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "Missing template fields: " . implode(', ', $difference);
+                                break 2;
+                            }
+
                             if ($layoutData['isHandWritten']) {
                                 if (!$layoutData['customValue']) {
                                     $ret['result'] = "ERR";
@@ -892,6 +908,7 @@ switch ($Action) {
                     }
                     if ($r['status'] == 2) {
                         $fields = array("name", "title", "description", "keywords");
+                        $mandatory_fields = $fields;
                         $integers = array();
                     }
                 }
