@@ -34,8 +34,11 @@
                     <input
                         type="text"
                         class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 mb-3 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                        v-model="customTitles"
-                        :class="picked == 0 ? '' : 'cursor-not-allowed bg-gray-300'"
+                        v-model.trim="$v.customTitles.$model"
+                        :class="[
+                            picked == 0 ? '' : 'cursor-not-allowed bg-gray-300',
+                            $v.customTitles.$error ? 'shadowRed' : '',
+                        ]"
                         :disabled="picked == 1"
                         placeholder="Titles"
                     />
@@ -168,6 +171,9 @@
 
 <script>
 import axios from 'axios'
+const { required } = require('vuelidate/lib/validators')
+const notEmpty = value => value != ''
+
 export default {
     name: 'modalUpload',
     props: {
@@ -184,6 +190,15 @@ export default {
             delimiter: '',
             uploadPercentage: 0,
             loading: false,
+            middleCheck: false,
+        }
+    },
+    validations() {
+        return {
+            customTitles: {
+                required,
+                notEmpty,
+            },
         }
     },
     mounted() {
@@ -213,56 +228,60 @@ export default {
             console.log(document.getElementById('file').files[0])
         },
         uploadFile() {
-            if (this.file == '') {
-                console.log('nessun file da caricare')
-            } else {
-                this.loading = true
-                let formData = new FormData()
-                formData.append('csvFile', this.file)
-                formData.append('id', this.id)
-                formData.append('enclosure', this.delimiter)
-                formData.append('char', this.separated)
-                formData.append('fieldsTitlesInFirstLine', this.picked)
-                if (this.type == 'gld') {
-                    formData.append('isGold', 1)
+            if ((this.picked == 0 && this.$v.customTitles.$invalid == false) || this.picked == 1) {
+                if (this.file == '') {
+                    console.log('nessun file da caricare')
                 } else {
-                    formData.append('isGold', 0)
+                    this.loading = true
+                    let formData = new FormData()
+                    formData.append('csvFile', this.file)
+                    formData.append('id', this.id)
+                    formData.append('enclosure', this.delimiter)
+                    formData.append('char', this.separated)
+                    formData.append('fieldsTitlesInFirstLine', this.picked)
+                    if (this.type == 'gld') {
+                        formData.append('isGold', 1)
+                    } else {
+                        formData.append('isGold', 0)
+                    }
+                    formData.append('fieldTitles', this.customTitles)
+                    axios
+                        .post(this.APIURL + '?action=uploadFile', formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                            onUploadProgress: function(progressEvent) {
+                                this.uploadPercentage = parseInt(
+                                    Math.round((progressEvent.loaded / progressEvent.total) * 100)
+                                )
+                            }.bind(this),
+                        })
+                        .then(res => {
+                            if (res.data.result != 'ERR') {
+                                if (this.type == 'std') {
+                                    this.$emit('uploaded', ['std', '', 'Upload completed'])
+                                } else {
+                                    this.$emit('uploaded', ['gld', '', 'Upload completed'])
+                                }
+                            } else {
+                                if (this.type == 'std') {
+                                    this.$emit('uploaded', ['std', '', 'Error. Try again' + res.data.error])
+                                } else {
+                                    this.$emit('uploaded', ['gld', '', 'Error. Try again' + res.data.error])
+                                }
+                            }
+                            this.loading = false
+                        })
+                        .catch(() => {
+                            if (this.type == 'std') {
+                                this.$emit('uploaded', ['std', '', 'Error. Try again'])
+                            } else {
+                                this.$emit('uploaded', ['gld', '', 'Error. Try again'])
+                            }
+                        })
                 }
-                formData.append('fieldTitles', this.customTitles)
-                axios
-                    .post(this.APIURL + '?action=uploadFile', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                        onUploadProgress: function(progressEvent) {
-                            this.uploadPercentage = parseInt(
-                                Math.round((progressEvent.loaded / progressEvent.total) * 100)
-                            )
-                        }.bind(this),
-                    })
-                    .then(res => {
-                        if (res.data.result != 'ERR') {
-                            if (this.type == 'std') {
-                                this.$emit('uploaded', ['std', '', 'Upload completed'])
-                            } else {
-                                this.$emit('uploaded', ['gld', '', 'Upload completed'])
-                            }
-                        } else {
-                            if (this.type == 'std') {
-                                this.$emit('uploaded', ['std', '', 'Error. Try again' + res.data.error])
-                            } else {
-                                this.$emit('uploaded', ['gld', '', 'Error. Try again' + res.data.error])
-                            }
-                        }
-                        this.loading = false
-                    })
-                    .catch(() => {
-                        if (this.type == 'std') {
-                            this.$emit('uploaded', ['std', '', 'Error. Try again'])
-                        } else {
-                            this.$emit('uploaded', ['gld', '', 'Error. Try again'])
-                        }
-                    })
+            } else {
+                this.$v.$touch()
             }
         },
     },

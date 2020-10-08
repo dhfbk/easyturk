@@ -10,14 +10,15 @@
                 >
                 <div class="relative w-full block md:mt-0">
                     <select
-                        :class="
-                            isGold == 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
-                        "
+                        :class="[
+                            isGold == 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700',
+                            v.whatToDo.$error ? 'shadowRed' : '',
+                        ]"
                         class="appearance-none block w-full border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="whatDo"
                         name="whatDo"
                         :disabled="isGold == 0"
-                        v-model="dataObj.whatToDo"
+                        v-model="dataObj[1]"
                     >
                         <option value="" disabled selected hidden>Choose action...</option>
                         <option value="reject">Reject</option>
@@ -36,11 +37,12 @@
                     >Maximum number of assignments (project default: {{ min }}):</label
                 >
                 <input
-                    :class="
+                    :class="[
                         isGold == 0 || dataObj.whatToDo != 'reject'
                             ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-                            : 'bg-gray-100 text-gray-700'
-                    "
+                            : 'bg-gray-100 text-gray-700',
+                        v.assignNumber.$error ? 'shadowRed' : '',
+                    ]"
                     class="appearance-none block w-full border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="assNumber"
                     name="assNumber"
@@ -51,7 +53,7 @@
                     placeholder="1"
                     :disabled="isGold == 0 || dataObj.whatToDo != 'reject'"
                     required
-                    v-model="dataObj.assignNumber"
+                    v-model="dataObj[0]"
                 />
             </div>
         </div>
@@ -62,18 +64,19 @@
 export default {
     name: 'thirdPart',
     props: {
-        thirdPartData: Object,
+        thirdPartData: Array,
         isGold: Number,
+        v: Object,
     },
     data() {
         return {
-            dataObj: {},
+            dataObj: [],
             min: 0,
         }
     },
     created() {
         this.dataObj = this.thirdPartData
-        this.min = this.thirdPartData.assignNumber
+        this.min = this.thirdPartData[0]
     },
     methods: {
         update() {

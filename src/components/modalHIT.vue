@@ -19,12 +19,12 @@
                         </svg>
                     </div>
                     <div v-if="baseDataStatus == 0">
-                        <p class="text-red-500 text-md px-3 py-2">Base CSV hasn't been uploaded</p>
+                        <p class="text-red-500 text-md py-2">Base CSV hasn't been uploaded</p>
                     </div>
                     <div v-if="goldDataStatus == 0">
-                        <p class="text-teal-500 text-md px-3 py-2">Golden standard CSV hasn't been uploaded</p>
+                        <p class="text-teal-500 text-md py-2">Golden standard CSV hasn't been uploaded</p>
                     </div>
-                    <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2">
+                    <div class="flex flex-col sm:flex-row items-center content-center w-full py-2">
                         <h2 class="block tracking-wide text-gray-900 text-md font-bold mr-2">Shuffle base CSV data:</h2>
                         <label class="inline-flex content-center items-center mr-0 sm:mr-2">
                             <input
@@ -52,16 +52,17 @@
                             <span class="ml-2 text-gray-700">No</span>
                         </label>
                     </div>
-                    <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2">
+                    <div class="flex flex-col sm:flex-row items-center content-center w-full py-2">
                         <label class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2" for="gold"
                             >Golden data per HIT:</label
                         >
                         <input
-                            :class="
+                            :class="[
                                 goldDataStatus == 0 || baseDataStatus == 0
                                     ? 'cursor-not-allowed bg-gray-400 text-gray-800 '
-                                    : ' bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500'
-                            "
+                                    : ' bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500',
+                                $v.goldNum.$error ? 'shadowRed' : '',
+                            ]"
                             class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4"
                             id="gold"
                             type="number"
@@ -73,7 +74,7 @@
                             required
                         />
                     </div>
-                    <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2">
+                    <div class="flex flex-col sm:flex-row items-center content-center w-full py-2">
                         <h2 class="block tracking-wide text-gray-900 text-md font-bold mr-2">Shuffle gold CSV data:</h2>
                         <label class="inline-flex content-center items-center mr-0 sm:mr-2">
                             <input
@@ -101,26 +102,28 @@
                             <span class="ml-2 text-gray-700">No</span>
                         </label>
                     </div>
-                    <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2 mb-2">
+                    <div class="flex flex-col sm:flex-row items-center content-center w-full py-2 mb-2">
                         <label class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2" for="action"
-                            >Action for the leftover HITs:</label
+                            >Action for the leftover records:</label
                         >
                         <div class="relative mt-1 sm:mt-0 sm:ml-2">
                             <select
-                                :class="
+                                :class="[
                                     goldDataStatus == 0 || baseDataStatus == 0
                                         ? 'cursor-not-allowed bg-gray-400 text-gray-800'
-                                        : 'bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500'
-                                "
+                                        : 'bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500',
+                                    $v.leftover.$error ? 'shadowRed' : '',
+                                ]"
                                 class="block border border-gray-200 appearance-none w-full py-2 pl-2 pr-8 rounded"
                                 id="action"
                                 name="action"
-                                v-model="leftover"
+                                v-model.trim="$v.leftover.$model"
+                                required
                                 :disabled="goldDataStatus == 0 || baseDataStatus == 0"
                             >
                                 <option value="" disabled selected hidden>Choose action...</option>
                                 <option value="no_use">Don't use</option>
-                                <option value="reuse">Reuse previous gold</option>
+                                <option value="reuse">Fill last HIT with previous training</option>
                             </select>
                             <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
                                 <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -131,7 +134,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="px-3 py-1">
+                    <div class="py-1">
                         <p class="font-light italic">You'll be able to revert these changes and re-upload your files</p>
                     </div>
                     <div class="ml-auto flex flex-col xs2:flex-row justify-end flex-wrap">
@@ -164,6 +167,8 @@
 <script>
 import axios from 'axios'
 const { required } = require('vuelidate/lib/validators')
+const notEmpty = value => value != ''
+
 export default {
     name: 'modalHIT',
     props: {
@@ -173,7 +178,7 @@ export default {
     },
     data() {
         return {
-            goldNum: 0,
+            goldNum: this.$store.state.defaults.gold_data_per_hit,
             leftover: '',
             shuffleBase: 1,
             shuffleGold: 1,
@@ -184,6 +189,9 @@ export default {
         return {
             goldNum: {
                 required,
+            },
+            leftover: {
+                notEmpty,
             },
         }
     },
@@ -205,38 +213,41 @@ export default {
             }
         },
         confirm() {
-            this.loading = true
-            var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
-            var deleteExceedingValues = 0
-            if (this.leftover == 'no_use') {
-                deleteExceedingValues = 1
+            this.$v.$touch()
+            if (!this.$v.$invalid) {
+                this.loading = true
+                var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
+                var deleteExceedingValues = 0
+                if (this.leftover == 'no_use') {
+                    deleteExceedingValues = 1
+                }
+                axios({
+                    method: 'post',
+                    url: url,
+                    data: {
+                        toStatus: 1,
+                        goldSize: this.goldNum,
+                        deleteExceedingValues: deleteExceedingValues,
+                        shuffleData: this.shuffleBase,
+                        shuffleGold: this.shuffleGold,
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                })
+                    .then(response => {
+                        console.log(response.data)
+                        if (response.data.result == 'OK') {
+                            this.$emit('hitCreated', 'HIT setup completed')
+                            this.toggleModal('close')
+                        } else {
+                            this.toggleModal('close')
+                            this.$emit('hitCreated', 'Error: ' + response.data.error)
+                        }
+                        this.loading = false
+                    })
+                    .catch(() => {
+                        this.toggleModal('error')
+                    })
             }
-            axios({
-                method: 'post',
-                url: url,
-                data: {
-                    toStatus: 1,
-                    goldSize: this.goldNum,
-                    deleteExceedingValues: deleteExceedingValues,
-                    shuffleData: this.shuffleBase,
-                    shuffleGold: this.shuffleGold,
-                },
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            })
-                .then(response => {
-                    console.log(response.data)
-                    if (response.data.result == 'OK') {
-                        this.$emit('hitCreated', 'HIT setup completed')
-                        this.toggleModal('close')
-                    } else {
-                        this.toggleModal('close')
-                        this.$emit('hitCreated', 'Error: ' + response.data.error)
-                    }
-                    this.loading = false
-                })
-                .catch(() => {
-                    this.toggleModal('error')
-                })
         },
     },
     beforeDestroy() {

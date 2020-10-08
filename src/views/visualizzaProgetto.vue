@@ -422,7 +422,7 @@ export default {
         },
         //for when an action gets completed (success or error)
         uploaded(msg) {
-            if (msg[2] != undefined) {
+            if (Array.isArray(msg)) {
                 if (msg[2] == 'Upload completed') {
                     if (msg[0] == 'std') {
                         this.toggleModal('std')
@@ -433,6 +433,8 @@ export default {
                 } else {
                     this.$emit('snackbar', msg[2])
                 }
+            } else {
+                this.$emit('snackbar', msg)
             }
             this.loading = true
             this.getDatiPrj()

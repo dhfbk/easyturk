@@ -46,6 +46,7 @@
                         :thirdPartData="thirdPartData"
                         @updateArr="updateArr('third')"
                         :isGold="parseInt(project.count_gold)"
+                        :v="$v"
                     />
 
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
@@ -79,6 +80,9 @@ import firstPart from '../components/firstPartLayoutModal.vue'
 import secondPart from '../components/secondPartLayoutModal.vue'
 import thirdPart from '../components/thirdPartLayoutModal.vue'
 import axios from 'axios'
+const { required, between } = require('vuelidate/lib/validators')
+const notEmpty = value => value != ''
+
 export default {
     name: 'modalLayout',
     props: { project: Object },
@@ -110,9 +114,18 @@ export default {
                     varValueTo: '',
                 },
             ],
-            thirdPartData: {
-                assignNumber: this.project.workers,
-                whatToDo: '',
+            assignNumber: this.project.workers,
+            whatToDo: this.$store.state.defaults.gold_wrong,
+        }
+    },
+    validations() {
+        return {
+            assignNumber: {
+                required,
+                between: between(this.project.workers, 5),
+            },
+            whatToDo: {
+                notEmpty,
             },
         }
     },
@@ -126,33 +139,36 @@ export default {
             }
         },
         submit() {
-            var url = this.APIURL + '?action=updateProjectStatus'
-            axios({
-                method: 'post',
-                url: url,
-                data: {
-                    id: this.project.id,
-                    toStatus: 2,
-                    layoutData: this.firstPartData,
-                    answerData: this.secondPartData,
-                    assignNumber: this.thirdPartData.assignNumber,
-                    whatToDo: this.thirdPartData.whatToDo,
-                },
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            })
-                .then(response => {
-                    console.log(response.data)
-                    if (response.result == 'ERR') {
-                        this.$emit('snackbar', 'Error: ' + response.error)
-                    } else {
-                        this.$emit('snackbar', 'Layout successfully set.')
-                        this.toggleModal()
-                    }
+            this.$v.$touch()
+            if (!this.$v.$invalid) {
+                var url = this.APIURL + '?action=updateProjectStatus'
+                axios({
+                    method: 'post',
+                    url: url,
+                    data: {
+                        id: this.project.id,
+                        toStatus: 2,
+                        layoutData: this.firstPartData,
+                        answerData: this.secondPartData,
+                        assignNumber: this.thirdPartData[0],
+                        whatToDo: this.thirdPartData[1],
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
-                .catch(err => {
-                    this.$emit('snackbar', 'Error: connection error')
-                    console.log(err)
-                })
+                    .then(response => {
+                        console.log(response.data)
+                        if (response.result == 'ERR') {
+                            this.$emit('snackbar', 'Error: ' + response.error)
+                        } else {
+                            this.$emit('snackbar', 'Layout successfully set.')
+                            this.toggleModal()
+                        }
+                    })
+                    .catch(err => {
+                        this.$emit('snackbar', 'Error: connection error')
+                        console.log(err)
+                    })
+            }
         },
         getCsvFields() {
             var url = this.APIURL + '?action=getData&id=' + this.project.id + '&howMany=1&page=1&isGold=0'
@@ -208,7 +224,8 @@ export default {
             } else if (type == 'second') {
                 this.secondPartData = arr
             } else if (type == 'third') {
-                this.thirdPartData = arr
+                this.assignNumber = arr[0]
+                this.whatToDo = arr[1]
             }
         },
     },
@@ -218,6 +235,9 @@ export default {
     computed: {
         splitFields: function() {
             return this.project.layout_fields.replace(/\s/g, '').split(',')
+        },
+        thirdPartData() {
+            return [this.assignNumber, this.whatToDo]
         },
     },
     beforeDestroy() {

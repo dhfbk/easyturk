@@ -191,7 +191,7 @@
         </div>
         <div v-else-if="mode == 'status'">
             <span class="font-bold tracking-tight">Status:</span>
-            <span class="flex flex-col justify-between buttonsData items-end">
+            <span class="flex flex-col justify-between buttonsData items-start">
                 <span v-if="projectData.status == 0 && projectData.numData > 0">
                     <span class="text-green-500">data uploaded. </span>Ready to
                     <span class="font-bold text-primary"> create HITs.</span>
@@ -220,7 +220,7 @@
                 </span>
                 <button
                     @click="$emit('modal', 'instructions')"
-                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-300 rounded focus:outline-none transition duration-150"
+                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-300 rounded focus:outline-none transition duration-150 self-end"
                 >
                     Need help?
                 </button>

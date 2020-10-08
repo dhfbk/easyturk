@@ -304,13 +304,13 @@
             <div class="w-full lg:w-auto px-3 mb-4">
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="layoutId">Layout ID</label>
                 <input
-                    :class="status != 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="layoutId"
                     type="text"
                     placeholder="Layout ID"
                     maxlength="255"
-                    :disabled="status != 0"
+                    :disabled="status > 1"
                     v-model.trim="$v.layout_id.$model"
                     required
                 />
@@ -323,14 +323,14 @@
                     >Number of examples per HIT</label
                 >
                 <input
-                    :class="status != 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="parametri"
                     type="number"
                     min="1"
                     step="1"
                     placeholder="1"
-                    :disabled="status != 0"
+                    :disabled="status > 1"
                     v-model.trim="$v.params.$model"
                     required
                 />
@@ -340,11 +340,11 @@
                     >Params fields</label
                 >
                 <input
-                    :class="status != 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="params_fields"
                     type="text"
-                    :disabled="status != 0"
+                    :disabled="status > 1"
                     v-model.trim="$v.params_fields.$model"
                     required
                 />
@@ -624,7 +624,7 @@ export default {
             }
         },
         goBack() {
-            this.$router.push('/')
+            this.$router.go(-1)
         },
         // goHome() {
         //     var msg
