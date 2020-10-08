@@ -33,7 +33,7 @@
             </div>
             <div class="flex flex-col w-full content-center items-center mt-1 md:mt-0 md:ml-2">
                 <label for="assNumber" class="font-semibold text-sm md:mr-0 text-left w-full"
-                    >Maximum number of assignments (in the project it's {{ min }}):</label
+                    >Maximum number of assignments (project default: {{ min }}):</label
                 >
                 <input
                     :class="

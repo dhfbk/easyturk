@@ -2,8 +2,16 @@
     <div class="home mx-2 xs2:mx-4 md:mx-16 pt-2 pb-6 overflow-x-hidden">
         <p class="text-3xl sm:text-5xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
         <modalEliminazione v-if="modalElim" @deleteModal="toggleModal" @deleted="deleted" :id="modalId" />
-        <modalUpload v-if="modalStd" @uploadModal="toggleModal" :type="'std'" :id="modalId" />
-        <modalUpload v-if="modalGld" @uploadModal="toggleModal" :type="'gld'" :id="modalId" />
+        <modalUpload v-if="modalStd" @uploadModal="toggleModal" @uploaded="toggleModal" :type="'std'" :id="modalId" />
+        <modalUpload v-if="modalGld" @uploadModal="toggleModal" @uploaded="toggleModal" :type="'gld'" :id="modalId" />
+        <modalLaunch
+            v-if="modalLaunch"
+            @launchModal="toggleModal(['launch', ''])"
+            :id="modalId"
+            :hitsSubmitted="hitsSubmitted"
+            :hitsTotal="hitsTotal"
+            @launched="launched"
+        />
         <!--sistemare per i due valori del csv-->
         <modalHit
             v-if="modalHIT"
@@ -64,6 +72,7 @@
                             @upload="toggleModal"
                             @createHit="toggleModal"
                             @layoutModal="toggleModal"
+                            @launchModal="toggleModal"
                             @snackbar="uploaded"
                         />
                     </div>
@@ -128,6 +137,7 @@ import modalUpload from '../components/modalUpload.vue'
 import modalHit from '../components/modalHIT.vue'
 import modalLayout from '../components/modalLayout.vue'
 import loader from '../components/loader.vue'
+import modalLaunch from '../components/modalLaunch.vue'
 import axios from 'axios'
 
 export default {
@@ -139,6 +149,7 @@ export default {
         modalUpload,
         modalHit,
         modalLayout,
+        modalLaunch,
         loader,
     },
     data() {
@@ -152,6 +163,7 @@ export default {
             modalHIT: false,
             modalRevert: false,
             modalLayout: false,
+            modalLaunch: false,
             loading: true,
             loadingProjects: true,
             loadingOther: true,
@@ -159,6 +171,8 @@ export default {
             dataPresent: 0,
             project: null,
             isError: /\bError\b/,
+            hitsSubmitted: 0,
+            hitsTotal: 0,
         }
     },
 
@@ -250,6 +264,21 @@ export default {
                 this.modalElim = !this.modalElim
             } else if (arr[0] == 'layout') {
                 this.modalLayout = !this.modalLayout
+            } else if (arr[0] == 'launch') {
+                if (arr[1] != '') {
+                    var self = this
+                    var launch = this.projects.find(function(el) {
+                        return el.id == self.modalId
+                    })
+                    this.hitsSubmitted = parseInt(launch.hits_submitted)
+                    this.hitsTotal = parseInt(launch.hits_total)
+                    console.log(launch)
+                }
+                if (this.hitsTotal == this.hitsSubmitted) {
+                    this.$emit('snackbar', 'All HITs have already been submitted', '')
+                } else {
+                    this.modalLaunch = !this.modalLaunch
+                }
             } else {
                 this.modalHIT = !this.modalHIT
                 this.modalId = arr[0]
@@ -261,6 +290,9 @@ export default {
             if (this.modalLayout) {
                 this.getProject(arr[1])
             }
+        },
+        launched(msg) {
+            this.uploaded(msg)
         },
         reloadAfterHIT(msg) {
             this.uploaded(msg)

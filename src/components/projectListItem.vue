@@ -117,7 +117,7 @@
                     >Upload gold csv</span
                 >
             </span>
-            <span class="tooltip relative">
+            <span class="tooltip relative" v-if="projectData.status < 3">
                 <button
                     @click.stop="
                         $router.push({
@@ -141,7 +141,7 @@
                     >Edit</span
                 >
             </span>
-            <span class="tooltip relative">
+            <span class="tooltip relative" v-if="projectData.status < 3">
                 <button
                     @click.stop="deleteItem()"
                     class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
@@ -221,7 +221,7 @@
                     </div>
                 </transition>
             </span>
-            <button
+            <!-- <button
                 class="bg-white ripple-light py-2 px-2 m-1 rounded focus:outline-none"
                 @click.stop="isOpen = !isOpen"
                 v-if="projectData.status == 3"
@@ -238,7 +238,7 @@
                     <path d="M0 0h24v24H0V0z" fill="none" />
                     <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
                 </svg>
-            </button>
+            </button> -->
             <!-- <span
                 class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1"
                 v-if="projectData.status == 0 && baseCsvStatus == 1 && goldCsvStatus == 0"
@@ -274,7 +274,7 @@
                 </span>
             </span> -->
         </span>
-        <transition name="slide-toggle">
+        <!-- <transition name="slide-toggle">
             <div v-if="isOpen" class="content w-full flex flex-wrap justify-center relative">
                 <vue-ellipse-progress
                     :progress="(40 * 100) / 200"
@@ -329,7 +329,7 @@
                     </svg>
                 </button>
             </div>
-        </transition>
+        </transition> -->
     </div>
 </template>
 
@@ -430,6 +430,9 @@ export default {
         },
         layout() {
             this.$emit('layoutModal', ['layout', this.projectData.id])
+        },
+        launch() {
+            this.$emit('launchModal', ['launch', this.projectData.id])
         },
         refresh() {
             console.log('refreshing...')

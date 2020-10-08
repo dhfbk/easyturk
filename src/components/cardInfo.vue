@@ -16,7 +16,7 @@
                             </div>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
-                            <span class="tooltip relative">
+                            <span class="tooltip relative" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'std')"
                                     class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 mr-2 focus:outline-none flex items-center justify-center"
@@ -62,7 +62,7 @@
                             <span>Data:&nbsp;</span><span class="text-red-500"> not uploaded</span>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
-                            <span class="tooltip relative">
+                            <span class="tooltip relative" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'std')"
                                     class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 mr-2 focus:outline-none flex items-center justify-center"
@@ -99,7 +99,7 @@
                             </div>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
-                            <span class="tooltip relative">
+                            <span class="tooltip relative" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'gld')"
                                     :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
@@ -155,7 +155,7 @@
                             <span>Gold:&nbsp;</span><span class="text-red-500"> not uploaded</span>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
-                            <span class="tooltip relative">
+                            <span class="tooltip relative" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'gld')"
                                     :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
@@ -214,7 +214,8 @@
                     <span class="font-bold text-primary"> publish the project!</span>
                 </span>
                 <span v-if="projectData.status == 3">
-                    <span class="text-green-500">Project has been launched and is now available to the Workers. </span>You can now launch other HITs (if you haven't launched them all) or
+                    <span class="text-green-500">Project has been launched and is now available to the Workers. </span
+                    >You can now launch other HITs (if you haven't launched them all) or
                     <span class="font-bold text-primary"> check the results </span> from the Workers' job.
                 </span>
                 <button
