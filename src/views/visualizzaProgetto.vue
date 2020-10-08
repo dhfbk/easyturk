@@ -31,11 +31,11 @@
         <div class="flex justify-between items-center flex-wrap" v-if="!loading">
             <h1 class="text-2xl mb-4 text-primary">{{ project.name }}</h1>
             <div class="w-full sm:w-auto flex relative justify-between content-center items-center">
-                <span class="tooltip relative">
+                <span class="tooltip relative" v-if="project.status >= 2">
                     <button
-                        v-if="project.status >= 2"
                         @click="toggleModal('launch')"
                         type="submit"
+                        :class="{ 'cursor-not-allowed': hitsSubmitted == hitsTotal }"
                         class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
@@ -56,9 +56,8 @@
                         Launch other HITs
                     </span>
                 </span>
-                <span class="tooltip relative">
+                <span class="tooltip relative" v-if="project.status == 1">
                     <button
-                        v-if="project.status == 1"
                         @click="toggleModal('layout')"
                         type="submit"
                         class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
@@ -74,9 +73,8 @@
                         >Set layout</span
                     >
                 </span>
-                <span class="tooltip relative">
+                <span class="tooltip relative" v-if="project.status == 0">
                     <button
-                        v-if="project.status == 0"
                         :class="{ 'cursor-not-allowed': project.numData == 0 }"
                         @click="toggleModal('hit')"
                         type="submit"
@@ -93,9 +91,14 @@
                         >Create HITs</span
                     >
                 </span>
-                <span class="tooltip relative">
+                <span
+                    class="tooltip relative"
+                    v-if="
+                        (project.status >= 1 && project.status != 3) ||
+                            (project.status == 3 && $store.state.isSandbox == true)
+                    "
+                >
                     <button
-                        v-if="project.status >= 1 && project.status != 3"
                         @click="toggleModal('revert')"
                         type="submit"
                         class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
@@ -111,9 +114,8 @@
                         >Revert HIT settings</span
                     >
                 </span>
-                <span class="tooltip relative">
+                <span class="tooltip relative" v-if="project.status != 3">
                     <button
-                        v-if="project.status != 3"
                         @click="$router.push({ name: 'edit', params: { projectId: id } })"
                         type="submit"
                         class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
@@ -129,7 +131,7 @@
                         >Edit</span
                     >
                 </span>
-                <span class="tooltip relative">
+                <span class="tooltip relative" v-if="project.status != 3">
                     <button
                         @click="toggleModal('delete')"
                         type="submit"
@@ -230,6 +232,7 @@
                                 >Results</router-link
                             >
                             <a
+                                v-if="project.status != 3"
                                 class="cursor-pointer block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 @click="toggleModal('delete')"
                                 >Delete</a
@@ -239,7 +242,7 @@
                                     name: 'edit',
                                     params: { projectId: id },
                                 }"
-                                :class="project.status == 0 && project.status != 3 ? '' : 'rounded-b-md'"
+                                :class="project.status >= 0 && project.status != 3 ? '' : 'rounded-b-md'"
                                 class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
                                 >Edit</router-link
                             >
@@ -404,7 +407,15 @@ export default {
             } else if (mode == 'instructions') {
                 this.modalInstructions = !this.modalInstructions
             } else if (mode == 'launch') {
-                this.modalLaunch = !this.modalLaunch
+                if (this.hitsSubmitted == this.hitsTotal) {
+                    this.$emit(
+                        'snackbar',
+                        'All HITs have already been submitted',
+                        ''
+                    )
+                } else {
+                    this.modalLaunch = !this.modalLaunch
+                }
             }
             this.hide()
         },

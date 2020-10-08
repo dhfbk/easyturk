@@ -408,11 +408,7 @@ export default {
                     'noSnack',
                 ])
             } else if (type == 'gld' && this.baseCsvStatus == 0) {
-                this.$emit(
-                    'snackbar',
-                    'Warning. To upload the gold CSV, you first have to uplaod the standard.',
-                    'noSnack'
-                )
+                this.$emit('snackbar', 'Warning. To upload the gold CSV, you first have to uplaod the standard.', '')
             } else if (type == 'gld' && this.baseCsvStatus == 1) {
                 this.$emit('upload', [
                     type,

@@ -103,31 +103,34 @@ export default {
             }
         },
         submit() {
-            this.loading = true
-            var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
-            axios({
-                method: 'post',
-                url: url,
-                data: {
-                    toStatus: 3,
-                    num: this.hitNum,
-                },
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            })
-                .then(response => {
-                    console.log(response.data)
-                    if (response.data.result == 'OK') {
-                        this.$emit('launched', 'Project launched successfully!')
-                        this.toggleModal('close')
-                    } else {
-                        this.toggleModal('close')
-                        this.$emit('launched', 'Error: ' + response.data.error)
-                    }
-                    this.loading = false
+            this.$v.$touch()
+            if (!this.$v.$invalid) {
+                this.loading = true
+                var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
+                axios({
+                    method: 'post',
+                    url: url,
+                    data: {
+                        toStatus: 3,
+                        num: this.hitNum,
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
-                .catch(() => {
-                    this.toggleModal('launched')
-                })
+                    .then(response => {
+                        console.log(response.data)
+                        if (response.data.result == 'OK') {
+                            this.$emit('launched', 'Project launched successfully!')
+                            this.toggleModal('close')
+                        } else {
+                            this.toggleModal('close')
+                            this.$emit('launched', 'Error: ' + response.data.error)
+                        }
+                        this.loading = false
+                    })
+                    .catch(() => {
+                        this.toggleModal('launched')
+                    })
+            }
         },
     },
 }
