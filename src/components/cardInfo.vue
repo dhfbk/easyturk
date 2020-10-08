@@ -12,13 +12,13 @@
                             </div>
                             <div>
                                 <span>Rows:&nbsp;</span>
-                                <span>{{ this.projectData.numData }}</span>
+                                <span>{{ projectData.numData }}</span>
                             </div>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <span class="tooltip relative">
                                 <button
-                                    @click="$emit('modal', 'base')"
+                                    @click="$emit('modal', 'std')"
                                     class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 mr-2 focus:outline-none flex items-center justify-center"
                                 >
                                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -56,7 +56,33 @@
                         </span>
                     </div>
                 </span>
-                <span v-else><span>Data:&nbsp;</span><span class="text-red-500"> not uploaded</span></span>
+                <span v-else>
+                    <div class="flex flex-row flex-wrap justify-between content-center items-center csvData">
+                        <span class="mr-2">
+                            <span>Data:&nbsp;</span><span class="text-red-500"> not uploaded</span>
+                        </span>
+                        <span class="flex flex-row buttonsData justify-center">
+                            <span class="tooltip relative">
+                                <button
+                                    @click="$emit('modal', 'std')"
+                                    class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 mr-2 focus:outline-none flex items-center justify-center"
+                                >
+                                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                        <path
+                                            fill="rgba(26, 32, 44, 1)"
+                                            d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M12,17V15H7V17H12M17,11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11M17,9V7H7V9H17Z"
+                                        />
+                                    </svg>
+                                </button>
+                                <span
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                                >
+                                    Upload standard csv
+                                </span>
+                            </span>
+                        </span>
+                    </div>
+                </span>
             </div>
             <hr />
             <div class="mt-1">
@@ -69,13 +95,14 @@
                             </div>
                             <div>
                                 <span>Rows:&nbsp;</span>
-                                <span>{{ this.projectData.numGold }}</span>
+                                <span>{{ projectData.numGold }}</span>
                             </div>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <span class="tooltip relative">
                                 <button
                                     @click="$emit('modal', 'gld')"
+                                    :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
                                     class="ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 mr-2 focus:outline-none flex items-center justify-center"
                                 >
                                     <svg
@@ -122,12 +149,49 @@
                         </span>
                     </div>
                 </span>
-                <span v-else><span>Gold:&nbsp;</span><span class="text-red-500"> not uploaded</span></span>
+                <span v-else>
+                    <div class="flex flex-row flex-wrap justify-between content-center items-center csvData">
+                        <span class="mr-2">
+                            <span>Gold:&nbsp;</span><span class="text-red-500"> not uploaded</span>
+                        </span>
+                        <span class="flex flex-row buttonsData justify-center">
+                            <span class="tooltip relative">
+                                <button
+                                    @click="$emit('modal', 'gld')"
+                                    :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
+                                    class="ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 mr-2 focus:outline-none flex items-center justify-center"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        style="width:24px; height:24px;"
+                                    >
+                                        <path
+                                            fill="rgba(26, 32, 44, 1)"
+                                            d="m11.99806,14.99892l-5,0l0,2l5,0m5,-6l-10,0l0,2l7.69,0c-1.62,1.07 -2.69,2.91 -2.69,5c0,1.09 0.29,2.12 0.8,3l-7.8,0c-1.11,0 -2,-0.9 -2,-2l0,-14c0,-1.11 0.89,-2 2,-2l14,0a2,2 0 0 1 2,2l0,7.8c-0.88,-0.51 -1.91,-0.8 -3,-0.8l-1,0.08l0,-1.08m0,-2l0,-2l-10,0l0,2"
+                                        />
+                                        <g>
+                                            <path
+                                                fill="rgba(26, 32, 44, 1)"
+                                                d="m15.75665,19.4418l1.01849,0c0,0.54999 0.69767,1.01849 1.52774,1.01849c0.83007,0 1.52774,-0.46851 1.52774,-1.01849c0,-0.56017 -0.52962,-0.76387 -1.64996,-1.03377c-1.0796,-0.2699 -2.42402,-0.606 -2.42402,-2.02171c0,-0.91155 0.74859,-1.68561 1.78237,-1.94532l0,-1.11016l1.52774,0l0,1.11016c1.03377,0.25972 1.78237,1.03377 1.78237,1.94532l-1.01849,0c0,-0.54999 -0.69767,-1.01849 -1.52774,-1.01849c-0.83007,0 -1.52774,0.46851 -1.52774,1.01849c0,0.56017 0.52962,0.76387 1.64996,1.03377c1.0796,0.2699 2.42402,0.606 2.42402,2.02171c0,0.91155 -0.74859,1.68561 -1.78237,1.94532l0,1.11016l-1.52774,0l0,-1.11016c-1.03377,-0.25972 -1.78237,-1.03377 -1.78237,-1.94532z"
+                                            />
+                                        </g>
+                                    </svg>
+                                </button>
+                                <span
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                                >
+                                    Upload gold csv
+                                </span>
+                            </span>
+                        </span>
+                    </div>
+                </span>
             </div>
         </div>
         <div v-else-if="mode == 'status'">
             <span class="font-bold tracking-tight">Status:</span>
-            <span class="flex flex-col xl:flex-row justify-between items-center">
+            <span class="flex flex-col justify-between buttonsData items-end">
                 <span v-if="projectData.status == 0 && projectData.numData > 0">
                     <span class="text-green-500">data uploaded. </span>Ready to
                     <span class="font-bold text-primary"> create HITs.</span>
@@ -149,9 +213,13 @@
                     <span class="text-green-500">HIT layout set. </span>Ready to finally
                     <span class="font-bold text-primary"> publish the project!</span>
                 </span>
+                <span v-if="projectData.status == 3">
+                    <span class="text-green-500">Project has been launched and is now available to the Workers. </span>You can now launch other HITs (if you haven't launched them all) or
+                    <span class="font-bold text-primary"> check the results </span> from the Workers' job.
+                </span>
                 <button
                     @click="$emit('modal', 'instructions')"
-                    class="ripple px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded focus:outline-none transition duration-150"
+                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-300 rounded focus:outline-none transition duration-150"
                 >
                     Need help?
                 </button>
@@ -247,6 +315,7 @@ export default {
     .buttonsData {
         margin: 0 auto;
         width: 100%;
+        align-items: center;
     }
 }
 </style>

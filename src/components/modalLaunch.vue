@@ -6,7 +6,7 @@
             <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto">
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
-                        <div class="text-gray-900 font-bold text-lg">{{title}}</div>
+                        <div class="text-gray-900 font-bold text-lg">{{ title }}</div>
                         <svg
                             class="ml-auto fill-current text-gray-700 w-6 h-6 rounded ripple hover:bg-gray-300 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
@@ -18,9 +18,11 @@
                             />
                         </svg>
                     </div>
-
+                    <p class="w-full px-3 italic">You have {{ hitMax }} HITs left.</p>
                     <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2">
-                        <label class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2" for="hitNum"
+                        <label
+                            class="block tracking-wide text-gray-900 text-md font-bold mb-2 sm:mb-0 mr-2"
+                            for="hitNum"
                             >How many HITs do you want to launch?</label
                         >
                         <input
@@ -28,6 +30,7 @@
                             id="hitNum"
                             type="number"
                             min="1"
+                            :max="hitMax"
                             step="1"
                             placeholder="100"
                             v-model.trim="$v.hitNum.$model"
@@ -63,21 +66,31 @@
 
 <script>
 //sistemare il numero max di hit da mandare con tot - submitted (probabilmente ricevuto via props), sistemare vuelidate per il max, chiamata del submit da testare
-const { required } = require('vuelidate/lib/validators')
+const { required, between } = require('vuelidate/lib/validators')
 import axios from 'axios'
 export default {
     name: 'modalLaunch',
     data() {
         return {
-            hitNum: 0,
+            hitNum: 1,
+            hitMax: 0,
             loading: false,
-            title: "Final settings"
+            title: 'Set HITs to be launched',
         }
+    },
+    props: {
+        hitsSubmitted: Number,
+        hitsTotal: Number,
+        id: String,
+    },
+    created() {
+        this.hitMax = parseInt(this.hitsTotal) - parseInt(this.hitsSubmitted)
     },
     validations() {
         return {
             hitNum: {
                 required,
+                between: between(1, this.hitMax),
             },
         }
     },
@@ -90,31 +103,34 @@ export default {
             }
         },
         submit() {
-            this.loading = true
-            var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
-            axios({
-                method: 'post',
-                url: url,
-                data: {
-                    toStatus: 3,
-                    num: this.hitNum
-                },
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            })
-                .then(response => {
-                    console.log(response.data)
-                    if (response.data.result == 'OK') {
-                        this.$emit('lanched', 'Project launched successfully!')
-                        this.toggleModal('close')
-                    } else {
-                        this.toggleModal('close')
-                        this.$emit('lanched', 'Error: ' + response.data.error)
-                    }
-                    this.loading = false
+            this.$v.$touch()
+            if (!this.$v.$invalid) {
+                this.loading = true
+                var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
+                axios({
+                    method: 'post',
+                    url: url,
+                    data: {
+                        toStatus: 3,
+                        num: this.hitNum,
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
-                .catch(() => {
-                    this.toggleModal('lanched')
-                })
+                    .then(response => {
+                        console.log(response.data)
+                        if (response.data.result == 'OK') {
+                            this.$emit('launched', 'Project launched successfully!')
+                            this.toggleModal('close')
+                        } else {
+                            this.toggleModal('close')
+                            this.$emit('launched', 'Error: ' + response.data.error)
+                        }
+                        this.loading = false
+                    })
+                    .catch(() => {
+                        this.toggleModal('launched')
+                    })
+            }
         },
     },
 }

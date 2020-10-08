@@ -1,43 +1,33 @@
 <template>
     <div
-        class="rounded shadow-md transition duration-150 my-4 mx-2 p-2 flex items-center flex-wrap bg-white relative"
-        :class="hoverMain ? 'shadow-lg' : ''"
+        class="rounded shadow-md transition duration-150 my-4 mx-2 p-2 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer"
+        @click="openProject"
     >
-        <router-link
-            :to="{
-                name: 'projectView',
-                params: { projectId: projectData.id },
-            }"
-            class="w-full xs2:w-1/2 md:w-2/3 focus:outline-none"
+        <div
+            class="flex contenutoPrj text-center items-center flex-wrap text-md w-full xs2:w-1/2 md:w-2/3 focus:outline-none"
         >
-            <div
-                class="flex contenutoPrj text-center items-center flex-wrap text-lg"
-                @mouseover="hoverMain = true"
-                @mouseleave="hoverMain = false"
-            >
-                <div class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                    <p class="block md:hidden font-bold tracking-tight">Project Id:</p>
-                    <p>{{ projectData.id }}</p>
-                </div>
-                <div class="block w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                    <p class="block md:hidden font-bold tracking-tight">Title:</p>
-                    <p class="overflow-ellipsis">{{ projectData.title }}</p>
-                </div>
-                <div class="hidden lg:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                    <p class="block md:hidden font-bold tracking-tight">Created:</p>
-                    <p>{{ date }}</p>
-                </div>
-                <div class="hidden xl:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                    <p class="block md:hidden font-bold tracking-tight">Last edited:</p>
-                    <p>{{ lastEdited }}</p>
-                </div>
+            <div class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+                <p class="block md:hidden font-bold tracking-tight">Project Id:</p>
+                <p>{{ projectData.id }}</p>
             </div>
-        </router-link>
+            <div class="block w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+                <p class="block md:hidden font-bold tracking-tight">Title:</p>
+                <p class="overflow-ellipsis">{{ projectData.title }}</p>
+            </div>
+            <div class="hidden lg:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+                <p class="block md:hidden font-bold tracking-tight">Created:</p>
+                <p>{{ date }}</p>
+            </div>
+            <div class="hidden xl:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+                <p class="block md:hidden font-bold tracking-tight">Last edited:</p>
+                <p>{{ lastEdited }}</p>
+            </div>
+        </div>
         <span class="flex-grow flex justify-end md:w-1/4">
             <span class="tooltip relative">
                 <button
-                    @click="launch()"
-                    v-if="projectData.status == 2"
+                    @click.stop="launch()"
+                    v-if="projectData.status >= 2"
                     class="ripple hover:bg-blue-600 bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
@@ -53,7 +43,7 @@
             </span>
             <span class="tooltip relative">
                 <button
-                    @click="layout()"
+                    @click.stop="layout()"
                     v-if="projectData.status == 1"
                     class="ripple hover:bg-blue-600 bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
@@ -70,7 +60,7 @@
             </span>
             <span class="tooltip relative">
                 <button
-                    @click="createHIT()"
+                    @click.stop="createHIT()"
                     v-if="projectData.status == 0"
                     :class="{ 'cursor-not-allowed': baseCsvStatus == 0 }"
                     class="ripple hover:bg-blue-600 bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
@@ -88,7 +78,7 @@
             </span>
             <span class="tooltip relative" v-if="projectData.status < 1">
                 <button
-                    @click="upload('std')"
+                    @click.stop="upload('std')"
                     class="tooltip ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -106,7 +96,7 @@
             <span class="tooltip relative" v-if="projectData.status < 1">
                 <button
                     :class="{ 'cursor-not-allowed': baseCsvStatus == 0 }"
-                    @click="upload('gld')"
+                    @click.stop="upload('gld')"
                     class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:24px; height:24px;">
@@ -129,7 +119,7 @@
             </span>
             <span class="tooltip relative">
                 <button
-                    @click="
+                    @click.stop="
                         $router.push({
                             name: 'edit',
                             params: {
@@ -153,7 +143,7 @@
             </span>
             <span class="tooltip relative">
                 <button
-                    @click="deleteItem()"
+                    @click.stop="deleteItem()"
                     class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -171,7 +161,7 @@
             <span v-click-outside="hide" class="md:hidden flex align-center">
                 <button
                     class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded"
-                    @click="dropdown = !dropdown"
+                    @click.stop="dropdown = !dropdown"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                         <path d="M0 0h24v24H0z" fill="none" />
@@ -186,41 +176,45 @@
                         class="absolute right-0 w-40 sm:w-56 bg-white rounded-md shadow-xl z-20 mr-4 mt-12 sm:mr-20"
                     >
                         <a
-                            @click="layout()"
+                            @click.stop="layout()"
                             v-if="projectData.status == 1"
                             :class="projectData.status == 1 ? 'rounded-t-md' : ''"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
                             >Set layout</a
                         >
                         <a
-                            @click="createHIT()"
+                            @click.stop="createHIT()"
                             v-if="projectData.status == 0"
                             :class="projectData.status == 0 ? 'rounded-t-md' : ''"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
                             >Create HITs</a
                         >
                         <a
-                            @click="upload('std')"
+                            @click.stop="upload('std')"
                             v-if="projectData.status < 1"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:rounded-t-md sm:hidden"
                             >Upload data</a
                         >
                         <a
-                            @click="upload('gld')"
+                            @click.stop="upload('gld')"
                             v-if="projectData.status < 1"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white sm:hidden"
                             >Upload Gold</a
                         >
-                        <router-link
-                            :to="{
-                                name: 'edit',
-                                params: { projectId: projectData.id },
-                            }"
+                        <a
+                            @click.stop="
+                                $router.push({
+                                    name: 'edit',
+                                    params: {
+                                        projectId: projectData.id,
+                                    },
+                                })
+                            "
                             class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white sm:rounded-t-md"
-                            >Edit</router-link
+                            >Edit</a
                         >
                         <a
-                            @click="deleteItem()"
+                            @click.stop="deleteItem()"
                             class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
                             >Delete</a
                         >
@@ -229,7 +223,7 @@
             </span>
             <button
                 class="bg-white ripple-light py-2 px-2 m-1 rounded focus:outline-none"
-                @click="isOpen = !isOpen"
+                @click.stop="isOpen = !isOpen"
                 v-if="projectData.status == 3"
             >
                 <svg
@@ -320,7 +314,7 @@
                 </vue-ellipse-progress>
                 <button
                     class="absolute ripple-light bg-white hover:bg-gray-300 py-2 px-2 m-1 rounded focus:outline-none bottom-0 right-0"
-                    @click="refresh()"
+                    @click.stop="refresh()"
                 >
                     <svg
                         style="width:24px;height:24px"
@@ -360,7 +354,6 @@ export default {
             lastEdited: '',
             baseCsvStatus: 0,
             goldCsvStatus: 0,
-            hoverMain: false,
         }
     },
     created() {
@@ -381,6 +374,9 @@ export default {
         //inserire controllo che se il projectData contiene anche il csv per base o gold cambiano i valori baseCsvStatus e goldCsvStatus nei data
     },
     methods: {
+        openProject() {
+            this.$router.push({ name: 'projectView', params: { projectId: this.projectData.id } })
+        },
         setPieSize() {
             if (this.myWidth < 640) {
                 this.pieSize = 120
@@ -409,13 +405,15 @@ export default {
                 this.$emit('upload', [
                     type,
                     this.projectData.id, // this.projectData.count_train, this.projectData.count_gold
+                    'noSnack',
                 ])
             } else if (type == 'gld' && this.baseCsvStatus == 0) {
-                this.$emit('snackbar', 'Warning. To upload the gold CSV, you first have to uplaod the standard.')
+                this.$emit('snackbar', 'Warning. To upload the gold CSV, you first have to uplaod the standard.', '')
             } else if (type == 'gld' && this.baseCsvStatus == 1) {
                 this.$emit('upload', [
                     type,
                     this.projectData.id, // this.projectData.count_train, this.projectData.count_gold
+                    'noSnack',
                 ])
             }
         },

@@ -2,8 +2,8 @@
     <div class="home mx-2 xs2:mx-4 md:mx-16 pt-2 pb-6 overflow-x-hidden">
         <p class="text-3xl sm:text-5xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
         <modalEliminazione v-if="modalElim" @deleteModal="toggleModal" @deleted="deleted" :id="modalId" />
-        <modalUpload v-if="modalStd" @uploaded="uploaded" @uploadModal="toggleModal" :type="'std'" :id="modalId" />
-        <modalUpload v-if="modalGld" @uploaded="uploaded" @uploadModal="toggleModal" :type="'gld'" :id="modalId" />
+        <modalUpload v-if="modalStd" @uploadModal="toggleModal" :type="'std'" :id="modalId" />
+        <modalUpload v-if="modalGld" @uploadModal="toggleModal" :type="'gld'" :id="modalId" />
         <!--sistemare per i due valori del csv-->
         <modalHit
             v-if="modalHIT"
@@ -158,11 +158,13 @@ export default {
             gldPresent: 0,
             dataPresent: 0,
             project: null,
+            isError: /\bError\b/,
         }
     },
 
     created() {
         this.getData()
+        console.log(this.$store.state.defaults)
     },
     methods: {
         getPrjData() {
@@ -226,8 +228,24 @@ export default {
             this.modalId = arr[1]
             if (arr[0] == 'std') {
                 this.modalStd = !this.modalStd
+                if (arr[2] != 'noSnack') {
+                    if (!this.isError.test(arr[2])) {
+                        this.modalStd = false
+                        this.reloadAfterHIT(arr[2])
+                    } else {
+                        this.uploaded(arr[2])
+                    }
+                }
             } else if (arr[0] == 'gld') {
                 this.modalGld = !this.modalGld
+                if (arr[2] != 'noSnack') {
+                    if (!this.isError.test(arr[2])) {
+                        this.modalGld = false
+                        this.reloadAfterHIT(arr[2])
+                    } else {
+                        this.uploaded(arr[2])
+                    }
+                }
             } else if (arr[0] == 'delete') {
                 this.modalElim = !this.modalElim
             } else if (arr[0] == 'layout') {
@@ -244,13 +262,13 @@ export default {
                 this.getProject(arr[1])
             }
         },
-        uploaded(msg) {
-            this.$emit('snackbar', msg)
-        },
         reloadAfterHIT(msg) {
             this.uploaded(msg)
             this.loadingProjects = true
             this.getPrjData()
+        },
+        uploaded(msg) {
+            this.$emit('snackbar', msg)
         },
     },
 }

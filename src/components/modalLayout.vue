@@ -146,11 +146,11 @@ export default {
                         this.$emit('snackbar', 'Error: ' + response.error)
                     } else {
                         this.$emit('snackbar', 'Layout successfully set.')
+                        this.toggleModal()
                     }
-                    this.toggleModal()
                 })
                 .catch(err => {
-                    this.toggleModal()
+                    this.$emit('snackbar', 'Error: connection error')
                     console.log(err)
                 })
         },
