@@ -243,24 +243,24 @@ export default {
                     .then(res => {
                         if (res.data.result != 'ERR') {
                             if (this.type == 'std') {
-                                this.$emit('uploadModal', ['std', '', 'Upload completed'])
+                                this.$emit('uploaded', ['std', '', 'Upload completed'])
                             } else {
-                                this.$emit('uploadModal', ['gld', '', 'Upload completed'])
+                                this.$emit('uploaded', ['gld', '', 'Upload completed'])
                             }
                         } else {
                             if (this.type == 'std') {
-                                this.$emit('uploadModal', ['std', '', 'Error. Try again' + res.data.error])
+                                this.$emit('uploaded', ['std', '', 'Error. Try again' + res.data.error])
                             } else {
-                                this.$emit('uploadModal', ['gld', '', 'Error. Try again' + res.data.error])
+                                this.$emit('uploaded', ['gld', '', 'Error. Try again' + res.data.error])
                             }
                         }
                         this.loading = false
                     })
                     .catch(() => {
                         if (this.type == 'std') {
-                            this.$emit('uploadModal', ['std', '', 'Error. Try again'])
+                            this.$emit('uploaded', ['std', '', 'Error. Try again'])
                         } else {
-                            this.$emit('uploadModal', ['gld', '', 'Error. Try again'])
+                            this.$emit('uploaded', ['gld', '', 'Error. Try again'])
                         }
                     })
             }

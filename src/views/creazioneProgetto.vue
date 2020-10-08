@@ -312,7 +312,7 @@
                     maxlength="255"
                     :disabled="status != 0"
                     v-model.trim="$v.layout_id.$model"
-                    :required="requiredLayout"
+                    required
                 />
                 <p class="text-gray-700 text-xs italic">
                     This is the id of the layout that will be shown to the Worker.
@@ -549,9 +549,6 @@ export default {
                     this.layout_id = res.data.values.layout_id
                     this.params = res.data.values.params
                     this.status = res.data.values.status
-                    if (this.status == 1) {
-                        this.requiredLayout = true
-                    }
                     this.params_fields = res.data.values.params_fields
                     this.elaboraTempoGET('max_time')
                     this.elaboraTempoGET('expiry')
