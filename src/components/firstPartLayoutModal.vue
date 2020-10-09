@@ -7,11 +7,12 @@
             @change="update()"
             :class="first.id != 0 ? 'mt-3' : ''"
         >
-            <div class="flex flex-col xs2:grid xs2:grid-cols-8 xs2:gap-10 md:gap-0 md:flex md:flex-col w-full content-center items-center mt-2 md:mt-0">
+            <div
+                class="flex flex-col xs2:grid xs2:grid-cols-8 xs2:gap-10 md:gap-0 md:flex md:flex-col w-full content-center items-center mt-2 md:mt-0"
+            >
                 <label for="sortBy" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Field:</label>
                 <input
                     class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition duration-150 focus:outline-none"
-                    id="sortBy"
                     name="sortBy"
                     type="text"
                     placeholder="Text"

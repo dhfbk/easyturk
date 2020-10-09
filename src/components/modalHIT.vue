@@ -53,7 +53,7 @@
                         </label>
                     </div>
                     <div class="flex flex-col sm:flex-row items-center content-center w-full py-2">
-                        <label class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2" for="gold"
+                        <label class="block tracking-wide text-gray-900 text-md font-bold  mr-2" for="gold"
                             >Golden data per HIT:</label
                         >
                         <input
@@ -103,7 +103,7 @@
                         </label>
                     </div>
                     <div class="flex flex-col sm:flex-row items-center content-center w-full py-2 mb-2">
-                        <label class="block tracking-wide text-gray-900 text-md font-bold mb-2 mr-2" for="action"
+                        <label class="block tracking-wide text-gray-900 text-md font-bold  mr-2" for="action"
                             >Action for the leftover records:</label
                         >
                         <div class="relative mt-1 sm:mt-0 sm:ml-2">
@@ -272,11 +272,15 @@ export default {
             if (this.leftover == 'no_use') {
                 this.hitInfo = Math.floor(this.baseDataStatus / (this.params - this.goldPerHit))
             } else {
-                this.hitInfo = Math.round(this.baseDataStatus / (this.params - this.goldPerHit))
+                this.hitInfo = Math.ceil(this.baseDataStatus / (this.params - this.goldPerHit))
             }
         },
         goldPerHit: function() {
-            this.hitInfo = Math.floor(this.baseDataStatus / (this.params - this.goldPerHit))
+            if (this.leftover == 'no_use') {
+                this.hitInfo = Math.floor(this.baseDataStatus / (this.params - this.goldPerHit))
+            } else {
+                this.hitInfo = Math.ceil(this.baseDataStatus / (this.params - this.goldPerHit))
+            }
         },
     },
     beforeDestroy() {

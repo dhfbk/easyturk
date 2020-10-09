@@ -42,7 +42,7 @@
                     <thirdPart
                         :thirdPartData="thirdPartData"
                         @updateArr="updateArr('third')"
-                        :isGold="parseInt(project.count_gold)"
+                        :isGold="parseInt(project.numGold)"
                         :v="$v"
                     />
 
@@ -105,6 +105,7 @@ export default {
             ],
             assignNumber: this.project.workers,
             whatToDo: this.$store.state.defaults.gold_wrong,
+            lastChar: /^[a-z|A-Z|0-9]+[^#]\s?#{1}$/,
         }
     },
     computed: {
@@ -131,7 +132,7 @@ export default {
         var tmpObj = {}
         var isFromCsv = false
         for (var i = 0; i < this.splitFields.length; i++) {
-            if (this.splitFields[i].charAt(this.splitFields[i].length - 1) == '#') {
+            if (this.lastChar.test(this.splitFields[i])) {
                 isFromCsv = true
             }
             tmpObj = {
@@ -177,6 +178,7 @@ export default {
                         console.log(response.data)
                         if (response.data.result == 'ERR') {
                             this.$emit('snackbar', 'Error: ' + response.data.error)
+                            console.log(response.data)
                         } else {
                             this.$emit('snackbar', 'Layout successfully set.')
                             this.toggleModal()
