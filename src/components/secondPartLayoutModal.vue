@@ -79,7 +79,7 @@
                 <button
                     class="p-2 ripple rounded-full focus:outline-none hover:bg-gray-300"
                     @click="removeElement('second', second.id)"
-                    :class="second.id != 0 ? '' : 'hidden md:block md:invisible'"
+                    :class="secondPartData.length != 1 ? '' : 'hidden md:block md:invisible'"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24" class="fill-current">
                         <path

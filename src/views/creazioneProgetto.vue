@@ -92,7 +92,7 @@
         </div>
         <hr class="solid mb-4" />
         <div class="-mx-3 md:flex md:flex-col xl:flex-row xl:justify-around">
-            <div class="w-1/2">
+            <div class="w-full xl:w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
                     <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="ricompensa"
                         >Reward per response</label
@@ -139,7 +139,7 @@
                     </p>
                 </div>
             </div>
-            <div class="w-1/2">
+            <div class="w-full xl:w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
                     <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="tempoMax"
                         >Time allotted per Worker</label
@@ -300,27 +300,43 @@
             </div>
         </div>
         <hr class="solid mb-4" />
-        <div class="-mx-3 md:flex md:flex-col lg:flex-row lg:justify-around">
-            <div class="w-full lg:w-auto px-3 mb-4">
+        <div class="-mx-3 md:flex md:flex-col lg:grid lg:grid-cols-3 lg:gap-2">
+            <div class="w-full px-3 mb-4 mx-auto">
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="layoutId">Layout ID</label>
-                <input
-                    :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                    id="layoutId"
-                    type="text"
-                    placeholder="Layout ID"
-                    maxlength="255"
-                    :disabled="status > 1"
-                    v-model.trim="$v.layout_id.$model"
-                    required
-                />
-                <p class="text-gray-700 text-xs italic">
+                <div class="flex content-center items-center flex-wrap relative sm:max-w-xs">
+                    <input
+                        :class="
+                            status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
+                        "
+                        class="relative appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 pl-4 pr-10 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        id="layoutId"
+                        type="text"
+                        placeholder="Layout ID"
+                        maxlength="255"
+                        :disabled="status > 1"
+                        v-model.trim="$v.layout_id.$model"
+                        required
+                    />
+                    <button
+                        @click="downloadLayoutId"
+                        type="button"
+                        class="absolute right-0 bg-transparent py-2 px-2 rounded focus:outline-none"
+                        :class="downloadID ? 'animate-bounce' : ''"
+                    >
+                        <svg style="width:24px;height:24px" viewBox="0 0 24 24" class="transition ease-in-out">
+                            <path
+                                d="M13,5V11H14.17L12,13.17L9.83,11H11V5H13M15,3H9V9H5L12,16L19,9H15V3M19,18H5V20H19V18Z"
+                            />
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-gray-700 text-xs italic mt-2">
                     This is the id of the layout that will be shown to the Worker.
                 </p>
             </div>
-            <div class="w-full lg:w-auto px-3 mb-4">
+            <div class="w-full px-3 mb-4 mx-auto">
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="parametri"
-                    >Number of examples per HIT</label
+                    >Examples per HIT</label
                 >
                 <input
                     :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
@@ -335,7 +351,7 @@
                     required
                 />
             </div>
-            <div class="w-full lg:w-auto px-3 mb-4">
+            <div class="w-full px-3 mb-4 mx-auto">
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="params_fields"
                     >Params fields</label
                 >
@@ -405,6 +421,7 @@ export default {
     name: 'creazioneProgetto',
     data() {
         return {
+            downloadID: false,
             hoverDesc: false,
             id: '',
             name: '',
@@ -527,6 +544,12 @@ export default {
         window.addEventListener('keyup', this.esc)
     },
     methods: {
+        downloadLayoutId(){
+            this.downloadID = true
+            setTimeout(() => {
+                this.downloadID = false
+            }, 3000)
+        },
         esc(event) {
             if (event.keyCode === 27) {
                 this.goBack()

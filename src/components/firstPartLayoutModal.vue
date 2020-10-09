@@ -5,26 +5,20 @@
             v-for="first in dataArr"
             :key="first.id"
             @change="update()"
+            :class="first.id != 0 ? 'mt-3' : ''"
         >
-            <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center items-center">
+            <div class="flex flex-col xs2:grid xs2:grid-cols-8 xs2:gap-10 md:gap-0 md:flex md:flex-col w-full content-center items-center mt-2 md:mt-0">
                 <label for="sortBy" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Field:</label>
-                <div class="relative w-full md:block">
-                    <select
-                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                        name="sortBy"
-                        id="sortBy"
-                        v-model="first.field"
-                        @change="prova"
-                    >
-                        <option value="" disabled selected hidden>Choose field...</option>
-                        <option v-for="item in splitFields" :key="item" :value="item">{{ item }}</option>
-                    </select>
-                    <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
-                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
-                </div>
+                <input
+                    class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition duration-150 focus:outline-none"
+                    id="sortBy"
+                    name="sortBy"
+                    type="text"
+                    placeholder="Text"
+                    maxlength="255"
+                    disabled
+                    v-model="first.field"
+                />
             </div>
             <span class="tooltip relative">
                 <span
@@ -47,12 +41,12 @@
             </span>
 
             <div
-                class="flex flex-col xs2:flex-row md:flex-col w-full content-center items-center"
+                class="flex flex-col xs2:grid xs2:grid-cols-8 xs2:gap-10 md:gap-0 md:flex md:flex-col mt-2 md:mt-0 w-full content-center items-center"
                 v-if="first.isHandWritten"
             >
                 <label for="value" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Value:</label>
                 <input
-                    class="appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 mt-2 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="value"
                     name="value"
                     type="text"
@@ -61,9 +55,12 @@
                     v-model="first.customValue"
                 />
             </div>
-            <div class="flex flex-col xs2:flex-row md:flex-col mt-2 md:mt-0 w-full content-center items-center" v-else>
+            <div
+                class="flex flex-col xs2:grid xs2:grid-cols-8 xs2:gap-10 md:gap-0 md:flex md:flex-col mt-2 md:mt-0 w-full content-center items-center"
+                v-else
+            >
                 <label for="selectFrom" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Value:</label>
-                <div class="relative w-full block md:mt-0">
+                <div class="xs2:col-span-7 md:col-auto relative w-full block md:mt-0">
                     <select
                         class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="selectFrom"
@@ -71,13 +68,19 @@
                         v-model="first.valueFrom"
                     >
                         <option value="" disabled selected hidden>Choose value...</option>
-                        <optgroup label="From project">
+                        <optgroup label="From project" v-if="!first.isFromCsv">
                             <option value="_name">Name</option>
                             <option value="_title">Title</option>
                             <option value="_description">Description</option>
                             <option value="_keywords">Keywords</option>
                         </optgroup>
-                        <optgroup label="From CSV" v-if="loadingCsv || (!loadingCsv && csvValues.length > 0)">
+                        <optgroup
+                            label="From CSV"
+                            v-if="
+                                (first.isFromCsv && loadingCsv) ||
+                                    (!loadingCsv && csvValues.length > 0 && first.isFromCsv)
+                            "
+                        >
                             <option value="loading" v-if="loadingCsv">Loading...</option>
                             <option v-for="field in csvValues" :key="field" :value="field">{{ field }}</option>
                         </optgroup>
@@ -89,28 +92,6 @@
                     </div>
                 </div>
             </div>
-            <span class="flex flex-row mx-2 text-gray-800 mt-2 md:mt-0">
-                <button
-                    class="p-2 ripple rounded-full focus:outline-none hover:bg-gray-300"
-                    @click="newElement('first')"
-                >
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" class="fill-current">
-                        <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                    </svg>
-                </button>
-                <button
-                    class="p-2 ripple rounded-full focus:outline-none hover:bg-gray-300"
-                    @click="removeElement('first', first.id)"
-                    :class="first.id != 0 ? '' : 'hidden md:block md:invisible'"
-                >
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" class="fill-current">
-                        <path
-                            fill="currentColor"
-                            d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-                        />
-                    </svg>
-                </button>
-            </span>
         </div>
     </div>
 </template>
@@ -120,7 +101,6 @@ export default {
     name: 'firstPart',
     props: {
         firstPartData: Array,
-        splitFields: Array,
         csvValues: Array,
         loadingCsv: Boolean,
     },
@@ -133,15 +113,6 @@ export default {
         this.dataArr = this.firstPartData
     },
     methods: {
-        prova(ev) {
-            console.log(ev)
-        },
-        newElement(arr) {
-            this.$emit('newElement', arr)
-        },
-        removeElement(arr, id) {
-            this.$emit('removeElement', [arr, id])
-        },
         update() {
             this.$emit('updateArr', this.dataArr)
         },

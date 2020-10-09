@@ -21,16 +21,13 @@
                     <div class="hidden md:grid grid-cols-4">
                         <p class="font-semibold text-sm w-auto">Field:</p>
                         <p></p>
-                        <p class="font-semibold text-sm w-auto -ml-6">Value:</p>
+                        <p class="font-semibold text-sm w-auto ml-6">Value:</p>
                         <p></p>
                     </div>
                     <firstPart
                         :firstPartData="firstPartData"
-                        :splitFields="splitFields"
                         :csvValues="csvValues"
                         :loadingCsv="loadingCsv"
-                        @newElement="newElement"
-                        @removeElement="removeElement"
                         @updateArr="updateArr('first')"
                     />
                     <hr class="my-2 md:mt-2" />
@@ -96,15 +93,7 @@ export default {
             loading: false,
             loadingCsv: true,
             csvValues: [],
-            firstPartData: [
-                {
-                    id: 0,
-                    field: '',
-                    isHandWritten: false,
-                    customValue: '',
-                    valueFrom: '',
-                },
-            ],
+            firstPartData: [],
             secondPartData: [
                 {
                     id: 0,
@@ -118,6 +107,14 @@ export default {
             whatToDo: this.$store.state.defaults.gold_wrong,
         }
     },
+    computed: {
+        splitFields: function() {
+            return this.project.layout_fields.replace(/\s/g, '').split(',')
+        },
+        thirdPartData() {
+            return [this.assignNumber, this.whatToDo]
+        },
+    },
     validations() {
         return {
             assignNumber: {
@@ -127,6 +124,25 @@ export default {
             whatToDo: {
                 notEmpty,
             },
+        }
+    },
+    created() {
+        this.getCsvFields()
+        var tmpObj = {}
+        var isFromCsv = false
+        for (var i = 0; i < this.splitFields.length; i++) {
+            if (this.splitFields[i].charAt(this.splitFields[i].length - 1) == '#') {
+                isFromCsv = true
+            }
+            tmpObj = {
+                id: i,
+                field: this.splitFields[i],
+                isHandWritten: false,
+                customValue: '',
+                valueFrom: '',
+                isFromCsv: isFromCsv,
+            }
+            this.firstPartData.push(tmpObj)
         }
     },
     mounted() {
@@ -230,17 +246,6 @@ export default {
                 this.assignNumber = arr[0]
                 this.whatToDo = arr[1]
             }
-        },
-    },
-    created() {
-        this.getCsvFields()
-    },
-    computed: {
-        splitFields: function() {
-            return this.project.layout_fields.replace(/\s/g, '').split(',')
-        },
-        thirdPartData() {
-            return [this.assignNumber, this.whatToDo]
         },
     },
     beforeDestroy() {
