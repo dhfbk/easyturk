@@ -183,11 +183,11 @@ export default {
     data() {
         return {
             leftover: '',
-            shuffleBase: 1,
-            shuffleGold: 1,
+            shuffleBase: this.$store.state.defaults.shuffle_base_data,
+            shuffleGold: this.$store.state.defaults.shuffle_gold_data,
             loading: false,
             hitInfo: 0,
-            goldPerHit: 1,
+            goldPerHit: this.$store.state.defaults.gold_data_per_hit,
         }
     },
     validations() {
@@ -201,14 +201,16 @@ export default {
         }
     },
     created() {
-        this.goldPerHit = this.goldNum
-        console.log(this.params, this.baseDataStatus, this.goldDataStatus)
         if (this.goldDataStatus != 0) {
             this.hitInfo = Math.floor(this.baseDataStatus / (this.params - this.goldPerHit))
         } else {
             this.hitInfo = Math.floor(this.baseDataStatus / this.params)
         }
-        //console.log(this.baseDataStatus / this.params)
+        if (this.$store.state.defaults.delete_exceeding_values == 0) {
+            this.leftover = 'no_use'
+        } else {
+            this.leftover = 'reuse'
+        }
     },
     mounted() {
         window.addEventListener('keyup', this.esc)
@@ -241,7 +243,7 @@ export default {
                     url: url,
                     data: {
                         toStatus: 1,
-                        goldSize: this.goldNum,
+                        goldSize: this.goldPerHit,
                         deleteExceedingValues: deleteExceedingValues,
                         shuffleData: this.shuffleBase,
                         shuffleGold: this.shuffleGold,
@@ -277,12 +279,6 @@ export default {
             this.hitInfo = Math.floor(this.baseDataStatus / (this.params - this.goldPerHit))
         },
     },
-    computed: {
-        goldNum() {
-            return this.$store.state.defaults.gold_data_per_hit
-        },
-    },
-
     beforeDestroy() {
         window.removeEventListener('keyup', this.esc)
     },

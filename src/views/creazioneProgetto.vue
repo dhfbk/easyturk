@@ -411,8 +411,8 @@ export default {
             title: '',
             description: '',
             keywords: '',
-            reward: 0.05,
-            workers: 3,
+            reward: this.$store.state.defaults.reward,
+            workers: this.$store.state.defaults.assignments,
             max_time: 1,
             max_time_send: 1,
             expiry: 1,
@@ -420,7 +420,7 @@ export default {
             auto_approve: 1,
             auto_approve_send: 1,
             layout_id: '',
-            params: 3,
+            params: this.$store.state.defaults.examples_per_hit,
             params_fields: '',
             /*
             pageTitle: '',
@@ -512,6 +512,12 @@ export default {
             this.mode = this.$route.name
             this.pageTitle = 'Create new project'
             this.disableBtn = false
+            this.expiry = this.$store.state.defaults.survey_expiration
+            this.max_time = this.$store.state.defaults.time_per_worker
+            this.auto_approve = this.$store.state.defaults.auto_approve
+            this.elaboraTempoGET('expiry')
+            this.elaboraTempoGET('max_time')
+            this.elaboraTempoGET('auto_approve')
         } else {
             this.pageTitle = 'Edit project ' + this.$route.params.projectId
             this.getDatiPrj()

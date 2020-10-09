@@ -37,9 +37,16 @@
                     </svg>
                 </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                    v-if="projectData.hits_submitted == 0"
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light -ml-14"
                     >Launch project</span
                 >
+                <span
+                    v-else
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light -ml-18"
+                >
+                    Launch other HITs
+                </span>
             </span>
             <span class="tooltip relative">
                 <button
@@ -474,5 +481,11 @@ export default {
 .tooltip:hover .tooltip-text {
     visibility: visible;
     opacity: 85%;
+}
+.-ml-18 {
+    margin-left: -4.45rem;
+}
+.-ml-14{
+    margin-left: -3.15rem;
 }
 </style>
