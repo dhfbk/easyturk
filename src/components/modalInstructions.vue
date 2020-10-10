@@ -20,6 +20,9 @@
                         </span>
                     </div>
                     <div class="py-2">{{ msg }}</div>
+                    <span v-if="msg1 != ''">
+                        <div>{{ msg1 }}</div></span
+                    >
                 </div>
             </div>
         </div>
@@ -30,7 +33,7 @@
 export default {
     props: { status: Number },
     data() {
-        return { msg: '' }
+        return { msg: '', msg1: '' }
     },
     methods: {
         modal() {
@@ -40,16 +43,20 @@ export default {
     created() {
         switch (this.status) {
             case 0:
-                this.msg = 'instructions for status 0'
+                this.msg =
+                    "Now that you have succesfully set up the project, you have to upload the CSV containing the data you want your Workers to annotate. If you need to, you can upload a golden set, which allows you to test your Workers' competence. Check out the CSV status card for all the actions and options available."
+                this.msg1 = 'After you have uploaded your data, you are ready to create the HITs.'
                 break
             case 1:
-                this.msg = 'instructions for status 1'
+                this.msg =
+                    'Now that you have successfully created the HITs, you can set the layout of your HITs by giving a value to fill the parameters of your project. You can additionally manipulate the answers as you like and handle Workers who make a mistake annotating the golden set.'
                 break
             case 2:
                 this.msg = 'instructions for status 2'
                 break
             case 3:
-                this.msg = 'instructions for status 3'
+                this.msg =
+                    'Now that the HITs have been launched, you can either launch more if you have some left, or wait for the results.'
                 break
         }
     },

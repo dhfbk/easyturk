@@ -265,11 +265,11 @@ export default {
                 break
             case 'payment':
                 this.titles = [
-                    'Ricompensa per ogni assignment',
-                    'Numero di lavoratori / assignment per task',
-                    'Tempo massimo',
-                    'Scadenza',
-                    'Auto approva e paga lavoratori in',
+                    'Reward per assignment',
+                    'Number of assignments per task',
+                    'Time allotted per assignment',
+                    'Task expires in',
+                    'Auto-approve and pay Workers in',
                 ]
                 this.data = [
                     this.projectData.reward + '$',
@@ -284,11 +284,11 @@ export default {
     methods: {
         time(num) {
             if (num < 60) {
-                num += ' minuti'
+                num += ' minutes'
             } else if (this.projectData.tempoMax < 1440) {
-                num = num / 60 + ' ore'
+                num = num / 60 + ' hours'
             } else {
-                num = num / 1440 + ' giorni'
+                num = num / 1440 + ' days'
             }
             return num
         },

@@ -136,7 +136,6 @@ export default {
                 isFromCsv = true
             }
             tmpObj = {
-                id: i,
                 field: this.splitFields[i],
                 isHandWritten: false,
                 customValue: '',
@@ -206,37 +205,20 @@ export default {
         toggleModal() {
             this.$emit('layoutModal', ['layout', ''])
         },
-        newElement(arr) {
-            if (arr == 'first') {
-                let tmp = {
-                    id: this.firstPartData[this.firstPartData.length - 1].id + 1,
-                    field: '',
-                    isHandWritten: false,
-                    customValue: '',
-                    valueFrom: 'prj',
-                }
-                this.firstPartData.push(tmp)
-            } else if (arr == 'second') {
-                let tmp = {
-                    id: this.secondPartData[this.secondPartData.length - 1].id + 1,
-                    varName: '',
-                    varValue: '',
-                    varNameTo: '',
-                    varValueTo: '',
-                }
-                this.secondPartData.push(tmp)
+        newElement() {
+            let tmp = {
+                id: this.secondPartData[this.secondPartData.length - 1].id + 1,
+                varName: '',
+                varValue: '',
+                varNameTo: '',
+                varValueTo: '',
             }
+            this.secondPartData.push(tmp)
         },
         removeElement(arr) {
-            if (arr[0] == 'first') {
-                this.firstPartData = this.firstPartData.filter(function(obj) {
-                    return obj.id !== arr[1]
-                })
-            } else if (arr[0] == 'second') {
-                this.secondPartData = this.secondPartData.filter(function(obj) {
-                    return obj.id !== arr[1]
-                })
-            }
+            this.secondPartData = this.secondPartData.filter(function(obj) {
+                return obj.id !== arr[1]
+            })
         },
 
         updateArr(arr, type) {
