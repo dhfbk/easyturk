@@ -19,7 +19,13 @@
             @revertModal="toggleModal('revert')"
             @reverted="uploaded"
         />
-        <modalLayout v-if="modalLayout" :project="project" @layoutModal="toggleModal('layout')" @snackbar="uploaded" />
+        <modalLayout
+            v-if="modalLayout"
+            :project="project"
+            @layoutSet="uploaded"
+            @layoutModal="toggleModal('layout')"
+            @snackbar="uploaded"
+        />
         <modalInstructions v-if="modalInstructions" :status="project.status" @modal="toggleModal('instructions')" />
         <modalLaunch
             v-if="modalLaunch"

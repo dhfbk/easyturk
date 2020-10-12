@@ -317,18 +317,28 @@
                         v-model.trim="$v.layout_id.$model"
                         required
                     />
-                    <button
-                        @click="downloadLayoutId"
-                        type="button"
-                        class="absolute right-0 bg-transparent py-2 px-2 rounded focus:outline-none"
-                        :class="downloadID ? 'animate__heartBeat' : ''"
-                    >
-                        <svg style="width:24px;height:24px" viewBox="0 0 24 24" class="transition ease-in-out">
-                            <path
-                                d="M7.5,5.6L5,7L6.4,4.5L5,2L7.5,3.4L10,2L8.6,4.5L10,7L7.5,5.6M19.5,15.4L22,14L20.6,16.5L22,19L19.5,17.6L17,19L18.4,16.5L17,14L19.5,15.4M22,2L20.6,4.5L22,7L19.5,5.6L17,7L18.4,4.5L17,2L19.5,3.4L22,2M13.34,12.78L15.78,10.34L13.66,8.22L11.22,10.66L13.34,12.78M14.37,7.29L16.71,9.63C17.1,10 17.1,10.65 16.71,11.04L5.04,22.71C4.65,23.1 4,23.1 3.63,22.71L1.29,20.37C0.9,20 0.9,19.35 1.29,18.96L12.96,7.29C13.35,6.9 14,6.9 14.37,7.29Z"
-                            />
-                        </svg>
-                    </button>
+                    <span class="absolute right-0">
+                        <span class="tooltip relative">
+                            <button
+                                @click="downloadLayoutId"
+                                type="button"
+                                class="bg-transparent py-2 px-2 rounded focus:outline-none"
+                                :class="downloadID ? 'animate__heartBeat' : ''"
+                            >
+                                <svg style="width:24px;height:24px" viewBox="0 0 24 24" class="transition ease-in-out">
+                                    <path
+                                        d="M7.5,5.6L5,7L6.4,4.5L5,2L7.5,3.4L10,2L8.6,4.5L10,7L7.5,5.6M19.5,15.4L22,14L20.6,16.5L22,19L19.5,17.6L17,19L18.4,16.5L17,14L19.5,15.4M22,2L20.6,4.5L22,7L19.5,5.6L17,7L18.4,4.5L17,2L19.5,3.4L22,2M13.34,12.78L15.78,10.34L13.66,8.22L11.22,10.66L13.34,12.78M14.37,7.29L16.71,9.63C17.1,10 17.1,10.65 16.71,11.04L5.04,22.71C4.65,23.1 4,23.1 3.63,22.71L1.29,20.37C0.9,20 0.9,19.35 1.29,18.96L12.96,7.29C13.35,6.9 14,6.9 14.37,7.29Z"
+                                    />
+                                </svg>
+                            </button>
+                            <span
+                                class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light -mt-17 -ml-27"
+                                >Load examples per hit <br />
+                                and params fields <br />
+                                for this layout</span
+                            >
+                        </span>
+                    </span>
                 </div>
                 <p class="text-gray-700 text-xs italic mt-2">
                     This is the id of the layout that will be shown to the Worker.
@@ -546,9 +556,14 @@ export default {
     methods: {
         downloadLayoutId() {
             this.downloadID = true
-            setTimeout(() => {
+            axios({
+                url: this.APIURL + '?action=testLayout&layout_id=' + '3STE4BH37WDDZU4T6EST3NHZXYBYHI',
+                method: 'get',
+            }).then(res => {
                 this.downloadID = false
-            }, 3000)
+                this.params_fields = res.data.params_fields
+                this.params = parseInt(res.data.examples_per_hit)
+            })
         },
         keyboardEvent(event) {
             if (event.code == 'Escape') {
@@ -840,5 +855,25 @@ textarea {
     -webkit-animation-timing-function: ease-in-out;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
+}
+.tooltip .tooltip-text {
+    visibility: hidden;
+    text-align: center;
+    padding: 2px 6px;
+    z-index: 100;
+    left: 0;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+    transition-delay: 0.15s;
+}
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 85%;
+}
+.-ml-27 {
+    margin-left: -7.4rem;
+}
+.-mt-17 {
+    margin-top: -4.3rem;
 }
 </style>
