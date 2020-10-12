@@ -350,13 +350,12 @@ export default {
     },
     mounted() {
         this.popupItem = this.$el
-        window.addEventListener('keyup', this.esc)
+        window.addEventListener('keydown', this.keyboardEvent)
     },
     methods: {
-        esc(event) {
-            if (event.keyCode === 27) {
-                //tenere un push o fare go(-1)?
-                this.$router.push('/')
+        keyboardEvent(event) {
+            if (event.code == 'Escape') {
+                this.$router.go(-1)
             }
         },
         getDatiPrj() {
@@ -449,7 +448,7 @@ export default {
         },
     },
     beforeDestroy() {
-        window.removeEventListener('keyup', this.esc)
+        window.removeEventListener('keydown', this.keyboardEvent)
     },
 }
 </script>

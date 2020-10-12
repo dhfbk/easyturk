@@ -321,11 +321,11 @@
                         @click="downloadLayoutId"
                         type="button"
                         class="absolute right-0 bg-transparent py-2 px-2 rounded focus:outline-none"
-                        :class="downloadID ? 'animate-bounce' : ''"
+                        :class="downloadID ? 'animate__heartBeat' : ''"
                     >
                         <svg style="width:24px;height:24px" viewBox="0 0 24 24" class="transition ease-in-out">
                             <path
-                                d="M13,5V11H14.17L12,13.17L9.83,11H11V5H13M15,3H9V9H5L12,16L19,9H15V3M19,18H5V20H19V18Z"
+                                d="M7.5,5.6L5,7L6.4,4.5L5,2L7.5,3.4L10,2L8.6,4.5L10,7L7.5,5.6M19.5,15.4L22,14L20.6,16.5L22,19L19.5,17.6L17,19L18.4,16.5L17,14L19.5,15.4M22,2L20.6,4.5L22,7L19.5,5.6L17,7L18.4,4.5L17,2L19.5,3.4L22,2M13.34,12.78L15.78,10.34L13.66,8.22L11.22,10.66L13.34,12.78M14.37,7.29L16.71,9.63C17.1,10 17.1,10.65 16.71,11.04L5.04,22.71C4.65,23.1 4,23.1 3.63,22.71L1.29,20.37C0.9,20 0.9,19.35 1.29,18.96L12.96,7.29C13.35,6.9 14,6.9 14.37,7.29Z"
                             />
                         </svg>
                     </button>
@@ -541,17 +541,17 @@ export default {
         }
     },
     mounted() {
-        window.addEventListener('keyup', this.esc)
+        window.addEventListener('keydown', this.keyboardEvent)
     },
     methods: {
-        downloadLayoutId(){
+        downloadLayoutId() {
             this.downloadID = true
             setTimeout(() => {
                 this.downloadID = false
             }, 3000)
         },
-        esc(event) {
-            if (event.keyCode === 27) {
+        keyboardEvent(event) {
+            if (event.code == 'Escape') {
                 this.goBack()
             }
         },
@@ -765,7 +765,7 @@ export default {
         },
     },
     beforeDestroy() {
-        window.removeEventListener('keyup', this.esc)
+        window.removeEventListener('keydown', this.keyboardEvent)
     },
 }
 </script>
@@ -777,5 +777,68 @@ hr.solid {
 textarea {
     min-height: 78px;
     height: 100px;
+}
+@-webkit-keyframes heartBeat {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+
+    14% {
+        -webkit-transform: scale(1.3);
+        transform: scale(1.3);
+    }
+
+    28% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+
+    42% {
+        -webkit-transform: scale(1.3);
+        transform: scale(1.3);
+    }
+
+    70% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+@keyframes heartBeat {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+
+    14% {
+        -webkit-transform: scale(1.3);
+        transform: scale(1.3);
+    }
+
+    28% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+
+    42% {
+        -webkit-transform: scale(1.3);
+        transform: scale(1.3);
+    }
+
+    70% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+.animate__heartBeat {
+    -webkit-animation-name: heartBeat;
+    animation-name: heartBeat;
+    -webkit-animation-duration: calc(1s * 1.3);
+    animation-duration: calc(1s * 1.3);
+    -webkit-animation-duration: calc(1s * 1.3);
+    animation-duration: calc(1s * 1.3);
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
 }
 </style>

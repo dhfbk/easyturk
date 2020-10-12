@@ -23,7 +23,13 @@
             :goldDataStatus="gldPresent"
             :params="params"
         />
-        <modalLayout v-if="modalLayout" :project="project[0]" @layoutModal="toggleModal" @layoutSet="launched" />
+        <modalLayout
+            v-if="modalLayout"
+            :project="project[0]"
+            @layoutModal="toggleModal"
+            @layoutSet="launched"
+            @snackbar="uploaded"
+        />
         <!--<modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />-->
         <div class="mb-6">
             <div class="flex content-center flex-col sm:flex-row px-4">

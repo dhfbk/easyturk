@@ -146,12 +146,14 @@ export default {
         }
     },
     mounted() {
-        window.addEventListener('keyup', this.esc)
+        window.addEventListener('keydown', this.keyboardEvent)
     },
     methods: {
-        esc(event) {
-            if (event.keyCode === 27) {
+        keyboardEvent(event) {
+            if (event.code == 'Escape') {
                 this.toggleModal()
+            } else if (event.code == 'Enter') {
+                this.submit()
             }
         },
         submit() {
@@ -177,7 +179,6 @@ export default {
                         console.log(response.data)
                         if (response.data.result == 'ERR') {
                             this.$emit('snackbar', 'Error: ' + response.data.error)
-                            console.log(response.data)
                         } else {
                             this.toggleModal()
                             this.$emit('layoutSet', 'Layout successfully set.')
@@ -233,7 +234,7 @@ export default {
         },
     },
     beforeDestroy() {
-        window.removeEventListener('keyup', this.esc)
+        window.removeEventListener('keydown', this.keyboardEvent)
     },
 }
 </script>

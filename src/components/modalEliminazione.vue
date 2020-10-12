@@ -59,14 +59,16 @@ export default {
             loading: false,
         }
     },
-
     mounted() {
-        window.addEventListener('keyup', this.esc)
+        window.addEventListener('keydown', this.keyboardEvent)
     },
     methods: {
-        esc(event) {
-            if (event.keyCode === 27) {
+        keyboardEvent(event) {
+            if (event.code == "Escape") {
                 this.toggleModal('close')
+            }
+            else if(event.code == "Enter"){
+                this.deleteProject()
             }
         },
         toggleModal() {
@@ -111,7 +113,7 @@ export default {
         },
     },
     beforeDestroy() {
-        window.removeEventListener('keyup', this.esc)
+        window.removeEventListener('keydown', this.keyboardEvent)
     },
 }
 </script>
