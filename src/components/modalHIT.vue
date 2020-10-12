@@ -187,7 +187,7 @@ export default {
             shuffleGold: this.$store.state.defaults.shuffle_gold_data,
             loading: false,
             hitInfo: 0,
-            goldPerHit: this.$store.state.defaults.gold_data_per_hit,
+            goldPerHit: 0,
         }
     },
     validations() {
@@ -202,6 +202,7 @@ export default {
     },
     created() {
         if (this.goldDataStatus != 0) {
+            this.goldPerHit = this.$store.state.defaults.gold_data_per_hit
             this.hitInfo = Math.floor(this.baseDataStatus / (this.params - this.goldPerHit))
         } else {
             this.hitInfo = Math.floor(this.baseDataStatus / this.params)
