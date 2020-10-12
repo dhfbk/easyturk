@@ -100,6 +100,11 @@ export default {
         },
         submit() {
             this.$v.$touch()
+            if (this.hitsSubmitted == 0) {
+                var x = 'Project'
+            } else {
+                x = 'HITs'
+            }
             if (!this.$v.$invalid) {
                 this.loading = true
                 var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
@@ -115,15 +120,15 @@ export default {
                     .then(response => {
                         console.log(response.data)
                         if (response.data.result == 'ERR') {
-                            this.$emit('launched', 'Error: ' + response.data.error)
+                            this.$emit('err', 'Error: ' + response.data.error)
                         } else {
-                            this.$emit('launched', 'Project launched successfully!')
+                            this.$emit('launched', x + ' launched successfully!')
                             this.toggleModal()
                         }
                         this.loading = false
                     })
                     .catch(() => {
-                        this.$emit('launched', 'Error: server unreacheable')
+                        this.$emit('err', 'Error: server unreacheable')
                         this.loading = false
                     })
             }

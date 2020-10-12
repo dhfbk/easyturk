@@ -52,7 +52,8 @@ export default {
                     'Now that you have successfully created the HITs, you can set the layout of your HITs by giving a value to fill the parameters of your project. You can additionally manipulate the answers as you like and handle Workers who make a mistake annotating the golden set.'
                 break
             case 2:
-                this.msg = 'instructions for status 2'
+                this.msg =
+                    'Now that you have set the layout of your HITs, you are ready to lauch your project and let the Workers annotate your data. You can either launch all HITs at once, or choose to launch a portion of them at a time.'
                 break
             case 3:
                 this.msg =

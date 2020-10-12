@@ -179,8 +179,8 @@ export default {
                             this.$emit('snackbar', 'Error: ' + response.data.error)
                             console.log(response.data)
                         } else {
-                            this.$emit('snackbar', 'Layout successfully set.')
                             this.toggleModal()
+                            this.$emit('layoutSet', 'Layout successfully set.')
                         }
                     })
                     .catch(err => {

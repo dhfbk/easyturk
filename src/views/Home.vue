@@ -10,6 +10,7 @@
             :id="modalId"
             :hitsSubmitted="hitsSubmitted"
             :hitsTotal="hitsTotal"
+            @err="uploaded"
             @launched="launched"
         />
         <!--sistemare per i due valori del csv-->
@@ -22,7 +23,7 @@
             :goldDataStatus="gldPresent"
             :params="params"
         />
-        <modalLayout v-if="modalLayout" :project="project[0]" @layoutModal="toggleModal" @snackbar="uploaded" />
+        <modalLayout v-if="modalLayout" :project="project[0]" @layoutModal="toggleModal" @layoutSet="launched" />
         <!--<modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />-->
         <div class="mb-6">
             <div class="flex content-center flex-col sm:flex-row px-4">
@@ -296,6 +297,8 @@ export default {
         },
         launched(msg) {
             this.uploaded(msg)
+            this.loadingProjects = true
+            this.getPrjData()
         },
         reloadAfterHIT(msg) {
             this.uploaded(msg)

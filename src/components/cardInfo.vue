@@ -215,7 +215,7 @@
                 </span>
                 <span v-if="projectData.status == 3">
                     <span class="text-green-500">Project has been launched and is now available to the Workers. </span
-                    >You can launch other HITs or <span class="font-bold text-primary"> check the results.</span>
+                    >You can launch more HITs or <span class="font-bold text-primary"> check the results.</span>
                 </span>
                 <button
                     @click="$emit('modal', 'instructions')"
