@@ -104,7 +104,6 @@ export default {
                 },
             ],
             assignNumber: this.project.workers,
-            whatToDo: this.$store.state.defaults.gold_wrong,
             lastChar: /^[a-z|A-Z|0-9]+[^#]\s?#{1}$/,
         }
     },
@@ -113,7 +112,7 @@ export default {
             return this.project.layout_fields.replace(/\s/g, '').split(',')
         },
         thirdPartData() {
-            return [this.assignNumber, this.whatToDo]
+            return { assignNumber: this.assignNumber, acceptIfGoldRight: 0, rejectIfGoldWrong: 0, reason: '' }
         },
     },
     validations() {
@@ -169,6 +168,7 @@ export default {
                         toStatus: 2,
                         layoutData: this.firstPartData,
                         answerData: this.secondPartData,
+                        //da modificare a seconda della chiamata
                         assignNumber: this.thirdPartData[0],
                         whatToDo: this.thirdPartData[1],
                     },
@@ -228,8 +228,7 @@ export default {
             } else if (type == 'second') {
                 this.secondPartData = arr
             } else if (type == 'third') {
-                this.assignNumber = arr[0]
-                this.whatToDo = arr[1]
+                this.thirdPartData = arr
             }
         },
     },
