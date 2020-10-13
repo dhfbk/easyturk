@@ -232,7 +232,6 @@ export default {
         },
 
         updateArr(arr) {
-            console.log(arr)
             if (arr != undefined) {
                 if (arr[0] == 'first') {
                     this.firstPartData = arr[1]

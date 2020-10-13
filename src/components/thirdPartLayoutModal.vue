@@ -9,12 +9,12 @@
                     <span class="mr-2 font-semibold tracking-wide">Reject if gold is wrong: </span>
                     <span
                         class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
-                        @click="reject = !reject"
                         :class="isGold == 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : ''"
                     >
                         <input
                             type="checkbox"
-                            class="opacity-0 absolute"
+                            class="opacity-0 absolute w-4 h-4"
+                            @click="reject = !reject"
                             v-model="reject"
                             :disabled="isGold == 0"
                             :class="isGold == 0 ? 'cursor-not-allowed' : ''"
@@ -82,12 +82,12 @@
                     <span class="mr-2 font-semibold tracking-wide">Accept if gold is right:</span>
                     <span
                         class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
-                        @click="accept = !accept"
                         :class="[isGold == 0 ? 'bg-gray-400 cursor-not-allowed' : '']"
                     >
                         <input
                             type="checkbox"
-                            class="opacity-0 absolute"
+                            class="opacity-0 absolute w-4 h-4"
+                            @click="accept = !accept"
                             v-model="accept"
                             :class="isGold == 0 ? 'cursor-not-allowed' : ''"
                         />
@@ -140,7 +140,12 @@ export default {
             accept: false,
             rejectReason: '',
             assignNumber: 0,
-            dataReturn: {},
+            dataReturn: {
+                rejectIfGoldWrong: 0,
+                acceptIfGoldRight: 0,
+                rejectReason: 0,
+                assignNumber: 0,
+            },
             dataObj: [],
             min: 0,
         }
@@ -156,9 +161,17 @@ export default {
             this.accept == false ? (this.dataReturn.acceptIfGoldRight = 0) : (this.dataReturn.acceptIfGoldRight = 1)
             this.dataReturn.rejectReason = this.rejectReason
             this.dataReturn.assignNumber = this.assignNumber
-            var send = ["third", this.dataReturn]
+            var send = ['third', this.dataReturn]
             this.$emit('updateArr', send)
         },
     },
 }
 </script>
+
+
+<style scoped>
+.check {
+    height: 20px;
+    width: 20px;
+}
+</style>
