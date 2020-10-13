@@ -1,5 +1,5 @@
 <template>
-    <div class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
+    <div class="relative lg:w-5/6 pt-2  flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <modalEliminazione v-if="modalElim" @deleteModal="toggleModal('delete')" @deleted="deleted" :id="id" />
         <modalUpload v-if="modalStd" :type="'std'" :id="id" @uploadModal="toggleModal('std')" @uploaded="uploaded" />
         <modalUpload v-if="modalGld" :type="'gld'" :id="id" @uploadModal="toggleModal('gld')" @uploaded="uploaded" />
@@ -58,7 +58,7 @@
                     >
                     <span
                         v-else
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
                     >
                         Launch other HITs
                     </span>
@@ -294,6 +294,8 @@
                 <div v-else>
                     <cardInfo :projectData="project" :mode="'payment'" />
                     <cardInfo :projectData="project" :mode="'csv'" @modal="toggleModal" />
+                    <cardInfo v-if="project.status > 0" :projectData="project" :mode="'hits'" />
+
                     <!-- <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
                     <cardAnalytics :dati="datiCardAnalytics.cardAggregate" />-->
                 </div>
@@ -372,6 +374,8 @@ export default {
                     this.project = res.data.values
                     this.hitsSubmitted = res.data.hits_submitted
                     this.hitsTotal = res.data.hits_total
+                    this.project.hits_submitted = res.data.hits_submitted
+                    this.project.hits_total = res.data.hits_total
                     this.project.numGold = res.data.numGold
                     this.project.numData = res.data.numData
                     console.log(res.data)
@@ -468,7 +472,7 @@ export default {
 .fade-leave-to {
     opacity: 0;
 }
-.tooltip .tooltip-text {
+/* .tooltip .tooltip-text {
     visibility: hidden;
     text-align: center;
     padding: 2px 6px;
@@ -481,5 +485,5 @@ export default {
 .tooltip:hover .tooltip-text {
     visibility: visible;
     opacity: 85%;
-}
+} */
 </style>

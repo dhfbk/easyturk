@@ -282,9 +282,11 @@ export default {
                     this.hitsSubmitted = parseInt(launch.hits_submitted)
                     this.hitsTotal = parseInt(launch.hits_total)
                     console.log(launch)
-                }
-                if (this.hitsTotal == this.hitsSubmitted) {
-                    this.$emit('snackbar', 'All HITs have already been submitted', '')
+                    if (this.hitsTotal == this.hitsSubmitted) {
+                        this.$emit('snackbar', 'All HITs have already been submitted', '')
+                    } else {
+                        this.modalLaunch = !this.modalLaunch
+                    }
                 } else {
                     this.modalLaunch = !this.modalLaunch
                 }

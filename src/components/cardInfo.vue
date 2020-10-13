@@ -41,14 +41,14 @@
                                 </button>
                                 <span
                                     v-if="projectData.numData > 0"
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
                                 >
                                     Overwrite standard csv
                                 </span>
 
                                 <span
                                     v-else
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light "
                                 >
                                     Upload standard csv
                                 </span>
@@ -75,7 +75,7 @@
                                     </svg>
                                 </button>
                                 <span
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
                                 >
                                     Upload standard csv
                                 </span>
@@ -135,13 +135,13 @@
                                 </button>
                                 <span
                                     v-if="projectData.numGold > 0"
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
                                 >
                                     Overwrite gold csv
                                 </span>
                                 <span
                                     v-else
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light "
                                 >
                                     Upload gold csv
                                 </span>
@@ -179,7 +179,7 @@
                                     </svg>
                                 </button>
                                 <span
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
                                 >
                                     Upload gold csv
                                 </span>
@@ -279,6 +279,26 @@ export default {
                     this.time(parseInt(this.projectData.auto_approve)),
                 ]
                 break
+            case 'hits':
+                this.titles = ['HITs status']
+                if (this.projectData.hits_submitted == 0) {
+                    this.data = [this.projectData.hits_total + ' HITs created.']
+                } else if (
+                    this.projectData.hits_submitted > 0 &&
+                    this.projectData.hits_submitted != this.projectData.hits_total
+                ) {
+                    this.data = [
+                        this.projectData.hits_submitted +
+                            ' out of ' +
+                            this.projectData.hits_total +
+                            ' HITs submitted. ' +
+                            (parseInt(this.projectData.hits_total) - parseInt(this.projectData.hits_submitted)) +
+                            ' HITs still available.',
+                    ]
+                } else if (this.projectData.hits_submitted == this.projectData.hits_total) {
+                    this.data = ['All ' + this.projectData.hits_submitted + ' HITs have been submitted!']
+                }
+                break
         }
     },
     methods: {
@@ -297,7 +317,7 @@ export default {
 </script>
 
 <style scoped>
-.tooltip .tooltip-text {
+/* .tooltip .tooltip-text {
     visibility: hidden;
     text-align: center;
     padding: 2px 6px;
@@ -310,7 +330,7 @@ export default {
 .tooltip:hover .tooltip-text {
     visibility: visible;
     opacity: 85%;
-}
+} */
 @media screen and (max-width: 648px) {
     .buttonsData {
         margin: 0 auto;

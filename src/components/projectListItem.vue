@@ -110,6 +110,7 @@
                 <button
                     @click.stop="launch()"
                     v-if="projectData.status >= 2"
+                    :class="projectData.hits_submitted == projectData.hits_total ? 'cursor-not-allowed' : ''"
                     class="ripple hover:bg-blue-600 bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
