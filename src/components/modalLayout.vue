@@ -28,7 +28,7 @@
                         :firstPartData="firstPartData"
                         :csvValues="csvValues"
                         :loadingCsv="loadingCsv"
-                        @updateArr="updateArr('first')"
+                        @updateArr="updateArr"
                     />
                     <hr class="my-2 md:mt-2" />
                     <p class="font-semibold text-sm w-auto">How to convert answers:</p>
@@ -36,12 +36,12 @@
                         :secondPartData="secondPartData"
                         @newElement="newElement"
                         @removeElement="removeElement"
-                        @updateArr="updateArr('second')"
+                        @updateArr="updateArr"
                     />
                     <hr class="my-2 md:mt-2" />
                     <thirdPart
                         :thirdPartData="thirdPartData"
-                        @updateArr="updateArr('third')"
+                        @updateArr="updateArr"
                         :isGold="parseInt(project.numGold)"
                         :v="$v"
                     />
@@ -104,6 +104,9 @@ export default {
                 },
             ],
             assignNumber: this.project.workers,
+            acceptIfGoldRight: 0,
+            rejectIfGoldWrong: 0,
+            rejectReason: '',
             lastChar: /^[a-z|A-Z|0-9]+[^#]\s?#{1}$/,
         }
     },
@@ -112,7 +115,12 @@ export default {
             return this.project.layout_fields.replace(/\s/g, '').split(',')
         },
         thirdPartData() {
-            return { assignNumber: this.assignNumber, acceptIfGoldRight: 0, rejectIfGoldWrong: 0, reason: '' }
+            return {
+                assignNumber: this.assignNumber,
+                acceptIfGoldRight: this.acceptIfGoldRight,
+                rejectIfGoldWrong: this.rejectIfGoldWrong,
+                rejectReason: this.rejectReason,
+            }
         },
     },
     validations() {
@@ -168,9 +176,10 @@ export default {
                         toStatus: 2,
                         layoutData: this.firstPartData,
                         answerData: this.secondPartData,
-                        //da modificare a seconda della chiamata
-                        assignNumber: this.thirdPartData[0],
-                        whatToDo: this.thirdPartData[1],
+                        assignNumber: this.assignNumber,
+                        acceptIfGoldRight: this.acceptIfGoldRight,
+                        rejectIfGoldWrong: this.rejectIfGoldWrong,
+                        rejectReason: this.rejectReason,
                     },
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
@@ -222,13 +231,19 @@ export default {
             })
         },
 
-        updateArr(arr, type) {
-            if (type == 'first') {
-                this.firstPartData = arr
-            } else if (type == 'second') {
-                this.secondPartData = arr
-            } else if (type == 'third') {
-                this.thirdPartData = arr
+        updateArr(arr) {
+            console.log(arr)
+            if (arr != undefined) {
+                if (arr[0] == 'first') {
+                    this.firstPartData = arr[1]
+                } else if (arr[0] == 'second') {
+                    this.secondPartData = arr[1]
+                } else if (arr[0] == 'third') {
+                    this.assignNumber = arr[1].assignNumber
+                    this.acceptIfGoldRight = arr[1].acceptIfGoldRight
+                    this.rejectIfGoldWrong = arr[1].rejectIfGoldWrong
+                    this.rejectReason = arr[1].rejectReason
+                }
             }
         },
     },

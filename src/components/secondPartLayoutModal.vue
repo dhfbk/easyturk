@@ -8,9 +8,7 @@
         >
             <span>If</span>
             <div class="flex flex-col xs2:flex-row content-center items-center">
-                <div
-                    class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
-                >
+                <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center">
                     <input
                         class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         name="value"
@@ -22,9 +20,7 @@
                 </div>
                 <span>=</span>
 
-                <div
-                    class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
-                >
+                <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center">
                     <input
                         class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         name="value"
@@ -39,9 +35,7 @@
             <span>then</span>
 
             <div class="flex flex-col xs2:flex-row content-center items-center">
-                <div
-                    class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
-                >
+                <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center">
                     <input
                         class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         name="value"
@@ -53,9 +47,7 @@
                 </div>
                 <span>=</span>
 
-                <div
-                    class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center"
-                >
+                <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center">
                     <input
                         class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         name="value"
@@ -114,7 +106,8 @@ export default {
             this.$emit('removeElement', [arr, id])
         },
         prova() {
-            this.$emit('updateArr', this.dataArr)
+            var send = ['second', this.dataArr]
+            this.$emit('updateArr', send)
         },
     },
     watch: {

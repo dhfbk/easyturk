@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div @change="update">
         <div v-if="isGold == 0">
             <p class="text-teal-500 text-md text-center">Golden standard CSV hasn't been uploaded</p>
         </div>
-        <div class="flex flex-col md:flex-row items-center md:items-end content-center" @change="update()">
+        <div class="flex flex-col md:flex-row items-center md:items-end content-center">
             <div class="relative w-full block md:mt-0">
                 <span class="flex flex-row items-center my-2">
                     <span class="mr-2 font-semibold tracking-wide">Reject if gold is wrong: </span>
@@ -72,7 +72,7 @@
                                 ]"
                                 :disabled="!reject || isGold == 0"
                                 id="descrizione"
-                                v-model="reason"
+                                v-model="rejectReason"
                                 required
                             />
                         </div>
@@ -138,9 +138,9 @@ export default {
         return {
             reject: false,
             accept: false,
-            reason: '',
+            rejectReason: '',
             assignNumber: 0,
-            data: {},
+            dataReturn: {},
             dataObj: [],
             min: 0,
         }
@@ -152,12 +152,12 @@ export default {
     },
     methods: {
         update() {
-            this.reject == false ? (this.data.rejectIfGoldWrong = 0) : (this.data.rejectIfGoldWrong = 1)
-            this.accept == false ? (this.data.acceptIfGoldRight = 0) : (this.data.acceptIfGoldRight = 1)
-            this.data.reason = this.reason
-            this.data.assignNumber = this.assignNumber
-            console.log(this.data)
-            this.$emit('updateArr', this.data)
+            this.reject == false ? (this.dataReturn.rejectIfGoldWrong = 0) : (this.dataReturn.rejectIfGoldWrong = 1)
+            this.accept == false ? (this.dataReturn.acceptIfGoldRight = 0) : (this.dataReturn.acceptIfGoldRight = 1)
+            this.dataReturn.rejectReason = this.rejectReason
+            this.dataReturn.assignNumber = this.assignNumber
+            var send = ["third", this.dataReturn]
+            this.$emit('updateArr', send)
         },
     },
 }

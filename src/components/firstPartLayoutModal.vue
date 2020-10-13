@@ -115,7 +115,8 @@ export default {
     },
     methods: {
         update() {
-            this.$emit('updateArr', this.dataArr)
+            var send = ['first', this.dataArr]
+            this.$emit('updateArr', send)
         },
     },
     watch: {
