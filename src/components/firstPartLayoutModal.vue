@@ -126,20 +126,3 @@ export default {
     },
 }
 </script>
-
-<style scoped>
-.tooltip .tooltip-text {
-    visibility: hidden;
-    text-align: center;
-    padding: 2px 6px;
-    z-index: 100;
-    left: 0;
-    transition: opacity 0.3s ease-in-out;
-    opacity: 0;
-    transition-delay: 0.15s;
-}
-.tooltip:hover .tooltip-text {
-    visibility: visible;
-    opacity: 85%;
-}
-</style>

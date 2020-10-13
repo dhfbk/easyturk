@@ -438,8 +438,8 @@ export default {
             title: '',
             description: '',
             keywords: '',
-            reward: this.$store.state.defaults.reward,
-            workers: this.$store.state.defaults.assignments,
+            reward: 0,
+            workers: 0,
             max_time: 1,
             max_time_send: 1,
             expiry: 1,
@@ -447,7 +447,7 @@ export default {
             auto_approve: 1,
             auto_approve_send: 1,
             layout_id: '',
-            params: this.$store.state.defaults.examples_per_hit,
+            params: 0,
             params_fields: '',
             /*
             pageTitle: '',
@@ -542,6 +542,9 @@ export default {
             this.expiry = this.$store.state.defaults.survey_expiration
             this.max_time = this.$store.state.defaults.time_per_worker
             this.auto_approve = this.$store.state.defaults.auto_approve
+            this.reward = this.$store.state.defaults.reward
+            this.workers = this.$store.state.defaults.assignments
+            this.params = this.$store.state.defaults.examples_per_hit
             this.elaboraTempoGET('expiry')
             this.elaboraTempoGET('max_time')
             this.elaboraTempoGET('auto_approve')
@@ -856,24 +859,12 @@ textarea {
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
 }
-.tooltip .tooltip-text {
-    visibility: hidden;
-    text-align: center;
-    padding: 2px 6px;
-    z-index: 100;
-    left: 0;
-    transition: opacity 0.3s ease-in-out;
-    opacity: 0;
-    transition-delay: 0.15s;
-}
-.tooltip:hover .tooltip-text {
-    visibility: visible;
-    opacity: 85%;
-}
-.-ml-27 {
-    margin-left: -7.4rem;
+@media (max-width: 639px) {
+    .-ml-27 {
+        margin-left: -4.05rem;
+    }
 }
 .-mt-17 {
-    margin-top: -4.3rem;
+    margin-top: -5rem;
 }
 </style>

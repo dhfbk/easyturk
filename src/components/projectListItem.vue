@@ -1,6 +1,6 @@
 <template>
     <div
-        class="rounded shadow-md transition duration-150 my-4 mx-2 p-2 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer"
+        class="rounded shadow-md transition duration-150 my-4 mx-2 py-2 px-4 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer"
         @click="openProject"
     >
         <div
@@ -37,7 +37,7 @@
                     </svg>
                 </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                    class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
                     >Upload standard csv</span
                 >
             </span>
@@ -61,7 +61,7 @@
                     </svg>
                 </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                    class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
                     >Upload gold csv</span
                 >
             </span>
@@ -85,7 +85,7 @@
                     </svg>
                 </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                    class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
                     >Edit</span
                 >
             </span>
@@ -102,7 +102,7 @@
                     </svg>
                 </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
+                    class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
                     >Delete</span
                 >
             </span>
@@ -119,15 +119,9 @@
                     </svg>
                 </button>
                 <span
-                    v-if="projectData.hits_submitted == 0"
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light -ml-14"
-                    >Launch project</span
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light regular"
                 >
-                <span
-                    v-else
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light -ml-18"
-                >
-                    Launch other HITs
+                    Launch HITs
                 </span>
             </span>
             <span class="tooltip relative">
@@ -143,7 +137,7 @@
                     </svg>
                 </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light -ml-4"
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light regular"
                     >Set layout</span
                 >
             </span>
@@ -161,7 +155,7 @@
                     </svg>
                 </button>
                 <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light -ml-6"
+                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light regular"
                     >Create HITs</span
                 >
             </span>
@@ -467,25 +461,5 @@ export default {
     .contenutoPrj {
         flex-direction: row;
     }
-}
-.tooltip .tooltip-text {
-    visibility: hidden;
-    text-align: center;
-    padding: 2px 6px;
-    z-index: 100;
-    left: 0;
-    transition: opacity 0.3s ease-in-out;
-    opacity: 0;
-    transition-delay: 0.15s;
-}
-.tooltip:hover .tooltip-text {
-    visibility: visible;
-    opacity: 85%;
-}
-.-ml-18 {
-    margin-left: -4.45rem;
-}
-.-ml-14 {
-    margin-left: -3.15rem;
 }
 </style>

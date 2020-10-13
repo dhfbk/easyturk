@@ -73,10 +73,35 @@
     top   : 0;
     bottom: 0;
 }
+
 .shadowRed {
     border-color: red;
-    box-shadow: 0 0px .1rem 0 rgb(255, 0, 0);
+    box-shadow  : 0 0px .1rem 0 rgb(255, 0, 0);
 }
+
 .shadowRed:hover {
     border-color: rgba(160, 174, 192, 1);
+}
+
+.tooltip .tooltip-text {
+    visibility      : hidden;
+    text-align      : center;
+    padding         : 4px 8px;
+    z-index         : 100;
+    left            : 0;
+    transition      : opacity 0.3s ease-in-out;
+    opacity         : 0;
+    transition-delay: 0.15s;
+}
+
+.tooltip-text {
+    font-weight      : 500;
+    left             : 50% !important;
+    -webkit-transform: translateX(-50%) !important;
+    transform        : translateX(-50%) !important;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity   : 85%;
 }
