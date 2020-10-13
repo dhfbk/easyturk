@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="lg:mt-2">
         <div
-            class="flex flex-col md:flex-row items-center content-center mb-1"
+            class="flex flex-col md:flex-row items-center content-center mb-1 text-sm"
             v-for="second in secondPartData"
             :key="second.id"
             @change="prova()"

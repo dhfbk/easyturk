@@ -3,7 +3,7 @@
         <div v-if="isGold == 0">
             <p class="text-teal-500 text-md text-center">Golden standard CSV hasn't been uploaded</p>
         </div>
-        <div class="flex flex-col md:flex-row items-center md:items-end content-center">
+        <div class="flex flex-col md:flex-row items-center md:items-end content-center text-sm">
             <div class="relative w-full block md:mt-0">
                 <span class="flex flex-row items-center my-2">
                     <span class="mr-2 font-semibold tracking-wide">Reject if gold is wrong: </span>

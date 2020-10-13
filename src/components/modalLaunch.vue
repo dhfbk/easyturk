@@ -2,8 +2,9 @@
     <transition name="fade" mode="out-in" :duration="{ enter: 500, leave: 500 }" appear>
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
+            @click="toggleModal"
         >
-            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto">
+            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto" @click.stop>
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
                         <div class="text-gray-900 font-bold text-lg">{{ title }}</div>

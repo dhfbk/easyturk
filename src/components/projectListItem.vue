@@ -157,8 +157,9 @@
                 </button>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light regular"
-                    >Create HITs</span
                 >
+                    Create HITs
+                </span>
             </span>
             <span v-click-outside="hide" class="md:hidden flex align-center">
                 <button

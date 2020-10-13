@@ -38,12 +38,12 @@
         <div class="flex justify-between items-center flex-wrap" v-if="!loading">
             <h1 class="text-2xl mb-4 text-primary">{{ project.name }}</h1>
             <div class="w-full sm:w-auto flex relative justify-between content-center items-center">
-                <span class="tooltip relative" v-if="project.status >= 2">
+                <span class="tooltip relative mr-2" v-if="project.status >= 2">
                     <button
                         @click="toggleModal('launch')"
                         type="submit"
                         :class="{ 'cursor-not-allowed': hitsSubmitted == hitsTotal }"
-                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -52,22 +52,23 @@
                         </svg>
                     </button>
                     <span
-                        v-if="hitsSubmitted == 0"
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Launch project</span
+                        >Launch HITs</span
                     >
+                    <!--
                     <span
                         v-else
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
                     >
                         Launch other HITs
                     </span>
+                    -->
                 </span>
-                <span class="tooltip relative" v-if="project.status == 1">
+                <span class="tooltip relative mr-2" v-if="project.status == 1">
                     <button
                         @click="toggleModal('layout')"
                         type="submit"
-                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -80,12 +81,12 @@
                         >Set layout</span
                     >
                 </span>
-                <span class="tooltip relative" v-if="project.status == 0">
+                <span class="tooltip relative mr-2" v-if="project.status == 0">
                     <button
                         :class="{ 'cursor-not-allowed': project.numData == 0 }"
                         @click="toggleModal('hit')"
                         type="submit"
-                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -99,7 +100,7 @@
                     >
                 </span>
                 <span
-                    class="tooltip relative"
+                    class="tooltip relative mr-2"
                     v-if="
                         (project.status >= 1 && project.status != 3) ||
                             (project.status == 3 && $store.state.isSandbox == true)
@@ -108,7 +109,7 @@
                     <button
                         @click="toggleModal('revert')"
                         type="submit"
-                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -121,11 +122,11 @@
                         >Revert HIT settings</span
                     >
                 </span>
-                <span class="tooltip relative" v-if="project.status != 3">
+                <span class="tooltip relative mr-2" v-if="project.status != 3">
                     <button
                         @click="$router.push({ name: 'edit', params: { projectId: id } })"
                         type="submit"
-                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -138,11 +139,11 @@
                         >Edit</span
                     >
                 </span>
-                <span class="tooltip relative" v-if="project.status != 3">
+                <span class="tooltip relative mr-2" v-if="project.status != 3">
                     <button
                         @click="toggleModal('delete')"
                         type="submit"
-                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -159,7 +160,7 @@
                     <button
                         @click="open('results')"
                         type="submit"
-                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -168,9 +169,10 @@
                         </svg>
                     </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Results</span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light regular"
                     >
+                        Results
+                    </span>
                     <!-- <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1">
                         <span
                             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"

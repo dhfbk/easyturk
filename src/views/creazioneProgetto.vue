@@ -62,27 +62,21 @@
                     @mouseleave="hoverDesc = false"
                     >Description</label
                 >
-                <div class id="descrizione">
-                    <div
-                        :class="hoverDesc ? 'border-gray-500' : 'border-gray-200'"
-                        class="box border rounded bg-gray-100 transition duration-150 ease-in-out hover:border-gray-500"
-                    >
-                        <textarea
-                            placeholder="Description"
-                            :class="
-                                status > 2
-                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-                                    : 'bg-gray-100 text-gray-700'
-                            "
-                            class="w-full py-2 px-4 focus:outline-none"
-                            id="descrizione"
-                            @focus="hoverDesc = true"
-                            @blur="hoverDesc = false"
-                            v-model.trim="$v.description.$model"
-                            :disabled="status > 2"
-                            required
-                        ></textarea>
-                    </div>
+                <div class id="descrizione rounded">
+                    <textarea
+                        placeholder="Description"
+                        :class="[
+                            status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700',
+                            hoverDesc ? 'border-gray-500' : 'border-gray-200',
+                        ]"
+                        class="w-full border transition duration-150 ease-in-out hover:border-gray-500 rounded py-2 px-4 focus:outline-none"
+                        id="descrizione"
+                        @focus="hoverDesc = true"
+                        @blur="hoverDesc = false"
+                        v-model.trim="$v.description.$model"
+                        :disabled="status > 2"
+                        required
+                    ></textarea>
                 </div>
                 <p class="text-gray-700 text-xs italic">
                     Give more detail about this survey. This gives Workers a bit more information before they decide to

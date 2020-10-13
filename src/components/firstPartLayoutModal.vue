@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="lg:mt-2">
         <div
-            class="flex flex-col md:flex-row items-center md:items-end content-center mb-1"
+            class="flex flex-col md:flex-row items-center md:items-end content-center mb-1 text-sm"
             v-for="first in dataArr"
             :key="first.id"
             @change="update()"
