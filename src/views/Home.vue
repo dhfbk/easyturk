@@ -1,5 +1,5 @@
 <template>
-    <div class="home mx-2 xs2:mx-4 md:mx-16 pt-2 pb-6 overflow-x-hidden">
+    <div class="home mx-2 xs2:mx-4 md:mx-16 pt-2 pb-6">
         <p class="text-3xl sm:text-5xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
         <modalEliminazione v-if="modalElim" @deleteModal="toggleModal" @deleted="deleted" :id="modalId" />
         <modalUpload v-if="modalStd" @uploadModal="toggleModal" @uploaded="toggleModal" :type="'std'" :id="modalId" />

@@ -38,11 +38,36 @@
         <div class="flex justify-between items-center flex-wrap" v-if="!loading">
             <h1 class="text-2xl mb-4 text-primary">{{ project.name }}</h1>
             <div class="w-full sm:w-auto flex relative justify-between content-center items-center">
-                <span class="tooltip relative mr-2" v-if="project.status >= 2">
+                <span class="tooltip relative mr-2" v-if="project.status == 3">
                     <button
                         @click="toggleModal('launch')"
                         type="submit"
                         :class="{ 'cursor-not-allowed': hitsSubmitted == hitsTotal }"
+                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
+                    >
+                        <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M18,14H20V17H23V19H20V22H18V19H15V17H18V14M12,3C16.42,3 20,4.79 20,7C20,9.21 16.42,11 12,11C7.58,11 4,9.21 4,7C4,4.79 7.58,3 12,3M4,9C4,11.21 7.58,13 12,13C16.42,13 20,11.21 20,9V9L20,12.08L19,12C16.41,12 14.2,13.64 13.36,15.94L12,16C7.58,16 4,14.21 4,12V9M4,14C4,16.21 7.58,18 12,18H13C13,19.05 13.27,20.04 13.75,20.9L12,21C7.58,21 4,19.21 4,17V14Z"
+                            />
+                        </svg>
+                    </button>
+                    <span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        >Launch HITs</span
+                    >
+                    <!--
+                    <span
+                        v-else
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                    >
+                        Launch other HITs
+                    </span>
+                    -->
+                </span>
+                <span class="tooltip relative mr-2" v-if="project.status == 2">
+                    <button
+                        @click="toggleModal('launch')"
+                        type="submit"
                         class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
@@ -53,7 +78,7 @@
                     </button>
                     <span
                         class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
-                        >Launch HITs</span
+                        >Publish project</span
                     >
                     <!--
                     <span
