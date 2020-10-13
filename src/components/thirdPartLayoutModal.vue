@@ -34,12 +34,11 @@
                             >Maximum number of assignments ({{ min }}):</label
                         >
                         <input
-                            :class="[
+                            :class="
                                 !reject || isGold == 0
                                     ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-                                    : 'bg-gray-100 text-gray-700',
-                                v.assignNumber.$error ? 'shadowRed' : '',
-                            ]"
+                                    : 'bg-gray-100 text-gray-700'
+                            "
                             :disabled="!reject || isGold == 0"
                             class="appearance-none block w-full border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
                             id="assNumber"
@@ -57,21 +56,35 @@
                         <label class="font-semibold  md:mr-0 text-left w-full tracking-wide" for="descrizione"
                             >Reason for rejection:
                         </label>
-                        <div
-                            class="box border rounded bg-gray-100 transition duration-150 ease-in-out hover:border-gray-500"
-                        >
+                        <div>
                             <input
+                                v-if="!reject"
                                 type="text"
                                 placeholder="Reason for rejection"
-                                class="w-full py-2 px-4 focus:outline-none resize-none"
-                                :class="[
+                                class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                :class="
                                     !reject || isGold == 0
                                         ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-                                        : 'bg-gray-100 text-gray-700',
-                                    v.assignNumber.$error ? 'shadowRed' : '',
-                                ]"
+                                        : 'bg-gray-100 text-gray-700'
+                                "
                                 :disabled="!reject || isGold == 0"
-                                id="descrizione"
+                                id="reject"
+                                v-model="rejectReason"
+                                required
+                            />
+                            <input
+                                v-else
+                                type="text"
+                                :class="[
+                                    isGold == 0
+                                        ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                        : 'bg-gray-100 text-gray-700',
+                                    v.rejectReason.$error ? 'shadowRed' : '',
+                                ]"
+                                placeholder="Reason for rejection"
+                                class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                :disabled="isGold == 0"
+                                id="reject"
                                 v-model="rejectReason"
                                 required
                             />

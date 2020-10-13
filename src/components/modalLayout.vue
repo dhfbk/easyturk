@@ -124,14 +124,30 @@ export default {
         },
     },
     validations() {
-        return {
-            assignNumber: {
-                required,
-                between: between(this.project.workers, 5),
-            },
-            whatToDo: {
-                notEmpty,
-            },
+        if (this.rejectIfGoldWrong == 0) {
+            return {
+                assignNumber: {
+                    required,
+                    between: between(this.project.workers, 5),
+                },
+                whatToDo: {
+                    notEmpty,
+                },
+            }
+        }
+        else{
+            return {
+                assignNumber: {
+                    required,
+                    between: between(this.project.workers, 5),
+                },
+                whatToDo: {
+                    notEmpty,
+                },
+                rejectReason: {
+                    required,
+                },
+            }
         }
     },
     created() {
