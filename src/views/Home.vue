@@ -12,6 +12,7 @@
             :hitsTotal="hitsTotal"
             @err="uploaded"
             @launched="launched"
+            :priceData="priceData"
         />
         <!--sistemare per i due valori del csv-->
         <modalHit
@@ -182,6 +183,7 @@ export default {
             hitsSubmitted: 0,
             hitsTotal: 0,
             params: 0,
+            priceData: {},
         }
     },
 
@@ -281,6 +283,10 @@ export default {
                     })
                     this.hitsSubmitted = parseInt(launch.hits_submitted)
                     this.hitsTotal = parseInt(launch.hits_total)
+                    if ((launch.status == 2 || launch.status == 3) && this.hitsTotal > this.hitsSubmitted) {
+                        this.priceData.reward = parseFloat(launch.reward)
+                        this.priceData.assignment = parseInt(launch.workers)
+                    }
                     console.log(launch)
                     if (this.hitsTotal == this.hitsSubmitted) {
                         this.$emit('snackbar', 'All HITs have already been submitted', '')

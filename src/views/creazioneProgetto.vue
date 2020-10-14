@@ -379,6 +379,17 @@
             @submit="handleSubmit"
             class="mb-4"
         ></autocomplete>
+        <div class="relative">
+            <ul class="max-h-40 w-full overflow-y-scroll absolute -top-1" v-if="tmp.length > 0">
+                <li v-for="i in tmp" :key="i.id" class="hover:bg-gray-300 bg-white">{{ i.name }}</li>
+            </ul>
+            <input
+                v-model="input"
+                type="text"
+                class="appearance-none w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+            />
+        </div>
+
         <div v-if="qualificationCountries.length != 0" class="flex flex-wrap w-full mb-4">
             <div
                 v-for="country in qualificationCountries"
@@ -499,6 +510,8 @@ export default {
             qualificationMaster: 0,
             qualificationAdult: 0,
             inputElement: {},
+            input: '',
+            tmp: [],
         }
     },
     validations() {
@@ -582,6 +595,15 @@ export default {
         this.inputElement = document.getElementsByClassName('autocomplete-input')[0]
     },
     methods: {
+        // filter() {
+        //     console.log(this.input)
+        //     if (this.input.length > this.input.length && this.tmp.length > 0) {
+        //     } else {
+        //         this.tmp = this.countries.filter(country => {
+        //             return country.name.toLowerCase().startsWith(this.input)
+        //         })
+        //     }
+        // },
         search(input) {
             if (input.length < 1) {
                 return []
@@ -836,6 +858,19 @@ export default {
     },
     beforeDestroy() {
         window.removeEventListener('keydown', this.keyboardEvent)
+    },
+    watch: {
+        input(newValue, oldValue) {
+            if (newValue.length > oldValue.length && this.tmp.length > 0) {
+                this.tmp = this.tmp.filter(country => {
+                    return country.name.toLowerCase().startsWith(this.input)
+                })
+            } else {
+                this.tmp = this.countries.filter(country => {
+                    return country.name.toLowerCase().startsWith(this.input)
+                })
+            }
+        },
     },
 }
 </script>

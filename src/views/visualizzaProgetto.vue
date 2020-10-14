@@ -34,6 +34,7 @@
             :hitsTotal="hitsTotal"
             @launchModal="toggleModal('launch')"
             @launched="uploaded"
+            :priceData="priceData"
         />
         <div class="flex justify-between items-center flex-wrap" v-if="!loading">
             <h1 class="text-2xl mb-4 text-primary">{{ project.name }}</h1>
@@ -378,10 +379,13 @@ export default {
             project: [],
             hitsSubmitted: 0,
             hitsTotal: 0,
+            priceData: {},
         }
     },
     created() {
         this.getDatiPrj()
+
+        console.log(this.priceData)
     },
     mounted() {
         this.popupItem = this.$el
@@ -406,6 +410,10 @@ export default {
                     this.project.numGold = res.data.numGold
                     this.project.numData = res.data.numData
                     console.log(res.data)
+                    if ((this.project.status == 2 || this.project.status == 3) && this.hitsTotal > this.hitsSubmitted) {
+                        this.priceData.reward = parseFloat(this.project.reward)
+                        this.priceData.assignment = parseInt(this.project.workers)
+                    }
                     this.loading = false
                 })
                 .catch(err => {

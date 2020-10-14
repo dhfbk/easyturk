@@ -38,6 +38,7 @@
                             required
                         />
                     </div>
+                    <div>Price: {{ hitNum * priceData.assignment * priceData.reward }}</div>
 
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
                         <button
@@ -82,6 +83,7 @@ export default {
     props: {
         hitsSubmitted: Number,
         hitsTotal: Number,
+        priceData: Object,
         id: String,
     },
     created() {
