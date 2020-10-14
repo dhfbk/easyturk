@@ -370,6 +370,30 @@
                 />
             </div>
         </div>
+        <autocomplete
+            :search="search"
+            placeholder="Search for a country"
+            aria-label="Search for a country"
+            :get-result-value="getResultValue"
+            :debounce-time="250"
+            @submit="handleSubmit"
+            class="mb-4"
+        ></autocomplete>
+        <div v-if="qualificationCountries.length != 0" class="flex flex-wrap w-full mb-4">
+            <div
+                v-for="country in qualificationCountries"
+                :key="country.alpha2Code"
+                class="flex justify-center items-center py-1 rounded-full text-gray-700 bg-gray-400 chip mb-1"
+            >
+                <span class="text-sm font-semibold leading-none max-w-full flex-initial">{{ country.name }}</span>
+                <svg style="width:21px;height:21px" viewBox="0 0 24 24">
+                    <path
+                        fill="rgba(74, 85, 104, 1)"
+                        d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z"
+                    />
+                </svg>
+            </div>
+        </div>
         <div class="w-full flex justify-end flex-row">
             <button
                 type="submit"
@@ -470,6 +494,11 @@ export default {
             loading: false,
             status: 0,
             disableBtn: true,
+            countries: [],
+            qualificationCountries: [],
+            qualificationMaster: 0,
+            qualificationAdult: 0,
+            inputElement: {},
         }
     },
     validations() {
@@ -529,6 +558,7 @@ export default {
     },
     created() {
         this.mode = this.$route.name
+        this.getCountries()
         if (this.$route.path == '/create') {
             this.mode = this.$route.name
             this.pageTitle = 'Create new project'
@@ -549,8 +579,36 @@ export default {
     },
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
+        this.inputElement = document.getElementsByClassName('autocomplete-input')[0]
     },
     methods: {
+        search(input) {
+            if (input.length < 1) {
+                return []
+            }
+            return this.countries.filter(country => {
+                return country.name.toLowerCase().startsWith(input.toLowerCase())
+            })
+        },
+        getResultValue(result) {
+            return result.name
+        },
+        handleSubmit(element) {
+            this.qualificationCountries.push({ name: element.name, alpha2Code: element.alpha2Code })
+            document.getElementsByClassName('autocomplete-input')[0].value = 'NI'
+        },
+        getCountries() {
+            axios({
+                url: 'https://restcountries.eu/rest/v2/all',
+                method: 'get',
+            })
+                .then(res => {
+                    this.countries = res.data
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+        },
         downloadLayoutId() {
             this.downloadID = true
             axios({
@@ -860,5 +918,16 @@ textarea {
 }
 .-mt-17 {
     margin-top: -5rem;
+}
+.chip {
+    height: 32px;
+    margin-right: 8px;
+}
+.chip svg {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+.chip span {
+    margin-left: 12px;
 }
 </style>
