@@ -43,7 +43,7 @@
                     <thirdPart
                         :thirdPartData="thirdPartData"
                         @updateArr="updateArr"
-                        :isGold="parseInt(project.numGold)"
+                        :isGold="parseInt(project.count_gold)"
                         :v="$v"
                     />
 
@@ -107,7 +107,7 @@ export default {
             assignNumber: this.project.workers,
             acceptIfGoldRight: 0,
             rejectIfGoldWrong: 0,
-            rejectReason: '',
+            rejectReason: this.$store.state.defaults.reject_reason,
             lastChar: /^[a-z|A-Z|0-9]+[^#]\s?#{1}$/,
         }
     },
@@ -125,29 +125,17 @@ export default {
         },
     },
     validations() {
-        if (this.rejectIfGoldWrong == 0) {
-            return {
-                assignNumber: {
-                    required,
-                    between: between(this.project.workers, 5),
-                },
-                whatToDo: {
-                    notEmpty,
-                },
-            }
-        } else {
-            return {
-                assignNumber: {
-                    required,
-                    between: between(this.project.workers, 5),
-                },
-                whatToDo: {
-                    notEmpty,
-                },
-                rejectReason: {
-                    required,
-                },
-            }
+        return {
+            assignNumber: {
+                required,
+                between: between(this.project.workers, 5),
+            },
+            whatToDo: {
+                notEmpty,
+            },
+            rejectReason: {
+                required,
+            },
         }
     },
     created() {
@@ -182,7 +170,7 @@ export default {
         },
         submit() {
             this.$v.$touch()
-            if (!this.$v.$invalid) {
+            if (!this.$v.$invalid || (this.rejectIfGoldWrong == 0 && this.$v.rejectReason.$invalid)) {
                 this.loading = true
                 var url = this.APIURL + '?action=updateProjectStatus'
                 axios({

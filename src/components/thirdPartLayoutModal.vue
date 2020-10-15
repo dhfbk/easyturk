@@ -6,13 +6,14 @@
         <div class="flex flex-col md:flex-row items-center md:items-end content-center text-sm">
             <div class="relative w-full block md:mt-0">
                 <span class="flex flex-row items-center my-2">
-                    <span class="mr-2 font-semibold tracking-wide">Reject if gold is wrong: </span>
+                    <label class="mr-2 font-semibold tracking-wide" for="reject">Reject if gold is wrong: </label>
                     <span
                         class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
                         :class="isGold == 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : ''"
                     >
                         <input
                             type="checkbox"
+                            id="reject"
                             class="opacity-0 absolute w-4 h-4"
                             @click="reject = !reject"
                             v-model="reject"
@@ -58,51 +59,37 @@
                         </label>
                         <div>
                             <input
-                                v-if="!reject"
-                                type="text"
-                                placeholder="Reason for rejection"
-                                class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                                :class="
-                                    !reject || isGold == 0
-                                        ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-                                        : 'bg-gray-100 text-gray-700'
-                                "
-                                :disabled="!reject || isGold == 0"
-                                id="reject"
-                                v-model="rejectReason"
-                                required
-                            />
-                            <input
-                                v-else
                                 type="text"
                                 :class="[
-                                    isGold == 0
+                                    !reject || isGold == 0
                                         ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                         : 'bg-gray-100 text-gray-700',
                                     v.rejectReason.$error ? 'shadowRed' : '',
                                 ]"
                                 placeholder="Reason for rejection"
                                 class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                                :disabled="isGold == 0"
+                                :disabled="!reject || isGold == 0"
                                 id="reject"
-                                v-model="rejectReason"
+                                v-model.trim="v.rejectReason.$model"
                                 required
                             />
                         </div>
                     </span>
                 </span>
                 <span class="flex flex-row items-center my-2">
-                    <span class="mr-2 font-semibold tracking-wide">Accept if gold is right:</span>
+                    <label class="mr-2 font-semibold tracking-wide" for="accept">Accept if gold is right:</label>
                     <span
                         class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
                         :class="[isGold == 0 ? 'bg-gray-400 cursor-not-allowed' : '']"
                     >
                         <input
                             type="checkbox"
+                            id="accept"
                             class="opacity-0 absolute w-4 h-4"
                             @click="accept = !accept"
                             v-model="accept"
                             :class="isGold == 0 ? 'cursor-not-allowed' : ''"
+                            :disabled="isGold == 0"
                         />
                         <svg
                             :class="accept ? '' : 'hidden'"
@@ -151,7 +138,6 @@ export default {
         return {
             reject: false,
             accept: false,
-            rejectReason: '',
             assignNumber: 0,
             dataReturn: {
                 rejectIfGoldWrong: 0,
@@ -172,7 +158,7 @@ export default {
         update() {
             this.reject == false ? (this.dataReturn.rejectIfGoldWrong = 0) : (this.dataReturn.rejectIfGoldWrong = 1)
             this.accept == false ? (this.dataReturn.acceptIfGoldRight = 0) : (this.dataReturn.acceptIfGoldRight = 1)
-            this.dataReturn.rejectReason = this.rejectReason
+            this.dataReturn.rejectReason = this.v.rejectReason.$model
             this.dataReturn.assignNumber = this.assignNumber
             var send = ['third', this.dataReturn]
             this.$emit('updateArr', send)
