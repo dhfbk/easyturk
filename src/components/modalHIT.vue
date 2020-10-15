@@ -7,7 +7,7 @@
             <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 mx-2 overflow-y-auto" @click.stop>
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
-                        <h2 class="text-gray-900 font-bold text-lg">HIT settings</h2>
+                        <h2 class="text-gray-900 font-bold text-lg text-primary">HIT settings</h2>
                         <svg
                             class="ml-auto fill-current text-gray-700 hover:bg-gray-300 rounded w-6 h-6 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"

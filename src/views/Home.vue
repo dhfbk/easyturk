@@ -1,6 +1,6 @@
 <template>
     <div class="home mx-2 xs2:mx-4 md:mx-16 pt-2 pb-6">
-        <p class="text-3xl sm:text-5xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
+        <p class="text-3xl sm:text-4xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
         <modalEliminazione v-if="modalElim" @deleteModal="toggleModal" @deleted="deleted" :id="modalId" />
         <modalUpload v-if="modalStd" @uploadModal="toggleModal" @uploaded="toggleModal" :type="'std'" :id="modalId" />
         <modalUpload v-if="modalGld" @uploadModal="toggleModal" @uploaded="toggleModal" :type="'gld'" :id="modalId" />
@@ -13,6 +13,8 @@
             @err="uploaded"
             @launched="launched"
             :priceData="priceData"
+            :qualifications="qualifications"
+            @changeQualification="changeQualification"
         />
         <!--sistemare per i due valori del csv-->
         <modalHit
@@ -184,6 +186,7 @@ export default {
             hitsTotal: 0,
             params: 0,
             priceData: {},
+            qualifications: {},
         }
     },
 
@@ -283,6 +286,7 @@ export default {
                     })
                     this.hitsSubmitted = parseInt(launch.hits_submitted)
                     this.hitsTotal = parseInt(launch.hits_total)
+                    this.qualifications.master = 0
                     if ((launch.status == 2 || launch.status == 3) && this.hitsTotal > this.hitsSubmitted) {
                         this.priceData.reward = parseFloat(launch.reward)
                         this.priceData.assignment = parseInt(launch.workers)
@@ -322,6 +326,9 @@ export default {
         uploaded(msg) {
             this.$emit('snackbar', msg)
         },
+        changeQualification(value){
+            this.qualifications.master = value
+        }
     },
 }
 </script>

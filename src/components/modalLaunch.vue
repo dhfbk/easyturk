@@ -7,7 +7,7 @@
             <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto" @click.stop>
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
-                        <div class="text-gray-900 font-bold text-lg">{{ title }}</div>
+                        <div class="text-gray-900 font-bold text-lg text-primary">{{ title }}</div>
                         <svg
                             class="ml-auto fill-current text-gray-700 w-6 h-6 rounded ripple hover:bg-gray-300 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
@@ -19,26 +19,50 @@
                             />
                         </svg>
                     </div>
-                    <p class="w-full px-3 italic">You have {{ hitMax }} HITs left.</p>
-                    <div class="flex flex-col sm:flex-row items-center content-center w-full px-3 py-2">
+                    <div class="flex flex-col sm:flex-row items-center content-center w-full pb-1">
                         <label
                             class="block tracking-wide text-gray-900 text-md font-bold mb-2 sm:mb-0 mr-2"
                             for="hitNum"
                             >How many HITs do you want to launch?</label
                         >
-                        <input
-                            class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4"
-                            id="hitNum"
-                            type="number"
-                            min="1"
-                            :max="hitMax"
-                            step="1"
-                            placeholder="100"
-                            v-model.trim="$v.hitNum.$model"
-                            required
-                        />
+                        <div class="relative">
+                            <input
+                                @change="calculatePrice('basic')"
+                                :class="$v.hitNum.$invalid ? 'shadowRed' : ''"
+                                class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 pl-4 pr-16"
+                                id="hitNum"
+                                type="number"
+                                min="1"
+                                :max="hitMax"
+                                step="1"
+                                placeholder="100"
+                                v-model.trim="$v.hitNum.$model"
+                                required
+                            />
+                            <div class="absolute top-0 right-0">
+                                <div class="relative">
+                                    <p
+                                        @click="calculatePrice('max')"
+                                        class="absolute top-0 h-full ripple right-0 py-2 px-2 rounded-r hover:bg-gray-200 cursor-pointer"
+                                    >
+                                        MAX
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>Price: {{ hitNum * priceData.assignment * priceData.reward }}</div>
+                    <p class="w-full italic">You have {{ hitMax }} HITs left.</p>
+                    <hr class="my-1" />
+                    <p class="font-bold">Price</p>
+                    <p>Workers' price: ${{ workerPrice }}</p>
+                    <p>Mechanical Turk Fee: ${{ mtFee }}</p>
+                    <p>
+                        Masters Qualification Fee: ${{ masterFee }}
+                        <span v-if="qualifications.master == 0">(you don't use the Masters Qualification)</span>
+                    </p>
+                    <p class="text-lg mt-2">
+                        Total: <b>${{ workerPrice + mtFee + masterFee }}</b>
+                    </p>
 
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
                         <button
@@ -67,7 +91,7 @@
 </template>
 
 <script>
-//sistemare il numero max di hit da mandare con tot - submitted (probabilmente ricevuto via props), sistemare vuelidate per il max, chiamata del submit da testare
+//aggiungere calcolo per le qualifications master e adult
 const { required, between } = require('vuelidate/lib/validators')
 import axios from 'axios'
 export default {
@@ -78,6 +102,9 @@ export default {
             hitMax: 0,
             loading: false,
             title: 'Set HITs to be launched',
+            mtFee: 0,
+            workerPrice: 0,
+            masterFee: 0,
         }
     },
     props: {
@@ -85,9 +112,21 @@ export default {
         hitsTotal: Number,
         priceData: Object,
         id: String,
+        qualifications: Object,
     },
     created() {
         this.hitMax = parseInt(this.hitsTotal) - parseInt(this.hitsSubmitted)
+        this.calculatePrice()
+        if (this.$route.name == 'Home') {
+            axios
+                .get(this.APIURL + '?action=getProjectInfo&id=' + this.id)
+                .then(res => {
+                    this.$emit('changeQualification', res.data.values.master)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
     },
     validations() {
         return {
@@ -98,6 +137,45 @@ export default {
         }
     },
     methods: {
+        calculatePrice(mode) {
+            if (mode == 'max') {
+                this.hitNum = this.hitMax
+            }
+            if (this.priceData.assignment >= 10) {
+                this.mtFee =
+                    Math.round(
+                        (this.hitNum * this.priceData.assignment * this.priceData.reward * 0.4 + 0.00001) * 100
+                    ) /
+                        100 <
+                    0.01
+                        ? 0.01
+                        : Math.round(
+                              (this.hitNum * this.priceData.assignment * this.priceData.reward * 0.4 + 0.00001) * 100
+                          ) / 100
+            } else {
+                this.mtFee =
+                    Math.round(
+                        (this.hitNum * this.priceData.assignment * this.priceData.reward * 0.2 + 0.00001) * 100
+                    ) /
+                        100 <
+                    0.01
+                        ? 0.01
+                        : Math.round(
+                              (this.hitNum * this.priceData.assignment * this.priceData.reward * 0.2 + 0.00001) * 100
+                          ) / 100
+            }
+
+            this.workerPrice =
+                Math.round((this.hitNum * this.priceData.assignment * this.priceData.reward + 0.00001) * 100) / 100
+            if (this.qualifications.master == 0) {
+                this.masterFee = 0.0
+            } else {
+                this.masterFee =
+                    Math.round(
+                        (this.hitNum * this.priceData.assignment * this.priceData.reward * 0.05 + 0.00001) * 100
+                    ) / 100
+            }
+        },
         toggleModal() {
             this.$emit('launchModal')
         },
@@ -135,6 +213,11 @@ export default {
                         this.loading = false
                     })
             }
+        },
+    },
+    watch: {
+        qualifications() {
+            this.calculatePrice('basic')
         },
     },
 }

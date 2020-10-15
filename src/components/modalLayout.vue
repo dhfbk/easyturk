@@ -7,7 +7,7 @@
             <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto" @click.stop>
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
-                        <div class="text-gray-900 font-bold text-lg">Set layout for the project</div>
+                        <div class="text-gray-900 font-bold text-lg text-primary">Set layout for the project</div>
                         <svg
                             class="ml-auto fill-current text-gray-700 w-6 h-6 rounded ripple hover:bg-gray-300 cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"

@@ -7,7 +7,7 @@
             <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 mx-2 overflow-y-auto" @click.stop>
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
-                        <h2 class="text-gray-900 font-bold text-lg">Choose the file to upload</h2>
+                        <h2 class="text-gray-900 font-bold text-lg text-primary">Choose the file to upload</h2>
                         <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal()">
                             <svg
                                 class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
