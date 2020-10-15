@@ -61,7 +61,8 @@
                         <span v-if="qualifications.master == 0">(you don't use the Masters Qualification)</span>
                     </p>
                     <p class="text-lg mt-2">
-                        Total: <b>${{ workerPrice + mtFee + masterFee }}</b>
+                        Total:
+                        <b>${{ Math.round((workerPrice + mtFee + masterFee + 0.00001) * 100) / 100 }}</b>
                     </p>
 
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
