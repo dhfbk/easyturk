@@ -35,6 +35,7 @@
             @launchModal="toggleModal('launch')"
             @launched="uploaded"
             :priceData="priceData"
+            :qualifications="qualifications"
         />
         <div class="flex justify-between items-center flex-wrap" v-if="!loading">
             <h1 class="text-2xl mb-4 text-primary">{{ project.name }}</h1>
@@ -380,6 +381,7 @@ export default {
             hitsSubmitted: 0,
             hitsTotal: 0,
             priceData: {},
+            qualifications: {},
         }
     },
     created() {
@@ -409,6 +411,7 @@ export default {
                     this.project.hits_total = res.data.hits_total
                     this.project.numGold = res.data.numGold
                     this.project.numData = res.data.numData
+                    this.qualifications.master = res.data.values.master
                     console.log(res.data)
                     if ((this.project.status == 2 || this.project.status == 3) && this.hitsTotal > this.hitsSubmitted) {
                         this.priceData.reward = parseFloat(this.project.reward)
