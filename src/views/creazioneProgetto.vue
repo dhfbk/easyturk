@@ -382,23 +382,32 @@
             class="mb-4"
         ></autocomplete> -->
         <div class="flex flex-col  md:grid md:grid-cols-2">
-            <div class="mr-4">
+            <div class="mr-4" @keydown.enter.prevent.self>
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="countries"
                     >Locations of Workers</label
                 >
                 <div class="relative">
-                    <ul class="max-h-40 w-full overflow-y-scroll absolute bottom-0 border-2" v-if="tmp.length > 0">
+                    <ul
+                        class="appearance-none max-h-48 w-full overflow-y-scroll absolute bottom-0 border border-black"
+                        v-if="tmp.length > 0"
+                    >
                         <li
                             v-for="i in tmp"
                             :key="i.alpha2Code"
-                            class="hover:bg-gray-300 bg-white cursor-pointer"
+                            class="bg-white cursor-pointer"
                             @click="add(i)"
+                            :class="active == tmp.indexOf(i) ? 'bg-primary text-gray-100' : ''"
+                            @mouseover="active = tmp.indexOf(i)"
+                            :id="parseInt(tmp.indexOf(i))"
                         >
-                            {{ i.name }}
+                            <span class="mx-2"> {{ i.name }}</span>
                         </li>
                     </ul>
                 </div>
                 <input
+                    @keyup.up.prevent="scroll('up')"
+                    @keyup.down.prevent="scroll('down')"
+                    @keyup.enter.stop.prevent.self="add(tmp[active])"
                     v-model="input"
                     placeholder="Location"
                     :disabled="status >= 2"
@@ -408,7 +417,13 @@
                     type="text"
                     class="appearance-none w-full border border-gray-200 rounded py-2 px-4 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                 />
-                <div v-if="selected.length != 0" class="flex flex-wrap w-full mb-4 mt-2">
+                <span class="text-gray-700 text-xs italic mt-2">
+                    Your Workers will be picked from the countries you select.
+                </span>
+                <div v-if="selected.length == 0" class="font-thin w-full mt-6 text-center">
+                    No countries selected.
+                </div>
+                <div v-else class="flex flex-wrap w-full mb-4 mt-2">
                     <div
                         v-for="country in selected"
                         :key="country.alpha2Code"
@@ -422,6 +437,7 @@
                             :disabled="status >= 2"
                             :class="status >= 2 ? 'cursor-not-allowed' : ''"
                             @click="deleteSelected(country)"
+                            @keydown.enter.prevent.self
                         >
                             <svg style="width:21px;height:21px" viewBox="0 0 24 24">
                                 <path
@@ -434,10 +450,15 @@
                 </div>
             </div>
             <div class="ml-4">
-                <div class="flex flex-row items-center my-2">
-                    <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="countries"
-                        >Require that Workers be Masters to do your tasks:</label
-                    >
+                <div class="flex flex-row justify-between items-center my-4">
+                    <div class="flex flex-col">
+                        <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="countries"
+                            >Only Master Workers:</label
+                        >
+                        <span class="text-gray-700 text-xs italic mt-1">
+                            Require that Workers be Masters to do your tasks.
+                        </span>
+                    </div>
                     <span
                         :disabled="status >= 2"
                         :class="
@@ -465,10 +486,15 @@
                         </svg>
                     </span>
                 </div>
-                <div class="flex flex-row items-center my-2">
-                    <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="countries"
-                        >Require that Workers be over 18 years of age to do your tasks:</label
-                    >
+                <div class="flex flex-row justify-between my-4">
+                    <div class="flex flex-col">
+                        <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="countries"
+                            >Project contains adult content:</label
+                        >
+                        <p class="text-gray-700 text-xs italic mt-1">
+                            Require that Workers be over 18 years of age to do your tasks.
+                        </p>
+                    </div>
                     <span
                         :class="
                             status >= 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
@@ -605,6 +631,7 @@ export default {
             tmp: [],
             selected: [],
             selectedCodes: [],
+            active: 0,
         }
     },
     validations() {
@@ -688,25 +715,31 @@ export default {
     },
     methods: {
         add(country) {
-            console.log(country)
-            this.selected.push(
-                country
-                // this.tmp.find(country => {
-                //     return country.name == name
-                // })
-            )
-            this.selectedCodes.push(country.alpha2Code)
-            var index = this.countries.indexOf(country)
-            this.countries.splice(index, 1)
-            this.tmp = []
-            this.input = ''
+            //console.log(country)
+            if (this.tmp.length > 0) {
+                this.selected.push(country)
+                this.selectedCodes.push(country.alpha2Code)
+                var index = this.countries.indexOf(country)
+                this.countries.splice(index, 1)
+                this.tmp = []
+                this.input = ''
+            }
         },
         deleteSelected(country) {
+            console.log(country)
             var index = this.selected.indexOf(country)
             this.selected.splice(index, 1)
             var index1 = this.selectedCodes.indexOf(country.alpha2Code)
             this.selectedCodes.splice(index1, 1)
             this.countries.push(country)
+        },
+        scroll(where) {
+            if (where == 'up' && this.active > 0) {
+                this.active--
+            } else if (where == 'down' && this.active < this.tmp.length - 1) {
+                this.active++
+            }
+            document.getElementById(this.active).scrollIntoView()
         },
         // filter() {
         //     console.log(this.input)
@@ -992,6 +1025,7 @@ export default {
     watch: {
         input(newValue, oldValue) {
             console.log(this.input)
+            this.active = 0
             if (newValue.length == 0) {
                 this.tmp = []
             } else if (newValue.length > oldValue.length && this.tmp.length > 0) {
@@ -1000,9 +1034,18 @@ export default {
                 })
             } else {
                 this.tmp = this.countries.filter(country => {
-                    console.log(country.name.toLowerCase().startsWith(this.input))
                     return country.name.toLowerCase().startsWith(this.input)
                 })
+            }
+        },
+        $store() {
+            if (this.$route.path == '/create') {
+                this.expiry = this.$store.state.defaults.survey_expiration
+                this.max_time = this.$store.state.defaults.time_per_worker
+                this.auto_approve = this.$store.state.defaults.auto_approve
+                this.reward = this.$store.state.defaults.reward
+                this.workers = this.$store.state.defaults.assignments
+                this.params = this.$store.state.defaults.examples_per_hit
             }
         },
     },
