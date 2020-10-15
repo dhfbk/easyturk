@@ -677,6 +677,8 @@ export default {
         deleteSelected(country) {
             var index = this.selected.indexOf(country)
             this.selected.splice(index, 1)
+            var index1 = this.selectedCodes.indexOf(country.alpha2Code)
+            this.selectedCodes.splice(index1, 1)
             this.countries.push(country)
         },
         // filter() {
@@ -795,6 +797,9 @@ export default {
                         layout_id: this.layout_id,
                         params: this.params,
                         params_fields: this.params_fields,
+                        countries: this.selectedCodes,
+                        adult: this.qualificationAdult,
+                        master: this.qualificationMaster,
                     },
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
