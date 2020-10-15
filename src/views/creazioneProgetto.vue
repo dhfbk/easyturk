@@ -357,7 +357,7 @@
             </div>
             <div class="w-full px-3 mb-4 mx-auto">
                 <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="params_fields"
-                    >Params fields</label
+                    >Parameter fields</label
                 >
                 <input
                     :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
@@ -370,7 +370,9 @@
                 />
             </div>
         </div>
-        <autocomplete
+        <hr class="solid mb-4" />
+
+        <!-- <autocomplete
             :search="search"
             placeholder="Search for a country"
             aria-label="Search for a country"
@@ -378,31 +380,95 @@
             :debounce-time="250"
             @submit="handleSubmit"
             class="mb-4"
-        ></autocomplete>
-        <div class="relative">
-            <ul class="max-h-40 w-full overflow-y-scroll absolute -top-1" v-if="tmp.length > 0">
-                <li v-for="i in tmp" :key="i.id" class="hover:bg-gray-300 bg-white">{{ i.name }}</li>
-            </ul>
-            <input
-                v-model="input"
-                type="text"
-                class="appearance-none w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-            />
-        </div>
-
-        <div v-if="qualificationCountries.length != 0" class="flex flex-wrap w-full mb-4">
-            <div
-                v-for="country in qualificationCountries"
-                :key="country.alpha2Code"
-                class="flex justify-center items-center py-1 rounded-full text-gray-700 bg-gray-400 chip mb-1"
-            >
-                <span class="text-sm font-semibold leading-none max-w-full flex-initial">{{ country.name }}</span>
-                <svg style="width:21px;height:21px" viewBox="0 0 24 24">
-                    <path
-                        fill="rgba(74, 85, 104, 1)"
-                        d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z"
-                    />
-                </svg>
+        ></autocomplete> -->
+        <div class="flex flex-col  md:grid md:grid-cols-2">
+            <div class="mr-4">
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="countries"
+                    >Locations of Workers</label
+                >
+                <div class="relative">
+                    <ul class="max-h-40 w-full overflow-y-scroll absolute bottom-0 border-2" v-if="tmp.length > 0">
+                        <li
+                            v-for="i in tmp"
+                            :key="i.alpha2Code"
+                            class="hover:bg-gray-300 bg-white cursor-pointer"
+                            @click="add(i)"
+                        >
+                            {{ i.name }}
+                        </li>
+                    </ul>
+                </div>
+                <input
+                    v-model="input"
+                    placeholder="Location"
+                    autocomplete="off"
+                    id="countries"
+                    type="text"
+                    class="appearance-none w-full border border-gray-200 rounded py-2 px-4 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                />
+                <div v-if="selected.length != 0" class="flex flex-wrap w-full mb-4 mt-2">
+                    <div
+                        v-for="country in selected"
+                        :key="country.alpha2Code"
+                        class="flex justify-center items-center py-1 rounded-full text-gray-700 bg-gray-400 chip mb-1"
+                    >
+                        <span class="text-sm font-semibold leading-none max-w-full flex-initial cursor-default">{{
+                            country.name
+                        }}</span>
+                        <button class="focus:outline-none" @click="deleteSelected(country)">
+                            <svg style="width:21px;height:21px" viewBox="0 0 24 24">
+                                <path
+                                    fill="rgba(74, 85, 104, 1)"
+                                    d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="ml-4">
+                <div class="flex flex-row items-center my-2">
+                    <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="countries"
+                        >Require that Workers be Masters to do your tasks:</label
+                    >
+                    <span
+                        class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                    >
+                        <input
+                            type="checkbox"
+                            class="opacity-0 absolute w-4 h-4"
+                            @click="qualificationMaster == 1 ? (qualificationMaster = 0) : (qualificationMaster = 1)"
+                        />
+                        <svg
+                            :class="qualificationMaster == 1 ? '' : 'hidden'"
+                            class="fill-current w-4 h-4 text-secondary pointer-events-none"
+                            viewBox="0 0 20 20"
+                        >
+                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="flex flex-row items-center my-2">
+                    <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="countries"
+                        >Require that Workers be over 18 years of age to do your tasks:</label
+                    >
+                    <span
+                        class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                    >
+                        <input
+                            type="checkbox"
+                            class="opacity-0 absolute w-4 h-4"
+                            @click="qualificationAdult == 1 ? (qualificationAdult = 0) : (qualificationAdult = 1)"
+                        />
+                        <svg
+                            :class="qualificationAdult == 1 ? '' : 'hidden'"
+                            class="fill-current w-4 h-4 text-secondary pointer-events-none"
+                            viewBox="0 0 20 20"
+                        >
+                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                        </svg>
+                    </span>
+                </div>
             </div>
         </div>
         <div class="w-full flex justify-end flex-row">
@@ -506,12 +572,12 @@ export default {
             status: 0,
             disableBtn: true,
             countries: [],
-            qualificationCountries: [],
             qualificationMaster: 0,
             qualificationAdult: 0,
-            inputElement: {},
             input: '',
             tmp: [],
+            selected: [],
+            selectedCodes: [],
         }
     },
     validations() {
@@ -592,9 +658,27 @@ export default {
     },
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
-        this.inputElement = document.getElementsByClassName('autocomplete-input')[0]
     },
     methods: {
+        add(country) {
+            console.log(country)
+            this.selected.push(
+                country
+                // this.tmp.find(country => {
+                //     return country.name == name
+                // })
+            )
+            this.selectedCodes.push(country.alpha2Code)
+            var index = this.countries.indexOf(country)
+            this.countries.splice(index, 1)
+            this.tmp = []
+            this.input = ''
+        },
+        deleteSelected(country) {
+            var index = this.selected.indexOf(country)
+            this.selected.splice(index, 1)
+            this.countries.push(country)
+        },
         // filter() {
         //     console.log(this.input)
         //     if (this.input.length > this.input.length && this.tmp.length > 0) {
@@ -604,21 +688,18 @@ export default {
         //         })
         //     }
         // },
-        search(input) {
-            if (input.length < 1) {
-                return []
-            }
-            return this.countries.filter(country => {
-                return country.name.toLowerCase().startsWith(input.toLowerCase())
-            })
-        },
-        getResultValue(result) {
-            return result.name
-        },
-        handleSubmit(element) {
-            this.qualificationCountries.push({ name: element.name, alpha2Code: element.alpha2Code })
-            document.getElementsByClassName('autocomplete-input')[0].value = 'NI'
-        },
+        // search(input) {
+        //     if (input.length < 1) {
+        //         return []
+        //     }
+        //     return this.countries.filter(country => {
+        //         return country.name.toLowerCase().startsWith(input.toLowerCase())
+        //     })
+        // },
+        // getResultValue(result) {
+        //     return result.name
+        // },
+
         getCountries() {
             axios({
                 url: 'https://restcountries.eu/rest/v2/all',
@@ -859,14 +940,23 @@ export default {
     beforeDestroy() {
         window.removeEventListener('keydown', this.keyboardEvent)
     },
+    // computed: {
+    //     selectedIndex: function() {
+    //         return this.tmp.length - 1
+    //     },
+    // },
     watch: {
         input(newValue, oldValue) {
-            if (newValue.length > oldValue.length && this.tmp.length > 0) {
+            console.log(this.input)
+            if (newValue.length == 0) {
+                this.tmp = []
+            } else if (newValue.length > oldValue.length && this.tmp.length > 0) {
                 this.tmp = this.tmp.filter(country => {
                     return country.name.toLowerCase().startsWith(this.input)
                 })
             } else {
                 this.tmp = this.countries.filter(country => {
+                    console.log(country.name.toLowerCase().startsWith(this.input))
                     return country.name.toLowerCase().startsWith(this.input)
                 })
             }

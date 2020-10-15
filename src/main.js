@@ -14,13 +14,8 @@ Vue.use(VueEllipseProgress)
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 
-import Autocomplete from '@trevoreyre/autocomplete-vue'
-import '@trevoreyre/autocomplete-vue/dist/style.css'
-
-Vue.use(Autocomplete)
-
 Vue.mixin({
-    data: function () {
+    data: function() {
         return {
             get APIURL() {
                 return 'https://dh-server.fbk.eu/mturk_frontend/api/'
