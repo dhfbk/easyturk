@@ -300,14 +300,14 @@
                 <div class="flex content-center items-center flex-wrap relative sm:max-w-xs">
                     <input
                         :class="
-                            status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
+                            status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
                         class="relative appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 pl-4 pr-10 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="layoutId"
                         type="text"
                         placeholder="Layout ID"
                         maxlength="255"
-                        :disabled="status > 1"
+                        :disabled="status > 0"
                         v-model.trim="$v.layout_id.$model"
                         required
                     />
@@ -343,14 +343,14 @@
                     >Examples per HIT</label
                 >
                 <input
-                    :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    :class="status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="parametri"
                     type="number"
                     min="1"
                     step="1"
                     placeholder="1"
-                    :disabled="status > 1"
+                    :disabled="status > 0"
                     v-model.trim="$v.params.$model"
                     required
                 />
@@ -360,11 +360,11 @@
                     >Parameter fields</label
                 >
                 <input
-                    :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    :class="status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="params_fields"
                     type="text"
-                    :disabled="status > 1"
+                    :disabled="status > 0"
                     v-model.trim="$v.params_fields.$model"
                     required
                 />
@@ -401,6 +401,8 @@
                 <input
                     v-model="input"
                     placeholder="Location"
+                    :disabled="status >= 2"
+                    :class="status >= 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     autocomplete="off"
                     id="countries"
                     type="text"
@@ -415,7 +417,12 @@
                         <span class="text-sm font-semibold leading-none max-w-full flex-initial cursor-default">{{
                             country.name
                         }}</span>
-                        <button class="focus:outline-none" @click="deleteSelected(country)">
+                        <button
+                            class="focus:outline-none"
+                            :disabled="status >= 2"
+                            :class="status >= 2 ? 'cursor-not-allowed' : ''"
+                            @click="deleteSelected(country)"
+                        >
                             <svg style="width:21px;height:21px" viewBox="0 0 24 24">
                                 <path
                                     fill="rgba(74, 85, 104, 1)"
@@ -432,9 +439,19 @@
                         >Require that Workers be Masters to do your tasks:</label
                     >
                     <span
+                        :disabled="status >= 2"
+                        :class="
+                            status >= 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
+                        "
                         class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
                     >
                         <input
+                            :disabled="status >= 2"
+                            :class="
+                                status >= 2
+                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                    : 'bg-gray-100 text-gray-700'
+                            "
                             type="checkbox"
                             class="opacity-0 absolute w-4 h-4"
                             @click="qualificationMaster == 1 ? (qualificationMaster = 0) : (qualificationMaster = 1)"
@@ -453,9 +470,19 @@
                         >Require that Workers be over 18 years of age to do your tasks:</label
                     >
                     <span
+                        :class="
+                            status >= 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
+                        "
+                        :disabled="status >= 2"
                         class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
                     >
                         <input
+                            :disabled="status >= 2"
+                            :class="
+                                status >= 2
+                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                    : 'bg-gray-100 text-gray-700'
+                            "
                             type="checkbox"
                             class="opacity-0 absolute w-4 h-4"
                             @click="qualificationAdult == 1 ? (qualificationAdult = 0) : (qualificationAdult = 1)"
@@ -751,12 +778,24 @@ export default {
                     this.expiry = parseInt(res.data.values.expiry)
                     this.auto_approve = parseInt(res.data.values.auto_approve)
                     this.layout_id = res.data.values.layout_id
+                    this.workers = res.data.values.workers
                     this.params = res.data.values.params
                     this.status = res.data.values.status
                     this.params_fields = res.data.values.params_fields
+                    this.selectedCodes = res.data.values.countries
+                    this.qualificationMaster = res.data.values.master
+                    this.qualificationAdult = res.data.values.adult
                     this.elaboraTempoGET('max_time')
                     this.elaboraTempoGET('expiry')
                     this.elaboraTempoGET('auto_approve')
+                    for (let i = 0; i < this.selectedCodes.length; i++) {
+                        this.selected.push(
+                            this.countries.find(country => {
+                                return country.alpha2Code == this.selectedCodes[i]
+                            })
+                        )
+                    }
+                    console.log(this.selected)
                 })
                 .then(() => {
                     this.fixMax(1)
