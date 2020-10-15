@@ -9,6 +9,7 @@ module.exports = {
             full: '100%',
             '80': '80%',
             '40': '10rem',
+            '48': '12rem',
         },
         minWidth: {
             '0': '0',
