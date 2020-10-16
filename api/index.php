@@ -96,6 +96,22 @@ switch ($Action) {
             $success = false;
             $db_error = $DB->get_error();
         }
+        $query = "DELETE FROM assignments
+            WHERE hit_id != ALL (
+                SELECT id_hit FROM cluster_to_hit
+            )";
+        if (!$DB->query($query)) {
+            $success = false;
+            $db_error = $DB->get_error();
+        }
+        $query = "DELETE FROM answers
+            WHERE assignment_id != ALL (
+                SELECT assignment_id FROM assignments
+            )";
+        if (!$DB->query($query)) {
+            $success = false;
+            $db_error = $DB->get_error();
+        }
         $query = "DELETE l FROM `file_lines` l
             LEFT JOIN project_files f ON f.id = l.file_id
             WHERE f.deleted = '1'";
@@ -138,9 +154,9 @@ switch ($Action) {
         $ret['defaults']['shuffle_base_data'] = 1;
         $ret['defaults']['shuffle_gold_data'] = 1;
         $ret['defaults']['delete_exceeding_values'] = 0;
-        $ret['defaults']['gold_wrong'] = "reject";
         $ret['defaults']['separator'] = "comma";
         $ret['defaults']['delimiter'] = "double";
+        $ret['defaults']['reject_reason'] = "Sorry, you did not answer correctly to the gold question(s).";
         $ret['result'] = "OK";
 
         break;
@@ -155,6 +171,7 @@ switch ($Action) {
     case "getUserInfo":
     case "getProjectInfo":
     case "updateProjectStatus":
+    case "testLayout":
 
         // if (!$_SESSION['Admin']) {
         //     $ret['result'] = "ERR";
@@ -212,10 +229,23 @@ switch ($Action) {
                     break;
                 }
 
-                $query = "SELECT l.line_text, GROUP_CONCAT(c.cluster_index) cluster_index
+                // $query = "SELECT l.line_text, GROUP_CONCAT(c.cluster_index) cluster_index, h.id_hit
+                //     FROM file_lines l
+                //     LEFT JOIN clusters c ON c.line_id = l.id AND c.deleted = 0
+                //     LEFT JOIN cluster_to_hit h ON c.cluster_index = h.id_cluster AND h.id_project = '{$project['id']}'
+                //     LEFT JOIN project_files f ON f.id = l.file_id
+                //     WHERE f.deleted = '0' AND f.project_id = '{$project['id']}' AND f.is_gold = '$isGold'
+                //     GROUP BY l.id
+                //     LIMIT $offset, $howMany";
+                $query = "SELECT l.line_text, GROUP_CONCAT(c.cluster_index) cluster_index,  GROUP_CONCAT(DISTINCT h.id_hit) id_hit,
+                        SUM(IF(a.status = 'Approved', 1, 0)) assignments_approved,
+                        SUM(IF(a.status = 'Rejected', 1, 0)) assignments_rejected,
+                        SUM(IF(a.status = 'Submitted', 1, 0)) assignments_pending
                     FROM file_lines l
-                    LEFT JOIN clusters c ON c.line_id = l.id AND c.deleted = 0
-                    LEFT JOIN project_files f ON f.id = l.file_id
+                        LEFT JOIN clusters c ON c.line_id = l.id AND c.deleted = 0
+                        LEFT JOIN cluster_to_hit h ON c.cluster_index = h.id_cluster AND h.id_project = '{$project['id']}' AND h.deleted = '0'
+                        LEFT JOIN assignments a ON a.hit_id = h.id_hit
+                        LEFT JOIN project_files f ON f.id = l.file_id
                     WHERE f.deleted = '0' AND f.project_id = '{$project['id']}' AND f.is_gold = '$isGold'
                     GROUP BY l.id
                     LIMIT $offset, $howMany";
@@ -228,13 +258,25 @@ switch ($Action) {
 
                 $data = array();
                 $cluster_indexes = array();
+                $results = array();
                 while ($row = $DB->fetch()) {
                     $data[] = unserialize($row['line_text']);
+
+                    $hits = explode(",", $row['id_hit']);
+                    $hits = array_map("trim", $hits);
+
                     $cluster_indexes[] = $row['cluster_index'];
+                    $result = [];
+                    $result['hit_ids'] = $hits;
+                    $result['assignments_approved'] = $row['assignments_approved'];
+                    $result['assignments_pending'] = $row['assignments_pending'];
+                    $result['assignments_rejected'] = $row['assignments_rejected'];
+                    $results[] = $result;
                 }
                 $ret['result'] = "OK";
                 $ret['data'] = $data;
                 $ret['cluster_indexes'] = $cluster_indexes;
+                $ret['results'] = $results;
                 $ret['num'] = $num;
                 $ret['filename'] = $r['filename'];
                 $ret['fields'] = unserialize($r['fields']);
@@ -567,6 +609,8 @@ switch ($Action) {
                         $DB->startTransaction();
                         $success = true;
 
+                        // todo: mix
+
                         $goldIndex = 0;
                         for ($i = 0; $i < count($trainData); $i += $dataBunch) {
                             $clusterIndex = floor($i / $dataBunch) + 1;
@@ -575,6 +619,7 @@ switch ($Action) {
                                 $data = array();
                                 $data['cluster_index'] = $clusterIndex;
                                 $data['line_id'] = $trainData[$index]['id'];
+                                $data['alea'] = mt_rand() / mt_getrandmax();
                                 if (!$DB->queryinsert("clusters", $data)) {
                                     $success = false;
                                 }
@@ -586,6 +631,7 @@ switch ($Action) {
                                 $data = array();
                                 $data['cluster_index'] = $clusterIndex;
                                 $data['line_id'] = $goldData[$index]['id'];
+                                $data['alea'] = mt_rand() / mt_getrandmax();
                                 if (!$DB->queryinsert("clusters", $data)) {
                                     $success = false;
                                 }
@@ -614,7 +660,7 @@ switch ($Action) {
                             $query = "UPDATE cluster_to_hit SET deleted = '1' WHERE id_project = '{$r['id']}'";
                             $DB->query($query);
 
-                            $query = "UPDATE projects SET hit_details = NULL, status = 2 WHERE id = '{$r['id']}'";
+                            $query = "UPDATE projects SET status = 2 WHERE id = '{$r['id']}'";
                             $DB->query($query);
 
                             $ret['result'] = "OK";
@@ -651,11 +697,6 @@ switch ($Action) {
                                 $trainingInfo = $row;
                             }
                         }
-
-                        $allowedGoldWrong = array();
-                        $allowedGoldWrong[] = "accept";
-                        $allowedGoldWrong[] = "reject";
-                        $allowedGoldWrong[] = "wait";
 
                         $projectFields = array();
                         $projectFields[] = "_name";
@@ -731,59 +772,268 @@ switch ($Action) {
                             break 2;
                         }
 
-                        if ($goldInfo) {
-                            if (!count($_REQUEST['answerData'])) {
-                                $ret['result'] = "ERR";
-                                $ret['error'] = "No layout data specified";
-                                break;
-                            }
+                        $trainingFields = unserialize($trainingInfo['fields']);
+                        $goldFields = unserialize($goldInfo['fields']);
+                        $goldFields = array_diff($goldFields, $trainingFields);
 
-                            foreach ($_REQUEST['answerData'] as $answerData) {
-                                foreach (["varName", "varValue", "varNameTo", "varValueTo"] as $key) {
-                                    if (!isset($answerData[$key]) || strlen($answerData[$key]) == 0) {
-                                        $ret['result'] = "ERR";
-                                        $ret['error'] = "Field $key is not defined";
-                                        break 3;
+                        $answerDataAll = isset($_REQUEST['answerData']) ? $_REQUEST['answerData'] : [];
+
+                        if (count($answerDataAll)) {
+                            foreach ($answerDataAll as $answerData) {
+                                $containSomething = false;
+                                $pars = ["varName", "varValue", "varNameTo", "varValueTo"];
+                                foreach ($pars as $key) {
+                                    if (isset($answerData[$key]) && trim($answerData[$key])) {
+                                        $containSomething = true;
                                     }
                                 }
-                            }
-
-                            if (!$_REQUEST['whatToDo']) {
-                                $ret['result'] = "ERR";
-                                $ret['error'] = "Field whatToDo is missing";
-                                break;
-                            }
-
-                            if (!in_array($_REQUEST['whatToDo'], $allowedGoldWrong)) {
-                                $ret['result'] = "ERR";
-                                $ret['error'] = "Invalid value {$_REQUEST['whatToDo']} for whatToDo";
-                                break;
-                            }
-
-                            if (!preg_match("/[0-9]+/", $_REQUEST['assignNumber'])) {
-                                $ret['result'] = "ERR";
-                                $ret['error'] = "Invalid value {$_REQUEST['assignNumber']} for assignNumber";
-                                break;
-                            }
-                            if ($_REQUEST['assignNumber'] < $r['workers']) {
-                                $ret['result'] = "ERR";
-                                $ret['error'] = "assignNumber must be more than {$r['workers']} in this project";
-                                break;
+                                if ($containSomething) {
+                                    if (strpos($answerData['varName'], "#") === false) {
+                                        $ret['result'] = "ERR";
+                                        $ret['error'] = "Field varName must contain #";
+                                        break 2;
+                                    }
+                                    foreach ($pars as $key) {
+                                        if (!isset($answerData[$key]) || strlen($answerData[$key]) == 0) {
+                                            $ret['result'] = "ERR";
+                                            $ret['error'] = "Field $key is not defined";
+                                            break 3;
+                                        }
+                                    }
+                                }
                             }
                         }
 
                         $toSave = array();
+                        $toSave['layoutData'] = $_REQUEST['layoutData'];
+                        $toSave['answerData'] = $answerDataAll;
 
-                        $toSave['layoutData'] = array();
-                        foreach ($_REQUEST['layoutData'] as $layoutData) {
-                            $toSave['layoutData'][$layoutData['field']] = $layoutData;
+                        $toSave['rejectIfGoldWrong'] = boolval($_REQUEST['rejectIfGoldWrong'] ?: false);
+                        $toSave['acceptIfGoldRight'] = boolval($_REQUEST['acceptIfGoldRight'] ?: false);
+
+                        if ($toSave['rejectIfGoldWrong']) {
+                            if (!preg_match("/[0-9]+/", $_REQUEST['assignNumber'])) {
+                                throw new Exception("Invalid value {$_REQUEST['assignNumber']} for assignNumber");
+                            }
+                            if ($_REQUEST['assignNumber'] < $r['workers']) {
+                                throw new Exception("assignNumber must be at least {$r['workers']} in this project");
+                            }
+
+                            $toSave['assignNumber'] = $_REQUEST['assignNumber'];
+                            $toSave['rejectReason'] = $_REQUEST['rejectReason'];
                         }
 
-                        $toSave['answerData'] = $_REQUEST['answerData'];
-                        $toSave['assignNumber'] = $_REQUEST['assignNumber'];
-                        $toSave['whatToDo'] = $_REQUEST['whatToDo'];
+                        $toSave['hitData'] = [
+                            "AssignmentDurationInSeconds" => $r['max_time'] * 60,
+                            "AutoApprovalDelayInSeconds" => $r['auto_approve'] * 60,
+                            "Description" => $r['description'],
+                            "HITLayoutId" => $r['layout_id'],
+                            "Keywords" => $r['keywords'],
+                            "Reward" => "0", // normal value: "{$r['reward']}",
+                            "Title" => $r['title'],
+                            "LifetimeInSeconds" => $r['expiry'] * 60,
+                            "MaxAssignments" => $r['workers'],
+                        ];
 
-                        $ret['toSave'] = $toSave;
+                        try {
+                            $toSave = getHITLayoutParameters($r, $r['id'], 1, $goldFields, $toSave);
+                        }
+                        catch (Exception $e) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = $e->getMessage();
+                            break;
+                        }
+
+                        // $ret['toSave'] = $toSave;
+                        // $ret['result'] = "ERR";
+                        // $ret['error'] = "Work in progress";
+                        // break;
+
+                        // $cluster_data = array();
+                        // $goldIndexes = [];
+                        // $query = "SELECT l.line_text, f.fields, f.is_gold
+                        //     FROM clusters c
+                        //     LEFT JOIN file_lines l ON l.id = c.line_id
+                        //     LEFT JOIN project_files f ON f.id = l.file_id
+                        //     WHERE c.deleted = '0' AND f.deleted = '0'
+                        //         AND f.project_id = '{$r['id']}' AND c.cluster_index = '1'
+                        //     ORDER BY c.alea";
+                        // $num = $DB->querynum($query);
+                        // if (!$num) {
+                        //     $ret['result'] = "ERR";
+                        //     $ret['error'] = "No clusters found";
+                        //     break;
+                        // }
+                        // if ($num != $r['params']) {
+                        //     $ret['result'] = "ERR";
+                        //     $ret['error'] = "Number of parameters does not match";
+                        //     break;
+                        // }
+                        // while ($row = $DB->fetch()) {
+                        //     $fields = unserialize($row['fields']);
+                        //     $data = unserialize($row['line_text']);
+                        //     $okData = array();
+                        //     for ($i = 0; $i < count($fields); $i++) {
+                        //         $okData[$fields[$i]] = $data[$i];
+                        //     }
+                        //     $cluster_data[] = $okData;
+                        //     if ($row['is_gold']) {
+                        //         $goldIndexes[count($cluster_data)] = [];
+                        //         foreach ($goldFields as $goldField) {
+                        //             $thisGoldIndex = array_search($goldField, $fields);
+                        //             $goldIndexes[count($cluster_data)][$goldField] = $data[$thisGoldIndex];
+                        //         }
+                        //     }
+                        // }
+
+                        // $HITLayoutParameters = [];
+                        // foreach ($_REQUEST['layoutData'] as $layoutData) {
+                        //     if (substr($layoutData['field'], -1) !== "#") {
+                        //         $val = $layoutData['isHandWritten'] ? $layoutData['customValue'] : $r[substr($layoutData['valueFrom'], 1)];
+                        //         $HITLayoutParameters[] = [
+                        //             "Name" => $layoutData['field'],
+                        //             "Value" => $val
+                        //         ];
+                        //     }
+                        //     else {
+                        //         $field = substr($layoutData['field'], 0, strlen($layoutData['field']) - 1);
+                        //         for ($i = 1; $i <= $r['params']; $i++) {
+                        //             $value = $cluster_data[$i - 1][$layoutData['valueFrom']];
+                        //             $HITLayoutParameters[] = [
+                        //                 "Name" => $field . $i,
+                        //                 "Value" => $value
+                        //             ];
+                        //         }
+                        //     }
+                        // }
+
+                        // $AssignmentReviewPolicy = [];
+                        // if ($goldInfo && ($toSave['rejectIfGoldWrong'] || $toSave['acceptIfGoldRight'])) {
+                        //     $toSave['assignNumber'] = 0;
+                        //     $toSave['rejectReason'] = "";
+
+                        //     if ($toSave['rejectIfGoldWrong']) {
+                        //         if (!preg_match("/[0-9]+/", $_REQUEST['assignNumber'])) {
+                        //             $ret['result'] = "ERR";
+                        //             $ret['error'] = "Invalid value {$_REQUEST['assignNumber']} for assignNumber";
+                        //             break;
+                        //         }
+                        //         if ($_REQUEST['assignNumber'] < $r['workers']) {
+                        //             $ret['result'] = "ERR";
+                        //             $ret['error'] = "assignNumber must be at least {$r['workers']} in this project";
+                        //             break;
+                        //         }
+
+                        //         $toSave['assignNumber'] = $_REQUEST['assignNumber'];
+                        //         $toSave['rejectReason'] = $_REQUEST['rejectReason'];
+                        //     }
+
+                        //     $mapEntries = [];
+                        //     foreach ($goldIndexes as $key => $value) {
+                        //         foreach ($value as $key2 => $value2) {
+                        //             foreach ($answerDataAll as $answerData) {
+                        //                 if ($answerData['varNameTo'] == $key2 && $answerData['varValueTo'] == $value2) {
+                        //                     $mapEntries[] = ["Key" => str_replace("#", $key, $answerData['varName']), "Values" => [$answerData['varValue']]];
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        //     $ret['mapEntries'] = $mapEntries;
+    
+                        //     if ($toSave['rejectIfGoldWrong'] || $toSave['acceptIfGoldRight']) {
+                        //         $AssignmentReviewPolicy['PolicyName'] = "ScoreMyKnownAnswers/2011-09-01";
+                        //         $AssignmentReviewPolicy['Parameters'] = [];
+                        //         $AssignmentReviewPolicy['Parameters'][] = ["Key" => "AnswerKey", "MapEntries" => $mapEntries];
+                        //         if ($toSave['rejectIfGoldWrong']) {
+                        //             $AssignmentReviewPolicy['Parameters'][] = ["Key" => "RejectReason", "Values" => [$toSave['rejectReason']]];
+                        //             $AssignmentReviewPolicy['Parameters'][] = ["Key" => "RejectIfKnownAnswerScoreIsLessThan", "Values" => ["99"]];
+                        //             if ($toSave['assignNumber'] > $r['workers']) {
+                        //                 $AssignmentReviewPolicy['Parameters'][] = ["Key" => "ExtendMaximumAssignments", "Values" => ["{$toSave['assignNumber']}"]];
+                        //                 $AssignmentReviewPolicy['Parameters'][] = ["Key" => "ExtendIfKnownAnswerScoreIsLessThan", "Values" => ["99"]];
+                        //             }
+                        //         }
+                        //         if ($toSave['acceptIfGoldRight']) {
+                        //             $AssignmentReviewPolicy['Parameters'][] = ["Key" => "ApproveIfKnownAnswerScoreIsAtLeast", "Values" => ["100"]];
+                        //         }
+                        //     }
+                        // }
+
+                        // $toSave['hitData']['HITLayoutParameters'] = $HITLayoutParameters;
+                        // if (count($AssignmentReviewPolicy)) {
+                        //     $toSave['hitData']['AssignmentReviewPolicy'] = $AssignmentReviewPolicy;
+                        // }
+
+                        $masterQualification = "2F1QJWKUDD8XADTFD2Q0G6UTO95ALH";
+                        if ($UseSandbox) {
+                            $masterQualification = "2ARFPLSP75KLA8M8DH1HTEQVJT3SY6";
+                        }
+                        $qualificationRequirements = [];
+                        $qualifications = unserialize($r['qualifications']);
+                        if ($qualifications['adult'] ?: 0) {
+                            $a = array();
+                            $a['QualificationTypeId'] = "00000000000000000060";
+                            $a['Comparator'] = "EqualTo";
+                            $a['IntegerValues'] = [1];
+                            $a['ActionsGuarded'] = "DiscoverPreviewAndAccept";
+                            $qualificationRequirements[] = $a;
+                        }
+                        if ($qualifications['master'] ?: 0) {
+                            $a = array();
+                            $a['QualificationTypeId'] = $masterQualification;
+                            $a['Comparator'] = "Exists";
+                            $a['ActionsGuarded'] = "DiscoverPreviewAndAccept";
+                            $qualificationRequirements[] = $a;
+                        }
+                        if ($qualifications['countries'] ?: 0) {
+                            $countries = [];
+                            foreach ($qualifications['countries'] as $country) {
+                                $countries[] = ["Country" => $country];
+                            }
+                            if (count($countries)) {
+                                $a = array();
+                                $a['QualificationTypeId'] = "00000000000000000071";
+                                $a['Comparator'] = "In";
+                                $a['LocaleValues'] = $countries;
+                                $a['ActionsGuarded'] = "DiscoverPreviewAndAccept";
+                                $qualificationRequirements[] = $a;
+                            }
+                        }
+                        $toSave['hitData']['QualificationRequirements'] = $qualificationRequirements;
+
+                        try {
+                            $response = $mTurk->createHIT($toSave['hitData']);
+                        }
+                        catch (Exception $e) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "AWS error (see logs for details)";
+                            $ret['hitData'] = $toSave['hitData'];
+                            $ret['error_message'] = $e->getMessage();
+                            l(1, "create_preview_hit", $e->getMessage(), $r['id']);
+                            break;
+                        }
+
+                        $response = $response->toArray();
+                        $toSave['HIT_response'] = $response;
+                        l(1, "create_preview_hit", $response, $response['HIT']['HITId']);
+
+                        try {
+                            $tmpResponse1 = $mTurk->updateExpirationForHIT([
+                                "ExpireAt" => 0,
+                                "HITId" => $response['HIT']['HITId']
+                            ]);
+                            $tmpResponse1 = $tmpResponse1->toArray();
+                            $toSave['expiration_response'] = $tmpResponse1;
+                            l(1, "update_preview_hit", $tmpResponse1, $response['HIT']['HITId']);
+                        }
+                        catch (Exception $e) {
+                            l(1, "update_preview_hit", $e->getMessage(), $response['HIT']['HITId']);
+                        }
+
+                        $ret['debug']['toSave'] = $toSave;
+
+                        // $ret['result'] = "ERR";
+                        // $ret['error'] = "Work in progress";
+                        // break;
 
                         $DB->queryupdate("projects", array("hit_details" => serialize($toSave), "status" => 2), array("id" => $r['id']));
                         $ret['result'] = "OK";
@@ -842,6 +1092,11 @@ switch ($Action) {
 
             case "getProjectInfo":
                 $r = find("projects", $_REQUEST['id'], "Project not found");
+                $qualificationRequirements = unserialize($r['qualifications']);
+                if (!$qualificationRequirements) {
+                    $qualificationRequirements = array();
+                }
+                $r = array_merge($r, $qualificationRequirements);
 
                 $ret['issues'] = array();
 
@@ -877,8 +1132,9 @@ switch ($Action) {
                 }
                 $ret['goldFields'] = array_diff($ret['goldFields'], $ret['dataFields']);
 
-                $ret['hits_submitted'] = 0;
                 $ret['hits_total'] = 0;
+                $ret['hits_submitted'] = 0;
+                $ret['hits_inserted'] = 0;
 
                 $query = "SELECT DISTINCT c.cluster_index, h.id
                     FROM `clusters` c
@@ -890,8 +1146,51 @@ switch ($Action) {
                 while ($row = $DB->fetch()) {
                     $ret['hits_total']++;
                     if ($row['id']) {
-                        $ret['hits_submitted']++;
+                        $ret['hits_inserted']++;
                     }
+                }
+
+                // $ret['hits'] = [];
+                $summary = [];
+                $query = "SELECT h.*,
+                        SUM(IF(a.status = 'Approved', 1, 0)) assignments_approved,
+                        SUM(IF(a.status = 'Rejected', 1, 0)) assignments_rejected,
+                        SUM(IF(a.status = 'Submitted', 1, 0)) assignments_pending
+                    FROM `cluster_to_hit` h
+                    LEFT JOIN assignments a ON a.hit_id = h.id_hit
+                    WHERE h.id_project = '{$r['id']}' AND h.deleted = 0 AND h.id_hit IS NOT NULL
+                    GROUP BY h.id_hit";
+                $DB->query($query);
+                while ($row = $DB->fetch_a()) {
+                    $ret['hits_submitted']++;
+                    $key = implode(" ", [
+                        $row['max_assignments'],
+                        $row['assignments_available'],
+                        $row['assignments_completed'],
+                        $row['assignments_pending'],
+                        $row['assignments_approved'],
+                        $row['assignments_rejected']
+                    ]);
+                    if (!isset($summary[$key])) {
+                        $summary[$key] = 0;
+                    }
+                    $summary[$key]++;
+                    // $ret['hits'][] = $row;
+                }
+
+                // $ret['summary_tmp'] = $summary;
+                $ret['summary'] = [];
+                foreach ($summary as $key => $value) {
+                    $values = explode(" ", $key);
+                    $s = [];
+                    $s['max_assignments'] = $values[0];
+                    $s['assignments_available'] = $values[1];
+                    $s['assignments_completed'] = $values[2];
+                    $s['assignments_pending'] = $values[3];
+                    $s['assignments_approved'] = $values[4];
+                    $s['assignments_rejected'] = $values[5];
+                    $s['count'] = $value;
+                    $ret['summary'][] = $s;
                 }
 
                 $ret['numGold'] = $numGold;
@@ -899,6 +1198,67 @@ switch ($Action) {
 
                 $ret['result'] = "OK";
                 $ret['values'] = $r;
+                break;
+
+            case "testLayout":
+                if (!isset($_REQUEST['layout_id'])) {
+                    $ret['result'] = "ERR";
+                    $ret['error'] = "Layout ID missing";
+                    break;
+                }
+                $out_params = testLayout($_REQUEST['layout_id']);
+
+                if ($out_params['result'] == "ERR") {
+                    $ret['result'] = "ERR";
+                    $ret['error'] = $out_params['error'];
+                    break;
+                }
+
+                $ret['result'] = "OK";
+                $ret['examples_per_hit'] = 0;
+                $ret['params_fields'] = "";
+                if (isset($out_params['layout_fields'])) {
+                    $fields = explode(',', $out_params['layout_fields']);
+                    $fields = array_map('trim', $fields);
+                    $endings = array();
+                    $max = 0;
+                    foreach ($fields as $field) {
+                        if (preg_match("/^(.*[^0-9])([0-9]+)$/", $field, $match)) {
+                            if (!isset($endings[$match[1]])) {
+                                $endings[$match[1]] = array();
+                            }
+                            $endings[$match[1]][] = $match[2];
+                            if ($match[2] > $max) {
+                                $max = $match[2];
+                            }
+                        }
+                    }
+                    $candidates = array_keys($endings);
+                    $new_max = $max;
+                    for ($i = 1; $i <= $max; $i++) {
+                        $to_remove = [];
+                        foreach ($endings as $key => $value) {
+                            if (!in_array($i, $value)) {
+                                $to_remove[] = $key;
+                            }
+                        }
+                        if (count($to_remove) != count($candidates)) {
+                            foreach ($to_remove as $key) {
+                                if (($k = array_search($key, $candidates)) !== false) {
+                                    unset($candidates[$k]);
+                                }
+                            }
+                        }
+                        else {
+                            $new_max = $i - 1;
+                            break;
+                        }
+                    }
+
+                    // $ret['endings'] = $endings;
+                    $ret['params_fields'] = implode(', ', $candidates);
+                    $ret['examples_per_hit'] = $new_max;
+                }
                 break;
 
             case "addProject":
@@ -917,11 +1277,25 @@ switch ($Action) {
                         $ret['error'] = "A project with status {$r['status']} cannot be modified";
                         break;
                     }
+
+                    //todo: clean this up
                     if ($r['status'] == 1) {
                         if (($key = array_search("params", $fields)) !== false) {
                             unset($fields[$key]);
                         }
+                        if (($key = array_search("params", $mandatory_fields)) !== false) {
+                            unset($mandatory_fields[$key]);
+                        }
                         if (($key = array_search("params", $integers)) !== false) {
+                            unset($integers[$key]);
+                        }
+                        if (($key = array_search("layout_id", $fields)) !== false) {
+                            unset($fields[$key]);
+                        }
+                        if (($key = array_search("layout_id", $mandatory_fields)) !== false) {
+                            unset($mandatory_fields[$key]);
+                        }
+                        if (($key = array_search("layout_id", $integers)) !== false) {
                             unset($integers[$key]);
                         }
                         if (($key = array_search("params_fields", $fields)) !== false) {
@@ -950,6 +1324,24 @@ switch ($Action) {
                     }
                 }
 
+                if ($r['status'] < 2) {
+                    $qualificationRequirements = array();
+                    $qualificationRequirements['adult'] = $_REQUEST['adult'] ? 1 : 0;
+                    $qualificationRequirements['master'] = $_REQUEST['master'] ? 1 : 0;
+                    $qualificationRequirements['countries'] = [];
+                    foreach ($_REQUEST['countries'] as $country) {
+                        if (preg_match('/^[A-Z]{2}$/', $country)) {
+                            $qualificationRequirements['countries'][] = $country;
+                        }
+                        else {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Invalid country $country";
+                            break;
+                        }
+                    }
+                    $data['qualifications'] = serialize($qualificationRequirements);
+                }
+
                 if (isset($data['reward']) && !is_numeric($data['reward'])) {
                     $ret['result'] = "ERR";
                     $ret['error'] = "Field 'reward' must be numeric";
@@ -975,27 +1367,14 @@ switch ($Action) {
                         $ret['error'] = "Layout fields are required when a layout ID is specified";
                         break;
                     }
-                    try {
-                        $result = $mTurk->createHIT([
-                            "MaxAssignments" => 3,
-                            "LifetimeInSeconds" => 0,
-                            "Reward" => "0",
-                            "Title" => "Title",
-                            "Description" => "Description",
-                            "HITLayoutId" => $data['layout_id'],
-                            "AssignmentDurationInSeconds" => 30
-                        ]);
-                    } catch (Exception $e) {
-                        $msg = $e->getMessage();
-                        $ret['debug']['layout_result'] = $msg;
-                        if (preg_match("/Missing parameter names: ([^.]*)\./", $msg, $matches)) {
-                            $data['layout_fields'] = str_replace(",", ", ", $matches[1]);
-                        }
-                        else {
-                            $ret['result'] = "ERR";
-                            $ret['error'] = "Invalid layout ID";
-                            break;
-                        }
+                    $out_params = testLayout($data['layout_id']);
+                    if ($out_params['result'] == "ERR") {
+                        $ret['result'] = "ERR";
+                        $ret['error'] = $out_params['error'];
+                        break;
+                    }
+                    if (isset($out_params['layout_fields'])) {
+                        $data['layout_fields'] = $out_params['layout_fields'];
                     }
                 }
 
@@ -1024,6 +1403,11 @@ switch ($Action) {
                     $data['layout_fields'] = implode(', ', $layout_fields);
                     $data['params_fields'] = implode(', ', $params_fields);
                 }
+
+                // $ret['data'] = $data;
+                // $ret['result'] = "ERR";
+                // $ret['error'] = "Test";
+                // break;
 
                 if ($r === NULL) {
                     $DB->queryinsert("projects", $data);

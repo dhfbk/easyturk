@@ -76,6 +76,37 @@ class Mysql_connector {
 		return $this->query($query, $buff);
 	}
 	
+	function queryreplace($tabella, $arrayvalori, $buff = 0) {
+		$array1 = $array2 = array();
+		foreach ($arrayvalori as $indice => $valore) {
+			$array1[] = "`".$indice."`";
+			$array2[] = "'".addslashes($valore)."'";
+		}
+		$query = "REPLACE INTO ".$tabella." (".
+			implode(", ", $array1).") VALUES (".
+			implode(", ", $array2).")";
+		$this->W_last_query = $query;
+		return $this->query($query, $buff);
+	}
+	
+	function queryinsertodku($tabella, $arrayvalori, $campidatogliere = array(), $buff = 0) {
+		$array1 = $array2 = array();
+		$nuovoarray = array();
+		foreach ($arrayvalori as $indice => $valore) {
+			$array1[] = "`".$indice."`";
+			$array2[] = "'".addslashes($valore)."'";
+			if (!in_array($indice, $campidatogliere)) {
+				$nuovoarray[] = "`".$indice."` = '".addslashes($valore)."'";
+			}
+		}
+		$query = "INSERT INTO ".$tabella." (".
+			implode(", ", $array1).") VALUES (".
+			implode(", ", $array2).") ON DUPLICATE KEY UPDATE
+			".implode(", ", $nuovoarray);
+		$this->W_last_query = $query;
+		return $this->query($query, $buff);
+	}
+
 	function query($query, $buff = 0) {
 		if ($this->debug) {
 			$medium = "style='font-size: 12px; font-family: Trebuchet MS; padding: 5px; border: 1px solid green; background: rgb(255,255,0); color: black; margin: 5px;'";
