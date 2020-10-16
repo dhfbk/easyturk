@@ -227,7 +227,7 @@
         </div>
         <div v-for="(n, i) in titles.length" :key="n" v-else class="">
             <span class="font-bold ">{{ titles[i] }}:&nbsp;</span>
-            <span class="overflow-ellipsis float-right">{{ data[i] }}</span>
+            <p class="overflow-ellipsis  ">{{ data[i] }}</p>
             <hr v-if="n != titles.length" />
         </div>
     </div>

@@ -314,6 +314,7 @@
                     <cardInfo :projectData="project" :mode="'general'" />
                     <cardInfo :projectData="project" :mode="'layout'" />
                     <cardInfo :projectData="project" :mode="'status'" @modal="toggleModal" />
+                    <cardInfo v-if="project.status > 0" :projectData="project" :mode="'hits'" />
                 </div>
             </div>
             <div class="mx-0 xs2:mx-1">
@@ -324,7 +325,6 @@
                     <cardInfo :projectData="project" :mode="'payment'" />
                     <cardInfo :projectData="project" :mode="'qualifications'" />
                     <cardInfo :projectData="project" :mode="'csv'" @modal="toggleModal" />
-                    <cardInfo v-if="project.status > 0" :projectData="project" :mode="'hits'" />
                     <!--
                         <cardAnalytics
                         :dati="datiCardAnalytics.cardHIT"
