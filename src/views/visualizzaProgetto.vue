@@ -322,10 +322,13 @@
                 </div>
                 <div v-else>
                     <cardInfo :projectData="project" :mode="'payment'" />
+                    <cardInfo :projectData="project" :mode="'qualifications'" />
                     <cardInfo :projectData="project" :mode="'csv'" @modal="toggleModal" />
                     <cardInfo v-if="project.status > 0" :projectData="project" :mode="'hits'" />
-
-                    <!-- <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
+                    <!--
+                        <cardAnalytics
+                        :dati="datiCardAnalytics.cardHIT"
+                    />
                     <cardAnalytics :dati="datiCardAnalytics.cardAggregate" />-->
                 </div>
             </div>

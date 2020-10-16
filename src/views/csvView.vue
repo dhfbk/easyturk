@@ -27,7 +27,7 @@
         <div class="overflow-x-auto" v-else>
             <table class="shadow-md rounded xs2:min-w-5/6 bg-white mx-auto">
                 <thead>
-                    <tr class="text-left text-white bg-primary border-b border-gray-300 uppercase tracking-tight">
+                    <tr class="text-left text-white bg-primary border-b border-gray-300 uppercase ">
                         <th class="px-2" v-for="x in headers" :key="x">{{ x }}</th>
                         <th class="px-2" v-if="cluster.length > 0">Cluster indexes</th>
                     </tr>

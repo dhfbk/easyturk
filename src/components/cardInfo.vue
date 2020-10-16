@@ -1,7 +1,7 @@
 <template>
     <div class="bg-white rounded-md shadow-md p-4 mb-4">
         <div v-if="mode == 'csv'">
-            <span class="font-bold tracking-tight">CSV status</span>
+            <span class="font-bold ">CSV status</span>
             <div class="mb-1">
                 <span v-if="projectData.numData > 0">
                     <div class="flex flex-row flex-wrap justify-between content-center items-center csvData">
@@ -190,7 +190,7 @@
             </div>
         </div>
         <div v-else-if="mode == 'status'">
-            <span class="font-bold tracking-tight">Status:</span>
+            <span class="font-bold ">Status:</span>
             <span class="flex flex-col justify-between buttonsData items-start">
                 <span v-if="projectData.status == 0 && projectData.numData > 0">
                     <span class="text-green-500">data uploaded. </span>Ready to
@@ -226,8 +226,8 @@
             </span>
         </div>
         <div v-for="(n, i) in titles.length" :key="n" v-else class="">
-            <span class="font-bold tracking-tight">{{ titles[i] }}:&nbsp;</span>
-            <p class="overflow-ellipsis">{{ data[i] }}</p>
+            <span class="font-bold ">{{ titles[i] }}:&nbsp;</span>
+            <span class="overflow-ellipsis float-right">{{ data[i] }}</span>
             <hr v-if="n != titles.length" />
         </div>
     </div>
@@ -299,6 +299,20 @@ export default {
                     this.data = ['All ' + this.projectData.hits_submitted + ' HITs have been submitted!']
                 }
                 break
+            case 'qualifications':
+                this.titles = ['Adult content', 'Master Workers only', 'Location of Workers']
+                var loc = ''
+                for (let i = 0; i < this.projectData.countries.length; i++) {
+                    loc += this.projectData.countries[i]
+                    if (i != this.projectData.countries.length - 1) {
+                        loc += ', '
+                    }
+                }
+                this.data = [
+                    this.projectData.adult == 0 ? 'No' : 'Yes',
+                    this.projectData.master == 0 ? 'No' : 'Yes',
+                    loc,
+                ]
         }
     },
     methods: {

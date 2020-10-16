@@ -8,7 +8,7 @@
                     />
                 </svg>
                 <div>
-                    <span class="font-bold tracking-tight">HIT total:&nbsp;</span>
+                    <span class="font-bold ">HIT total:&nbsp;</span>
                     <span>{{ dati.totale }}</span>
                 </div>
             </div>
@@ -19,7 +19,7 @@
                     />
                 </svg>
                 <div>
-                    <span class="font-bold tracking-tight">Completed HITs:&nbsp;</span>
+                    <span class="font-bold ">Completed HITs:&nbsp;</span>
                     <span>{{ dati.totale }}</span>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     />
                 </svg>
                 <div>
-                    <span class="font-bold tracking-tight">Assignment total:&nbsp;</span>
+                    <span class="font-bold ">Assignment total:&nbsp;</span>
                     <span>{{ dati.totale }}</span>
                 </div>
             </div>

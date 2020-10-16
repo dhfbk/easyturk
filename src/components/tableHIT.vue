@@ -11,29 +11,19 @@
                     v-model="sortType"
                 >
                     <option v-for="item in sortOptions" :key="item.value" :value="item.value">
-                        {{
-                        item.text
-                        }}
+                        {{ item.text }}
                     </option>
                 </select>
-                <div
-                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-                >
-                    <svg
-                        class="fill-current h-4 w-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                    >
-                        <path
-                            d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                        />
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                     </svg>
                 </div>
             </div>
         </div>
         <table class="w-full shadow-lg rounded">
             <thead>
-                <tr class="text-center bg-primary border-b border-gray-300 uppercase tracking-tight">
+                <tr class="text-center bg-primary border-b border-gray-300 uppercase ">
                     <th class="py-2 px-2 text-sm text-white">HIT ID</th>
                     <th class="py-2 px-2 text-sm text-white">Status</th>
                     <th class="py-2 px-2 hidden sm:table-cell text-sm text-white">Creation</th>
@@ -44,11 +34,7 @@
                 </tr>
             </thead>
             <tbody class="bg-white text-center">
-                <tr
-                    class="border-b border-gray-300 hover:bg-gray-100"
-                    v-for="hit in hitDaMostrare"
-                    :key="hit.HITId"
-                >
+                <tr class="border-b border-gray-300 hover:bg-gray-100" v-for="hit in hitDaMostrare" :key="hit.HITId">
                     <td class="table-cell py-2 border-r border-gray-300">
                         <router-link to="/hit">
                             <p class="text-sm text-gray-700 font-medium">{{ hit.HITId }}</p>
@@ -83,19 +69,13 @@
                         <p class="text-sm text-gray-700 font-medium">{{ hit.MaxAssignments }}</p>
                     </td>
                     <td class="hidden md:table-cell py-2 border-r border-gray-300">
-                        <p
-                            class="text-sm text-gray-700 font-medium"
-                        >{{ hit.NumberOfAssignmentsSubmitted }}</p>
+                        <p class="text-sm text-gray-700 font-medium">{{ hit.NumberOfAssignmentsSubmitted }}</p>
                     </td>
                     <td class="hidden lg:table-cell py-2 border-r border-gray-300">
-                        <p
-                            class="text-sm text-gray-700 font-medium"
-                        >{{ hit.NumberOfAssignmentsApproved }}</p>
+                        <p class="text-sm text-gray-700 font-medium">{{ hit.NumberOfAssignmentsApproved }}</p>
                     </td>
                     <td class="hidden lg:table-cell py-2">
-                        <p
-                            class="text-sm text-gray-700 font-medium"
-                        >{{ hit.NumberOfAssignmentsRejected }}</p>
+                        <p class="text-sm text-gray-700 font-medium">{{ hit.NumberOfAssignmentsRejected }}</p>
                     </td>
                 </tr>
             </tbody>

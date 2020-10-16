@@ -1,7 +1,7 @@
 <template>
     <table class="w-full shadow-lg rounded">
         <thead>
-            <tr class="text-center bg-primary border-b border-grey uppercase tracking-tight">
+            <tr class="text-center bg-primary border-b border-grey uppercase ">
                 <th class="px-2 py-2" @click="$emit('selectAll'), (all = !all)">
                     <span
                         class="bg-white border-2 mx-auto rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
@@ -40,11 +40,7 @@
         </thead>
         <tbody class="text-center">
             <tr v-for="i in current" :key="i.HITId" class="border-b hover:bg-gray-100">
-                <td
-                    class="py-2 border-r"
-                    @click="i.selected = !i.selected"
-                    v-if="i.status == 'Submitted'"
-                >
+                <td class="py-2 border-r" @click="i.selected = !i.selected" v-if="i.status == 'Submitted'">
                     <span
                         class="bg-white border-2 mx-auto rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
                     >

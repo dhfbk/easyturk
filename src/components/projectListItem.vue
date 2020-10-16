@@ -7,19 +7,19 @@
             class="flex contenutoPrj text-center items-center flex-wrap text-md w-full xs2:w-1/2 md:w-2/3 focus:outline-none"
         >
             <div class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                <p class="block md:hidden font-bold tracking-tight">Project Id:</p>
+                <p class="block md:hidden font-bold ">Project Id:</p>
                 <p>{{ projectData.id }}</p>
             </div>
             <div class="block w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                <p class="block md:hidden font-bold tracking-tight">Title:</p>
+                <p class="block md:hidden font-bold ">Title:</p>
                 <p class="overflow-ellipsis">{{ projectData.title }}</p>
             </div>
             <div class="hidden lg:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                <p class="block md:hidden font-bold tracking-tight">Created:</p>
+                <p class="block md:hidden font-bold ">Created:</p>
                 <p>{{ date }}</p>
             </div>
             <div class="hidden xl:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
-                <p class="block md:hidden font-bold tracking-tight">Last edited:</p>
+                <p class="block md:hidden font-bold ">Last edited:</p>
                 <p>{{ lastEdited }}</p>
             </div>
         </div>
