@@ -167,81 +167,96 @@ function updateHIT($hit_id, $code = 2) {
     ];
     $DB->queryupdate("cluster_to_hit", $data, ["id_hit" => $hit_id], "updateHIT");
 
-    try {
-        $assignmentResponse = $mTurk->listAssignmentsForHIT(["HITId" => $hit_id]);
-    }
-    catch (Exception $e) {
-        l($code, "get_assignments_for_hit", $e->getMessage(), $hit_id);
-    }
-    $assignmentResponse = $assignmentResponse->toArray();
-    l($code, "get_assignments_for_hit", $assignmentResponse, $hit_id);
-
-    $line_ids = [];
-    $query = "SELECT c.line_id
-        FROM clusters c
-            LEFT JOIN file_lines l ON l.id = c.line_id
-            LEFT JOIN project_files f ON f.id = l.file_id
-        WHERE f.deleted = '0' AND c.deleted = '0'
-            AND f.project_id = '{$taskInfo['id_project']}'
-            AND c.cluster_index = '{$taskInfo['id_cluster']}'
-        ORDER BY c.alea";
-    $DB->query($query, "updateHIT");
-    while ($row = $DB->fetch("updateHIT")) {
-        $line_ids[] = $row['line_id'];
-    }
-
-    foreach ($assignmentResponse['Assignments'] as $assignment) {
-        $assignment_id = $assignment['AssignmentId'];
-        $worker_id = $assignment['WorkerId'];
-        $hit_id = $assignment['HITId'];
-        $status = $assignment['AssignmentStatus'];
-
-        $xml = simplexml_load_string($assignment['Answer']);
-        $answers = [];
-        foreach ($xml->Answer as $answer) {
-            $key = $answer->QuestionIdentifier->__toString();
-            $value = $answer->FreeText->__toString();
-            $answers[$key] = trim($value);
+    $nextToken = "";
+    while (true) {
+        $data = ["HITId" => $hit_id];
+        if ($nextToken) {
+            $data['NextToken'] = $nextToken;
         }
-        // print_r($answers);
-        $layout_details = unserialize($taskInfo['hit_details']);
-        $a = array();
-        for ($i = 0; $i < $taskInfo['params']; $i++) {
-            $a[$i] = [];
-            foreach ($layout_details['answerData'] as $ad) {
-                $varName = str_replace("#", $i + 1, $ad['varName']);
-                $varValue = $ad['varValue'];
-                if (isset($answers[$varName]) && $answers[$varName] == $varValue) {
-                    $a[$i][$ad['varNameTo']] = $ad['varValueTo'];
+
+        try {
+            $assignmentResponse = $mTurk->listAssignmentsForHIT($data);
+        }
+        catch (Exception $e) {
+            l($code, "get_assignments_for_hit", $e->getMessage(), $hit_id);
+        }
+        $assignmentResponse = $assignmentResponse->toArray();
+
+        if (!isset($assignmentResponse['NextToken']) || !$assignmentResponse['NextToken']) {
+            break;
+        }
+        $nextToken = $assignmentResponse['NextToken'];
+        l($code, "get_assignments_for_hit", $assignmentResponse, $hit_id);
+
+        $line_ids = [];
+        $query = "SELECT c.line_id
+            FROM clusters c
+                LEFT JOIN file_lines l ON l.id = c.line_id
+                LEFT JOIN project_files f ON f.id = l.file_id
+            WHERE f.deleted = '0' AND c.deleted = '0'
+                AND f.project_id = '{$taskInfo['id_project']}'
+                AND c.cluster_index = '{$taskInfo['id_cluster']}'
+            ORDER BY c.alea";
+        $DB->query($query, "updateHIT");
+        while ($row = $DB->fetch("updateHIT")) {
+            $line_ids[] = $row['line_id'];
+        }
+
+        foreach ($assignmentResponse['Assignments'] as $assignment) {
+            $assignment_id = $assignment['AssignmentId'];
+            // print("$assignment_id\n");
+            $worker_id = $assignment['WorkerId'];
+            $hit_id = $assignment['HITId'];
+            $status = $assignment['AssignmentStatus'];
+
+            $xml = simplexml_load_string($assignment['Answer']);
+            $answers = [];
+            foreach ($xml->Answer as $answer) {
+                $key = $answer->QuestionIdentifier->__toString();
+                $value = $answer->FreeText->__toString();
+                $answers[$key] = trim($value);
+            }
+            // print_r($answers);
+            $layout_details = unserialize($taskInfo['hit_details']);
+            $a = array();
+            for ($i = 0; $i < $taskInfo['params']; $i++) {
+                $a[$i] = [];
+                foreach ($layout_details['answerData'] as $ad) {
+                    $varName = str_replace("#", $i + 1, $ad['varName']);
+                    $varValue = $ad['varValue'];
+                    if (isset($answers[$varName]) && $answers[$varName] == $varValue) {
+                        $a[$i][$ad['varNameTo']] = $ad['varValueTo'];
+                    }
                 }
             }
-        }
-        for ($i = 0; $i < count($line_ids); $i++) {
-            foreach ($a[$i] as $key => $value) {
-                $data = [];
-                $data['line_id'] = $line_ids[$i];
-                $data['assignment_id'] = $assignment_id;
-                $data['label'] = $key;
-                $data['value'] = $value;
-                $DB->queryinsertodku("answers", $data, [], "updateHIT");
+            for ($i = 0; $i < count($line_ids); $i++) {
+                foreach ($a[$i] as $key => $value) {
+                    $data = [];
+                    $data['line_id'] = $line_ids[$i];
+                    $data['assignment_id'] = $assignment_id;
+                    $data['label'] = $key;
+                    $data['value'] = $value;
+                    $DB->queryinsertodku("answers", $data, [], "updateHIT");
+                }
             }
-        }
 
-        $assignment_info = serialize($assignment);
-        $query = "INSERT INTO assignments (assignment_id, hit_id, worker_id, status, assignment_info)
-                VALUES(?, ?, ?, ?, ?)
-            ON DUPLICATE KEY
-            UPDATE
-                hit_id = ?,
-                worker_id = ?,
-                status = ?,
-                assignment_info = ?";
-        if ($stmt = $mysqli->prepare($query)) {
-            $stmt->bind_param("sssssssss", $assignment_id, $hit_id, $worker_id, $status, $assignment_info, $hit_id, $worker_id, $status, $assignment_info);
-            $stmt->execute();
-            $stmt->close();
-        }
+            $assignment_info = serialize($assignment);
+            $query = "INSERT INTO assignments (assignment_id, hit_id, worker_id, status, assignment_info)
+                    VALUES(?, ?, ?, ?, ?)
+                ON DUPLICATE KEY
+                UPDATE
+                    hit_id = ?,
+                    worker_id = ?,
+                    status = ?,
+                    assignment_info = ?";
+            if ($stmt = $mysqli->prepare($query)) {
+                $stmt->bind_param("sssssssss", $assignment_id, $hit_id, $worker_id, $status, $assignment_info, $hit_id, $worker_id, $status, $assignment_info);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }        
     }
+
 
     $query = "UPDATE cluster_to_hit SET checked_at = NOW() WHERE id = '{$taskInfo['id']}'";
     $mysqli->query($query);

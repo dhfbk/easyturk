@@ -187,14 +187,14 @@ while (true) {
                     hit_status != 'Reviewable'
                     AND hit_status != 'Disposed'
                     AND hit_status != 'Inserted'
-                    AND (checked_at IS NULL OR DATE_ADD(checked_at, INTERVAL 1 MINUTE) < NOW())
+                    AND (checked_at IS NULL OR DATE_ADD(checked_at, INTERVAL 10 MINUTE) < NOW())
                     AND deleted = '0'
                 LIMIT 1
                 FOR UPDATE";
-            $query = "SELECT * FROM cluster_to_hit
-                WHERE deleted = '0'
-                LIMIT 10
-                FOR UPDATE";
+            // $query = "SELECT * FROM cluster_to_hit
+            //     WHERE deleted = '0'
+            //     LIMIT 1
+            //     FOR UPDATE";
             $DB->query($query, "updateHIT_server");
             while ($row = $DB->fetch("updateHIT_server")) {
                 print("Updating {$row['id_hit']}\n");
@@ -204,6 +204,6 @@ while (true) {
         }
     }
 
-    // sleep(1);
-    break;
+    sleep(1);
+    // break;
 }
