@@ -1,6 +1,7 @@
 <template>
     <div
-        class="rounded shadow-md transition duration-150 my-4 mx-2 py-2 px-4 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer"
+        class="rounded shadow-md transition duration-150 mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer grow"
+        :class="zIndex ? 'customZ' : ''"
         @click="openProject"
     >
         <div
@@ -27,7 +28,7 @@
             <span class="tooltip relative" v-if="projectData.status < 1">
                 <button
                     @click.stop="upload('std')"
-                    class="tooltip ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                    class="tooltip ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-150 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                         <path
@@ -45,7 +46,7 @@
                 <button
                     :class="{ 'cursor-not-allowed': baseCsvStatus == 0 }"
                     @click.stop="upload('gld')"
-                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-150 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:24px; height:24px;">
                         <path
@@ -75,7 +76,7 @@
                             },
                         })
                     "
-                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
+                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-150 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                         <path
@@ -92,7 +93,7 @@
             <span class="tooltip relative" v-if="projectData.status < 3">
                 <button
                     @click.stop="deleteItem()"
-                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
+                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-150 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                         <path
@@ -111,7 +112,7 @@
                     @click.stop="launch()"
                     v-if="projectData.status == 3"
                     :class="projectData.hits_submitted == projectData.hits_total ? 'cursor-not-allowed' : ''"
-                    class="ripple hover:bg-blue-600 bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
+                    class="ripple hover:bg-blue-600 bg-primary text-white transition duration-150 py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -129,7 +130,7 @@
                 <button
                     @click.stop="launch()"
                     v-if="projectData.status == 2"
-                    class="ripple hover:bg-blue-600 bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
+                    class="ripple hover:bg-blue-600 bg-primary text-white transition duration-150 py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -147,7 +148,7 @@
                 <button
                     @click.stop="layout()"
                     v-if="projectData.status == 1"
-                    class="ripple hover:bg-blue-600 bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
+                    class="ripple hover:bg-blue-600 bg-primary text-white transition duration-150 py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -165,7 +166,7 @@
                     @click.stop="createHIT()"
                     v-if="projectData.status == 0"
                     :class="{ 'cursor-not-allowed': baseCsvStatus == 0 }"
-                    class="ripple hover:bg-blue-600 bg-primary text-white py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
+                    class="ripple hover:bg-blue-600 bg-primary text-white py-2 transition duration-150 px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -182,7 +183,7 @@
             <span v-click-outside="hide" class="md:hidden flex align-center">
                 <button
                     class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded"
-                    @click.stop="dropdown = !dropdown"
+                    @click.stop="bringOnTop()"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                         <path d="M0 0h24v24H0z" fill="none" />
@@ -194,34 +195,57 @@
                 <transition name="slide-toggle">
                     <div
                         v-show="dropdown"
-                        class="absolute right-0 w-40 sm:w-56 bg-white rounded-md shadow-xl z-20 mr-4 mt-12 sm:mr-20"
+                        class="absolute right-0 w-40 sm:w-56 bg-white rounded-md shadow-xl z-20 mr-4 mt-12"
                     >
+                        <a
+                            @click.stop="launch()"
+                            v-if="projectData.status == 3"
+                            :class="[
+                                projectData.hits_submitted == projectData.hits_total ? 'cursor-not-allowed' : '',
+                                projectData.status == 3 ? 'rounded-t-md' : '',
+                            ]"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
+                        >
+                            Launch HITs
+                        </a>
+                        <a
+                            @click.stop="launch()"
+                            v-if="projectData.status == 2"
+                            :class="projectData.status == 2 ? 'rounded-t-md' : ''"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
+                        >
+                            Publish project
+                        </a>
                         <a
                             @click.stop="layout()"
                             v-if="projectData.status == 1"
                             :class="projectData.status == 1 ? 'rounded-t-md' : ''"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
-                            >Set layout</a
                         >
+                            Set layout
+                        </a>
                         <a
                             @click.stop="createHIT()"
                             v-if="projectData.status == 0"
                             :class="projectData.status == 0 ? 'rounded-t-md' : ''"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
-                            >Create HITs</a
                         >
+                            Create HITs
+                        </a>
                         <a
                             @click.stop="upload('std')"
                             v-if="projectData.status < 1"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:rounded-t-md sm:hidden"
-                            >Upload data</a
                         >
+                            Upload data
+                        </a>
                         <a
                             @click.stop="upload('gld')"
                             v-if="projectData.status < 1"
                             class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white sm:hidden"
-                            >Upload Gold</a
                         >
+                            Upload Gold
+                        </a>
                         <a
                             @click.stop="
                                 $router.push({
@@ -232,13 +256,15 @@
                                 })
                             "
                             class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white sm:rounded-t-md"
-                            >Edit</a
                         >
+                            Edit
+                        </a>
                         <a
                             @click.stop="deleteItem()"
                             class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
-                            >Delete</a
                         >
+                            Delete
+                        </a>
                     </div>
                 </transition>
             </span>
@@ -375,6 +401,7 @@ export default {
             lastEdited: '',
             baseCsvStatus: 0,
             goldCsvStatus: 0,
+            zIndex: false,
         }
     },
     created() {
@@ -395,6 +422,10 @@ export default {
         //inserire controllo che se il projectData contiene anche il csv per base o gold cambiano i valori baseCsvStatus e goldCsvStatus nei data
     },
     methods: {
+        bringOnTop() {
+            this.dropdown = !this.dropdown
+            this.zIndex = !this.zIndex
+        },
         openProject() {
             this.$router.push({ name: 'projectView', params: { projectId: this.projectData.id } })
         },
@@ -481,5 +512,13 @@ export default {
     .contenutoPrj {
         flex-direction: row;
     }
+}
+.grow:hover {
+    -webkit-transform: scale(1.01);
+    -ms-transform: scale(1.01);
+    transform: scale(1.01);
+}
+.customZ {
+    z-index: 999;
 }
 </style>

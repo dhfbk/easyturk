@@ -41,14 +41,14 @@
                                 </button>
                                 <span
                                     v-if="projectData.numData > 0"
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix1"
                                 >
                                     Overwrite standard csv
                                 </span>
 
                                 <span
                                     v-else
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light "
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix2"
                                 >
                                     Upload standard csv
                                 </span>
@@ -75,7 +75,7 @@
                                     </svg>
                                 </button>
                                 <span
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix2"
                                 >
                                     Upload standard csv
                                 </span>
@@ -135,13 +135,13 @@
                                 </button>
                                 <span
                                     v-if="projectData.numGold > 0"
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix3"
                                 >
                                     Overwrite gold csv
                                 </span>
                                 <span
                                     v-else
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light "
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix4"
                                 >
                                     Upload gold csv
                                 </span>
@@ -179,7 +179,7 @@
                                     </svg>
                                 </button>
                                 <span
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix4"
                                 >
                                     Upload gold csv
                                 </span>
@@ -350,6 +350,20 @@ export default {
         margin: 0 auto;
         width: 100%;
         align-items: center;
+    }
+}
+@media (max-width: 1023px) and (min-width: 649px) {
+    .smallScreenFix1{
+        margin-left: -60px;
+    }
+    .smallScreenFix2{
+        margin-left: -52px;
+    }
+    .smallScreenFix3{
+        margin-left: -46px;
+    }
+    .smallScreenFix4{
+        margin-left: -38px;
     }
 }
 </style>

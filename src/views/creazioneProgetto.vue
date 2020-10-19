@@ -1,18 +1,20 @@
 <template>
+    <div v-if="loadingPage1 || loadingPage2"></div>
     <form
+        v-else
         class="md:w-5/6 bg-white shadow-md rounded pt-2 pb-8 flex flex-col mt-4 mx-2 md:mx-auto px-8"
         @submit.prevent="caricaProgetto"
     >
         <p class="text-2xl mb-4 text-primary">{{ pageTitle }}</p>
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="nome">Project Name</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="name">Project Name</label>
                 <input
                     :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                    id="nome"
+                    id="name"
                     type="text"
-                    placeholder="Nome progetto"
+                    placeholder="Project name"
                     maxlength="255"
                     v-model.trim="$v.name.$model"
                     :disabled="status > 2"
@@ -21,13 +23,13 @@
                 <p class="text-gray-700 text-xs italic">This name is not displayed to Workers.</p>
             </div>
             <div class="w-full px-3 mb-4">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="titolo">Title</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="title">Title</label>
                 <input
                     :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     class="appearance-none block w-full border rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                    id="titolo"
+                    id="title"
                     type="text"
-                    placeholder="Titolo"
+                    placeholder="Title"
                     maxlength="255"
                     v-model.trim="$v.title.$model"
                     :disabled="status > 2"
@@ -57,20 +59,20 @@
             <div class="w-full px-3 mb-4">
                 <label
                     class="block tracking-wide text-gray-900 text-md font-bold mb-2"
-                    for="descrizione"
+                    for="description"
                     @mouseover="hoverDesc = true"
                     @mouseleave="hoverDesc = false"
                     >Description</label
                 >
-                <div class id="descrizione rounded">
+                <div id="description" class="rounded">
                     <textarea
-                        placeholder="Description"
+                        placeholder="description"
                         :class="[
                             status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700',
                             hoverDesc ? 'border-gray-500' : 'border-gray-200',
                         ]"
                         class="w-full border transition duration-150 ease-in-out hover:border-gray-500 rounded py-2 px-4 focus:outline-none"
-                        id="descrizione"
+                        id="description"
                         @focus="hoverDesc = true"
                         @blur="hoverDesc = false"
                         v-model.trim="$v.description.$model"
@@ -88,7 +90,7 @@
         <div class="-mx-3 md:flex md:flex-col xl:flex-row xl:justify-around">
             <div class="w-full xl:w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="ricompensa"
+                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="reward"
                         >Reward per response</label
                     >
                     <input
@@ -96,7 +98,7 @@
                             status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
                         class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                        id="ricompensa"
+                        id="reward"
                         type="number"
                         min="0.01"
                         step="0.01"
@@ -111,7 +113,7 @@
                     </p>
                 </div>
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="lavoratori"
+                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="workers"
                         >Number of respondents</label
                     >
                     <input
@@ -119,7 +121,7 @@
                             status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
                         class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                        id="lavoratori"
+                        id="workers"
                         type="number"
                         min="1"
                         step="1"
@@ -135,7 +137,7 @@
             </div>
             <div class="w-full xl:w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="tempoMax"
+                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="maxTime"
                         >Time allotted per Worker</label
                     >
                     <div class="flex flex-col flex-grow sm:flex-row">
@@ -146,7 +148,7 @@
                                     : 'bg-gray-100 text-gray-700'
                             "
                             class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                            id="tempoMax"
+                            id="maxTime"
                             type="number"
                             min="1"
                             :max="max1"
@@ -164,7 +166,7 @@
                                         : 'bg-gray-100 text-gray-700'
                                 "
                                 class="block appearance-none w-full sm:w-32 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                                id="selectorTempoMax"
+                                id="selectorMaxTime"
                                 v-model="selectTempoMax"
                                 @change="fixMax(1)"
                                 :disabled="status > 1"
@@ -187,7 +189,7 @@
                     </p>
                 </div>
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="scadenza"
+                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="expiry"
                         >Survey expires in</label
                     >
                     <div class="flex flex-col flex-grow sm:flex-row">
@@ -198,7 +200,7 @@
                                     : 'bg-gray-100 text-gray-700'
                             "
                             class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                            id="scadenza"
+                            id="expiry"
                             type="number"
                             min="1"
                             :max="max2"
@@ -216,7 +218,7 @@
                                         : 'bg-gray-100 text-gray-700'
                                 "
                                 class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                                id="selectorScadenza"
+                                id="selectorExpiry"
                                 v-model="selectExpiry"
                                 @change="fixMax(2)"
                                 :disabled="status > 1"
@@ -339,13 +341,13 @@
                 </p>
             </div>
             <div class="w-full px-3 mb-4 mx-auto">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="parametri"
+                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="params"
                     >Examples per HIT</label
                 >
                 <input
                     :class="status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                     class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
-                    id="parametri"
+                    id="params"
                     type="number"
                     min="1"
                     step="1"
@@ -452,7 +454,7 @@
             <div class="ml-4">
                 <div class="flex flex-row justify-between items-center my-4">
                     <div class="flex flex-col">
-                        <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="countries"
+                        <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="master"
                             >Only Master Workers:</label
                         >
                         <span class="text-gray-700 text-xs italic mt-1">
@@ -467,6 +469,7 @@
                         class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
                     >
                         <input
+                            id="master"
                             :disabled="status >= 2"
                             :class="
                                 status >= 2
@@ -488,7 +491,7 @@
                 </div>
                 <div class="flex flex-row justify-between my-4">
                     <div class="flex flex-col">
-                        <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="countries"
+                        <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="adult"
                             >Project contains adult content:</label
                         >
                         <p class="text-gray-700 text-xs italic mt-1">
@@ -503,6 +506,7 @@
                         class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
                     >
                         <input
+                            id="adult"
                             :disabled="status >= 2"
                             :class="
                                 status >= 2
@@ -527,7 +531,7 @@
         <div class="w-full flex justify-end flex-row">
             <button
                 type="submit"
-                class="ripple m-1 hover:bg-primary py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                class="ripple m-1 hover:bg-primary py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary transition duration-150 hover:text-white focus:outline-none"
                 v-if="mode == 'edit'"
             >
                 <svg
@@ -547,7 +551,7 @@
                         ? 'cursor-not-allowed bg-gray-400 text-gray-800 border-none hover:bg-gray-600'
                         : 'ripple hover:bg-primary bg-transparent border-primary hover:text-white'
                 "
-                class="m-1 py-2 px-4 rounded-md border-2 border-solid focus:outline-none"
+                class="m-1 py-2 px-4 rounded-md border-2 border-solid transition duration-150 focus:outline-none"
                 v-else
             >
                 <svg
@@ -562,7 +566,7 @@
             <button
                 @click="goBack"
                 type="button"
-                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 rounded m-1 focus:outline-none"
+                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 transition duration-150 rounded m-1 focus:outline-none"
             >
                 Cancel
             </button>
@@ -632,6 +636,8 @@ export default {
             selected: [],
             selectedCodes: [],
             active: 0,
+            loadingPage1: true,
+            loadingPage2: true,
         }
     },
     validations() {
@@ -691,8 +697,8 @@ export default {
     },
     created() {
         this.mode = this.$route.name
-        this.getCountries()
         if (this.$route.path == '/create') {
+            this.getCountries()
             this.mode = this.$route.name
             this.pageTitle = 'Create new project'
             this.disableBtn = false
@@ -705,9 +711,11 @@ export default {
             this.elaboraTempoGET('expiry')
             this.elaboraTempoGET('max_time')
             this.elaboraTempoGET('auto_approve')
+            this.loadingPage1 = false
+            this.loadingPage2 = false
         } else {
             this.pageTitle = 'Edit project ' + this.$route.params.projectId
-            this.getDatiPrj()
+            this.getCountries()
         }
     },
     mounted() {
@@ -769,6 +777,12 @@ export default {
             })
                 .then(res => {
                     this.countries = res.data
+                    this.loadingPage2 = false
+                })
+                .then(() => {
+                    if (this.$route.name == 'edit') {
+                        this.getDatiPrj()
+                    }
                 })
                 .catch(err => {
                     console.error(err)
@@ -828,7 +842,7 @@ export default {
                             })
                         )
                     }
-                    console.log(this.selected)
+                    this.loadingPage1 = false
                 })
                 .then(() => {
                     this.fixMax(1)

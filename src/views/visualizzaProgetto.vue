@@ -1,5 +1,5 @@
 <template>
-    <div class="relative lg:w-5/6 pt-2  flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
+    <div class="relative lg:w-5/6 pt-2 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <modalEliminazione v-if="modalElim" @deleteModal="toggleModal('delete')" @deleted="deleted" :id="id" />
         <modalUpload v-if="modalStd" :type="'std'" :id="id" @uploadModal="toggleModal('std')" @uploaded="uploaded" />
         <modalUpload v-if="modalGld" :type="'gld'" :id="id" @uploadModal="toggleModal('gld')" @uploaded="uploaded" />
@@ -37,9 +37,9 @@
             :priceData="priceData"
             :qualifications="qualifications"
         />
-        <div class="flex justify-between items-center flex-wrap" v-if="!loading">
-            <h1 class="text-2xl mb-4 text-primary">{{ project.name }}</h1>
-            <div class="w-full sm:w-auto flex relative justify-between content-center items-center">
+        <div v-if="!loading">
+            <h1 class="text-2xl mb-4 text-primary w-auto inline-block">{{ project.name }}</h1>
+            <div class="w-auto flex relative justify-between content-center items-center float-right">
                 <span class="tooltip relative mr-2" v-if="project.status == 3">
                     <button
                         @click="toggleModal('launch')"
@@ -166,7 +166,7 @@
                         >Edit</span
                     >
                 </span>
-                <span class="tooltip relative mr-2" v-if="project.status != 3">
+                <span class="tooltip relative" v-if="project.status != 3">
                     <button
                         @click="toggleModal('delete')"
                         type="submit"
@@ -210,7 +210,7 @@
                 <span v-click-outside="hide">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
-                        class="md:hidden ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mr-2 mb-1 focus:outline-none"
+                        class="md:hidden ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
                     >
                         <svg
                             class="transition duration-300 ease-in-out fill-current"
@@ -306,7 +306,7 @@
             </div>
         </div>
         <div class="grid grid-cols-1 xs2:grid-cols-2 mt-2">
-            <div class="mx-0 xs2:mx-1">
+            <div class="mr-0 xs2:mr-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading">
                     <loader :type="'cardInfoVisualizza'" v-for="n in 3" :key="n" />
                 </div>
@@ -317,7 +317,7 @@
                     <cardInfo v-if="project.status > 0" :projectData="project" :mode="'hits'" />
                 </div>
             </div>
-            <div class="mx-0 xs2:mx-1">
+            <div class="ml-0 xs2:ml-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading">
                     <loader :type="'cardInfoVisualizza'" v-for="n in 2" :key="n" />
                 </div>

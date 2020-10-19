@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed right-0 top-1 m-5 z-40">
+    <div class="fixed z-40 topHalf">
         <div
             class="flex items-center bg-orange-400 border-l-4 border-orange-700 py-2 px-3 shadow-md mb-2"
             v-if="isWarning.test(msg)"
@@ -98,4 +98,13 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.topHalf {
+    top: 90%;
+    left: 50%;
+    -webkit-transform: translateY(50%) !important;
+    transform: translateY(50%) !important;
+    -webkit-transform: translateX(-50%) !important;
+    transform: translateX(-50%) !important;
+}
+</style>

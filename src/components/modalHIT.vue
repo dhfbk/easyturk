@@ -209,9 +209,9 @@ export default {
             this.hitInfo = Math.floor(this.baseDataStatus / this.params)
         }
         if (this.$store.state.defaults.delete_exceeding_values == 0) {
-            this.leftover = 'no_use'
-        } else {
             this.leftover = 'reuse'
+        } else {
+            this.leftover = 'no_use'
         }
     },
     mounted() {
