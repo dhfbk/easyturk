@@ -3,6 +3,8 @@
         class="rounded shadow-md transition duration-150 mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer grow"
         :class="zIndex ? 'customZ' : ''"
         @click="openProject"
+        @mouseenter="zIndex = true"
+        @mouseleave="waitZ"
     >
         <div
             class="flex contenutoPrj text-center items-center flex-wrap text-md w-full xs2:w-1/2 md:w-2/3 focus:outline-none"
@@ -183,7 +185,7 @@
             <span v-click-outside="hide" class="md:hidden flex align-center">
                 <button
                     class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded"
-                    @click.stop="bringOnTop()"
+                    @click.stop="this.dropdown = !this.dropdown"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                         <path d="M0 0h24v24H0z" fill="none" />
@@ -422,9 +424,10 @@ export default {
         //inserire controllo che se il projectData contiene anche il csv per base o gold cambiano i valori baseCsvStatus e goldCsvStatus nei data
     },
     methods: {
-        bringOnTop() {
-            this.dropdown = !this.dropdown
-            this.zIndex = !this.zIndex
+        waitZ() {
+            setTimeout(() => {
+                this.zIndex = false
+            }, 150)
         },
         openProject() {
             this.$router.push({ name: 'projectView', params: { projectId: this.projectData.id } })
