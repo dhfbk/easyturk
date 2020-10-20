@@ -1,7 +1,7 @@
 <template>
     <transition name="fade" mode="out-in" :duration="{ enter: 500, leave: 500 }" appear>
         <div
-            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
+            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
             @click="toggleModal"
         >
             <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto" @click.stop>
@@ -232,5 +232,8 @@ export default {
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
+}
+.customZ {
+    z-index: 990;
 }
 </style>
