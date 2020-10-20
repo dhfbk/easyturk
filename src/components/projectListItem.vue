@@ -184,8 +184,8 @@
             </span>
             <span v-click-outside="hide" class="md:hidden flex align-center">
                 <button
-                    class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded"
-                    @click.stop="this.dropdown = !this.dropdown"
+                    class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded transition duration-150 hover:bg-gray-300"
+                    @click.stop="dropdown = !dropdown"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                         <path d="M0 0h24v24H0z" fill="none" />
@@ -522,6 +522,6 @@ export default {
     transform: scale(1.01);
 }
 .customZ {
-    z-index: 999;
+    z-index: 900;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed z-40 topHalf">
+    <div class="fixed topHalf">
         <div
             class="flex items-center bg-orange-400 border-l-4 border-orange-700 py-2 px-3 shadow-md mb-2"
             v-if="isWarning.test(msg)"
@@ -106,5 +106,6 @@ export default {
     transform: translateY(50%) !important;
     -webkit-transform: translateX(-50%) !important;
     transform: translateX(-50%) !important;
+    z-index: 999;
 }
 </style>
