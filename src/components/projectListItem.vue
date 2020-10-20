@@ -1,6 +1,6 @@
 <template>
     <div
-        class="rounded shadow-md transition duration-150 mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer grow"
+        class="rounded shadow-md transition duration-200 ease-out mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer grow"
         :class="zIndex ? 'customZ' : ''"
         @click="openProject"
         @mouseenter="zIndex = true"
@@ -30,7 +30,7 @@
             <span class="tooltip relative" v-if="projectData.status < 1">
                 <button
                     @click.stop="upload('std')"
-                    class="tooltip ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-150 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                    class="tooltip ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                         <path
@@ -48,7 +48,7 @@
                 <button
                     :class="{ 'cursor-not-allowed': baseCsvStatus == 0 }"
                     @click.stop="upload('gld')"
-                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-150 text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:24px; height:24px;">
                         <path
@@ -78,7 +78,7 @@
                             },
                         })
                     "
-                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-150 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
+                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                         <path
@@ -95,7 +95,7 @@
             <span class="tooltip relative" v-if="projectData.status < 3">
                 <button
                     @click.stop="deleteItem()"
-                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-150 text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
+                    class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                         <path
@@ -114,7 +114,7 @@
                     @click.stop="launch()"
                     v-if="projectData.status == 3"
                     :class="projectData.hits_submitted == projectData.hits_total ? 'cursor-not-allowed' : ''"
-                    class="ripple hover:bg-blue-600 bg-primary text-white transition duration-150 py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
+                    class="ripple hover:bg-blue-600 bg-primary text-white transition duration-100 ease-out py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -132,7 +132,7 @@
                 <button
                     @click.stop="launch()"
                     v-if="projectData.status == 2"
-                    class="ripple hover:bg-blue-600 bg-primary text-white transition duration-150 py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
+                    class="ripple hover:bg-blue-600 bg-primary text-white transition duration-100 ease-out py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -150,7 +150,7 @@
                 <button
                     @click.stop="layout()"
                     v-if="projectData.status == 1"
-                    class="ripple hover:bg-blue-600 bg-primary text-white transition duration-150 py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
+                    class="ripple hover:bg-blue-600 bg-primary text-white transition duration-100 ease-out py-2 px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -168,7 +168,7 @@
                     @click.stop="createHIT()"
                     v-if="projectData.status == 0"
                     :class="{ 'cursor-not-allowed': baseCsvStatus == 0 }"
-                    class="ripple hover:bg-blue-600 bg-primary text-white py-2 transition duration-150 px-4 rounded m-1 focus:outline-none hidden xs:flex"
+                    class="ripple hover:bg-blue-600 bg-primary text-white py-2 transition duration-100 ease-out px-4 rounded m-1 focus:outline-none hidden xs:flex"
                 >
                     <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -184,7 +184,7 @@
             </span>
             <span v-click-outside="hide" class="md:hidden flex align-center">
                 <button
-                    class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded transition duration-150 hover:bg-gray-300"
+                    class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded transition duration-100 ease-out hover:bg-gray-300"
                     @click.stop="dropdown = !dropdown"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
@@ -194,7 +194,7 @@
                         />
                     </svg>
                 </button>
-                <transition name="slide-toggle">
+                <transition name="slide-toggle" mode="out-in" appear>
                     <div
                         v-show="dropdown"
                         class="absolute right-0 w-40 sm:w-56 bg-white rounded-md shadow-xl z-20 mr-4 mt-12"
@@ -276,7 +276,7 @@
                 v-if="projectData.status == 3"
             >
                 <svg
-                    class="transition duration-300 ease-in-out"
+                    class="transition duration-300 ease-out"
                     :class="{ 'transform  rotate-180': isOpen }"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -368,7 +368,7 @@
                     <svg
                         style="width:24px;height:24px"
                         viewBox="0 0 24 24"
-                        class="transition ease-in-out"
+                        class="transition ease-out"
                         :class="refreshIcon ? 'animate-spin ' : 'animate-none'"
                     >
                         <path

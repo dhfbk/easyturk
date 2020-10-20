@@ -17,7 +17,7 @@
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
+                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-300 rounded focus:outline-none"
                                 @click="
                                     $router.push({
                                         name: 'csv',
@@ -100,7 +100,7 @@
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
+                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-300 rounded focus:outline-none"
                                 @click="
                                     $router.push({
                                         name: 'csv',
@@ -219,7 +219,7 @@
                 </span>
                 <button
                     @click="$emit('modal', 'instructions')"
-                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-300 rounded focus:outline-none transition duration-150 self-end"
+                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-300 rounded focus:outline-none transition duration-100 ease-out self-end"
                 >
                     Need help?
                 </button>
@@ -337,7 +337,7 @@ export default {
     padding: 2px 6px;
     z-index: 100;
     left: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-out;
     opacity: 0;
     transition-delay: 0.15s;
 }

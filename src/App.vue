@@ -9,7 +9,7 @@
         </div>
         <snack-bar :msg="messaggio" v-if="snack" />
         <transition name="fade" mode="out-in">
-            <router-view @snackbar="showSnack" @sandbox="setSandbox" />
+            <router-view v-if="!wait" @snackbar="showSnack" @sandbox="setSandbox" />
         </transition>
     </div>
 </template>
@@ -29,6 +29,7 @@ export default {
             snackType: '',
             messaggio: '',
             sandbox: false,
+            wait: true,
         }
     },
     created() {
@@ -36,6 +37,7 @@ export default {
             .get(this.APIURL + '?action=getOptions')
             .then(res => {
                 this.$store.state.defaults = res.data.defaults
+                this.wait = false
                 //this.loadingProjects = false
             })
             .catch(err => {
@@ -69,7 +71,7 @@ export default {
 .fade-leave-active {
     transition-duration: 0.3s;
     transition-property: opacity;
-    transition-timing-function: ease;
+    transition-timing-function: ease-out;
 }
 
 .fade-enter,

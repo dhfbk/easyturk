@@ -41,7 +41,7 @@
                                     : 'bg-gray-100 text-gray-700'
                             "
                             :disabled="!reject || isGold == 0"
-                            class="appearance-none block w-full border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="appearance-none block w-full border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                             id="assNumber"
                             name="assNumber"
                             type="number"
@@ -67,7 +67,7 @@
                                     v.rejectReason.$error ? 'shadowRed' : '',
                                 ]"
                                 placeholder="Reason for rejection"
-                                class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                 :disabled="!reject || isGold == 0"
                                 id="reject"
                                 v-model.trim="v.rejectReason.$model"

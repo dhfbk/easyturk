@@ -8,10 +8,10 @@
         <p class="text-2xl mb-4 text-primary">{{ pageTitle }}</p>
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="name">Project Name</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="name">Project Name</label>
                 <input
                     :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="name"
                     type="text"
                     placeholder="Project name"
@@ -23,10 +23,10 @@
                 <p class="text-gray-700 text-xs italic">This name is not displayed to Workers.</p>
             </div>
             <div class="w-full px-3 mb-4">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="title">Title</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="title">Title</label>
                 <input
                     :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full border rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="appearance-none block w-full border rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="title"
                     type="text"
                     placeholder="Title"
@@ -41,10 +41,10 @@
                 </p>
             </div>
             <div class="md:w-full px-3 mb-4">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="keywords">Keywords</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="keywords">Keywords</label>
                 <input
                     :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="keywords"
                     type="text"
                     placeholder="Keywords"
@@ -58,12 +58,13 @@
             </div>
             <div class="w-full px-3 mb-4">
                 <label
-                    class="block tracking-wide text-gray-900 text-md font-bold mb-2"
+                    class="block tracking-wide text-gray-900 text-md font-bold pb-2"
                     for="description"
                     @mouseover="hoverDesc = true"
                     @mouseleave="hoverDesc = false"
-                    >Description</label
                 >
+                    Description
+                </label>
                 <div id="description" class="rounded">
                     <textarea
                         placeholder="description"
@@ -71,7 +72,7 @@
                             status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700',
                             hoverDesc ? 'border-gray-500' : 'border-gray-200',
                         ]"
-                        class="w-full border transition duration-150 ease-in-out hover:border-gray-500 rounded py-2 px-4 focus:outline-none"
+                        class="w-full border transition duration-150 ease-out hover:border-gray-500 rounded py-2 px-4 focus:outline-none"
                         id="description"
                         @focus="hoverDesc = true"
                         @blur="hoverDesc = false"
@@ -90,14 +91,14 @@
         <div class="-mx-3 md:flex md:flex-col xl:flex-row xl:justify-around">
             <div class="w-full xl:w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="reward"
-                        >Reward per response</label
-                    >
+                    <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="reward">
+                        Reward per response
+                    </label>
                     <input
                         :class="
                             status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
-                        class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="reward"
                         type="number"
                         min="0.01"
@@ -113,14 +114,14 @@
                     </p>
                 </div>
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="workers"
-                        >Number of respondents</label
-                    >
+                    <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="workers">
+                        Number of respondents
+                    </label>
                     <input
                         :class="
                             status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
-                        class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="workers"
                         type="number"
                         min="1"
@@ -137,9 +138,9 @@
             </div>
             <div class="w-full xl:w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="maxTime"
-                        >Time allotted per Worker</label
-                    >
+                    <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="maxTime">
+                        Time allotted per Worker
+                    </label>
                     <div class="flex flex-col flex-grow sm:flex-row">
                         <input
                             :class="
@@ -147,7 +148,7 @@
                                     ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                     : 'bg-gray-100 text-gray-700'
                             "
-                            class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                             id="maxTime"
                             type="number"
                             min="1"
@@ -165,7 +166,7 @@
                                         ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                         : 'bg-gray-100 text-gray-700'
                                 "
-                                class="block appearance-none w-full sm:w-32 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                class="block appearance-none w-full sm:w-32 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                 id="selectorMaxTime"
                                 v-model="selectTempoMax"
                                 @change="fixMax(1)"
@@ -189,9 +190,9 @@
                     </p>
                 </div>
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="expiry"
-                        >Survey expires in</label
-                    >
+                    <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="expiry">
+                        Survey expires in
+                    </label>
                     <div class="flex flex-col flex-grow sm:flex-row">
                         <input
                             :class="
@@ -199,7 +200,7 @@
                                     ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                     : 'bg-gray-100 text-gray-700'
                             "
-                            class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                             id="expiry"
                             type="number"
                             min="1"
@@ -217,7 +218,7 @@
                                         ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                         : 'bg-gray-100 text-gray-700'
                                 "
-                                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                 id="selectorExpiry"
                                 v-model="selectExpiry"
                                 @change="fixMax(2)"
@@ -241,9 +242,9 @@
                     </p>
                 </div>
                 <div class="w-full lg:w-auto px-3 mb-4">
-                    <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="autoApproval"
-                        >Auto-approve and pay Workers in</label
-                    >
+                    <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="autoApproval">
+                        Auto-approve and pay Workers in
+                    </label>
                     <div class="flex flex-col flex-grow sm:flex-row">
                         <input
                             :class="
@@ -251,7 +252,7 @@
                                     ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                     : 'bg-gray-100 text-gray-700'
                             "
-                            class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                             id="autoApproval"
                             type="number"
                             min="1"
@@ -269,7 +270,7 @@
                                         ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                         : 'bg-gray-100 text-gray-700'
                                 "
-                                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                 id="selectorApproval"
                                 v-model="selectAutoApprove"
                                 @change="fixMax(3)"
@@ -298,13 +299,13 @@
         <hr class="solid mb-4" />
         <div class="-mx-3 md:flex md:flex-col lg:grid lg:grid-cols-3 lg:gap-2">
             <div class="w-full px-3 mb-4 mx-auto">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="layoutId">Layout ID</label>
+                <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="layoutId">Layout ID</label>
                 <div class="flex content-center items-center flex-wrap relative sm:max-w-xs">
                     <input
                         :class="
                             status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
-                        class="relative appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 pl-4 pr-10 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        class="relative appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 pl-4 pr-10 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="layoutId"
                         type="text"
                         placeholder="Layout ID"
@@ -321,7 +322,7 @@
                                 class="bg-transparent py-2 px-2 rounded focus:outline-none"
                                 :class="downloadID ? 'animate__heartBeat' : ''"
                             >
-                                <svg style="width:24px;height:24px" viewBox="0 0 24 24" class="transition ease-in-out">
+                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                     <path
                                         d="M7.5,5.6L5,7L6.4,4.5L5,2L7.5,3.4L10,2L8.6,4.5L10,7L7.5,5.6M19.5,15.4L22,14L20.6,16.5L22,19L19.5,17.6L17,19L18.4,16.5L17,14L19.5,15.4M22,2L20.6,4.5L22,7L19.5,5.6L17,7L18.4,4.5L17,2L19.5,3.4L22,2M13.34,12.78L15.78,10.34L13.66,8.22L11.22,10.66L13.34,12.78M14.37,7.29L16.71,9.63C17.1,10 17.1,10.65 16.71,11.04L5.04,22.71C4.65,23.1 4,23.1 3.63,22.71L1.29,20.37C0.9,20 0.9,19.35 1.29,18.96L12.96,7.29C13.35,6.9 14,6.9 14.37,7.29Z"
                                     />
@@ -341,12 +342,12 @@
                 </p>
             </div>
             <div class="w-full px-3 mb-4 mx-auto">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="params"
-                    >Examples per HIT</label
-                >
+                <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="params">
+                    Examples per HIT
+                </label>
                 <input
                     :class="status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="params"
                     type="number"
                     min="1"
@@ -358,12 +359,12 @@
                 />
             </div>
             <div class="w-full px-3 mb-4 mx-auto">
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="params_fields"
-                    >Parameter fields</label
-                >
+                <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="params_fields">
+                    Parameter fields
+                </label>
                 <input
                     :class="status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="params_fields"
                     type="text"
                     :disabled="status > 0"
@@ -385,9 +386,9 @@
         ></autocomplete> -->
         <div class="flex flex-col  md:grid md:grid-cols-2">
             <div class="mr-4" @keydown.enter.prevent.self>
-                <label class="block tracking-wide text-gray-900 text-md font-bold mb-2" for="countries"
-                    >Locations of Workers</label
-                >
+                <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="countries">
+                    Locations of Workers
+                </label>
                 <div class="relative">
                     <ul
                         class="appearance-none max-h-48 w-full overflow-y-scroll absolute bottom-0 border border-black"
@@ -417,7 +418,7 @@
                     autocomplete="off"
                     id="countries"
                     type="text"
-                    class="appearance-none w-full border border-gray-200 rounded py-2 px-4 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="appearance-none w-full border border-gray-200 rounded py-2 px-4 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                 />
                 <span class="text-gray-700 text-xs italic mt-2">
                     Your Workers will be picked from the countries you select.
@@ -451,12 +452,12 @@
                     </div>
                 </div>
             </div>
-            <div class="ml-4">
+            <div class="md:ml-4">
                 <div class="flex flex-row justify-between items-center my-4">
                     <div class="flex flex-col">
-                        <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="master"
-                            >Only Master Workers:</label
-                        >
+                        <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="master">
+                            Only Master Workers:
+                        </label>
                         <span class="text-gray-700 text-xs italic mt-1">
                             Require that Workers be Masters to do your tasks.
                         </span>
@@ -466,7 +467,7 @@
                         :class="
                             status >= 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
-                        class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                        class="bg-white border-2 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
                     >
                         <input
                             id="master"
@@ -491,9 +492,9 @@
                 </div>
                 <div class="flex flex-row justify-between my-4">
                     <div class="flex flex-col">
-                        <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="adult"
-                            >Project contains adult content:</label
-                        >
+                        <label class="tracking-wide text-gray-900 text-md font-bold mr-4" for="adult">
+                            Project contains adult content:
+                        </label>
                         <p class="text-gray-700 text-xs italic mt-1">
                             Require that Workers be over 18 years of age to do your tasks.
                         </p>
@@ -503,7 +504,7 @@
                             status >= 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
                         :disabled="status >= 2"
-                        class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                        class="bg-white border-2 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
                     >
                         <input
                             id="adult"
@@ -531,7 +532,7 @@
         <div class="w-full flex justify-end flex-row">
             <button
                 type="submit"
-                class="ripple m-1 hover:bg-primary py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary transition duration-150 hover:text-white focus:outline-none"
+                class="ripple m-1 hover:bg-primary py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary transition duration-100 ease-out hover:text-white focus:outline-none"
                 v-if="mode == 'edit'"
             >
                 <svg
@@ -551,7 +552,7 @@
                         ? 'cursor-not-allowed bg-gray-400 text-gray-800 border-none hover:bg-gray-600'
                         : 'ripple hover:bg-primary bg-transparent border-primary hover:text-white'
                 "
-                class="m-1 py-2 px-4 rounded-md border-2 border-solid transition duration-150 focus:outline-none"
+                class="m-1 py-2 px-4 rounded-md border-2 border-solid transition duration-100 ease-out focus:outline-none"
                 v-else
             >
                 <svg
@@ -566,7 +567,7 @@
             <button
                 @click="goBack"
                 type="button"
-                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 transition duration-150 rounded m-1 focus:outline-none"
+                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 transition duration-100 ease-out rounded m-1 focus:outline-none"
             >
                 Cancel
             </button>
@@ -702,12 +703,12 @@ export default {
             this.mode = this.$route.name
             this.pageTitle = 'Create new project'
             this.disableBtn = false
-            this.expiry = this.$store.state.defaults.survey_expiration
-            this.max_time = this.$store.state.defaults.time_per_worker
-            this.auto_approve = this.$store.state.defaults.auto_approve
-            this.reward = this.$store.state.defaults.reward
-            this.workers = this.$store.state.defaults.assignments
-            this.params = this.$store.state.defaults.examples_per_hit
+            this.expiry = parseInt(this.$store.state.defaults.survey_expiration)
+            this.max_time = parseInt(this.$store.state.defaults.time_per_worker)
+            this.auto_approve = parseInt(this.$store.state.defaults.auto_approve)
+            this.reward = parseFloat(this.$store.state.defaults.reward)
+            this.workers = parseInt(this.$store.state.defaults.assignments)
+            this.params = parseInt(this.$store.state.defaults.examples_per_hit)
             this.elaboraTempoGET('expiry')
             this.elaboraTempoGET('max_time')
             this.elaboraTempoGET('auto_approve')
@@ -1054,12 +1055,12 @@ export default {
         },
         $store() {
             if (this.$route.path == '/create') {
-                this.expiry = this.$store.state.defaults.survey_expiration
-                this.max_time = this.$store.state.defaults.time_per_worker
-                this.auto_approve = this.$store.state.defaults.auto_approve
-                this.reward = this.$store.state.defaults.reward
-                this.workers = this.$store.state.defaults.assignments
-                this.params = this.$store.state.defaults.examples_per_hit
+                this.expiry = parseInt(this.$store.state.defaults.survey_expiration)
+                this.max_time = parseInt(this.$store.state.defaults.time_per_worker)
+                this.auto_approve = parseInt(this.$store.state.defaults.auto_approve)
+                this.reward = parseFloat(this.$store.state.defaults.reward)
+                this.workers = parseInt(this.$store.state.defaults.assignments)
+                this.params = parseInt(this.$store.state.defaults.examples_per_hit)
             }
         },
     },
@@ -1133,8 +1134,8 @@ textarea {
     animation-duration: calc(1s * 1.3);
     -webkit-animation-duration: calc(1s * 1.3);
     animation-duration: calc(1s * 1.3);
-    -webkit-animation-timing-function: ease-in-out;
-    animation-timing-function: ease-in-out;
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
     animation-iteration-count: infinite;
 }
 @media (max-width: 639px) {

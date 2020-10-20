@@ -210,10 +210,10 @@
                 <span v-click-outside="hide">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
-                        class="md:hidden ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
+                        class="md:hidden ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-100 ease-out border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
                     >
                         <svg
-                            class="transition duration-300 ease-in-out fill-current"
+                            class="transition duration-100 ease-out fill-current"
                             :class="{ 'transform  rotate-180': dropdownOpen }"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -234,42 +234,42 @@
                             <a
                                 v-if="project.status >= 2 && hitsSubmitted == 0"
                                 @click="toggleModal('launch')"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 >Launch project</a
                             >
                             <a
                                 v-else
                                 @click="toggleModal('launch')"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 >Launch other HITs</a
                             >
                             <a
                                 @click="toggleModal('hit')"
                                 v-if="project.status == 0"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 >Set HITs</a
                             >
                             <a
                                 @click="toggleModal('layout')"
                                 v-if="project.status == 1"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
                                 >Set layout</a
                             >
                             <a
                                 v-if="project.status >= 1 && project.status != 3"
                                 @click="toggleModal('revert')"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
                                 >Revert HIT settings</a
                             >
                             <router-link
                                 v-if="project.status == 3"
                                 to="results"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
                                 >Results</router-link
                             >
                             <a
                                 v-if="project.status != 3"
-                                class="cursor-pointer block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
+                                class="cursor-pointer block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
                                 @click="toggleModal('delete')"
                                 >Delete</a
                             >
@@ -279,25 +279,25 @@
                                     params: { projectId: id },
                                 }"
                                 :class="project.status >= 0 && project.status != 3 ? '' : 'rounded-b-md'"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary hover:text-gray-100"
+                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
                                 >Edit</router-link
                             >
                             <!-- <a
                                 v-if="project.status == 0"
                                 @click="toggleModal('std')"
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary md:rounded-t-md hover:text-gray-100"
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-out hover:bg-primary md:rounded-t-md hover:text-gray-100"
                                 >Base CSV upload</a
                             >
                             <a
                                 v-if="project.status == 0"
                                 @click="toggleModal('gld')"
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-out hover:bg-primary rounded-b-md hover:text-gray-100"
                                 >Gold CSV upload</a
                             > -->
                             <!-- <a
                                 v-if="project.status == 0 && projectbaseCsvStatus == 1"
                                 @click="uploadModal(['hit', ''])"
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-in-out hover:bg-primary rounded-b-md hover:text-gray-100"
+                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-out hover:bg-primary rounded-b-md hover:text-gray-100"
                                 >Load HITs</a
                             >-->
                         </div>
@@ -519,7 +519,7 @@ export default {
     padding: 2px 6px;
     z-index: 100;
     left: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-out;
     opacity: 0;
     transition-delay: 0.15s;
 }

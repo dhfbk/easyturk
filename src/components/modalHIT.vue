@@ -1,5 +1,5 @@
 <template>
-    <transition name="fade" mode="out-in" :duration="{ enter: 500, leave: 500 }" appear>
+    <transition name="fade" mode="out-in" appear>
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
             @click="toggleModal('close')"
@@ -61,7 +61,7 @@
                             :class="[
                                 goldDataStatus == 0 || baseDataStatus == 0
                                     ? 'cursor-not-allowed bg-gray-400 text-gray-800 '
-                                    : ' bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500',
+                                    : ' bg-gray-100 text-gray-700 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500',
                                 $v.goldPerHit.$error ? 'shadowRed' : '',
                             ]"
                             class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4"
@@ -112,7 +112,7 @@
                                 :class="[
                                     goldDataStatus == 0 || baseDataStatus == 0
                                         ? 'cursor-not-allowed bg-gray-400 text-gray-800'
-                                        : 'bg-gray-100 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500',
+                                        : 'bg-gray-100 text-gray-700 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500',
                                     $v.leftover.$error ? 'shadowRed' : '',
                                 ]"
                                 class="block border border-gray-200 appearance-none w-full py-2 pl-2 pr-8 rounded"
@@ -143,7 +143,7 @@
                     </div>
                     <div class="ml-auto flex flex-col xs2:flex-row justify-end flex-wrap">
                         <button
-                            class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            class="ripple flex flex-row transition duration-100 ease-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="confirm()"
                             :disabled="baseDataStatus == 0"
                         >
@@ -156,7 +156,7 @@
                             >Proceed
                         </button>
                         <button
-                            class="ripple transition duration-150 ease-in-out mt-2 xs2:mt-0 xs2:ml-2 hover:bg-gray-300 focus:outline-none bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="ripple transition duration-100 ease-out mt-2 xs2:mt-0 xs2:ml-2 hover:bg-gray-300 focus:outline-none bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal('close')"
                         >
                             Cancel
@@ -294,9 +294,11 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.2s !important;
+.fade-enter-active {
+    transition: opacity 0.3s ease-out !important;
+}
+.fade-leave-active{
+    transition: opacity 0.25s ease-out !important;
 }
 .fade-enter,
 .fade-leave-to {

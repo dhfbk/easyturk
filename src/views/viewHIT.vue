@@ -6,7 +6,7 @@
             <div class="flex relative">
                 <button
                     type="submit"
-                    class="hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary mr-2 focus:outline-none"
+                    class="hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-100 ease-out border-2 border-solid border-primary hover:bg-primary mr-2 focus:outline-none"
                 >
                     <svg style="width:24px;" viewBox="0 0 24 24">
                         <path
@@ -18,7 +18,7 @@
                 <button
                     @click="dropdownOpen = !dropdownOpen"
                     v-click-outside="hide"
-                    class="py-2 px-2 bg-transparent rounded-md transition duration-150 ease-in-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
+                    class="py-2 px-2 bg-transparent rounded-md transition duration-100 ease-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="!dropdownOpen">
                         <path
@@ -40,12 +40,12 @@
                     >
                         <router-link
                             to="results"
-                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-t-md"
+                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-100 ease-out hover:bg-primary rounded-t-md"
                         >
                             Add assignment
                         </router-link>
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-150 ease-in-out hover:bg-primary rounded-b-md sm:rounded-md"
+                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-100 ease-out hover:bg-primary rounded-b-md sm:rounded-md"
                             >Edit</a
                         >
                     </div>

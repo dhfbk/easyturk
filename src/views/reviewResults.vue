@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <button
-                        class=" inline-flex flex-row items-center py-2 px-4 ml-auto rounded-md transition duration-150 ease-in-out bg-gray-300 hover:bg-gray-400 focus:outline-none"
+                        class=" inline-flex flex-row items-center py-2 px-4 ml-auto rounded-md transition duration-100 ease-out bg-gray-300 hover:bg-gray-400 focus:outline-none"
                     >
                         <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                             <path

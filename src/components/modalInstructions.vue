@@ -1,5 +1,5 @@
 <template>
-    <transition name="fade" mode="out-in" :duration="{ enter: 500, leave: 500 }" appear>
+    <transition name="fade" mode="out-in" appear>
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
             @click="modal"
@@ -66,9 +66,11 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.2s !important;
+.fade-enter-active {
+    transition: opacity 0.3s ease-out !important;
+}
+.fade-leave-active{
+    transition: opacity 0.25s ease-out !important;
 }
 .fade-enter,
 .fade-leave-to {

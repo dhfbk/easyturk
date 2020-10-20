@@ -1,5 +1,5 @@
 <template>
-    <transition name="fade" mode="out-in" :duration="{ enter: 500, leave: 500 }" appear>
+    <transition name="fade" mode="out-in" appear>
         <div
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
             @click="toggleModal"
@@ -34,7 +34,7 @@
 
                     <input
                         type="text"
-                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 mb-3 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 mb-3 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         v-model.trim="$v.customTitles.$model"
                         :class="[
                             picked == 0 ? '' : 'cursor-not-allowed bg-gray-300',
@@ -49,7 +49,7 @@
                             <label for="separator" class="font-light mr-2">Separator:</label>
                             <div class="relative mt-1 sm:mt-0 sm:ml-2">
                                 <select
-                                    class="block w-full appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 pl-2 pr-12 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                    class="block w-full appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 pl-2 pr-12 rounded transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                     id="separator"
                                     name="separator"
                                     v-model="separated"
@@ -75,7 +75,7 @@
                             <label for="delimiter" class="font-light mr-2">Delimiter:</label>
                             <div class="relative mt-1 sm:mt-0 sm:ml-2">
                                 <select
-                                    class="block w-full appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 pl-2 pr-12 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                    class="block w-full appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 pl-2 pr-12 rounded transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                     id="delimiter"
                                     name="delimiter"
                                     v-model="delimiter"
@@ -133,7 +133,7 @@
                                     </div>
                                     <button
                                         @click="emptyFile"
-                                        class="ripple cursor-pointer w-8 h-8 text-center text-xl transition duration-150 ease-in-out hover:bg-gray-300 focus:bg-gray-400 rounded-full focus:outline-none"
+                                        class="ripple cursor-pointer w-8 h-8 text-center text-xl transition duration-100 ease-out hover:bg-gray-300 focus:bg-gray-400 rounded-full focus:outline-none"
                                     >
                                         &times;
                                     </button>
@@ -146,7 +146,7 @@
                     </div>
                     <div class="ml-auto flex flex-col xs2:flex-row">
                         <button
-                            class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            class="ripple flex flex-row transition duration-100 ease-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="uploadFile()"
                         >
                             <svg
@@ -158,7 +158,7 @@
                             >Upload
                         </button>
                         <button
-                            class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="ripple transition duration-100 ease-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
                         >
                             Cancel
@@ -303,9 +303,11 @@ progress[value]::-webkit-progress-bar {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
     border-radius: 2px;
 }
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.2s !important;
+.fade-enter-active {
+    transition: opacity 0.3s ease-out !important;
+}
+.fade-leave-active{
+    transition: opacity 0.25s ease-out !important;
 }
 .fade-enter,
 .fade-leave-to {

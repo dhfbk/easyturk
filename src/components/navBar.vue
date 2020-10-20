@@ -81,8 +81,8 @@
         </div>
         <div class="block sm:hidden float-right ml-2">
             <button
-                @click="toggle()"
-                class="ripple  items-center mx-0 px-3 py-2 border rounded transition duration-150 ease-in-out text-black border-black hover:text-white hover:border-white focus:outline-none"
+                @click="open = !open"
+                class="ripple  items-center mx-0 px-3 py-2 border rounded transition duration-100 ease-out text-black border-black hover:text-white hover:border-white focus:outline-none"
             >
                 <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <title>Menu</title>
@@ -98,19 +98,22 @@
             <div>
                 <router-link
                     to="/"
-                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-white hover:text-gray-400 sm:mr-4 focus:outline-none"
-                    >Home</router-link
+                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-100 ease-out text-white hover:text-gray-400 sm:mr-4 focus:outline-none"
                 >
+                    Home
+                </router-link>
                 <router-link
                     to="workers"
-                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-white hover:text-gray-400 sm:mr-4 focus:outline-none"
-                    >Workers</router-link
+                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-100 ease-out text-white hover:text-gray-400 sm:mr-4 focus:outline-none"
                 >
+                    Workers
+                </router-link>
                 <router-link
                     to="create"
-                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-150 ease-in-out text-white hover:text-gray-400 focus:outline-none"
-                    >Create Project</router-link
+                    class="block mt-4 sm:inline-block sm:mt-0 transition duration-100 ease-out text-white hover:text-gray-400 focus:outline-none"
                 >
+                    Create Project
+                </router-link>
             </div>
         </div>
     </nav>
@@ -123,11 +126,6 @@ export default {
         return {
             open: false,
         }
-    },
-    methods: {
-        toggle() {
-            this.open = !this.open
-        },
     },
 }
 </script>
