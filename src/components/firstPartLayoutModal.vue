@@ -34,11 +34,13 @@
                     >
                         <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                     </svg>
+                    <span class="sr-only">Handwritten value?</span>
                 </span>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
-                    >Handwritten value</span
                 >
+                    Handwritten value?
+                </span>
             </span>
 
             <div

@@ -10,7 +10,7 @@
                         <h2 class="text-gray-900 font-bold text-lg text-primary">Choose the file to upload</h2>
                         <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal()">
                             <svg
-                                class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
+                                class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 18 18"
                             >
@@ -18,6 +18,7 @@
                                     d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
                                 />
                             </svg>
+                            <span class="sr-only">Close</span>
                         </span>
                     </div>
                     <p class="py-2" v-if="type == 'std'">File upload for the base csv document</p>
@@ -304,10 +305,10 @@ progress[value]::-webkit-progress-bar {
     border-radius: 2px;
 }
 .fade-enter-active {
-    transition: opacity 0.3s ease-out !important;
-}
-.fade-leave-active{
     transition: opacity 0.25s ease-out !important;
+}
+.fade-leave-active {
+    transition: opacity 0.2s ease-out !important;
 }
 .fade-enter,
 .fade-leave-to {

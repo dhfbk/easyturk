@@ -8,16 +8,18 @@
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
                         <div class="text-gray-900 font-bold text-lg text-primary">Set layout for the project</div>
-                        <svg
-                            class="ml-auto fill-current text-gray-700 w-6 h-6 rounded ripple hover:bg-gray-300 cursor-pointer"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 18 18"
-                            @click="toggleModal()"
-                        >
-                            <path
-                                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
-                            />
-                        </svg>
+                        <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal()">
+                            <svg
+                                class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 18 18"
+                            >
+                                <path
+                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+                                />
+                            </svg>
+                            <span class="sr-only">Close</span>
+                        </span>
                     </div>
                     <div class="hidden md:grid grid-cols-4">
                         <p class="font-semibold text-sm w-auto">Field:</p>
@@ -259,10 +261,10 @@ export default {
 
 <style scoped>
 .fade-enter-active {
-    transition: opacity 0.3s ease-out !important;
-}
-.fade-leave-active{
     transition: opacity 0.25s ease-out !important;
+}
+.fade-leave-active {
+    transition: opacity 0.2s ease-out !important;
 }
 .fade-enter,
 .fade-leave-to {

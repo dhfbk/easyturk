@@ -18,6 +18,7 @@
                                     d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
                                 />
                             </svg>
+                            <span class="sr-only">Close</span>
                         </span>
                     </div>
                     <div class="py-2">Are you sure you want to delete the project? This action is irreversible.</div>
@@ -32,8 +33,9 @@
                                 style="width:24px;height:24px"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
-                            >Delete
+                                <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                            </svg>
+                            Delete
                         </button>
                         <button
                             class="ripple transition duration-100 ease-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
@@ -120,10 +122,10 @@ export default {
 
 <style scoped>
 .fade-enter-active {
-    transition: opacity 0.3s ease-out !important;
-}
-.fade-leave-active{
     transition: opacity 0.25s ease-out !important;
+}
+.fade-leave-active {
+    transition: opacity 0.2s ease-out !important;
 }
 .fade-enter,
 .fade-leave-to {

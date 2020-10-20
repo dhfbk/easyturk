@@ -14,6 +14,7 @@
                         >
                             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                         </svg>
+                        <span class="sr-only">Select all</span>
                     </span>
                 </th>
                 <th class="text-sm text-white">HIT ID</th>
@@ -52,6 +53,7 @@
                         >
                             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                         </svg>
+                        <span class="sr-only">Select row</span>
                     </span>
                 </td>
                 <td class="py-2 border-r" v-else></td>
