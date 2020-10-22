@@ -287,33 +287,38 @@ export default {
                 break
             case 'hits':
                 this.titles = ['HITs status']
-                if (this.projectData.hits_submitted == 0) {
+                if (this.projectData.hits_inserted == 0) {
                     this.data = [this.projectData.hits_total + ' HITs created.']
                 } else if (
-                    this.projectData.hits_submitted > 0 &&
-                    this.projectData.hits_submitted != this.projectData.hits_total
+                    this.projectData.hits_inserted > 0 &&
+                    this.projectData.hits_inserted != this.projectData.hits_total
                 ) {
                     this.data = [
-                        this.projectData.hits_submitted +
+                        this.projectData.hits_inserted +
                             ' out of ' +
                             this.projectData.hits_total +
-                            ' HITs submitted. ' +
-                            (parseInt(this.projectData.hits_total) - parseInt(this.projectData.hits_submitted)) +
+                            ' HITs published. ' +
+                            (parseInt(this.projectData.hits_total) - parseInt(this.projectData.hits_inserted)) +
                             ' HITs still available.',
                     ]
-                } else if (this.projectData.hits_submitted == this.projectData.hits_total) {
-                    this.data = ['All ' + this.projectData.hits_submitted + ' HITs have been submitted!']
+                } else if (this.projectData.hits_inserted == this.projectData.hits_total) {
+                    this.data = ['All ' + this.projectData.hits_inserted + ' HITs have been published!']
                 }
                 break
             case 'qualifications':
                 this.titles = ['Adult content', 'Master Workers only', 'Location of Workers']
                 var loc = ''
-                for (let i = 0; i < this.projectData.countries.length; i++) {
-                    loc += this.projectData.countries[i]
-                    if (i != this.projectData.countries.length - 1) {
-                        loc += ', '
+                if (this.projectData.countries) {
+                    for (let i = 0; i < this.projectData.countries.length; i++) {
+                        loc += this.projectData.countries[i]
+                        if (i != this.projectData.countries.length - 1) {
+                            loc += ', '
+                        }
                     }
+                } else {
+                    loc = 'No location specified.'
                 }
+
                 this.data = [
                     this.projectData.adult == 0 ? 'No' : 'Yes',
                     this.projectData.master == 0 ? 'No' : 'Yes',
@@ -359,16 +364,16 @@ export default {
     }
 }
 @media (max-width: 1023px) and (min-width: 649px) {
-    .smallScreenFix1{
+    .smallScreenFix1 {
         margin-left: -60px;
     }
-    .smallScreenFix2{
+    .smallScreenFix2 {
         margin-left: -52px;
     }
-    .smallScreenFix3{
+    .smallScreenFix3 {
         margin-left: -46px;
     }
-    .smallScreenFix4{
+    .smallScreenFix4 {
         margin-left: -38px;
     }
 }

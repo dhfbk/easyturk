@@ -322,9 +322,13 @@
             </div>
         </div>
         <div class="grid grid-cols-1 xs2:grid-cols-2 mt-2">
+            <div class="col-span-2 bg-white rounded shadow-md p-4 mb-4" v-if="project.status == 3">
+                <span class="font-bold">Results</span>
+                <progressBar :progressData="progressData" />
+            </div>
             <div class="mr-0 xs2:mr-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading">
-                    <loader :type="'cardInfoVisualizza'" v-for="n in 3" :key="n" />
+                    <loader :type="'cardInfoVisualizza'" v-for="n in 4" :key="n" />
                 </div>
                 <div v-else>
                     <cardInfo :projectData="project" :mode="'general'" />
@@ -335,7 +339,7 @@
             </div>
             <div class="ml-0 xs2:ml-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading">
-                    <loader :type="'cardInfoVisualizza'" v-for="n in 2" :key="n" />
+                    <loader :type="'cardInfoVisualizza'" v-for="n in 3" :key="n" />
                 </div>
                 <div v-else>
                     <cardInfo :projectData="project" :mode="'payment'" />
@@ -365,6 +369,7 @@ import modalLaunch from '../components/modalLaunch.vue'
 import loader from '../components/loader.vue'
 import axios from 'axios'
 import modalInstructions from '../components/modalInstructions.vue'
+import progressBar from '../components/progressBar'
 
 export default {
     name: 'visualizzaProgetto',
@@ -382,6 +387,7 @@ export default {
         modalInstructions,
         modalLaunch,
         loader,
+        progressBar,
     },
     data() {
         return {
@@ -401,6 +407,7 @@ export default {
             hitsTotal: 0,
             priceData: {},
             qualifications: {},
+            progressData: {},
         }
     },
     created() {
@@ -431,11 +438,18 @@ export default {
                     this.project.numGold = res.data.numGold
                     this.project.numData = res.data.numData
                     this.qualifications.master = res.data.values.master
+                    this.project.hits_inserted = res.data.hits_inserted
                     console.log(res.data)
                     if ((this.project.status == 2 || this.project.status == 3) && this.hitsTotal > this.hitsSubmitted) {
                         this.priceData.reward = parseFloat(this.project.reward)
                         this.priceData.assignment = parseInt(this.project.workers)
                     }
+                    if (this.project.status == 3) {
+                        this.progressData.hits_inserted = res.data.hits_inserted
+                        this.progressData.hits_total = res.data.hits_total
+                        this.progressData.hits_submitted = res.data.hits_submitted
+                    }
+
                     this.loading = false
                 })
                 .catch(err => {
