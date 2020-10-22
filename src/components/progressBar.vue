@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col my-4 ">
-        <div class="flex flex-row mx-auto md:w-11/12 ">
+        <div class="flex flex-row mx-auto w-11/12 ">
             <span class="tooltip relative" :style="{ width: submitted + '%' }">
                 <div
                     class="h-8 bg-green-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
@@ -43,16 +43,16 @@
             </span>
         </div>
 
-        <div class="flex flex-row flex-wrap justify-around w-1/2 mt-4">
-            <span class="flex flex-row mb-2">
+        <div class="flex flex-row flex-wrap justify-around w-full mt-4">
+            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
                 <div class="w-8 h-4 rounded-md bg-green-500 my-1 mr-2"></div>
                 <span>Submitted</span>
             </span>
-            <span class="flex flex-row mb-2">
+            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
                 <div class="w-8 h-4 rounded-md bg-blue-500 my-1 mr-2"></div>
                 <span>Published</span>
             </span>
-            <span class="flex flex-row mb-2">
+            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
                 <div class="w-8 h-4 rounded-md bg-gray-300 my-1 mr-2"></div>
                 <span>Not published</span></span
             >
