@@ -568,7 +568,7 @@
             <button
                 @click="goBack"
                 type="button"
-                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 transition duration-100 ease-out rounded m-1 focus:outline-none"
+                class="ripple bg-transparent hover:bg-gray-400 py-2 px-4 text-gray-900 transition duration-100 ease-out rounded m-1 focus:outline-none"
             >
                 Cancel
             </button>

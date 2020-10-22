@@ -17,7 +17,7 @@
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-300 rounded focus:outline-none"
+                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-400 rounded focus:outline-none"
                                 @click="
                                     $router.push({
                                         name: 'csv',
@@ -30,7 +30,7 @@
                             <span class="tooltip relative ml-2" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'std')"
-                                    class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                    class="tooltip ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
                                 >
                                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                         <path
@@ -67,7 +67,7 @@
                             <span class="tooltip relative ml-2" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'std')"
-                                    class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                                    class="tooltip ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
                                 >
                                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                         <path
@@ -103,7 +103,7 @@
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-300 rounded focus:outline-none"
+                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-400 rounded focus:outline-none"
                                 @click="
                                     $router.push({
                                         name: 'csv',
@@ -117,7 +117,7 @@
                                 <button
                                     @click="$emit('modal', 'gld')"
                                     :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                    class="ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                                    class="ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -164,7 +164,7 @@
                                 <button
                                     @click="$emit('modal', 'gld')"
                                     :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                    class="ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                                    class="ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -225,7 +225,7 @@
                 </span>
                 <button
                     @click="$emit('modal', 'instructions')"
-                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-300 rounded focus:outline-none transition duration-100 ease-out self-end"
+                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-400 rounded focus:outline-none transition duration-100 ease-out self-end"
                 >
                     Need help?
                 </button>

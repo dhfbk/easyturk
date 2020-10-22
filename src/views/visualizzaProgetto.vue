@@ -45,7 +45,7 @@
                         @click="toggleModal('launch')"
                         type="submit"
                         :class="{ 'cursor-not-allowed': hitsSubmitted == hitsTotal }"
-                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
+                        class="ripple hidden transition duration-100 bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -72,7 +72,7 @@
                     <button
                         @click="toggleModal('launch')"
                         type="submit"
-                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
+                        class="ripple hidden bg-primary transition duration-100 hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -99,7 +99,7 @@
                     <button
                         @click="toggleModal('layout')"
                         type="submit"
-                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
+                        class="ripple hidden bg-primary transition duration-100 hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -119,7 +119,7 @@
                         :class="{ 'cursor-not-allowed': project.numData == 0 }"
                         @click="toggleModal('hit')"
                         type="submit"
-                        class="ripple hidden bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
+                        class="ripple hidden bg-primary transition duration-100 hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -144,7 +144,7 @@
                     <button
                         @click="toggleModal('revert')"
                         type="submit"
-                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
+                        class="ripple hidden transition duration-100 md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -163,7 +163,7 @@
                     <button
                         @click="$router.push({ name: 'edit', params: { projectId: id } })"
                         type="submit"
-                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
+                        class="ripple hidden transition duration-100 md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -182,7 +182,7 @@
                     <button
                         @click="toggleModal('delete')"
                         type="submit"
-                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
+                        class="ripple hidden transition duration-100 md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -201,7 +201,7 @@
                     <button
                         @click="open('results')"
                         type="submit"
-                        class="ripple hidden md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
+                        class="ripple hidden transition duration-100 md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white mb-1 focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path

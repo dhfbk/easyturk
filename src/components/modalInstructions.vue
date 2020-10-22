@@ -8,7 +8,7 @@
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <div class="text-gray-900 font-bold text-lg text-primary">Help</div>
-                        <span class="ripple ml-auto rounded hover:bg-gray-300 p-1" @click="modal()">
+                        <span class="ripple ml-auto rounded hover:bg-gray-400 p-1" @click="modal()">
                             <svg
                                 class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
                                 xmlns="http://www.w3.org/2000/svg"

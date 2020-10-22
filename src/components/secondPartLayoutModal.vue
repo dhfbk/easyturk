@@ -61,7 +61,7 @@
 
             <span class="flex flex-row mx-2 text-gray-800 mt-2 md:mt-0">
                 <button
-                    class="p-2 ripple rounded-full transition duration-100 ease-out focus:outline-none hover:bg-gray-300"
+                    class="p-2 ripple rounded-full transition duration-100 ease-out focus:outline-none hover:bg-gray-400"
                     @click="newElement('second')"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24" class="fill-current">
@@ -70,7 +70,7 @@
                     <span class="sr-only">Add element</span>
                 </button>
                 <button
-                    class="p-2 ripple rounded-full focus:outline-none transition duration-100 ease-out hover:bg-gray-300"
+                    class="p-2 ripple rounded-full focus:outline-none transition duration-100 ease-out hover:bg-gray-400"
                     @click="removeElement('second', second.id)"
                     :class="secondPartData.length != 1 ? '' : 'hidden md:block md:invisible'"
                 >
