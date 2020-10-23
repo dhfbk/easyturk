@@ -50,50 +50,27 @@
             </div>
         </div>
     </div>
-    <div v-else-if="type == 'csvData'" class="rounded shadow-md my-2 mx-2 bg-white rounded-md p-4 w-full">
-        <div class="animate-pulse flex flex-col">
-            <div class="h-4 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-5/6 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-5/6 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-5/6 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-5/6 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-5/6 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-5/6 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-5/6 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-5/6 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-5/6 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-full bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-5/6 bg-gray-400 rounded"></div>
-            <div class="mt-4 h-3 w-3/4 bg-gray-400 rounded"></div>
+    <div
+        v-else-if="type == 'csvData'"
+        class="lg:w-5/6 mx-2 xs2:mx-4 lg:mx-auto"
+    >
+        <div class="animate-pulse">
+            <table class="shadow-md rounded xs2:min-w-5/6 bg-white mx-auto">
+                <thead>
+                    <tr class="text-left text-white bg-primary border-b border-gray-300 uppercase ">
+                        <td class="p-1 px-2 border-r border-gray-300" v-for="i in 3" :key="i">
+                            <div class="h-4 w-full"></div>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="n in 10" :key="n" class="border-b border-gray-300 hover:bg-gray-100">
+                        <td class="p-1 px-2 border-r border-gray-300" v-for="i in 3" :key="i">
+                            <div class="h-4 w-full bg-gray-400 rounded"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>

@@ -9,8 +9,7 @@
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light regular"
                 >
-                    {{ submitted.toFixed(2) }}% ({{ progressData.hits_submitted }}/{{ progressData.hits_total }}) of
-                    HITs submitted
+                    {{ progressData.hits_submitted }}/{{ progressData.hits_total }}
                 </span>
             </span>
             <span class="tooltip relative" :style="{ width: published + '%' }">
@@ -24,8 +23,8 @@
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light regular"
                 >
-                    {{ published.toFixed(2) }}% ({{ progressData.hits_inserted - progressData.hits_submitted }}/
-                    {{ progressData.hits_total }}) of HITs published
+                    {{ progressData.hits_inserted - progressData.hits_submitted }}/
+                    {{ progressData.hits_total }}
                 </span>
             </span>
             <span class="tooltip relative" :style="{ width: notPublished + '%' }">
@@ -36,9 +35,7 @@
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light regular"
                 >
-                    {{ notPublished.toFixed(2) }}% ({{ progressData.hits_total - progressData.hits_inserted }}/{{
-                        progressData.hits_total
-                    }}) of HITs not published
+                    {{ progressData.hits_total - progressData.hits_inserted }}/{{ progressData.hits_total }}
                 </span>
             </span>
         </div>

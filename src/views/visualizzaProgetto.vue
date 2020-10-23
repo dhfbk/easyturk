@@ -40,12 +40,12 @@
         <div v-if="!loading">
             <h1 class="text-2xl mb-4 text-primary w-auto inline-block">{{ project.name }}</h1>
             <div class="w-auto flex relative justify-between content-center items-center float-right">
-                <span class="tooltip relative md:mr-2" v-if="project.status == 3">
+                <span class="tooltip hidden md:block relative md:mr-2" v-if="project.status == 3">
                     <button
                         @click="toggleModal('launch')"
                         type="submit"
                         :class="{ 'cursor-not-allowed': hitsSubmitted == hitsTotal }"
-                        class="ripple hidden transition ease-out duration-100 bg-primary hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white focus:outline-none"
+                        class="ripple transition ease-out duration-100 bg-primary hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -68,11 +68,11 @@
                     </span>
                     -->
                 </span>
-                <span class="tooltip relative md:mr-2" v-if="project.status == 2">
+                <span class="tooltip hidden md:block relative md:mr-2" v-if="project.status == 2">
                     <button
                         @click="toggleModal('launch')"
                         type="submit"
-                        class="ripple hidden bg-primary transition duration-100 ease-out hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white focus:outline-none"
+                        class="ripple bg-primary transition duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -95,11 +95,11 @@
                     </span>
                     -->
                 </span>
-                <span class="tooltip relative md:mr-2" v-if="project.status == 1">
+                <span class="tooltip hidden md:block relative md:mr-2" v-if="project.status == 1">
                     <button
                         @click="toggleModal('layout')"
                         type="submit"
-                        class="ripple hidden bg-primary transition duration-100 ease-out hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white focus:outline-none"
+                        class="ripple bg-primary transition duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -114,12 +114,12 @@
                         Set layout
                     </span>
                 </span>
-                <span class="tooltip relative md:mr-2" v-if="project.status == 0">
+                <span class="tooltip hidden md:block relative md:mr-2" v-if="project.status == 0">
                     <button
                         :class="{ 'cursor-not-allowed': project.numData == 0 }"
                         @click="toggleModal('hit')"
                         type="submit"
-                        class="ripple hidden bg-primary transition duration-100 ease-out hover:bg-blue-600 md:flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white focus:outline-none"
+                        class="ripple bg-primary transition duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -135,7 +135,7 @@
                     </span>
                 </span>
                 <span
-                    class="tooltip relative md:mr-2"
+                    class="tooltip hidden md:block relative md:mr-2"
                     v-if="
                         (project.status >= 1 && project.status != 3) ||
                             (project.status == 3 && $store.state.isSandbox == true)
@@ -144,7 +144,7 @@
                     <button
                         @click="toggleModal('revert')"
                         type="submit"
-                        class="ripple hidden transition duration-100 ease-out md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                        class="ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -159,11 +159,11 @@
                         Revert HIT settings
                     </span>
                 </span>
-                <span class="tooltip relative md:mr-2" v-if="project.status != 3">
+                <span class="tooltip hidden md:block relative md:mr-2" v-if="project.status != 3">
                     <button
                         @click="$router.push({ name: 'edit', params: { projectId: id } })"
                         type="submit"
-                        class="ripple hidden transition duration-100 ease-out md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                        class="ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -178,11 +178,11 @@
                         Edit
                     </span>
                 </span>
-                <span class="tooltip relative" v-if="project.status != 3">
+                <span class="tooltip hidden md:block relative" v-if="project.status != 3">
                     <button
                         @click="toggleModal('delete')"
                         type="submit"
-                        class="ripple hidden transition duration-100 ease-out md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                        class="ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -197,11 +197,11 @@
                         Delete
                     </span>
                 </span>
-                <span class="tooltip relative" v-if="project.status == 3">
+                <span class="tooltip hidden md:block relative" v-if="project.status == 3">
                     <button
                         @click="open('results')"
                         type="submit"
-                        class="ripple hidden transition duration-100 ease-out md:flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                        class="ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -324,7 +324,7 @@
         <div class="col-span-2 mt-2">
             <loader :type="'progressVisualizza'" v-if="loading" />
             <div class="bg-white rounded shadow-md p-4 mb-4" v-else-if="!loading && project.status == 3">
-                <span class="font-bold">Results</span>
+                <span class="font-bold">HITs results</span>
                 <progressBar :progressData="progressData" />
             </div>
         </div>
