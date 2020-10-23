@@ -23,8 +23,7 @@
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light regular"
                 >
-                    {{ progressData.hits_inserted - progressData.hits_submitted }}/
-                    {{ progressData.hits_total }}
+                    {{ progressData.hits_inserted - progressData.hits_submitted }}/{{ progressData.hits_total }}
                 </span>
             </span>
             <span class="tooltip relative" :style="{ width: notPublished + '%' }">
@@ -38,21 +37,6 @@
                     {{ progressData.hits_total - progressData.hits_inserted }}/{{ progressData.hits_total }}
                 </span>
             </span>
-        </div>
-
-        <div class="flex flex-row flex-wrap justify-around w-full mt-4">
-            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
-                <div class="w-8 h-4 rounded-md bg-green-500 my-1 mr-2"></div>
-                <span>Submitted</span>
-            </span>
-            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
-                <div class="w-8 h-4 rounded-md bg-blue-500 my-1 mr-2"></div>
-                <span>Published</span>
-            </span>
-            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
-                <div class="w-8 h-4 rounded-md bg-gray-300 my-1 mr-2"></div>
-                <span>Not published</span></span
-            >
         </div>
     </div>
 </template>

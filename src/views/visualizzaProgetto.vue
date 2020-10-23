@@ -323,9 +323,50 @@
         </div>
         <div class="col-span-2 mt-2">
             <loader :type="'progressVisualizza'" v-if="loading" />
-            <div class="bg-white rounded shadow-md p-4 mb-4" v-else-if="!loading && project.status == 3">
-                <span class="font-bold">HITs results</span>
+            <div class="flex flex-col bg-white rounded shadow-md p-4 mb-4" v-else-if="!loading && project.status == 3">
+                <span class="font-bold">HITs progress:</span>
                 <progressBar :progressData="progressData" />
+                <div class="flex md:flex-row flex-col-reverse">
+                    <span class="md:w-1/2">
+                        <div>
+                            <span class="font-bold">Remaining assignments projected:</span>
+                            <span> {{ totalProjected }}</span>
+                        </div>
+                        <hr />
+                        <div>
+                            <span class="font-bold">Assignments approved:</span>
+                            <span> {{ approved }}</span>
+                        </div>
+                        <hr />
+                        <div>
+                            <span class="font-bold">Assignments rejected:</span><span> {{ rejected }}</span>
+                        </div>
+                        <hr />
+                        <div>
+                            <span class="font-bold">Assignments pending review:</span>
+                            <span> {{ pending }}</span>
+                        </div>
+                    </span>
+                    <div class="flex flex-row flex-wrap justify-around w-full md:w-1/2 mt-2 self-start">
+                        <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
+                            <div class="w-8 h-4 rounded-md bg-green-500 my-1 mr-2"></div>
+                            <span>Submitted</span>
+                        </span>
+                        <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
+                            <div class="w-8 h-4 rounded-md bg-blue-500 my-1 mr-2"></div>
+                            <span>Published</span>
+                        </span>
+                        <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
+                            <div class="w-8 h-4 rounded-md bg-gray-400 my-1 mr-2"></div>
+                            <span>Not published</span></span
+                        >
+                    </div>
+                </div>
+                <button
+                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-400 rounded focus:outline-none transition duration-100 ease-out self-end"
+                >
+                    View details
+                </button>
             </div>
         </div>
         <div class="grid grid-cols-1 xs2:grid-cols-2">
@@ -411,6 +452,10 @@ export default {
             priceData: {},
             qualifications: {},
             progressData: {},
+            approved: 0,
+            rejected: 0,
+            pending: 0,
+            totalProjected: 0,
         }
     },
     created() {
@@ -442,6 +487,7 @@ export default {
                     this.project.numData = res.data.numData
                     this.qualifications.master = res.data.values.master
                     this.project.hits_inserted = res.data.hits_inserted
+                    this.project.summary = res.data.summary
                     console.log(res.data)
                     if ((this.project.status == 2 || this.project.status == 3) && this.hitsTotal > this.hitsSubmitted) {
                         this.priceData.reward = parseFloat(this.project.reward)
@@ -452,6 +498,18 @@ export default {
                         this.progressData.hits_total = res.data.hits_total
                         this.progressData.hits_submitted = res.data.hits_submitted
                     }
+                    for (let i = 0; i < this.project.summary.length; i++) {
+                        this.rejected =
+                            this.rejected +
+                            parseInt(this.project.summary[i].assignments_rejected) * this.project.summary[i].count
+                        this.approved =
+                            this.approved +
+                            parseInt(this.project.summary[i].assignments_approved) * this.project.summary[i].count
+                        this.pending =
+                            this.pending +
+                            parseInt(this.project.summary[i].assignments_pending) * this.project.summary[i].count
+                    }
+                    this.totalProjected = (this.project.hits_total - this.project.hits_inserted) * this.project.workers
 
                     this.loading = false
                 })
