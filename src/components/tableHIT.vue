@@ -119,7 +119,6 @@ export default {
         filtraHIT() {
             if (this.filtri.stato == 'all') {
                 this.hitDaMostrare = JSON.parse(JSON.stringify(this.datiHIT))
-                console.log('BIG')
             } else {
                 this.hitDaMostrare = JSON.parse(JSON.stringify(this.datiHIT))
                 let i = 0

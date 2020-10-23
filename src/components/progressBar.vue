@@ -28,7 +28,7 @@
             </span>
             <span class="tooltip relative" :style="{ width: notPublished + '%' }">
                 <div
-                    class="h-8 bg-gray-400 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+                    class="h-8 bg-gray-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
                     :class="notPublished > 0 ? 'rounded-r' : ''"
                 ></div>
                 <span

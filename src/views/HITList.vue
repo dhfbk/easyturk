@@ -1,18 +1,28 @@
 <template>
     <div class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
-        <h1 class="text-2xl mb-4 text-primary">HIT for the project *projectId*</h1>
-        <tableHIT :datiHIT="datiHIT" />
+        <div v-if="loading"></div>
+        <div v-else>
+            <h1 class="text-2xl mb-4 text-primary">HIT for the project {{ $route.params.projectId }}</h1>
+            <tableHIT :datiHIT="datiHIT" />
+            <dotMatrixHIT :progressData="progressData" />
+        </div>
     </div>
 </template>
 <script>
 import tableHIT from '../components/tableHIT.vue'
+import dotMatrixHIT from '../components/dotMatrixHIT.vue'
+import axios from 'axios'
 export default {
     name: 'HITList',
     components: {
         tableHIT,
+        dotMatrixHIT,
     },
     data() {
         return {
+            id: '',
+            loading: true,
+            progressData: {},
             datiHIT: [
                 {
                     HITId: '76f8gf7g68cd',
@@ -82,6 +92,25 @@ export default {
                 },
             ],
         }
+    },
+    created() {
+        this.getData()
+    },
+    methods: {
+        getData() {
+            this.id = this.$route.params.projectId
+            axios
+                .get(this.APIURL + '?action=getProjectInfo&id=' + this.id)
+                .then(res => {
+                    this.progressData.hits_inserted = res.data.hits_inserted
+                    this.progressData.hits_total = res.data.hits_total
+                    this.progressData.hits_submitted = res.data.hits_submitted
+                    this.loading = false
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
     },
 }
 </script>

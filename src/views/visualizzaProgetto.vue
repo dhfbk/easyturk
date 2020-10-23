@@ -323,7 +323,7 @@
         </div>
         <div class="col-span-2 mt-2">
             <loader :type="'progressVisualizza'" v-if="loading" />
-            <div class="flex flex-col bg-white rounded shadow-md p-4 mb-4" v-else-if="!loading && project.status == 3">
+            <div class="bg-white rounded shadow-md p-4 mb-4" v-else-if="!loading && project.status == 3">
                 <span class="font-bold">HITs progress:</span>
                 <progressBar :progressData="progressData" />
                 <div class="flex md:flex-row flex-col-reverse">
@@ -363,10 +363,17 @@
                     </div>
                 </div>
                 <button
-                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-400 rounded focus:outline-none transition duration-100 ease-out self-end"
+                    @click="
+                        $router.push({
+                            name: 'HITlist',
+                            params: { projectId: id },
+                        })
+                    "
+                    class="ripple px-2 py-1 bg-gray-200 hover:bg-gray-400 rounded focus:outline-none transition duration-100 ease-out float-right"
                 >
                     View details
                 </button>
+                <div class="clearfix"></div>
             </div>
         </div>
         <div class="grid grid-cols-1 xs2:grid-cols-2">
