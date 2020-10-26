@@ -31,6 +31,9 @@ module.exports = {
             xl: '1280px',
         },
         extend: {
+            boxShadow: {
+                focus: '0 0 0 3px rgba(66, 153, 225, 0.5)',
+            },
             transitionProperty: {
                 height: 'height',
             },

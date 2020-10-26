@@ -98,7 +98,7 @@
                     Workers
                 </router-link>
                 <router-link
-                    to="create"
+                    :to="{ name: 'new' }"
                     class="block mt-4 sm:inline-block sm:mt-0 transition duration-100 ease-out text-white hover:text-gray-400 focus:outline-none"
                 >
                     Create Project

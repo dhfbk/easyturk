@@ -4,7 +4,7 @@
         <div v-else>
             <h1 class="text-2xl mb-4 text-primary">HIT for the project {{ $route.params.projectId }}</h1>
             <tableHIT :datiHIT="datiHIT" />
-            <dotMatrixHIT :progressData="progressData" />
+            <dotMatrixHIT :tmpData="progressData" />
         </div>
     </div>
 </template>
@@ -22,7 +22,7 @@ export default {
         return {
             id: '',
             loading: true,
-            progressData: {},
+            progressData: [],
             datiHIT: [
                 {
                     HITId: '76f8gf7g68cd',
@@ -102,9 +102,7 @@ export default {
             axios
                 .get(this.APIURL + '?action=getProjectInfo&id=' + this.id)
                 .then(res => {
-                    this.progressData.hits_inserted = res.data.hits_inserted
-                    this.progressData.hits_total = res.data.hits_total
-                    this.progressData.hits_submitted = res.data.hits_submitted
+                    this.progressData = res.data.summary
                     this.loading = false
                 })
                 .catch(err => {
