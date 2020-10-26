@@ -67,7 +67,7 @@
                 </label>
                 <div id="description" class="rounded">
                     <textarea
-                        placeholder="description"
+                        placeholder="Description"
                         :class="[
                             status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700',
                             hoverDesc ? 'border-gray-500' : 'border-gray-200',
@@ -320,6 +320,7 @@
                                 @click="downloadLayoutId"
                                 type="button"
                                 class="bg-transparent py-2 px-2 rounded focus:outline-none"
+                                style="width: 40px; height: 40px"
                                 :class="downloadID ? 'animate__heartBeat' : ''"
                             >
                                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -330,7 +331,7 @@
                                 <span class="sr-only">Load examples per hit and params fields for this layout</span>
                             </button>
                             <span
-                                class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light -mt-17 -ml-27"
+                                class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-12 -ml-27"
                                 >Load examples per hit <br />
                                 and params fields <br />
                                 for this layout</span
@@ -431,7 +432,7 @@
                     <div
                         v-for="country in selected"
                         :key="country.alpha2Code"
-                        class="flex justify-center items-center py-1 rounded-full text-gray-700 bg-gray-400 chip mb-1"
+                        class="flex justify-center items-center py-1 rounded-full text-gray-700 bg-gray-300 chip mb-1"
                     >
                         <span class="text-sm font-semibold leading-none max-w-full flex-initial cursor-default">{{
                             country.name

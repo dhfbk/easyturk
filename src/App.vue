@@ -30,6 +30,7 @@ export default {
             messaggio: '',
             sandbox: false,
             wait: true,
+            timeout: 4000
         }
     },
     created() {
@@ -58,9 +59,10 @@ export default {
             //this.snackType = arr[0]
             this.messaggio = msg
             this.snack = true
+            this.timeout = 4000
             setTimeout(() => {
                 this.snack = false
-            }, 4000)
+            }, this.timeout)
         },
     },
 }

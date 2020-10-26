@@ -43,7 +43,7 @@
                 </svg>
                 <h2 class="text-lg font-semibold ml-1  text-gray-800">Projects</h2>
             </div>
-            <div class="my-1 mx-2 p-2 flex items-center flex-wrap">
+            <div class="my-1 mx-2 p-2 flex items-center flex-wrap" v-if="projects.length != 0">
                 <div class="hidden w-2/3 md:flex text-center items-center flex-wrap text-lg">
                     <span class="w-1/4 font-light">Project Id</span>
                     <span class="w-1/4 font-light">Title</span>
@@ -57,21 +57,21 @@
             <div v-else>
                 <div v-if="projects.length == 0">
                     <div
-                        class="rounded border-4 border-dashed shadow-md my-2 mx-2 p-2 flex items-center flex-wrap bg-white relative"
+                        class="rounded-md border-4 border-dashed border-gray-600 my-2 mx-2 px-2 py-10 flex items-center flex-wrap relative justify-center"
                     >
-                        <div class="flex mx-2 contenutoPrj w-full font-bold text-center items-center flex-wrap">
-                            No projects
-                            <svg style="width:24px;height:24px" class="ml-2" viewBox="0 0 24 24">
+                        <div
+                            class="flex mx-2 mb-2 flex-col text-xl contenutoPrj w-full font-bold text-center items-center flex-wrap justify-center"
+                        >
+                            <svg style="width:40px;height:40px" viewBox="0 0 24 24">
                                 <path
-                                    fill="currentColor"
                                     d="M11.46 10.88L12.88 9.46L15 11.59L17.12 9.46L18.54 10.88L16.41 13L18.54 15.12L17.12 16.54L15 14.41L12.88 16.54L11.46 15.12L13.59 13L11.46 10.88M22 8V18C22 19.11 21.11 20 20 20H4C2.9 20 2 19.11 2 18V6C2 4.89 2.9 4 4 4H10L12 6H20C21.11 6 22 6.9 22 8M20 8H4V18H20V8Z"
                                 />
                             </svg>
+                            No projects
                         </div>
-                        <div class="font-light mx-2">
+                        <div class="font-light mx-2 text-center">
                             Your projects will be shown here. You can create a new project
-                            <router-link to="create" class="font-normal text-primary hover:underline">here</router-link
-                            >.
+                            <router-link to="create" class="font-normal text-primary hover:underline">here</router-link>
                         </div>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
                             d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
                         />
                     </svg>
-                    <h2 class="font-semibold text-lg m-1  text-gray-800">Reviewable results</h2>
+                    <h2 class="font-semibold text-lg m-1  text-gray-800">Reviewable HITs</h2>
                 </div>
                 <p class="text-black font-light text-2xl xs2:text-4xl m-1 text-center">93</p>
             </div>
@@ -214,10 +214,8 @@ export default {
                         this.projects = responses[0].data.values
                         this.userInfo = responses[1].data.data
                         this.$emit('sandbox', this.userInfo.use_sandbox)
-                        console.log(responses[0], responses[1])
                         this.loadingProjects = false
                         this.loadingOther = false
-                        console.log(this.projects)
                     })
                 )
                 .catch(errors => {

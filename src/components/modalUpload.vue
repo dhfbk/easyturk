@@ -106,7 +106,7 @@
                             :class="
                                 inputLocked
                                     ? 'bg-gray-600 cursor-not-allowed'
-                                    : 'bg-secondary cursor-pointer hover:bg-blue-700'
+                                    : 'bg-secondary cursor-pointer transition duration-100 ease-out hover:bg-blue-700'
                             "
                             class="inline-block text-white rounded-md px-4 py-2"
                             >Choose file</label

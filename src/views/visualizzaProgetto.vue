@@ -55,7 +55,7 @@
                         <span class="sr-only">Launch HITs</span>
                     </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
                     >
                         Launch HITs
                     </span>
@@ -82,7 +82,7 @@
                         <span class="sr-only">Publish project</span>
                     </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
                     >
                         Publish project
                     </span>
@@ -109,7 +109,7 @@
                         <span class="sr-only">Set layout</span>
                     </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
                     >
                         Set layout
                     </span>
@@ -129,7 +129,7 @@
                         <span class="sr-only">Create HITs</span>
                     </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
                     >
                         Create HITs
                     </span>
@@ -154,7 +154,7 @@
                         <span class="sr-only">Revert HIT settings</span>
                     </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
                     >
                         Revert HIT settings
                     </span>
@@ -173,7 +173,7 @@
                         <span class="sr-only">Edit</span>
                     </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
                     >
                         Edit
                     </span>
@@ -192,7 +192,7 @@
                         <span class="sr-only">Delete</span>
                     </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
                     >
                         Delete
                     </span>
@@ -211,7 +211,7 @@
                         <span class="sr-only">Results</span>
                     </button>
                     <span
-                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light regular"
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
                     >
                         Results
                     </span>
