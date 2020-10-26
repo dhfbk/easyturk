@@ -5,7 +5,7 @@
                 <span class="tooltip relative ">
                     <span
                         class="h-5 w-5 m-1 rounded-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-focus"
-                        :style="{ 'background-color': '#' + color }"
+                        :style="{ 'background-color': 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')' }"
                     ></span>
                     <span
                         class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
@@ -26,7 +26,7 @@
 <script>
 export default {
     props: {
-        color: String,
+        color: Array,
         num: Object,
         ids: Array,
         total: Number,
