@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto">
-        <div class="flex flex-row justify-end mb-2">
+        <div class="flex flex-col xs:flex-row justify-end mb-2">
             <p class="text-md my-auto mr-1">Status:</p>
             <div class="relative">
                 <select
