@@ -516,7 +516,21 @@ export default {
                             this.pending +
                             parseInt(this.project.summary[i].assignments_pending) * this.project.summary[i].count
                     }
-                    this.totalProjected = (this.project.hits_total - this.project.hits_inserted) * this.project.workers
+                    if (res.data.summary.length > 0) {
+                        if (res.data.summary[0].max_assignments != this.project.workers) {
+                            this.totalProjected =
+                                (this.project.hits_total - this.project.hits_inserted) * this.project.workers +
+                                ' - ' +
+                                (this.project.hits_total - this.project.hits_inserted) *
+                                    parseInt(res.data.summary[0].max_assignments)
+                        } else {
+                            this.totalProjected =
+                                (this.project.hits_total - this.project.hits_inserted) * this.project.workers
+                        }
+                    } else {
+                        this.totalProjected =
+                            (this.project.hits_total - this.project.hits_inserted) * this.project.workers
+                    }
 
                     this.loading = false
                 })
