@@ -3,7 +3,7 @@
         <!-- <span v-for="i in colors" :key="i"><div class="w-4 h-4" :style="{ 'background-color': '#' + i }"></div></span> -->
 
         <span v-for="(x, y) in tmpData.length" :key="y">
-            <matrixPart :num="tmpData[x - 1]" :color="colors[y]" :total="totalHITs" />
+            <matrixPart :num="tmpData[x - 1]" :color="colors[y]" :total="totalHITs" :hoverColor="hoverArr" />
 
             <!-- <span
                         v-for="f in first"
@@ -54,10 +54,12 @@
             <span v-for="(i, e) in tmpData.length" :key="e">
                 <span class="flex flex-row items-center mt-2 md:mt-1">
                     <div
-                        class="w-5 h-5 rounded-full my-1 mr-2"
+                        class="w-5 h-5 rounded-full my-1 mr-2 hover:shadow-focus"
                         :style="{
                             'background-color': 'rgb(' + colors[e][0] + ',' + colors[e][1] + ',' + colors[e][2] + ')',
                         }"
+                        @mouseenter="hoverGroup(colors[e])"
+                        @mouseleave="hoverGroup([])"
                     ></div>
                     <span
                         >Approved: {{ tmpData[i - 1].assignments_approved }}<br />Rejected:
@@ -85,6 +87,7 @@ export default {
         return {
             texts: [],
             totalHITs: 0,
+            hoverArr: [],
 
             colors: [],
 
@@ -145,13 +148,16 @@ export default {
         //         return this.colorsNegative[this.countNeg]
         //     }
         // },
-        interpolateColors(color1, color2) {
-            var stepFactor = 1 / (this.tmpData.length - 1)
+        hoverGroup(arr) {
+            this.hoverArr = arr
+        },
+        interpolateColors(color1, color2, step) {
+            var stepFactor = 1 / (step - 1)
 
             color1 = color1.match(/\d+/g).map(Number)
             color2 = color2.match(/\d+/g).map(Number)
 
-            for (var i = 0; i < this.tmpData.length; i++) {
+            for (var i = 0; i < step; i++) {
                 this.colors.push(this.interpolateColor(color1, color2, stepFactor * i))
             }
         },
@@ -167,10 +173,12 @@ export default {
         },
     },
     created() {
+        var half = Math.floor(this.tmpData.length / 2)
         for (let i = 0; i < this.tmpData.length; i++) {
             this.totalHITs += this.tmpData[i].count
         }
-        this.interpolateColors('rgb(14, 173, 105)', 'rgb(255,0,0)')
+        this.interpolateColors('rgb(14, 173, 105)', 'rgb(0,255,0)', half)
+        this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', this.tmpData.length - half)
         // var tmp = ''
         // for (var i = 0; i < this.tmpData.length; i++) {
         //     this.total += this.tmpData[i].count

@@ -6,6 +6,7 @@
                     <span
                         class="h-5 w-5 m-1 rounded-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-focus"
                         :style="{ 'background-color': 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')' }"
+                        :class="hoveringFull ? 'shadow-focus' : ''"
                     ></span>
                     <span
                         class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
@@ -28,16 +29,26 @@ export default {
     props: {
         color: Array,
         num: Object,
-        ids: Array,
         total: Number,
+        hoverColor: Array,
     },
     data() {
         return {
             hovering: false,
+            hoveringFull: false,
         }
     },
     created() {
         console.log('ok')
+    },
+    watch: {
+        hoverColor() {
+            if (this.hoverColor == this.color) {
+                this.hoveringFull = true
+            } else {
+                this.hoveringFull = false
+            }
+        },
     },
 }
 </script>
