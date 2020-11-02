@@ -327,39 +327,84 @@
                 <span class="font-bold">HITs progress:</span>
                 <progressBar :progressData="progressData" />
                 <div class="flex md:flex-row flex-col-reverse">
-                    <span class="md:w-1/2">
-                        <div>
-                            <span class="font-bold">Remaining assignments projected:</span>
-                            <span> {{ totalProjected }}</span>
+                    <div class="md:w-1/2">
+                        <table class="w-full rounded mr-2 mt-2">
+                            <thead>
+                                <tr class="text-center bg-primary border border-grey uppercase ">
+                                    <th class="text-sm text-white">
+                                        TOTAL HITs
+                                    </th>
+                                    <th class="text-sm text-white">APPROVED</th>
+                                    <th class="text-sm text-white">REJECTED</th>
+                                    <th class="text-sm text-white">COMPLETED</th>
+                                    <th class="text-sm text-white">AVAILABLE</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr v-for="(i, k) in project.summary" :key="k" class="border hover:bg-gray-100">
+                                    <td class="border-r py-1 text-sm text-gray-700 font-medium">
+                                        {{ i.count }}
+                                    </td>
+                                    <td class="py-1 border-r text-sm text-gray-700 font-medium">
+                                        {{ i.assignments_approved }}
+                                    </td>
+                                    <td class="py-1 border-r text-sm text-gray-700 font-medium">
+                                        {{ i.assignments_rejected }}
+                                    </td>
+                                    <td class="border-r py-1 text-sm text-gray-700 font-medium">
+                                        {{ i.assignments_completed }}
+                                    </td>
+                                    <td class="border-r py-1 text-sm text-gray-700 font-medium">
+                                        {{ i.assignments_available }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border-r py-1 text-sm text-gray-700 font-medium">
+                                        {{ project.hits_total }}
+                                    </td>
+                                    <td class="py-1 border-r text-sm text-gray-700 font-medium">
+                                        {{ approved }}
+                                    </td>
+                                    <td class="py-1 border-r text-sm text-gray-700 font-medium">
+                                        {{ rejected }}
+                                    </td>
+                                    <td class="border-r py-1 text-sm text-gray-700 font-medium"></td>
+                                    <td class="border-r py-1 text-sm text-gray-700 font-medium"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex flex-row flex-wrap w-full md:w-1/2 mt-2 self-start ml-2">
+                        <div class="w-full flex flex-row justify-around">
+                            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
+                                <div class="w-8 h-4 rounded-md bg-green-500 my-1 mr-2"></div>
+                                <span>Submitted</span>
+                            </span>
+                            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
+                                <div class="w-8 h-4 rounded-md bg-blue-500 my-1 mr-2"></div>
+                                <span>Published</span>
+                            </span>
+                            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
+                                <div class="w-8 h-4 rounded-md bg-gray-400 my-1 mr-2"></div>
+                                <span>Not published</span></span
+                            >
                         </div>
-                        <hr />
-                        <div>
-                            <span class="font-bold">Assignments approved:</span>
-                            <span> {{ approved }}</span>
-                        </div>
-                        <hr />
-                        <div>
-                            <span class="font-bold">Assignments rejected:</span><span> {{ rejected }}</span>
-                        </div>
-                        <hr />
-                        <div>
-                            <span class="font-bold">Assignments pending review:</span>
-                            <span> {{ pending }}</span>
-                        </div>
-                    </span>
-                    <div class="flex flex-row flex-wrap justify-around w-full md:w-1/2 mt-2 self-start">
-                        <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
-                            <div class="w-8 h-4 rounded-md bg-green-500 my-1 mr-2"></div>
-                            <span>Submitted</span>
+                        <span class="w-full">
+                            <div>
+                                <span class="font-bold">Remaining assignments projected:</span>
+                                <span> {{ totalProjected }}</span>
+                            </div>
+                            <hr />
+                            <div>
+                                <span class="font-bold">Assignments approved:</span>
+                                <span> {{ approved }}</span>
+                            </div>
+                            <hr />
+                            <div>
+                                <span class="font-bold">Assignments rejected:</span><span> {{ rejected }}</span>
+                            </div>
+                            <hr />
                         </span>
-                        <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
-                            <div class="w-8 h-4 rounded-md bg-blue-500 my-1 mr-2"></div>
-                            <span>Published</span>
-                        </span>
-                        <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
-                            <div class="w-8 h-4 rounded-md bg-gray-400 my-1 mr-2"></div>
-                            <span>Not published</span></span
-                        >
                     </div>
                 </div>
                 <button
@@ -461,7 +506,6 @@ export default {
             progressData: {},
             approved: 0,
             rejected: 0,
-            pending: 0,
             totalProjected: 0,
         }
     },
@@ -512,9 +556,6 @@ export default {
                         this.approved =
                             this.approved +
                             parseInt(this.project.summary[i].assignments_approved) * this.project.summary[i].count
-                        this.pending =
-                            this.pending +
-                            parseInt(this.project.summary[i].assignments_pending) * this.project.summary[i].count
                     }
                     if (res.data.summary.length > 0) {
                         if (res.data.summary[0].max_assignments != this.project.workers) {
