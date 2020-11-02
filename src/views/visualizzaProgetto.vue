@@ -530,6 +530,11 @@ export default {
                 .get(this.APIURL + '?action=getProjectInfo&id=' + this.id)
                 .then(res => {
                     this.project = res.data.values
+                    //da ristrutturare il project expiry con questo:
+                    /**
+                     *  var expiration = this.timeDifference(new Date(res.data.values.hit_info.Expiration), new Date())
+                        expiration < 0 ? (expiration = 0) : ''
+                     */
                     this.hitsSubmitted = res.data.hits_submitted
                     this.hitsTotal = res.data.hits_total
                     this.project.hits_submitted = res.data.hits_submitted

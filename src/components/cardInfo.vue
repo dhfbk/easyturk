@@ -281,7 +281,7 @@ export default {
                     this.projectData.reward + '$',
                     this.projectData.workers,
                     this.time(parseInt(this.projectData.max_time)),
-                    this.time(parseInt(this.projectData.expiry)),
+                    parseInt(this.projectData.expiry) + ' days',
                     this.time(parseInt(this.projectData.auto_approve)),
                 ]
                 break

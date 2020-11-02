@@ -1,5 +1,6 @@
 <template>
-    <div class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
+    <div v-if="loading"></div>
+    <div v-else class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <modalEliminazione v-if="modal" @hideModal="toggleModal" />
         <div class="flex justify-between flex-wrap">
             <h1 class="text-2xl mb-4 text-primary">HIT {{ datiProgetto.hitID }}</h1>
@@ -21,16 +22,10 @@
                     class="py-2 px-2 bg-transparent rounded-md transition duration-100 ease-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
                 >
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="!dropdownOpen">
-                        <path
-                            fill="currentColor"
-                            d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
-                        />
+                        <path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
                     </svg>
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else>
-                        <path
-                            fill="currentColor"
-                            d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"
-                        />
+                        <path fill="currentColor" d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" />
                     </svg>
                 </button>
                 <transition name="slide-toggle">
@@ -53,12 +48,12 @@
             </div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 mt-2">
-            <div class="mx-0 sm:mx-2">
-                <cardInfo :titoli="titoliCard.titoli1" :dati="datiCard.dati1" />
-                <cardInfo :titoli="titoliCard.titoli2" :dati="datiCard.dati2" />
-                <cardInfo :titoli="titoliCard.titoli3" :dati="datiCard.dati3" />
+            <div class="mr-0 xs2:mr-1">
+                <cardInfo :projectData="project" :mode="'general'" />
+                <cardInfo :projectData="project" :mode="'layout'" />
             </div>
-            <div class="mx-0 sm:mx-2">
+            <div class="ml-0 xs2:ml-1">
+                <cardInfo :projectData="project" :mode="'payment'" />
                 <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
             </div>
         </div>
@@ -70,6 +65,7 @@ import ClickOutside from 'vue-click-outside'
 import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
+import axios from 'axios'
 
 export default {
     name: 'viewHIT',
@@ -83,6 +79,8 @@ export default {
     },
     data() {
         return {
+            prjData: {},
+            project: {},
             datiProgetto: {
                 titolo: "Italy's food",
                 descrizione:
@@ -112,22 +110,14 @@ export default {
                 //siProgress: 0,
                 //noProgress: 0,
             },
-            titoliCard: {
-                titoli1: [],
-                titoli2: [],
-                titoli3: [],
-            },
-            datiCard: {
-                dati1: [],
-                dati2: [],
-                dati3: [],
-            },
             datiCardAnalytics: {},
             dropdownOpen: false,
             modal: false,
+            loading: true,
         }
     },
     created() {
+        this.getData()
         this.elaboraTempo(this.datiProgetto.tempoMax)
         this.elaboraTempo(this.datiProgetto.autoApproval)
         this.calcolaProgress()
@@ -137,42 +127,42 @@ export default {
         this.popupItem = this.$el
     },
     methods: {
+        getData() {
+            axios({
+                method: 'get',
+                url: this.APIURL + '?action=getHitInfo&hitID=' + this.$route.params.hitId,
+            })
+                .then(res => {
+                    this.prjData = res.data
+                    var expiration = this.timeDifference(new Date(res.data.values.hit_info.Expiration), new Date())
+                    expiration < 0 ? (expiration = 0) : ''
+                    this.project = {
+                        description: res.data.values.hit_info.Description,
+                        title: res.data.values.hit_info.Title,
+                        keywords: res.data.values.hit_info.Keywords,
+                        created_at: res.data.values.hit_info.CreationTime,
+                        layout_id: res.data.values.hit_info.HITLayoutId,
+                        params: res.data.values.hit_info.MaxAssignments, //mettere il params giusto
+                        reward: res.data.values.hit_info.Reward,
+                        workers: res.data.values.hit_info.MaxAssignments,
+                        max_time: res.data.values.hit_info.AssignmentDurationInSeconds / 60, //converti in X
+                        expiry: expiration, //convertire da data a X
+                        auto_approve: res.data.values.hit_info.AutoApprovalDelayInSeconds / 60, //convertire da secondi a x
+                    }
+                    this.loading = false
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        timeDifference(timestamp1, timestamp2) {
+            var difference = timestamp1 - timestamp2
+            var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24)
+
+            return daysDifference
+        },
         //metodo che imposta i titoli e i dati da inserire nelle card della pagina
         impostaDatiCard() {
-            this.titoliCard.titoli1 = [
-                'Titolo',
-                'Descrizione',
-                'Keywords',
-                'Data creazione',
-                'Stato',
-            ]
-            this.datiCard.dati1 = [
-                this.datiProgetto.titolo,
-                this.datiProgetto.descrizione,
-                this.datiProgetto.keywords,
-                this.datiProgetto.creazione,
-                this.datiProgetto.stato,
-            ]
-            this.titoliCard.titoli2 = [
-                'Ricompensa per ogni assignment',
-                'Numero di lavoratori/assignment per task',
-                'Tempo massimo',
-                'Scadenza',
-                'Auto approva e paga lavoratori in',
-            ]
-            this.datiCard.dati2 = [
-                this.datiProgetto.ricompensa,
-                this.datiProgetto.numLavoratori,
-                this.datiProgetto.tempoMax,
-                this.datiProgetto.scadenza,
-                this.datiProgetto.autoApproval,
-            ]
-            this.titoliCard.titoli3 = ['HIT Group ID', 'HIT Type ID', 'Layout ID']
-            this.datiCard.dati3 = [
-                this.datiProgetto.HITGroupId,
-                this.datiProgetto.HITTypeId,
-                this.datiProgetto.layoutID,
-            ]
             this.datiCardAnalytics = {
                 cardHIT: {
                     titolo: 'Totale assignment',
