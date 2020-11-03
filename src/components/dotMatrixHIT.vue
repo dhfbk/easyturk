@@ -1,12 +1,12 @@
 <template>
     <div class="container mx-auto">
         <div
-            class="rounded shadow-md transition duration-200 ease-out mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer grow"
+            class="rounded border mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative cursor-pointer grow"
         >
             <div class="w-full flex justify-between content-center items-center">
                 <span>Legend</span>
                 <button
-                    class="bg-white ripple-light py-2 px-2 m-1 rounded focus:outline-none hover:bg-gray-400 transition duration-100"
+                    class="bg-white ripple-light py-2 px-2 m-1 rounded focus:outline-none hover:bg-gray-400 transition duration-100 ease-out"
                     @click.stop="isOpen = !isOpen"
                 >
                     <svg
