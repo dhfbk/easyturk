@@ -270,20 +270,38 @@ export default {
                 this.data = [this.projectData.layout_id, this.projectData.params]
                 break
             case 'payment':
-                this.titles = [
-                    'Reward per assignment',
-                    'Number of assignments per task',
-                    'Time allotted per assignment',
-                    'Task expires in',
-                    'Auto-approve and pay Workers in',
-                ]
-                this.data = [
-                    this.projectData.reward + '$',
-                    this.projectData.workers,
-                    this.time(parseInt(this.projectData.max_time)),
-                    parseInt(this.projectData.expiry) + ' days',
-                    this.time(parseInt(this.projectData.auto_approve)),
-                ]
+                if (this.$route.name == 'viewHIT') {
+                    this.titles = [
+                        'Reward per assignment',
+                        'Number of assignments per task',
+                        'Time allotted per assignment',
+                        'Expiry',
+                        'Auto-approve and pay Workers in',
+                    ]
+                    this.data = [
+                        this.projectData.reward + '$',
+                        this.projectData.workers,
+                        this.time(parseInt(this.projectData.max_time)),
+                        this.projectData.expiry,
+                        this.time(parseInt(this.projectData.auto_approve)),
+                    ]
+                } else {
+                    this.titles = [
+                        'Reward per assignment',
+                        'Number of assignments per task',
+                        'Time allotted per assignment',
+                        'Task expires in',
+                        'Auto-approve and pay Workers in',
+                    ]
+                    this.data = [
+                        this.projectData.reward + '$',
+                        this.projectData.workers,
+                        this.time(parseInt(this.projectData.max_time)),
+                        this.time(parseInt(this.projectData.expiry)),
+                        this.time(parseInt(this.projectData.auto_approve)),
+                    ]
+                }
+
                 break
             case 'hits':
                 this.titles = ['HITs status']

@@ -3,19 +3,19 @@
         <div v-if="loading"></div>
         <div v-else>
             <h1 class="text-2xl mb-4 text-primary">HIT for the project {{ $route.params.projectId }}</h1>
-            <tableHIT :datiHIT="datiHIT" />
+            <!--<tableHIT :datiHIT="datiHIT" />-->
             <dotMatrixHIT :tmpData="progressData" />
         </div>
     </div>
 </template>
 <script>
-import tableHIT from '../components/tableHIT.vue'
+//import tableHIT from '../components/tableHIT.vue'
 import dotMatrixHIT from '../components/dotMatrixHIT.vue'
 import axios from 'axios'
 export default {
     name: 'HITList',
     components: {
-        tableHIT,
+        //tableHIT,
         dotMatrixHIT,
     },
     data() {

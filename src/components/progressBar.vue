@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-col my-4 ">
+    <div class="flex flex-col my-6 ">
         <div class="flex flex-row mx-auto w-11/12 ">
-            <span class="tooltip relative" :style="{ width: submitted + '%' }">
+            <span class="tooltip relative" :style="{ width: submitted + '%' }" v-if="submitted != 0">
                 <div
                     class="h-8 bg-green-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
                     :class="[published == 0 ? 'rounded-l' : '', notPublished == 0 ? 'rounded-r' : '']"
@@ -12,7 +12,7 @@
                     {{ progressData.hits_submitted }}/{{ progressData.hits_total }}
                 </span>
             </span>
-            <span class="tooltip relative" :style="{ width: published + '%' }">
+            <span class="tooltip relative" :style="{ width: published + '%' }" v-if="published != 0">
                 <div
                     class="h-8 bg-blue-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
                     :class="[
@@ -26,7 +26,7 @@
                     {{ progressData.hits_inserted - progressData.hits_submitted }}/{{ progressData.hits_total }}
                 </span>
             </span>
-            <span class="tooltip relative" :style="{ width: notPublished + '%' }">
+            <span class="tooltip relative" :style="{ width: notPublished + '%' }" v-if="notPublished != 0">
                 <div
                     class="h-8 bg-gray-400 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
                     :class="notPublished > 0 ? 'rounded-r' : ''"

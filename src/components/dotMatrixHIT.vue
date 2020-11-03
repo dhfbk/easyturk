@@ -1,5 +1,52 @@
 <template>
     <div class="container mx-auto">
+        <div
+            class="rounded shadow-md transition duration-200 ease-out mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer grow"
+        >
+            <div class="w-full flex justify-between content-center items-center">
+                <span>Legend</span>
+                <button
+                    class="bg-white ripple-light py-2 px-2 m-1 rounded focus:outline-none hover:bg-gray-400 transition duration-100"
+                    @click.stop="isOpen = !isOpen"
+                >
+                    <svg
+                        class="transition duration-300 ease-out"
+                        :class="{ 'transform  rotate-180': isOpen }"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="black"
+                        width="24px"
+                        height="24px"
+                    >
+                        <path d="M0 0h24v24H0V0z" fill="none" />
+                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                    </svg>
+                </button>
+            </div>
+
+            <transition name="slide-toggle">
+                <span class="flex flex-row flex-wrap mt-2 justify-around" v-if="isOpen">
+                    <span v-for="(i, e) in tmpData.length" :key="e">
+                        <span class="flex flex-col items-center m-2">
+                            <div
+                                class="w-5 h-5 rounded-full my-1 mr-2 hover:shadow-focus"
+                                :style="{
+                                    background: colors[e],
+                                }"
+                                @mouseenter="hoverGroup(colors[e])"
+                                @mouseleave="hoverGroup('')"
+                            ></div>
+                            <span
+                                >Approved: {{ tmpData[i - 1].assignments_approved }}<br />Rejected:
+                                {{ tmpData[i - 1].assignments_rejected }}<br />Available:
+                                {{ tmpData[i - 1].assignments_available }}
+                            </span>
+                        </span>
+                    </span>
+                </span>
+            </transition>
+        </div>
+
         <!-- <span v-for="i in colors" :key="i"><div class="w-4 h-4" :style="{ 'background-color': '#' + i }"></div></span> -->
 
         <span v-for="(x, y) in tmpData.length" :key="y">
@@ -50,25 +97,6 @@
                         </span>
                     </span>-->
         </span>
-        <span class="flex flex-row flex-wrap mt-2 justify-around">
-            <span v-for="(i, e) in tmpData.length" :key="e">
-                <span class="flex flex-row items-center mt-2 md:mt-1">
-                    <div
-                        class="w-5 h-5 rounded-full my-1 mr-2 hover:shadow-focus"
-                        :style="{
-                            background: colors[e],
-                        }"
-                        @mouseenter="hoverGroup(colors[e])"
-                        @mouseleave="hoverGroup('')"
-                    ></div>
-                    <span
-                        >Approved: {{ tmpData[i - 1].assignments_approved }}<br />Rejected:
-                        {{ tmpData[i - 1].assignments_rejected }}<br />Available:
-                        {{ tmpData[i - 1].assignments_available }}
-                    </span>
-                </span>
-            </span>
-        </span>
     </div>
 </template>
 
@@ -88,7 +116,7 @@ export default {
             texts: [],
             totalHITs: 0,
             hoverArr: '',
-
+            isOpen: false,
             colors: [],
 
             tmpData: [

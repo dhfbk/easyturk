@@ -34,7 +34,7 @@
         <div class="animate-pulse flex flex-col">
             <span class="h-2 w-16 bg-gray-500 rounded mt-4 mb-6"></span>
             <div class="h-8 w-11/12 mx-auto bg-gray-500 rounded"></div>
-            <div class="flex flex-col xs2:flex-row justify-around w-full mt-4 flex-wrap px-4 pb-8">
+            <div class="flex flex-col xs2:flex-row justify-around w-full mt-6 flex-wrap px-4 pb-8">
                 <span class="mr-4 flex content-center items-center mt-2 sm:mt-0">
                     <span class="h-4 w-8 bg-gray-500 rounded mr-2"></span>
                     <span class="h-2 w-16 bg-gray-500 rounded"></span>

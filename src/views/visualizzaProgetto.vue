@@ -326,56 +326,62 @@
             <div class="bg-white rounded shadow-md p-4 mb-4" v-else-if="!loading && project.status == 3">
                 <span class="font-bold">HITs progress:</span>
                 <progressBar :progressData="progressData" />
-                <div class="flex md:flex-row flex-col-reverse">
+                <div class="flex md:flex-row content-center flex-col-reverse">
                     <div class="md:w-1/2">
-                        <table class="w-full rounded mr-2 mt-2">
-                            <thead>
-                                <tr class="text-center bg-primary border border-grey uppercase ">
-                                    <th class="text-sm text-white">
-                                        TOTAL HITs
-                                    </th>
-                                    <th class="text-sm text-white">APPROVED</th>
-                                    <th class="text-sm text-white">REJECTED</th>
-                                    <th class="text-sm text-white">COMPLETED</th>
-                                    <th class="text-sm text-white">AVAILABLE</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center">
-                                <tr v-for="(i, k) in project.summary" :key="k" class="border hover:bg-gray-100">
-                                    <td class="border-r py-1 text-sm text-gray-700 font-medium">
-                                        {{ i.count }}
-                                    </td>
-                                    <td class="py-1 border-r text-sm text-gray-700 font-medium">
-                                        {{ i.assignments_approved }}
-                                    </td>
-                                    <td class="py-1 border-r text-sm text-gray-700 font-medium">
-                                        {{ i.assignments_rejected }}
-                                    </td>
-                                    <td class="border-r py-1 text-sm text-gray-700 font-medium">
-                                        {{ i.assignments_completed }}
-                                    </td>
-                                    <td class="border-r py-1 text-sm text-gray-700 font-medium">
-                                        {{ i.assignments_available }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="border-r py-1 text-sm text-gray-700 font-medium">
-                                        {{ project.hits_total }}
-                                    </td>
-                                    <td class="py-1 border-r text-sm text-gray-700 font-medium">
-                                        {{ approved }}
-                                    </td>
-                                    <td class="py-1 border-r text-sm text-gray-700 font-medium">
-                                        {{ rejected }}
-                                    </td>
-                                    <td class="border-r py-1 text-sm text-gray-700 font-medium"></td>
-                                    <td class="border-r py-1 text-sm text-gray-700 font-medium"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="rounded border mr-2 my-2 overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="">
+                                        <th class="text-xs text-white px-1">
+                                            TOTAL HITs
+                                        </th>
+                                        <th class="text-xs text-white px-1">APPROVED</th>
+                                        <th class="text-xs text-white px-1">REJECTED</th>
+                                        <th class="text-xs text-white px-1">COMPLETED</th>
+                                        <th class="text-xs text-white px-1">AVAILABLE</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    <tr v-for="(i, k) in project.summary" :key="k" class="hover:bg-gray-100">
+                                        <td
+                                            class="border-r py-1 text-sm text-gray-700 font-medium"
+                                            :class="k != project.summary.length - 1 ? 'border-b' : ''"
+                                        >
+                                            {{ i.count }}
+                                        </td>
+                                        <td
+                                            class="py-1 border-r text-sm text-gray-700 font-medium"
+                                            :class="k != project.summary.length - 1 ? 'border-b' : ''"
+                                        >
+                                            {{ i.assignments_approved }}
+                                        </td>
+                                        <td
+                                            class="py-1 border-r text-sm text-gray-700 font-medium"
+                                            :class="k != project.summary.length - 1 ? 'border-b' : ''"
+                                        >
+                                            {{ i.assignments_rejected }}
+                                        </td>
+                                        <td
+                                            class="border-r py-1 text-sm text-gray-700 font-medium"
+                                            :class="k != project.summary.length - 1 ? 'border-b' : ''"
+                                        >
+                                            {{ i.assignments_completed }}
+                                        </td>
+                                        <td
+                                            class="py-1 text-sm text-gray-700 font-medium"
+                                            :class="k != project.summary.length - 1 ? 'border-b' : ''"
+                                        >
+                                            {{ i.assignments_available }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="flex flex-row flex-wrap w-full md:w-1/2 mt-2 self-start ml-2">
-                        <div class="w-full flex flex-row justify-around">
+                        <div
+                            class="w-full flex flex-col customFlex xs2:flex-row md:flex-col lg:flex-row justify-around"
+                        >
                             <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
                                 <div class="w-8 h-4 rounded-md bg-green-500 my-1 mr-2"></div>
                                 <span>Submitted</span>
@@ -414,7 +420,7 @@
                             params: { projectId: id },
                         })
                     "
-                    class="ripple px-2 py-1 bg-gray-200 hover:bg-gray-400 rounded focus:outline-none transition duration-100 ease-out float-right"
+                    class="ripple px-2 py-1 mt-2 bg-gray-200 hover:bg-gray-400 rounded focus:outline-none transition duration-100 ease-out float-right"
                 >
                     View details
                 </button>
@@ -530,11 +536,6 @@ export default {
                 .get(this.APIURL + '?action=getProjectInfo&id=' + this.id)
                 .then(res => {
                     this.project = res.data.values
-                    //da ristrutturare il project expiry con questo:
-                    /**
-                     *  var expiration = this.timeDifference(new Date(res.data.values.hit_info.Expiration), new Date())
-                        expiration < 0 ? (expiration = 0) : ''
-                     */
                     this.hitsSubmitted = res.data.hits_submitted
                     this.hitsTotal = res.data.hits_total
                     this.project.hits_submitted = res.data.hits_submitted
@@ -685,4 +686,31 @@ export default {
     visibility: visible;
     opacity: 85%;
 } */
+table tr th {
+    background: #0068b4;
+}
+/* top-left border-radius */
+table tr:first-child th:first-child {
+    border-top-left-radius: 0.25rem;
+}
+
+/* top-right border-radius */
+table tr:first-child th:last-child {
+    border-top-right-radius: 0.25rem;
+}
+
+/* bottom-left border-radius */
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 0.25rem;
+}
+
+/* bottom-right border-radius */
+table tr:last-child td:last-child {
+    border-bottom-right-radius: 0.25rem;
+}
+@media (max-width: 476px) {
+    .customFlex {
+        flex-direction: column;
+    }
+}
 </style>

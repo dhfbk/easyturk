@@ -134,8 +134,8 @@ export default {
             })
                 .then(res => {
                     this.prjData = res.data
-                    var expiration = this.timeDifference(new Date(res.data.values.hit_info.Expiration), new Date())
-                    expiration < 0 ? (expiration = 0) : ''
+                    var tmpDate = new Date(res.data.values.hit_info.Expiration)
+                    var expiration = this.timeConverter(tmpDate.getTime() / 1000)
                     this.project = {
                         description: res.data.values.hit_info.Description,
                         title: res.data.values.hit_info.Title,
@@ -155,11 +155,22 @@ export default {
                     console.log(err)
                 })
         },
-        timeDifference(timestamp1, timestamp2) {
-            var difference = timestamp1 - timestamp2
-            var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24)
-
-            return daysDifference
+        timeConverter(tmp) {
+            var a = new Date(tmp * 1000)
+            var year = a.getFullYear()
+            var month = a.getMonth() + 1 < 10 ? '0' + (a.getMonth() + 1) : a.getMonth() + 1
+            var date = a.getDate() < 10 ? '0' + a.getDate() : a.getDate()
+            var time =
+                year +
+                '-' +
+                month +
+                '-' +
+                date +
+                ' ' +
+                (a.getHours() - a.getTimezoneOffset() / 60) +
+                ':' +
+                a.getMinutes()
+            return time
         },
         //metodo che imposta i titoli e i dati da inserire nelle card della pagina
         impostaDatiCard() {
