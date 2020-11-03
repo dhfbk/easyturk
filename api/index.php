@@ -171,6 +171,8 @@ switch ($Action) {
     case "getUserInfo":
     case "getProjectInfo":
     case "updateProjectStatus":
+    case "getHits":
+    case "getHitInfo":
     case "testLayout":
 
         // if (!$_SESSION['Admin']) {
@@ -1196,6 +1198,9 @@ switch ($Action) {
                 $ret['numGold'] = $numGold;
                 $ret['numData'] = $numData;
 
+                $r['qualifications'] = unserialize($r['qualifications']);
+                $r['hit_details'] = unserialize($r['hit_details']);
+
                 $ret['result'] = "OK";
                 $ret['values'] = $r;
                 break;
@@ -1259,6 +1264,76 @@ switch ($Action) {
                     $ret['params_fields'] = implode(', ', $candidates);
                     $ret['examples_per_hit'] = $new_max;
                 }
+                break;
+
+            case "getHits":
+                $r = find("projects", $_REQUEST['id'], "Project not found");
+                $howMany = $_REQUEST['howMany'] ? $_REQUEST['howMany'] : 50;
+                $page = $_REQUEST['page'] ? $_REQUEST['page'] : 1;
+
+                if (!is_numeric($howMany)) {
+                    $ret['result'] = "ERR";
+                    $ret['error'] = "howMany parameter must be numeric.";
+                    break;
+                }
+
+                if (!is_numeric($page)) {
+                    $ret['result'] = "ERR";
+                    $ret['error'] = "page parameter must be numeric.";
+                    break;
+                }
+
+                $offset = $howMany * ($page - 1);
+
+                $data = [];
+                $query = "SELECT * FROM cluster_to_hit
+                    WHERE id_project = '{$r['id']}' AND deleted = '0'
+                    LIMIT $offset, $howMany";
+                $DB->query($query);
+                while ($row = $DB->fetch_a()) {
+                    unset($row['hit_info']);
+                    $data[] = $row;
+                }
+
+                $ret['result'] = "OK";
+                $ret['values'] = $data;
+                break;
+
+            case "getHitInfo":
+                $hitID = addslashes($_REQUEST['hitID']);
+                $leaveQuestion = boolval($_REQUEST['leaveQuestion'] ?: false);
+                $leaveAnswer = boolval($_REQUEST['leaveAnswer'] ?: false);
+                $query = "SELECT h.*
+                    FROM cluster_to_hit h
+                    LEFT JOIN projects p ON h.id_project = p.id
+                    WHERE p.deleted = '0' AND h.deleted = '0' AND p.user_id = '$User' AND h.id_hit = '$hitID'";
+                if (!$DB->querynum($query)) {
+                    $ret['result'] = "ERR";
+                    $ret['error'] = "HIT not found.";
+                    break;
+                }
+
+                $row = $DB->fetch_a();
+                $row['hit_info'] = unserialize($row['hit_info']);
+                if (!$leaveQuestion) {
+                    unset($row['hit_info']['Question']);
+                }
+
+                $assignments = [];
+                $query = "SELECT * FROM assignments
+                    WHERE hit_id = '$hitID'";
+                $DB->query($query);
+                while ($rowA = $DB->fetch_a()) {
+                    $rowA['assignment_info'] = unserialize($rowA['assignment_info']);
+                    if (!$leaveAnswer) {
+                        unset($rowA['assignment_info']['Answer']);
+                    }
+                    $assignments[] = $rowA;
+                }
+
+                $ret['result'] = "OK";
+                $ret['values'] = $row;
+                $ret['assignments'] = $assignments;
                 break;
 
             case "addProject":

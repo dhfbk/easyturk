@@ -90,6 +90,11 @@ function getHITLayoutParameters($r, $project_id, $cluster_index, $goldFields, $t
             }
         }
 
+        if (!count($mapEntries)) {
+            throw new Exception("No rules found");
+            // throw new Exception(print_r($goldIndexes, true));
+        }
+    
         if ($toSave['rejectIfGoldWrong'] || $toSave['acceptIfGoldRight']) {
             $AssignmentReviewPolicy['PolicyName'] = "ScoreMyKnownAnswers/2011-09-01";
             $AssignmentReviewPolicy['Parameters'] = [];
