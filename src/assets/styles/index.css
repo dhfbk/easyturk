@@ -10,9 +10,12 @@
     font-family: 'Roboto', sans-serif !important;
 }
 
-.slide-toggle-enter-active,
+.slide-toggle-enter-active {
+    transition: max-height 0.25s !important;
+}
+
 .slide-toggle-leave-active {
-    transition: max-height 0.3s;
+    transition: max-height 0.2s !important;
 }
 
 .slide-toggle-enter-active {
@@ -89,7 +92,7 @@
     padding         : 4px 8px;
     z-index         : 100;
     left            : 0;
-    transition      : opacity 0.3s ease-in-out;
+    transition      : opacity .15s ease-out !important;
     opacity         : 0;
     transition-delay: 0.15s;
 }
@@ -103,5 +106,6 @@
 
 .tooltip:hover .tooltip-text {
     visibility: visible;
+    transition: opacity .2s ease-out !important;
     opacity   : 85%;
 }

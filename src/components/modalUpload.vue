@@ -1,16 +1,16 @@
 <template>
-    <transition name="fade" mode="out-in" :duration="{ enter: 500, leave: 500 }" appear>
+    <transition name="fade" mode="out-in" appear>
         <div
-            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
+            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
             @click="toggleModal"
         >
             <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 mx-2 overflow-y-auto" @click.stop>
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <h2 class="text-gray-900 font-bold text-lg text-primary">Choose the file to upload</h2>
-                        <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal()">
+                        <span class="ml-auto rounded hover:bg-gray-400 p-1" @click="toggleModal()">
                             <svg
-                                class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
+                                class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 18 18"
                             >
@@ -18,6 +18,7 @@
                                     d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
                                 />
                             </svg>
+                            <span class="sr-only">Close</span>
                         </span>
                     </div>
                     <p class="py-2" v-if="type == 'std'">File upload for the base csv document</p>
@@ -34,10 +35,10 @@
 
                     <input
                         type="text"
-                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 mb-3 transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mt-2 mb-3 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         v-model.trim="$v.customTitles.$model"
                         :class="[
-                            picked == 0 ? '' : 'cursor-not-allowed bg-gray-300',
+                            picked == 0 ? '' : 'cursor-not-allowed bg-gray-400',
                             $v.customTitles.$error ? 'shadowRed' : '',
                         ]"
                         :disabled="picked == 1"
@@ -49,7 +50,7 @@
                             <label for="separator" class="font-light mr-2">Separator:</label>
                             <div class="relative mt-1 sm:mt-0 sm:ml-2">
                                 <select
-                                    class="block w-full appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 pl-2 pr-12 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                    class="block w-full appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 pl-2 pr-12 rounded transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                     id="separator"
                                     name="separator"
                                     v-model="separated"
@@ -75,7 +76,7 @@
                             <label for="delimiter" class="font-light mr-2">Delimiter:</label>
                             <div class="relative mt-1 sm:mt-0 sm:ml-2">
                                 <select
-                                    class="block w-full appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 pl-2 pr-12 rounded transition duration-150 ease-in-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                    class="block w-full appearance-none my-2 bg-gray-100 text-gray-700 border border-gray-200 py-2 pl-2 pr-12 rounded transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                                     id="delimiter"
                                     name="delimiter"
                                     v-model="delimiter"
@@ -105,7 +106,7 @@
                             :class="
                                 inputLocked
                                     ? 'bg-gray-600 cursor-not-allowed'
-                                    : 'bg-secondary cursor-pointer hover:bg-blue-700'
+                                    : 'bg-secondary cursor-pointer transition duration-100 ease-out hover:bg-blue-700'
                             "
                             class="inline-block text-white rounded-md px-4 py-2"
                             >Choose file</label
@@ -133,7 +134,7 @@
                                     </div>
                                     <button
                                         @click="emptyFile"
-                                        class="ripple cursor-pointer w-8 h-8 text-center text-xl transition duration-150 ease-in-out hover:bg-gray-300 focus:bg-gray-400 rounded-full focus:outline-none"
+                                        class="ripple cursor-pointer w-8 h-8 text-center text-xl transition duration-100 ease-out hover:bg-gray-400 focus:bg-gray-400 rounded-full focus:outline-none"
                                     >
                                         &times;
                                     </button>
@@ -146,7 +147,7 @@
                     </div>
                     <div class="ml-auto flex flex-col xs2:flex-row">
                         <button
-                            class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            class="ripple flex flex-row transition duration-100 ease-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="uploadFile()"
                         >
                             <svg
@@ -158,7 +159,7 @@
                             >Upload
                         </button>
                         <button
-                            class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="ripple transition duration-100 ease-out hover:bg-gray-400 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
                         >
                             Cancel
@@ -303,9 +304,11 @@ progress[value]::-webkit-progress-bar {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
     border-radius: 2px;
 }
-.fade-enter-active,
+.fade-enter-active {
+    transition: opacity 0.25s ease-out !important;
+}
 .fade-leave-active {
-    transition: opacity 0.2s !important;
+    transition: opacity 0.2s ease-out !important;
 }
 .fade-enter,
 .fade-leave-to {
@@ -347,7 +350,6 @@ progress[value]::-webkit-progress-bar {
     border-color: #003e84;
     border-width: 1px;
 }
-
 .form-radio:checked {
     background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
     border-color: transparent;
@@ -356,7 +358,6 @@ progress[value]::-webkit-progress-bar {
     background-position: center;
     background-repeat: no-repeat;
 }
-
 @media not print {
     .form-radio::-ms-check {
         border-width: 1px;
@@ -366,8 +367,10 @@ progress[value]::-webkit-progress-bar {
         border-radius: inherit;
     }
 }
-
 .form-radio:focus {
     outline: none;
+}
+.customZ {
+    z-index: 990;
 }
 </style>

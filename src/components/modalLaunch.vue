@@ -1,23 +1,25 @@
 <template>
-    <transition name="fade" mode="out-in" :duration="{ enter: 500, leave: 500 }" appear>
+    <transition name="fade" mode="out-in" appear>
         <div
-            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
+            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
             @click="toggleModal"
         >
             <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto" @click.stop>
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
                         <div class="text-gray-900 font-bold text-lg text-primary">{{ title }}</div>
-                        <svg
-                            class="ml-auto fill-current text-gray-700 w-6 h-6 rounded ripple hover:bg-gray-300 cursor-pointer"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 18 18"
-                            @click="toggleModal()"
-                        >
-                            <path
-                                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
-                            />
-                        </svg>
+                        <span class="ml-auto rounded hover:bg-gray-400 p-1" @click="toggleModal()">
+                            <svg
+                                class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 18 18"
+                            >
+                                <path
+                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+                                />
+                            </svg>
+                            <span class="sr-only">Close</span>
+                        </span>
                     </div>
                     <div class="flex flex-col sm:flex-row items-center content-center w-full pb-1">
                         <label
@@ -67,7 +69,7 @@
 
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
                         <button
-                            class="ripple flex flex-row transition duration-150 ease-in-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            class="ripple flex flex-row transition duration-100 ease-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
                             @click="submit()"
                         >
                             <svg
@@ -79,7 +81,7 @@
                             >Proceed
                         </button>
                         <button
-                            class="ripple transition duration-150 ease-in-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="ripple transition duration-100 ease-out hover:bg-gray-400 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal()"
                         >
                             Cancel
@@ -225,12 +227,17 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active,
+.fade-enter-active {
+    transition: opacity 0.25s ease-out !important;
+}
 .fade-leave-active {
-    transition: opacity 0.2s !important;
+    transition: opacity 0.2s ease-out !important;
 }
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
+}
+.customZ {
+    z-index: 990;
 }
 </style>

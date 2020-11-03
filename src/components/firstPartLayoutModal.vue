@@ -12,7 +12,7 @@
             >
                 <label for="sortBy" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Field:</label>
                 <input
-                    class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition duration-150 focus:outline-none"
+                    class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition duration-150 ease-out focus:outline-none"
                     name="sortBy"
                     type="text"
                     placeholder="Text"
@@ -34,11 +34,13 @@
                     >
                         <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                     </svg>
+                    <span class="sr-only">Handwritten value?</span>
                 </span>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
-                    >Handwritten value</span
                 >
+                    Handwritten value?
+                </span>
             </span>
 
             <div
@@ -47,7 +49,7 @@
             >
                 <label for="value" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Value:</label>
                 <input
-                    class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                     id="value"
                     name="value"
                     type="text"
@@ -63,7 +65,7 @@
                 <label for="selectFrom" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Value:</label>
                 <div class="xs2:col-span-7 md:col-auto relative w-full block md:mt-0">
                     <select
-                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
                         id="selectFrom"
                         name="selectFrom"
                         v-model="first.valueFrom"

@@ -1,5 +1,8 @@
 module.exports = {
-    purge: ['./src//*.html', './src//*.vue'],
+    purge: {
+        mode: 'all',
+        content: ['./public/**/*.html'],
+    },
     theme: {
         maxHeight: {
             '0': '0',
@@ -28,6 +31,12 @@ module.exports = {
             xl: '1280px',
         },
         extend: {
+            width: {
+                '12/25': '48%',
+            },
+            boxShadow: {
+                focus: '0 0 0 3px rgba(66, 153, 225, 0.5)',
+            },
             transitionProperty: {
                 height: 'height',
             },

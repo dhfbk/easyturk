@@ -17,7 +17,7 @@
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
+                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-400 rounded focus:outline-none"
                                 @click="
                                     $router.push({
                                         name: 'csv',
@@ -30,7 +30,7 @@
                             <span class="tooltip relative ml-2" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'std')"
-                                    class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                    class="tooltip ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
                                 >
                                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                         <path
@@ -38,17 +38,19 @@
                                             d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M12,17V15H7V17H12M17,11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11M17,9V7H7V9H17Z"
                                         />
                                     </svg>
+                                    <span class="sr-only" v-if="projectData.numData > 0">Overwrite standard csv</span>
+                                    <span class="sr-only" v-else>Upload standard csv</span>
                                 </button>
                                 <span
                                     v-if="projectData.numData > 0"
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix1"
                                 >
                                     Overwrite standard csv
                                 </span>
 
                                 <span
                                     v-else
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light "
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix2"
                                 >
                                     Upload standard csv
                                 </span>
@@ -65,7 +67,7 @@
                             <span class="tooltip relative ml-2" v-if="projectData.status < 1">
                                 <button
                                     @click="$emit('modal', 'std')"
-                                    class="tooltip ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                                    class="tooltip ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
                                 >
                                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                         <path
@@ -73,9 +75,10 @@
                                             d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M12,17V15H7V17H12M17,11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11M17,9V7H7V9H17Z"
                                         />
                                     </svg>
+                                    <span class="sr-only">Upload standard csv</span>
                                 </button>
                                 <span
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix2"
                                 >
                                     Upload standard csv
                                 </span>
@@ -100,7 +103,7 @@
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-150 hover:bg-gray-300 rounded focus:outline-none"
+                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-400 rounded focus:outline-none"
                                 @click="
                                     $router.push({
                                         name: 'csv',
@@ -114,7 +117,7 @@
                                 <button
                                     @click="$emit('modal', 'gld')"
                                     :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                    class="ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                                    class="ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -132,16 +135,18 @@
                                             />
                                         </g>
                                     </svg>
+                                    <span class="sr-only" v-if="projectData.numGold > 0">Overwrite gold csv</span>
+                                    <span class="sr-only" v-else>Upload gold csv</span>
                                 </button>
                                 <span
                                     v-if="projectData.numGold > 0"
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix3"
                                 >
                                     Overwrite gold csv
                                 </span>
                                 <span
                                     v-else
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light "
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix4"
                                 >
                                     Upload gold csv
                                 </span>
@@ -159,7 +164,7 @@
                                 <button
                                     @click="$emit('modal', 'gld')"
                                     :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                    class="ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                                    class="ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -177,9 +182,10 @@
                                             />
                                         </g>
                                     </svg>
+                                    <span class="sr-only">Upload gold csv</span>
                                 </button>
                                 <span
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light"
+                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix4"
                                 >
                                     Upload gold csv
                                 </span>
@@ -219,7 +225,7 @@
                 </span>
                 <button
                     @click="$emit('modal', 'instructions')"
-                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-300 rounded focus:outline-none transition duration-150 self-end"
+                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-400 rounded focus:outline-none transition duration-100 ease-out self-end"
                 >
                     Need help?
                 </button>
@@ -264,50 +270,73 @@ export default {
                 this.data = [this.projectData.layout_id, this.projectData.params]
                 break
             case 'payment':
-                this.titles = [
-                    'Reward per assignment',
-                    'Number of assignments per task',
-                    'Time allotted per assignment',
-                    'Task expires in',
-                    'Auto-approve and pay Workers in',
-                ]
-                this.data = [
-                    this.projectData.reward + '$',
-                    this.projectData.workers,
-                    this.time(parseInt(this.projectData.max_time)),
-                    this.time(parseInt(this.projectData.expiry)),
-                    this.time(parseInt(this.projectData.auto_approve)),
-                ]
+                if (this.$route.name == 'viewHIT') {
+                    this.titles = [
+                        'Reward per assignment',
+                        'Number of assignments per task',
+                        'Time allotted per assignment',
+                        'Expiry',
+                        'Auto-approve and pay Workers in',
+                    ]
+                    this.data = [
+                        this.projectData.reward + '$',
+                        this.projectData.workers,
+                        this.time(parseInt(this.projectData.max_time)),
+                        this.projectData.expiry,
+                        this.time(parseInt(this.projectData.auto_approve)),
+                    ]
+                } else {
+                    this.titles = [
+                        'Reward per assignment',
+                        'Number of assignments per task',
+                        'Time allotted per assignment',
+                        'Task expires in',
+                        'Auto-approve and pay Workers in',
+                    ]
+                    this.data = [
+                        this.projectData.reward + '$',
+                        this.projectData.workers,
+                        this.time(parseInt(this.projectData.max_time)),
+                        this.time(parseInt(this.projectData.expiry)),
+                        this.time(parseInt(this.projectData.auto_approve)),
+                    ]
+                }
+
                 break
             case 'hits':
                 this.titles = ['HITs status']
-                if (this.projectData.hits_submitted == 0) {
+                if (this.projectData.hits_inserted == 0) {
                     this.data = [this.projectData.hits_total + ' HITs created.']
                 } else if (
-                    this.projectData.hits_submitted > 0 &&
-                    this.projectData.hits_submitted != this.projectData.hits_total
+                    this.projectData.hits_inserted > 0 &&
+                    this.projectData.hits_inserted != this.projectData.hits_total
                 ) {
                     this.data = [
-                        this.projectData.hits_submitted +
+                        this.projectData.hits_inserted +
                             ' out of ' +
                             this.projectData.hits_total +
-                            ' HITs submitted. ' +
-                            (parseInt(this.projectData.hits_total) - parseInt(this.projectData.hits_submitted)) +
+                            ' HITs published. ' +
+                            (parseInt(this.projectData.hits_total) - parseInt(this.projectData.hits_inserted)) +
                             ' HITs still available.',
                     ]
-                } else if (this.projectData.hits_submitted == this.projectData.hits_total) {
-                    this.data = ['All ' + this.projectData.hits_submitted + ' HITs have been submitted!']
+                } else if (this.projectData.hits_inserted == this.projectData.hits_total) {
+                    this.data = ['All ' + this.projectData.hits_inserted + ' HITs have been published!']
                 }
                 break
             case 'qualifications':
                 this.titles = ['Adult content', 'Master Workers only', 'Location of Workers']
                 var loc = ''
-                for (let i = 0; i < this.projectData.countries.length; i++) {
-                    loc += this.projectData.countries[i]
-                    if (i != this.projectData.countries.length - 1) {
-                        loc += ', '
+                if (this.projectData.countries) {
+                    for (let i = 0; i < this.projectData.countries.length; i++) {
+                        loc += this.projectData.countries[i]
+                        if (i != this.projectData.countries.length - 1) {
+                            loc += ', '
+                        }
                     }
+                } else {
+                    loc = 'No location specified.'
                 }
+
                 this.data = [
                     this.projectData.adult == 0 ? 'No' : 'Yes',
                     this.projectData.master == 0 ? 'No' : 'Yes',
@@ -337,7 +366,7 @@ export default {
     padding: 2px 6px;
     z-index: 100;
     left: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-out;
     opacity: 0;
     transition-delay: 0.15s;
 }
@@ -350,6 +379,20 @@ export default {
         margin: 0 auto;
         width: 100%;
         align-items: center;
+    }
+}
+@media (max-width: 1023px) and (min-width: 649px) {
+    .smallScreenFix1 {
+        margin-left: -60px;
+    }
+    .smallScreenFix2 {
+        margin-left: -52px;
+    }
+    .smallScreenFix3 {
+        margin-left: -46px;
+    }
+    .smallScreenFix4 {
+        margin-left: -38px;
     }
 }
 </style>

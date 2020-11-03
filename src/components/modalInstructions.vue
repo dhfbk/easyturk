@@ -1,14 +1,14 @@
 <template>
-    <transition name="fade" mode="out-in" :duration="{ enter: 500, leave: 500 }" appear>
+    <transition name="fade" mode="out-in" appear>
         <div
-            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-30 bg-opacity-25"
+            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
             @click="modal"
         >
             <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto" @click.stop>
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <div class="text-gray-900 font-bold text-lg text-primary">Help</div>
-                        <span class="ripple ml-auto rounded hover:bg-gray-300 p-1" @click="modal()">
+                        <span class="ripple ml-auto rounded hover:bg-gray-400 p-1" @click="modal()">
                             <svg
                                 class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -18,6 +18,7 @@
                                     d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
                                 />
                             </svg>
+                            <span class="sr-only">Close</span>
                         </span>
                     </div>
                     <div class="py-2">{{ msg }}</div>
@@ -65,4 +66,17 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.fade-enter-active {
+    transition: opacity 0.25s ease-out !important;
+}
+.fade-leave-active {
+    transition: opacity 0.2s ease-out !important;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+.customZ {
+    z-index: 990;
+}</style>
