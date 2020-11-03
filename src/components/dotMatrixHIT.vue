@@ -1,8 +1,6 @@
 <template>
     <div class="container mx-auto">
-        <div
-            class="rounded border mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative cursor-pointer grow"
-        >
+        <div class="rounded border mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative cursor-pointer grow">
             <div class="w-full flex justify-between content-center items-center">
                 <span>Legend</span>
                 <button
@@ -47,55 +45,66 @@
             </transition>
         </div>
 
-        <!-- <span v-for="i in colors" :key="i"><div class="w-4 h-4" :style="{ 'background-color': '#' + i }"></div></span> -->
-
         <span v-for="(x, y) in tmpData.length" :key="y">
             <matrixPart :num="tmpData[x - 1]" :color="colors[y]" :total="totalHITs" :hoverColor="hoverArr" />
-
-            <!-- <span
-                        v-for="f in first"
-                        :key="f + 'first'"
-                        class="bg-green-500 h-5 w-5 m-1 rounded-full tooltip relative"
-                    >
-                        <span
-                            class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
-                            v-html="texts[0]"
-                        >
+        </span>
+        <div class="text-lg mb-1 font-bold">Legend</div>
+        <span class="flex flex-row flex-wrap justify-around border rounded p-2 bg-white">
+            <span class="w-full md:w-12/25">
+                <div class="text-center">Completed HITs</div>
+                <span class="flex flex-row mt-2 justify-around " v-if="totalComp > 1">
+                    <span v-for="(i, e) in totalComp" :key="e" :style="{ width: (1 / totalComp) * 100 + '%' }">
+                        <span class="tooltip relative">
+                            <span
+                                class="h-5 w-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+                                :style="{
+                                    background: colors[e],
+                                }"
+                                @mouseenter="hoverGroup(colors[e])"
+                                @mouseleave="hoverGroup('')"
+                            ></span>
+                            <span
+                                class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
+                                >Approved: {{ tmpData[i - 1].assignments_approved }}<br />Rejected:
+                                {{ tmpData[i - 1].assignments_rejected }}<br />Available:
+                                {{ tmpData[i - 1].assignments_available }}
+                            </span>
                         </span>
                     </span>
-                    <span
-                        v-for="s in second"
-                        :key="s + 'second'"
-                        class="bg-blue-500 h-5 w-5 m-1 rounded-full tooltip relative"
-                    >
-                        <span
-                            class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
-                            v-html="texts[1]"
-                        >
+                </span>
+                <span class="flex justify-between">
+                    <span>More approved</span>
+                    <span>More rejected</span>
+                </span>
+            </span>
+            <span class="w-px bg-gray-300"></span>
+            <span class="w-full md:w-12/25">
+                <div class="text-center">Incomplete HITs</div>
+                <span class="flex flex-row mt-2 justify-around " v-if="totalAvai > 1">
+                    <span v-for="(i, e) in totalAvai" :key="e" :style="{ width: (1 / totalAvai) * 100 + '%' }">
+                        <span class="tooltip relative">
+                            <span
+                                class="h-5 w-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+                                :style="{
+                                    background: colors[e + totalComp],
+                                }"
+                                @mouseenter="hoverGroup(colors[e + totalComp])"
+                                @mouseleave="hoverGroup('')"
+                            ></span>
+                            <span
+                                class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
+                                >Approved: {{ tmpData[e + totalComp].assignments_approved }}<br />Rejected:
+                                {{ tmpData[e + totalComp].assignments_rejected }}<br />Available:
+                                {{ tmpData[e + totalComp].assignments_available }}
+                            </span>
                         </span>
                     </span>
-                    <span
-                        v-for="t in third"
-                        :key="t + 'third'"
-                        class="bg-orange-500 h-5 w-5 m-1 rounded-full tooltip relative"
-                    >
-                        <span
-                            class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
-                            v-html="texts[2]"
-                        >
-                        </span>
-                    </span>
-                    <span
-                        v-for="f1 in fourth"
-                        :key="f1 + 'fourth'"
-                        class="bg-purple-500 h-5 w-5 m-1 rounded-full tooltip relative"
-                    >
-                        <span
-                            class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
-                            v-html="texts[3]"
-                        >
-                        </span>
-                    </span>-->
+                </span>
+                <span class="flex justify-between">
+                    <span>More approved</span>
+                    <span>More rejected</span>
+                </span>
+            </span>
         </span>
     </div>
 </template>
@@ -118,6 +127,9 @@ export default {
             hoverArr: '',
             isOpen: false,
             colors: [],
+
+            totalComp: 0,
+            totalAvai: 0,
 
             tmpData: [
                 {
@@ -210,6 +222,24 @@ export default {
                     count: 3,
                     max_assignments: '4',
                 },
+                {
+                    assignments_approved: '0',
+                    assignments_available: '2',
+                    assignments_completed: '2',
+                    assignments_pending: '0',
+                    assignments_rejected: '2',
+                    count: 5,
+                    max_assignments: '4',
+                },
+                {
+                    assignments_approved: '0',
+                    assignments_available: '1',
+                    assignments_completed: '3',
+                    assignments_pending: '0',
+                    assignments_rejected: '3',
+                    count: 9,
+                    max_assignments: '4',
+                },
             ],
         }
     },
@@ -291,6 +321,9 @@ export default {
                 neg++
             }
         }
+
+        this.totalComp = pos + neg
+        this.totalAvai = avaPos + avaNeg
 
         var avaPosArr = this.interpolateColors('rgb(14, 173, 105)', 'rgb(0,255,0)', avaPos)
         var avaNegArr = this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', avaNeg)
