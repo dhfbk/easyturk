@@ -5,7 +5,7 @@
                 <span class="tooltip relative ">
                     <span
                         class="h-5 w-5 m-1 rounded-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-focus"
-                        :style="{ 'background-color': 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')' }"
+                        :style="{ background: color }"
                         :class="hoveringFull ? 'shadow-focus' : ''"
                     ></span>
                     <span
@@ -27,10 +27,10 @@
 <script>
 export default {
     props: {
-        color: Array,
+        color: String,
         num: Object,
         total: Number,
-        hoverColor: Array,
+        hoverColor: String,
     },
     data() {
         return {
@@ -38,9 +38,7 @@ export default {
             hoveringFull: false,
         }
     },
-    created() {
-        console.log('ok')
-    },
+    created() {},
     watch: {
         hoverColor() {
             if (this.hoverColor == this.color) {

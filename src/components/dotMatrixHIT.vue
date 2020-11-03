@@ -56,15 +56,15 @@
                     <div
                         class="w-5 h-5 rounded-full my-1 mr-2 hover:shadow-focus"
                         :style="{
-                            'background-color': 'rgb(' + colors[e][0] + ',' + colors[e][1] + ',' + colors[e][2] + ')',
+                            background: colors[e],
                         }"
                         @mouseenter="hoverGroup(colors[e])"
-                        @mouseleave="hoverGroup([])"
+                        @mouseleave="hoverGroup('')"
                     ></div>
                     <span
                         >Approved: {{ tmpData[i - 1].assignments_approved }}<br />Rejected:
-                        {{ tmpData[i - 1].assignments_rejected }}<br />Pending: {{ tmpData[i - 1].assignments_pending
-                        }}<br />Available: {{ tmpData[i - 1].assignments_available }}
+                        {{ tmpData[i - 1].assignments_rejected }}<br />Available:
+                        {{ tmpData[i - 1].assignments_available }}
                     </span>
                 </span>
             </span>
@@ -87,7 +87,7 @@ export default {
         return {
             texts: [],
             totalHITs: 0,
-            hoverArr: [],
+            hoverArr: '',
 
             colors: [],
 
@@ -137,6 +137,51 @@ export default {
                     count: 5,
                     max_assignments: '4',
                 },
+                {
+                    assignments_approved: '1',
+                    assignments_available: '2',
+                    assignments_completed: '2',
+                    assignments_pending: '0',
+                    assignments_rejected: '1',
+                    count: 12,
+                    max_assignments: '4',
+                },
+                {
+                    assignments_approved: '2',
+                    assignments_available: '1',
+                    assignments_completed: '3',
+                    assignments_pending: '0',
+                    assignments_rejected: '1',
+                    count: 10,
+                    max_assignments: '4',
+                },
+                {
+                    assignments_approved: '2',
+                    assignments_available: '1',
+                    assignments_completed: '2',
+                    assignments_pending: '0',
+                    assignments_rejected: '0',
+                    count: 29,
+                    max_assignments: '4',
+                },
+                {
+                    assignments_approved: '1',
+                    assignments_available: '2',
+                    assignments_completed: '1',
+                    assignments_pending: '0',
+                    assignments_rejected: '0',
+                    count: 21,
+                    max_assignments: '4',
+                },
+                {
+                    assignments_approved: '1',
+                    assignments_available: '1',
+                    assignments_completed: '3',
+                    assignments_pending: '0',
+                    assignments_rejected: '2',
+                    count: 3,
+                    max_assignments: '4',
+                },
             ],
         }
     },
@@ -157,9 +202,12 @@ export default {
             color1 = color1.match(/\d+/g).map(Number)
             color2 = color2.match(/\d+/g).map(Number)
 
+            var arr = []
+
             for (var i = 0; i < step; i++) {
-                this.colors.push(this.interpolateColor(color1, color2, stepFactor * i))
+                arr.push(this.interpolateColor(color1, color2, stepFactor * i))
             }
+            return arr
         },
         interpolateColor(color1, color2, factor) {
             if (arguments.length < 3) {
@@ -169,51 +217,69 @@ export default {
             for (var i = 0; i < 3; i++) {
                 result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]))
             }
-            return result
+            return 'rgb(' + result[0] + ',' + result[1] + ',' + result[2] + ')'
         },
     },
     created() {
-        var half = Math.floor(this.tmpData.length / 2)
         for (let i = 0; i < this.tmpData.length; i++) {
             this.totalHITs += this.tmpData[i].count
         }
-        this.interpolateColors('rgb(14, 173, 105)', 'rgb(0,255,0)', half)
-        this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', this.tmpData.length - half)
-        // var tmp = ''
-        // for (var i = 0; i < this.tmpData.length; i++) {
-        //     this.total += this.tmpData[i].count
-        //     tmp =
-        //         'Approved: ' +
-        //         parseInt(this.tmpData[i].assignments_approved) +
-        //         '/' +
-        //         parseInt(this.tmpData[i].max_assignments) +
-        //         '<br/>' +
-        //         'Available: ' +
-        //         parseInt(this.tmpData[i].assignments_available) +
-        //         '/' +
-        //         parseInt(this.tmpData[i].max_assignments) +
-        //         '<br/>' +
-        //         'Completed: ' +
-        //         parseInt(this.tmpData[i].assignments_completed) +
-        //         '/' +
-        //         parseInt(this.tmpData[i].max_assignments) +
-        //         '<br/>' +
-        //         'Pending: ' +
-        //         parseInt(this.tmpData[i].assignments_pending) +
-        //         '/' +
-        //         parseInt(this.tmpData[i].max_assignments) +
-        //         '<br/>' +
-        //         'Rejected: ' +
-        //         parseInt(this.tmpData[i].assignments_rejected) +
-        //         '/' +
-        //         parseInt(this.tmpData[i].max_assignments) +
-        //         '<br/>'
-        //     this.texts.push(tmp)
-        // }
-        // this.first = this.tmpData[0].count
-        // this.second = this.tmpData[1].count
-        // this.third = this.tmpData[2].count
-        // this.fourth = this.tmpData[3].count
+
+        //data sorting: first completed hits, then incomplete hits (each category ordered by most approved hits  to least approved)
+
+        var arrComp = []
+        var arrNotComp = []
+
+        for (let i = 0; i < this.tmpData.length; i++) {
+            this.tmpData[i].assignments_available > 0 ? arrNotComp.push(this.tmpData[i]) : arrComp.push(this.tmpData[i])
+        }
+
+        arrComp = arrComp.sort(function(a, b) {
+            return a.assignments_rejected / a.assignments_approved - b.assignments_rejected / b.assignments_approved
+        })
+
+        arrNotComp = arrNotComp.sort(function(a, b) {
+            return a.assignments_rejected / a.assignments_approved - b.assignments_rejected / b.assignments_approved
+        })
+
+        this.tmpData = arrComp.concat(arrNotComp)
+
+        //
+
+        //colors and gradients creation
+
+        var pos = 0
+        var neg = 0
+        var avaPos = 0
+        var avaNeg = 0
+        var grad = []
+
+        for (let x = 0; x < this.tmpData.length; x++) {
+            if (this.tmpData[x].assignments_available > 0) {
+                this.tmpData[x].assignments_approved > this.tmpData[x].assignments_rejected ? avaPos++ : avaNeg++
+            } else if (this.tmpData[x].assignments_approved > this.tmpData[x].assignments_rejected) {
+                pos++
+            } else {
+                neg++
+            }
+        }
+
+        var avaPosArr = this.interpolateColors('rgb(14, 173, 105)', 'rgb(0,255,0)', avaPos)
+        var avaNegArr = this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', avaNeg)
+
+        grad = avaPosArr.concat(avaNegArr)
+
+        for (let i = 0; i < grad.length; i++) {
+            grad[i] = 'linear-gradient(rgb(163, 206, 241), ' + grad[i] + ')'
+        }
+
+        console.log(grad)
+
+        this.colors = this.interpolateColors('rgb(14, 173, 105)', 'rgb(0,255,0)', pos)
+            .concat(this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', neg))
+            .concat(grad)
+
+        //
     },
 }
 </script>
