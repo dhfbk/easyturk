@@ -37,8 +37,8 @@
             :priceData="priceData"
             :qualifications="qualifications"
         />
-        <div v-if="!loading">
-            <h1 class="text-2xl mb-4 text-primary w-auto inline-block">{{ project.name }}</h1>
+        <div v-if="!loading" class="flex justify-between flex-wrap items-center">
+            <h1 class="text-2xl text-primary w-auto inline-block">{{ project.name }}</h1>
             <div class="w-auto flex relative justify-between content-center items-center float-right">
                 <span class="tooltip hidden md:block relative md:mr-2" v-if="project.status == 3">
                     <button
@@ -222,83 +222,83 @@
                         <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
                     </span> -->
                 </span>
-                <span v-click-outside="hide">
-                    <button
-                        @click="dropdownOpen = !dropdownOpen"
-                        class="md:hidden ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-100 ease-out border-2 border-solid border-primary hover:text-white focus:outline-none"
+                <button
+                    @click="dropdownOpen = !dropdownOpen"
+                    v-click-outside="hide"
+                    class="md:hidden ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-100 ease-out border-2 border-solid border-primary hover:text-white focus:outline-none"
+                >
+                    <svg
+                        class="transition duration-100 ease-out fill-current"
+                        :class="{ 'transform  rotate-180': dropdownOpen }"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="black"
+                        width="24px"
+                        height="24px"
                     >
-                        <svg
-                            class="transition duration-100 ease-out fill-current"
-                            :class="{ 'transform  rotate-180': dropdownOpen }"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="black"
-                            width="24px"
-                            height="24px"
+                        <path
+                            d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"
+                        />
+                    </svg>
+                    <span class="sr-only">Open dropdown</span>
+                </button>
+                <transition name="slide-toggle">
+                    <div
+                        v-show="dropdownOpen"
+                        class=" absolute bottom-1 right-0 mt-1 w-56 bg-white rounded-md shadow-xl z-20"
+                    >
+                        <a
+                            v-if="project.status >= 2 && hitsSubmitted == 0"
+                            @click="toggleModal('launch')"
+                            class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                            >Launch project</a
                         >
-                            <path
-                                d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"
-                            />
-                        </svg>
-                        <span class="sr-only">Open dropdown</span>
-                    </button>
-                    <transition name="slide-toggle">
-                        <div
-                            v-show="dropdownOpen"
-                            class=" absolute bottom-1 right-0 mt-1 w-56 bg-white rounded-md shadow-xl z-20"
+                        <a
+                            v-else
+                            @click="toggleModal('launch')"
+                            class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                            >Launch other HITs</a
                         >
-                            <a
-                                v-if="project.status >= 2 && hitsSubmitted == 0"
-                                @click="toggleModal('launch')"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                >Launch project</a
-                            >
-                            <a
-                                v-else
-                                @click="toggleModal('launch')"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                >Launch other HITs</a
-                            >
-                            <a
-                                @click="toggleModal('hit')"
-                                v-if="project.status == 0"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                >Set HITs</a
-                            >
-                            <a
-                                @click="toggleModal('layout')"
-                                v-if="project.status == 1"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                                >Set layout</a
-                            >
-                            <a
-                                v-if="project.status >= 1 && project.status != 3"
-                                @click="toggleModal('revert')"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
-                                >Revert HIT settings</a
-                            >
-                            <router-link
-                                v-if="project.status == 3"
-                                to="results"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
-                                >Results</router-link
-                            >
-                            <a
-                                v-if="project.status != 3"
-                                class="cursor-pointer block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
-                                @click="toggleModal('delete')"
-                                >Delete</a
-                            >
-                            <router-link
-                                :to="{
-                                    name: 'edit',
-                                    params: { projectId: id },
-                                }"
-                                :class="project.status >= 0 && project.status != 3 ? '' : 'rounded-b-md'"
-                                class="block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
-                                >Edit</router-link
-                            >
-                            <!-- <a
+                        <a
+                            @click="toggleModal('hit')"
+                            v-if="project.status == 0"
+                            class="block md:hidden cursor-pointer px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                            >Set HITs</a
+                        >
+                        <a
+                            @click="toggleModal('layout')"
+                            v-if="project.status == 1"
+                            class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                            >Set layout</a
+                        >
+                        <a
+                            v-if="project.status >= 1 && project.status != 3"
+                            @click="toggleModal('revert')"
+                            class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
+                            >Revert HIT settings</a
+                        >
+                        <router-link
+                            v-if="project.status == 3"
+                            to="results"
+                            class="block md:hidden cursor-pointer px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
+                            >Results</router-link
+                        >
+                        <a
+                            v-if="project.status != 3"
+                            class="cursor-pointer block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
+                            @click="toggleModal('delete')"
+                            >Delete</a
+                        >
+                        <router-link
+                            :to="{
+                                name: 'edit',
+                                params: { projectId: id },
+                            }"
+                            :class="project.status >= 0 && project.status != 3 ? '' : 'rounded-b-md'"
+                            class="block md:hidden cursor-pointer px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
+                            >Edit</router-link
+                        >
+                        <!-- <a
                                 v-if="project.status == 0"
                                 @click="toggleModal('std')"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-out hover:bg-primary md:rounded-t-md hover:text-gray-100"
@@ -310,15 +310,14 @@
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-out hover:bg-primary rounded-b-md hover:text-gray-100"
                                 >Gold CSV upload</a
                             > -->
-                            <!-- <a
+                        <!-- <a
                                 v-if="project.status == 0 && projectbaseCsvStatus == 1"
                                 @click="uploadModal(['hit', ''])"
                                 class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-out hover:bg-primary rounded-b-md hover:text-gray-100"
                                 >Load HITs</a
                             >-->
-                        </div>
-                    </transition>
-                </span>
+                    </div>
+                </transition>
             </div>
         </div>
         <div class="col-span-2 mt-2">

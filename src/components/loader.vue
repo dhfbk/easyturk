@@ -48,12 +48,14 @@
                     <span class="h-2 w-16 bg-gray-500 rounded"></span>
                 </span>
             </div>
+            <div class="h-2 w-full bg-gray-500 rounded mb-2"></div>
+            <div class="h-2 w-full bg-gray-500 rounded"></div>
+            <div class="flex justify-end w-full mt-4">
+                <span class="h-8 w-16 bg-gray-500 rounded"></span>
+            </div>
         </div>
     </div>
-    <div
-        v-else-if="type == 'csvData'"
-        class="lg:w-5/6 mx-2 xs2:mx-4 lg:mx-auto"
-    >
+    <div v-else-if="type == 'csvData'" class="lg:w-5/6 mx-2 xs2:mx-4 lg:mx-auto">
         <div class="animate-pulse">
             <table class="shadow-md rounded xs2:min-w-5/6 bg-white mx-auto">
                 <thead>

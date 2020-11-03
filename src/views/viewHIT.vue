@@ -2,45 +2,78 @@
     <div v-if="loading"></div>
     <div v-else class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <modalEliminazione v-if="modal" @hideModal="toggleModal" />
-        <div class="flex justify-between flex-wrap">
-            <h1 class="text-2xl mb-4 text-primary">HIT {{ datiProgetto.hitID }}</h1>
+        <div class="flex justify-between flex-wrap items-center">
+            <h1 class="text-2xl text-primary">HIT {{ datiProgetto.hitID }}</h1>
             <div class="flex relative">
-                <button
-                    type="submit"
-                    class="hidden sm:inline-flex flex-row items-center py-2 px-4 bg-transparent rounded-md transition duration-100 ease-out border-2 border-solid border-primary hover:bg-primary mr-2 focus:outline-none"
-                >
-                    <svg style="width:24px;" viewBox="0 0 24 24">
-                        <path
-                            d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"
-                        />
-                    </svg>
-                    <span class="ml-1">Add assignment</span>
-                </button>
+                <span class="tooltip hidden md:block relative md:mr-2">
+                    <button
+                        type="submit"
+                        class="ripple bg-primary transition duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white focus:outline-none"
+                    >
+                        <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"
+                            />
+                        </svg>
+                        <span class="sr-only">Add assignment</span>
+                    </button>
+                    <span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
+                    >
+                        Add assignment
+                    </span>
+                </span>
+                <span class="tooltip hidden md:block relative" v-if="project.status != 3">
+                    <button
+                        @click="$router.push({ name: 'edit', params: { projectId: id } })"
+                        type="submit"
+                        class="ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                    >
+                        <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+                            />
+                        </svg>
+                        <span class="sr-only">Edit</span>
+                    </button>
+                    <span
+                        class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
+                    >
+                        Edit
+                    </span>
+                </span>
                 <button
                     @click="dropdownOpen = !dropdownOpen"
                     v-click-outside="hide"
-                    class="py-2 px-2 bg-transparent rounded-md transition duration-100 ease-out border-2 border-solid border-primary hover:bg-primary focus:outline-none"
+                    class="md:hidden ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-100 ease-out border-2 border-solid border-primary hover:text-white focus:outline-none"
                 >
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="!dropdownOpen">
-                        <path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+                    <svg
+                        class="transition duration-100 ease-out fill-current"
+                        :class="{ 'transform  rotate-180': dropdownOpen }"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="black"
+                        width="24px"
+                        height="24px"
+                    >
+                        <path
+                            d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"
+                        />
                     </svg>
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else>
-                        <path fill="currentColor" d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" />
-                    </svg>
+                    <span class="sr-only">Open dropdown</span>
                 </button>
                 <transition name="slide-toggle">
                     <div
                         v-show="dropdownOpen"
                         class="absolute bottom-1 right-0 mt-16 w-56 bg-white rounded-md shadow-xl z-20"
                     >
-                        <router-link
-                            to="results"
-                            class="block sm:hidden px-4 py-2 text-sm capitalize text-gray-700 transition duration-100 ease-out hover:bg-primary rounded-t-md"
+                        <a
+                            class="block cursor-pointer md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
                         >
                             Add assignment
-                        </router-link>
+                        </a>
                         <a
-                            class="block px-4 py-2 text-sm capitalize text-gray-700 transition duration-100 ease-out hover:bg-primary rounded-b-md sm:rounded-md"
+                            class="cursor-pointer block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
                             >Edit</a
                         >
                     </div>
