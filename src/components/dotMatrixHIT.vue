@@ -244,13 +244,6 @@ export default {
         }
     },
     methods: {
-        // col(num) {
-        //     if (this.tmpData[num].assignments_approved > this.tmpData[num].assignments_rejected) {
-        //         return this.colorsPositive[this.countPos]
-        //     } else {
-        //         return this.colorsNegative[this.countNeg]
-        //     }
-        // },
         hoverGroup(arr) {
             this.hoverArr = arr
         },
@@ -325,7 +318,7 @@ export default {
         this.totalComp = pos + neg
         this.totalAvai = avaPos + avaNeg
 
-        var avaPosArr = this.interpolateColors('rgb(14, 173, 105)', 'rgb(0,255,0)', avaPos)
+        var avaPosArr = this.interpolateColors('rgb(14, 173, 105)', 'rgb(4, 240, 106)', avaPos)
         var avaNegArr = this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', avaNeg)
 
         grad = avaPosArr.concat(avaNegArr)
@@ -336,7 +329,7 @@ export default {
 
         console.log(grad)
 
-        this.colors = this.interpolateColors('rgb(14, 173, 105)', 'rgb(0,255,0)', pos)
+        this.colors = this.interpolateColors('rgb(14, 173, 105)', 'rgb(4, 240, 106)', pos)
             .concat(this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', neg))
             .concat(grad)
 

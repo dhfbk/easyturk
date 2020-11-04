@@ -4,6 +4,7 @@
             <span v-for="(i, p) in num.count" :key="p">
                 <span class="tooltip relative ">
                     <span
+                        @click="$router.push({ name: 'viewHIT', params: { hitId: '3E9ZFLPWP1G5FQDY26372YD7KE5XIZ' } })"
                         class="h-5 w-5 m-1 rounded-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-focus"
                         :style="{ background: color }"
                         :class="hoveringFull ? 'shadow-focus' : ''"
