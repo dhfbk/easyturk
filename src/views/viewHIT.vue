@@ -1,9 +1,8 @@
 <template>
-    <div v-if="loading"></div>
-    <div v-else class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
+    <div class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <modalEliminazione v-if="modal" @hideModal="toggleModal" />
-        <div class="flex justify-between flex-wrap items-center">
-            <h1 class="text-2xl text-primary">HIT {{ datiProgetto.hitID }}</h1>
+        <div class="flex justify-between flex-wrap items-center" v-if="!loading">
+            <h1 class="text-2xl text-primary overflow-ellipsis">HIT {{ prjData.values.id_hit }}</h1>
             <div class="flex relative">
                 <span class="tooltip hidden md:block relative md:mr-2">
                     <button
@@ -82,12 +81,23 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 mt-2">
             <div class="mr-0 xs2:mr-1">
-                <cardInfo :projectData="project" :mode="'general'" />
-                <cardInfo :projectData="project" :mode="'layout'" />
+                <div class="w-full flex flex-col justify-center" v-if="loading">
+                    <loader :type="'cardInfoVisualizza'" v-for="n in 2" :key="n" />
+                </div>
+                <div v-else>
+                    <cardInfo :projectData="project" :mode="'general'" />
+                    <cardInfo :projectData="project" :mode="'layout'" />
+                </div>
             </div>
             <div class="ml-0 xs2:ml-1">
-                <cardInfo :projectData="project" :mode="'payment'" />
-                <cardAnalytics :dati="datiCardAnalytics.cardHIT" />
+                <div class="w-full flex flex-col justify-center" v-if="loading">
+                    <loader :type="'cardInfoVisualizza'" />
+                    <loader :type="'cardAnalyticsVisualizza'" :num="3" />
+                </div>
+                <div v-else>
+                    <cardInfo :projectData="project" :mode="'payment'" />
+                    <cardAnalytics :dati="analytics.cardHIT" />
+                </div>
             </div>
         </div>
     </div>
@@ -98,6 +108,7 @@ import ClickOutside from 'vue-click-outside'
 import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
+import loader from '../components/loader.vue'
 import axios from 'axios'
 
 export default {
@@ -109,41 +120,18 @@ export default {
         modalEliminazione,
         cardInfo,
         cardAnalytics,
+        loader,
     },
     data() {
         return {
             prjData: {},
             project: {},
-            datiProgetto: {
-                titolo: "Italy's food",
-                descrizione:
-                    "If you know Italian food, we ask you to take a look at various different serving pictures and tell us if you think it's italian or not.",
-                keywords: 'food, italy, image, recognition, culture',
-                stato: 'Assignable',
-                ricompensa: '0.25',
-                creazione: '2020-09-02',
-                numLavoratori: 5,
-                tempoMax: 60,
-                scadenza: '2020-09-10',
-                autoApproval: 86400,
-                layoutID: 'hdf7777cv4cc34c',
-                hitID: 'dh354548435vv',
-                HITTypeId: 'Questionario',
-                HITGroupId: 'didfud786543',
-                //parametri: 3,
-                totaleAssignment: 6,
-                assignmentCompletati: 2,
-                assignmentDisponibili: 3,
-                assignmentInCorso: 1,
-                //risposteSI: 180,
-                //risposteNO: 20,
-                completateProgress: 0,
-                disponibiliProgress: 0,
-                incorsoProgress: 0,
-                //siProgress: 0,
-                //noProgress: 0,
+            progressData: {
+                completed: 0,
+                available: 0,
+                pending: 0,
             },
-            datiCardAnalytics: {},
+            analytics: {},
             dropdownOpen: false,
             modal: false,
             loading: true,
@@ -151,10 +139,6 @@ export default {
     },
     created() {
         this.getData()
-        this.elaboraTempo(this.datiProgetto.tempoMax)
-        this.elaboraTempo(this.datiProgetto.autoApproval)
-        this.calcolaProgress()
-        this.impostaDatiCard()
     },
     mounted() {
         this.popupItem = this.$el
@@ -182,6 +166,8 @@ export default {
                         expiry: expiration, //convertire da data a X
                         auto_approve: res.data.values.hit_info.AutoApprovalDelayInSeconds / 60, //convertire da secondi a x
                     }
+                    this.convertProgress()
+                    this.setAnalyticsCard()
                     this.loading = false
                 })
                 .catch(err => {
@@ -206,36 +192,36 @@ export default {
             return time
         },
         //metodo che imposta i titoli e i dati da inserire nelle card della pagina
-        impostaDatiCard() {
-            this.datiCardAnalytics = {
+        setAnalyticsCard() {
+            this.analytics = {
                 cardHIT: {
-                    titolo: 'Totale assignment',
-                    totale: this.datiProgetto.totaleAssignment,
+                    titolo: 'Assignments',
+                    totale: parseInt(this.prjData.values.max_assignments),
                     type: 'assignment',
                     ellipse_progress: {
                         progress1: {
-                            progress: this.datiProgetto.completateProgress,
-                            legend_value: this.datiProgetto.assignmentCompletati,
+                            progress: this.progressData.completed,
+                            legend_value: parseInt(this.prjData.values.assignments_completed),
                             color: '#f6ad55',
                             half: true,
                             angle: 0,
-                            caption: 'Completati',
+                            caption: 'Completed',
                         },
                         progress2: {
-                            progress: this.datiProgetto.disponibiliProgress,
-                            legend_value: this.datiProgetto.assignmentDisponibili,
+                            progress: this.progressData.available,
+                            legend_value: parseInt(this.prjData.values.assignments_available),
                             color: '#f6ad55',
                             half: true,
                             angle: 0,
-                            caption: 'Disponibili',
+                            caption: 'Available',
                         },
                         progress3: {
-                            progress: this.datiProgetto.incorsoProgress,
-                            legend_value: this.datiProgetto.assignmentInCorso,
+                            progress: this.progressData.pending,
+                            legend_value: parseInt(this.prjData.values.assignments_pending),
                             color: '#f6ad55',
                             half: true,
                             angle: 0,
-                            caption: 'In corso',
+                            caption: 'Pending',
                         },
                     },
                 },
@@ -251,31 +237,16 @@ export default {
             this.dropdownOpen = false
         },
         //calcola il numero da utilizzare nei grafici delle analytics
-        calcolaProgress() {
-            this.datiProgetto.completateProgress =
-                (100 * this.datiProgetto.assignmentCompletati) / this.datiProgetto.totaleAssignment
-            this.datiProgetto.disponibiliProgress =
-                (100 * this.datiProgetto.assignmentDisponibili) / this.datiProgetto.totaleAssignment
-            this.datiProgetto.incorsoProgress =
-                (100 * this.datiProgetto.assignmentInCorso) / this.datiProgetto.totaleAssignment
-        },
-        //modifica il tempo da secondi a minuti/ore/giorni
-        elaboraTempo(tempo) {
-            var tmp = 0
-            if (tempo < 60) {
-                tmp = Math.floor(tempo) + ' secondi'
-            } else if (tempo < 3600) {
-                tmp = Math.floor(tempo / 60) + ' minuti'
-            } else if (tempo < 86400) {
-                tmp = Math.floor(tempo / 3600) + ' ore'
-            } else {
-                tmp = Math.floor(tempo / 86400) + ' giorni'
-            }
-            if (tempo == this.datiProgetto.tempoMax) {
-                this.datiProgetto.tempoMax = tmp
-            } else {
-                this.datiProgetto.autoApproval = tmp
-            }
+        convertProgress() {
+            this.progressData.completed =
+                (100 * parseInt(this.prjData.values.assignments_completed)) /
+                parseInt(this.prjData.values.max_assignments)
+            this.progressData.available =
+                (100 * parseInt(this.prjData.values.assignments_available)) /
+                parseInt(this.prjData.values.max_assignments)
+            this.progressData.pending =
+                (100 * parseInt(this.prjData.values.assignments_pending)) /
+                parseInt(this.prjData.values.max_assignments)
         },
     },
 }
