@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto">
-        <div class="rounded border mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative cursor-pointer grow">
+        <!-- <div class="rounded border mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative cursor-pointer grow">
             <div class="w-full flex justify-between content-center items-center">
                 <span>Legend</span>
                 <button
@@ -24,7 +24,7 @@
 
             <transition name="slide-toggle">
                 <span class="flex flex-row flex-wrap mt-2 justify-around" v-if="isOpen">
-                    <span v-for="(i, e) in tmpData.length" :key="e">
+                    <span v-for="(i, e) in sortedData.length" :key="e">
                         <span class="flex flex-col items-center m-2">
                             <div
                                 class="w-5 h-5 rounded-full my-1 mr-2 hover:shadow-focus"
@@ -35,18 +35,18 @@
                                 @mouseleave="hoverGroup('')"
                             ></div>
                             <span
-                                >Approved: {{ tmpData[i - 1].assignments_approved }}<br />Rejected:
-                                {{ tmpData[i - 1].assignments_rejected }}<br />Available:
-                                {{ tmpData[i - 1].assignments_available }}
+                                >Approved: {{ sortedData[i - 1].assignments_approved }}<br />Rejected:
+                                {{ sortedData[i - 1].assignments_rejected }}<br />Available:
+                                {{ sortedData[i - 1].assignments_available }}
                             </span>
                         </span>
                     </span>
                 </span>
             </transition>
-        </div>
+        </div> -->
 
-        <span v-for="(x, y) in tmpData.length" :key="y">
-            <matrixPart :num="tmpData[x - 1]" :color="colors[y]" :total="totalHITs" :hoverColor="hoverArr" />
+        <span v-for="(x, y) in sortedData.length" :key="y">
+            <matrixPart :num="sortedData[x - 1]" :color="colors[y]" :total="totalHITs" :hoverColor="hoverArr" />
         </span>
         <div class="text-lg mb-1 font-bold">Legend</div>
         <span class="flex flex-row flex-wrap justify-around border rounded p-2 bg-white">
@@ -65,9 +65,10 @@
                             ></span>
                             <span
                                 class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
-                                >Approved: {{ tmpData[i - 1].assignments_approved }}<br />Rejected:
-                                {{ tmpData[i - 1].assignments_rejected }}<br />Available:
-                                {{ tmpData[i - 1].assignments_available }}
+                                >{{ sortedData[i - 1].count }} HITs<br />Approved:
+                                {{ sortedData[i - 1].assignments_approved }}<br />Rejected:
+                                {{ sortedData[i - 1].assignments_rejected }}<br />Available:
+                                {{ sortedData[i - 1].assignments_available }}
                             </span>
                         </span>
                     </span>
@@ -93,9 +94,10 @@
                             ></span>
                             <span
                                 class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
-                                >Approved: {{ tmpData[e + totalComp].assignments_approved }}<br />Rejected:
-                                {{ tmpData[e + totalComp].assignments_rejected }}<br />Available:
-                                {{ tmpData[e + totalComp].assignments_available }}
+                                >{{ sortedData[e + totalComp].count }} HITs<br />Approved:
+                                {{ sortedData[e + totalComp].assignments_approved }}<br />Rejected:
+                                {{ sortedData[e + totalComp].assignments_rejected }}<br />Available:
+                                {{ sortedData[e + totalComp].assignments_available }}
                             </span>
                         </span>
                     </span>
@@ -114,9 +116,9 @@
 import matrixPart from '../components/matrixPart'
 export default {
     name: 'dotMatrixHIT',
-    // props: {
-    //     tmpData: Array,
-    // },
+    props: {
+        tmpData: Array,
+    },
     components: {
         matrixPart,
     },
@@ -131,116 +133,118 @@ export default {
             totalComp: 0,
             totalAvai: 0,
 
-            tmpData: [
-                {
-                    assignments_approved: '3',
-                    assignments_available: '0',
-                    assignments_completed: '3',
-                    assignments_pending: '0',
-                    assignments_rejected: '0',
-                    count: 252,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '3',
-                    assignments_available: '0',
-                    assignments_completed: '4',
-                    assignments_pending: '0',
-                    assignments_rejected: '1',
-                    count: 45,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '2',
-                    assignments_available: '0',
-                    assignments_completed: '4',
-                    assignments_pending: '0',
-                    assignments_rejected: '2',
-                    count: 78,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '1',
-                    assignments_available: '0',
-                    assignments_completed: '4',
-                    assignments_pending: '0',
-                    assignments_rejected: '3',
-                    count: 26,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '0',
-                    assignments_available: '0',
-                    assignments_completed: '4',
-                    assignments_pending: '0',
-                    assignments_rejected: '4',
-                    count: 5,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '1',
-                    assignments_available: '2',
-                    assignments_completed: '2',
-                    assignments_pending: '0',
-                    assignments_rejected: '1',
-                    count: 12,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '2',
-                    assignments_available: '1',
-                    assignments_completed: '3',
-                    assignments_pending: '0',
-                    assignments_rejected: '1',
-                    count: 10,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '2',
-                    assignments_available: '1',
-                    assignments_completed: '2',
-                    assignments_pending: '0',
-                    assignments_rejected: '0',
-                    count: 29,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '1',
-                    assignments_available: '2',
-                    assignments_completed: '1',
-                    assignments_pending: '0',
-                    assignments_rejected: '0',
-                    count: 21,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '1',
-                    assignments_available: '1',
-                    assignments_completed: '3',
-                    assignments_pending: '0',
-                    assignments_rejected: '2',
-                    count: 3,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '0',
-                    assignments_available: '2',
-                    assignments_completed: '2',
-                    assignments_pending: '0',
-                    assignments_rejected: '2',
-                    count: 5,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '0',
-                    assignments_available: '1',
-                    assignments_completed: '3',
-                    assignments_pending: '0',
-                    assignments_rejected: '3',
-                    count: 9,
-                    max_assignments: '4',
-                },
-            ],
+            sortedData: [],
+
+            // tmpData: [
+            //     {
+            //         assignments_approved: '3',
+            //         assignments_available: '0',
+            //         assignments_completed: '3',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '0',
+            //         count: 252,
+            //         max_assignments: '4',
+            //     },
+            //     {
+            //         assignments_approved: '3',
+            //         assignments_available: '0',
+            //         assignments_completed: '4',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '1',
+            //         count: 45,
+            //         max_assignments: '4',
+            //     },
+            //     {
+            //         assignments_approved: '2',
+            //         assignments_available: '0',
+            //         assignments_completed: '4',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '2',
+            //         count: 78,
+            //         max_assignments: '4',
+            //     },
+            //     {
+            //         assignments_approved: '1',
+            //         assignments_available: '0',
+            //         assignments_completed: '4',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '3',
+            //         count: 26,
+            //         max_assignments: '4',
+            //     },
+            //     {
+            //         assignments_approved: '0',
+            //         assignments_available: '0',
+            //         assignments_completed: '4',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '4',
+            //         count: 5,
+            //         max_assignments: '4',
+            //     },
+            //     {
+            //         assignments_approved: '1',
+            //         assignments_available: '2',
+            //         assignments_completed: '2',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '1',
+            //         count: 12,
+            //         max_assignments: '4',
+            //     },
+            //     {
+            //         assignments_approved: '2',
+            //         assignments_available: '1',
+            //         assignments_completed: '3',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '1',
+            //         count: 10,
+            //         max_assignments: '4',
+            //     },
+            //     {
+            //         assignments_approved: '2',
+            //         assignments_available: '1',
+            //         assignments_completed: '2',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '0',
+            //         count: 29,
+            //         max_assignments: '4',
+            //     },
+            //     {
+            //         assignments_approved: '1',
+            //         assignments_available: '2',
+            //         assignments_completed: '1',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '0',
+            //         count: 21,
+            //         max_assignments: '4',
+            //     },
+            //     {
+            //         assignments_approved: '1',
+            //         assignments_available: '1',
+            //         assignments_completed: '3',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '2',
+            //         count: 3,
+            //         max_assignments: '4',
+            //     },
+            //     {
+            //         assignments_approved: '0',
+            //         assignments_available: '2',
+            //         assignments_completed: '2',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '2',
+            //         count: 5,
+            //         max_assignments: '4',
+            //     },
+            //     {
+            //         assignments_approved: '0',
+            //         assignments_available: '1',
+            //         assignments_completed: '3',
+            //         assignments_pending: '0',
+            //         assignments_rejected: '3',
+            //         count: 9,
+            //         max_assignments: '4',
+            //     },
+            // ],
         }
     },
     methods: {
@@ -248,6 +252,7 @@ export default {
             this.hoverArr = arr
         },
         interpolateColors(color1, color2, step) {
+            if (step == 1) return color2
             var stepFactor = 1 / (step - 1)
 
             color1 = color1.match(/\d+/g).map(Number)
@@ -286,14 +291,39 @@ export default {
         }
 
         arrComp = arrComp.sort(function(a, b) {
-            return a.assignments_rejected / a.assignments_approved - b.assignments_rejected / b.assignments_approved
+            if (a.assignments_rejected == 0) a.assignments_rejected = 0.1
+            if (a.assignments_approved == 0) a.assignments_approved = 0.1
+            if (b.assignments_rejected == 0) b.assignments_rejected = 0.1
+            if (b.assignments_approved == 0) b.assignments_approved = 0.1
+
+            return (
+                a.assignments_rejected / a.assignments_approved - b.assignments_rejected / b.assignments_approved ||
+                a.assignments_rejected - b.assignments_rejected ||
+                a.assignments_available - b.assignments_available
+            )
         })
 
         arrNotComp = arrNotComp.sort(function(a, b) {
-            return a.assignments_rejected / a.assignments_approved - b.assignments_rejected / b.assignments_approved
+            if (a.assignments_rejected == 0) a.assignments_rejected = 0.1
+            if (a.assignments_approved == 0) a.assignments_approved = 0.1
+            if (b.assignments_rejected == 0) b.assignments_rejected = 0.1
+            if (b.assignments_approved == 0) b.assignments_approved = 0.1
+
+            return (
+                a.assignments_rejected / a.assignments_approved - b.assignments_rejected / b.assignments_approved ||
+                a.assignments_rejected - b.assignments_rejected ||
+                a.assignments_available - b.assignments_available
+            )
         })
 
-        this.tmpData = arrComp.concat(arrNotComp)
+        var tmp = arrComp.concat(arrNotComp)
+
+        for (let i = 0; i < tmp.length; i++) {
+            if (tmp[i].assignments_rejected == 0.1) tmp[i].assignments_rejected = 0
+            if (tmp[i].assignments_approved == 0.1) tmp[i].assignments_approved = 0
+        }
+
+        this.sortedData = tmp
 
         //
 
@@ -305,10 +335,10 @@ export default {
         var avaNeg = 0
         var grad = []
 
-        for (let x = 0; x < this.tmpData.length; x++) {
-            if (this.tmpData[x].assignments_available > 0) {
-                this.tmpData[x].assignments_approved > this.tmpData[x].assignments_rejected ? avaPos++ : avaNeg++
-            } else if (this.tmpData[x].assignments_approved > this.tmpData[x].assignments_rejected) {
+        for (let x = 0; x < this.sortedData.length; x++) {
+            if (this.sortedData[x].assignments_available > 0) {
+                this.sortedData[x].assignments_approved > this.sortedData[x].assignments_rejected ? avaPos++ : avaNeg++
+            } else if (this.sortedData[x].assignments_approved > this.sortedData[x].assignments_rejected) {
                 pos++
             } else {
                 neg++
@@ -327,11 +357,13 @@ export default {
             grad[i] = 'linear-gradient(rgb(163, 206, 241), ' + grad[i] + ')'
         }
 
-        console.log(grad)
+        //console.log(grad)
 
         this.colors = this.interpolateColors('rgb(14, 173, 105)', 'rgb(4, 240, 106)', pos)
             .concat(this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', neg))
             .concat(grad)
+
+        console.log(this.colors)
 
         //
     },

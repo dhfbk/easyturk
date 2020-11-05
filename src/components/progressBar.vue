@@ -4,7 +4,7 @@
             <span class="tooltip relative" :style="{ width: submitted + '%' }" v-if="submitted != 0">
                 <div
                     class="h-8 bg-green-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
-                    :class="[published == 0 ? 'rounded-l' : '', notPublished == 0 ? 'rounded-r' : '']"
+                    :class="[published == 0 ? 'rounded-l' : '', notPublished == 0 ? 'rounded-l' : '']"
                 ></div>
                 <span
                     class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light regular"
