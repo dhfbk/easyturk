@@ -1,5 +1,5 @@
 <template>
-    <div class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
+    <div class="relative pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 ">
         <div v-if="loading"></div>
         <div v-else>
             <h1 class="text-2xl mb-4 text-primary">HITs results (project ID: {{ $route.params.projectId }})</h1>
@@ -27,8 +27,8 @@
                     </div>
                 </div>
             </div>
-            <tableHIT :tmpData="progressData" v-if="viewType == 'table'" />
-            <dotMatrixHIT :tmpData="progressData" v-else />
+            <tableHIT :sortedData="sortedData" v-if="viewType == 'table'" />
+            <dotMatrixHIT :sortedData="sortedData" v-else />
         </div>
     </div>
 </template>
@@ -47,7 +47,8 @@ export default {
             id: '',
             loading: true,
             progressData: [],
-            viewType: 'dots',
+            viewType: 'table',
+            sortedData: [],
         }
     },
     created() {
@@ -60,6 +61,51 @@ export default {
                 .get(this.APIURL + '?action=getProjectInfo&id=' + this.id)
                 .then(res => {
                     this.progressData = res.data.summary
+
+                    //count to set defualt data view
+
+                    var cout = 0
+                    for (let i = 0; i < this.progressData.length; i++) {
+                        cout += this.progressData[i].count
+                        if (cout >= 20) {
+                            this.viewType = 'dots'
+                            break
+                        }
+                    }
+
+                    //
+
+                    //data sorting: first completed hits, then incomplete hits (each category ordered by most approved hits  to least approved)
+
+                    var arrComp = []
+                    var arrNotComp = []
+
+                    for (let i = 0; i < this.progressData.length; i++) {
+                        this.progressData[i].assignments_available > 0
+                            ? arrNotComp.push(this.progressData[i])
+                            : arrComp.push(this.progressData[i])
+                    }
+
+                    arrComp = arrComp.sort(function(a, b) {
+                        return (
+                            a.assignments_rejected - b.assignments_rejected ||
+                            b.assignments_approved - a.assignments_approved ||
+                            b.assignments_available - a.assignments_available
+                        )
+                    })
+
+                    arrNotComp = arrNotComp.sort(function(a, b) {
+                        return (
+                            a.assignments_rejected - b.assignments_rejected ||
+                            b.assignments_approved - a.assignments_approved ||
+                            b.assignments_available - a.assignments_available
+                        )
+                    })
+
+                    this.sortedData = arrComp.concat(arrNotComp)
+
+                    //
+
                     this.loading = false
                 })
                 .catch(err => {

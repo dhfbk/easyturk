@@ -21,52 +21,73 @@
                 </div>
             </div>
         </div> -->
-        <table class="w-full shadow-lg rounded">
-            <thead>
-                <tr class="text-center bg-primary border-b border-gray-300 uppercase ">
-                    <th class="p-1 text-sm text-white">HIT ID</th>
-                    <th class="p-1 text-sm text-white">Status</th>
-                    <th class="p-1 hidden sm:table-cell text-sm text-white">Approved</th>
-                    <th class="p-1 hidden md:table-cell text-sm text-white">Rejected</th>
-                    <th class="p-1 hidden md:table-cell text-sm text-white">Available</th>
-                    <th class="p-1 hidden lg:table-cell text-sm text-white">Time remaining</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white text-center" v-for="(hit, id) in tmpData" :key="id">
-                <tr class="border-b border-gray-300 hover:bg-gray-100" v-for="(c, i) in hit.count" :key="i">
-                    <td class="table-cell py-1 border-r border-gray-300">
-                        <p class="text-sm text-gray-700 font-medium">{{ i }}</p>
-                    </td>
+        <div class="overflow-x-auto">
+            <table class="w-full shadow-lg rounded">
+                <thead>
+                    <tr class="text-center bg-primary border-b border-gray-300 uppercase ">
+                        <th class="p-1 text-sm text-white">HIT ID</th>
+                        <th class="p-1 text-sm text-white">Status</th>
+                        <th class="p-1 table-cell text-sm text-white">Approved</th>
+                        <th class="p-1 table-cell text-sm text-white">Rejected</th>
+                        <th class="p-1 table-cell text-sm text-white">Available</th>
+                        <th class="p-1 table-cell text-sm text-white">Time remaining</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white text-center">
+                    <tr class="border-b border-gray-300 hover:bg-gray-100" v-for="(hit, id) in current" :key="id">
+                        <td class="table-cell py-1 border-r border-gray-300">
+                            <p class="text-sm text-gray-700 font-medium">{{ hit.id }}</p>
+                        </td>
 
-                    <td class="hidden sm:table-cell py-1 border-r border-gray-300">
-                        <p class="text-sm text-gray-700 font-medium">
-                            {{ hit.assignments_available == 0 ? 'Completed' : 'Assignable' }}
-                        </p>
-                    </td>
-                    <td class="hidden md:table-cell py-1 border-r border-gray-300">
-                        <p class="text-sm text-gray-700 font-medium">{{ hit.assignments_approved }}</p>
-                    </td>
-                    <td class="hidden md:table-cell py-1 border-r border-gray-300">
-                        <p class="text-sm text-gray-700 font-medium">{{ hit.assignments_rejected }}</p>
-                    </td>
-                    <td class="hidden lg:table-cell py-1 border-r border-gray-300">
-                        <p class="text-sm text-gray-700 font-medium">{{ hit.assignments_available }}</p>
-                    </td>
-                    <td class="hidden lg:table-cell py-1">
-                        <p class="text-sm text-gray-700 font-medium">prova</p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        <td class="table-cell py-1 border-r border-gray-300">
+                            <p class="text-sm text-gray-700 font-medium">
+                                {{ hit.assignments_available == 0 ? 'Completed' : 'Assignable' }}
+                            </p>
+                        </td>
+                        <td class="table-cell py-1 border-r border-gray-300">
+                            <p class="text-sm text-gray-700 font-medium">{{ hit.assignments_approved }}</p>
+                        </td>
+                        <td class="table-cell py-1 border-r border-gray-300">
+                            <p class="text-sm text-gray-700 font-medium">{{ hit.assignments_rejected }}</p>
+                        </td>
+                        <td class="table-cell py-1 border-r border-gray-300">
+                            <p class="text-sm text-gray-700 font-medium">{{ hit.assignments_available }}</p>
+                        </td>
+                        <td class="table-cell py-1">
+                            <p class="text-sm text-gray-700 font-medium">prova</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="grid grid-cols-3 mt-2" v-if="totalData.length > numPerPage">
+                <button
+                    @click="page--"
+                    v-if="totalData.length > numPerPage && page >= 1"
+                    class="bg-gray-400 md:w-48 w-24 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
+                >
+                    Previous
+                </button>
+                <div v-else></div>
+                <p class="text-center">Page {{ page + 1 }} of {{ pageNum + 1 }}</p>
+                <button
+                    @click="page++"
+                    v-if="totalData.length > numPerPage && page < pageNum"
+                    class="bg-gray-400 md:w-48 w-24 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
+                >
+                    Next
+                </button>
+                <div v-else></div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 export default {
     name: 'tableHIT',
-    // props: {
-    //     tmpData: Array,
-    // },
+    props: {
+        sortedData: Array,
+    },
     data() {
         return {
             sortType: 'all',
@@ -81,126 +102,59 @@ export default {
                 creazione: 'all',
             },
             hitDaMostrare: [],
-            tmpData: [
-                {
-                    assignments_approved: '3',
-                    assignments_available: '0',
-                    assignments_completed: '3',
-                    assignments_pending: '0',
-                    assignments_rejected: '0',
-                    count: 252,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '3',
-                    assignments_available: '0',
-                    assignments_completed: '4',
-                    assignments_pending: '0',
-                    assignments_rejected: '1',
-                    count: 45,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '2',
-                    assignments_available: '0',
-                    assignments_completed: '4',
-                    assignments_pending: '0',
-                    assignments_rejected: '2',
-                    count: 78,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '1',
-                    assignments_available: '0',
-                    assignments_completed: '4',
-                    assignments_pending: '0',
-                    assignments_rejected: '3',
-                    count: 26,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '0',
-                    assignments_available: '0',
-                    assignments_completed: '4',
-                    assignments_pending: '0',
-                    assignments_rejected: '4',
-                    count: 5,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '1',
-                    assignments_available: '2',
-                    assignments_completed: '2',
-                    assignments_pending: '0',
-                    assignments_rejected: '1',
-                    count: 12,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '2',
-                    assignments_available: '1',
-                    assignments_completed: '3',
-                    assignments_pending: '0',
-                    assignments_rejected: '1',
-                    count: 10,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '2',
-                    assignments_available: '1',
-                    assignments_completed: '2',
-                    assignments_pending: '0',
-                    assignments_rejected: '0',
-                    count: 29,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '1',
-                    assignments_available: '2',
-                    assignments_completed: '1',
-                    assignments_pending: '0',
-                    assignments_rejected: '0',
-                    count: 21,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '1',
-                    assignments_available: '1',
-                    assignments_completed: '3',
-                    assignments_pending: '0',
-                    assignments_rejected: '2',
-                    count: 3,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '0',
-                    assignments_available: '2',
-                    assignments_completed: '2',
-                    assignments_pending: '0',
-                    assignments_rejected: '2',
-                    count: 5,
-                    max_assignments: '4',
-                },
-                {
-                    assignments_approved: '0',
-                    assignments_available: '1',
-                    assignments_completed: '3',
-                    assignments_pending: '0',
-                    assignments_rejected: '3',
-                    count: 9,
-                    max_assignments: '4',
-                },
-            ],
+            page: 0,
+            numPerPage: 20,
+            current: [],
+            pageNum: 1,
+            totalData: [],
         }
     },
     created() {
         // this.filtraHIT()
+        for (let i = 0; i < this.sortedData.length; i++) {
+            for (let x = 0; x < this.sortedData[i].count; x++) {
+                var hit = {
+                    assignments_available: this.sortedData[i].assignments_available,
+                    assignments_approved: this.sortedData[i].assignments_approved,
+                    assignments_rejected: this.sortedData[i].assignments_rejected,
+                    id: x,
+                }
+                this.totalData.push(hit)
+            }
+        }
+        this.pageNum = Math.ceil(this.totalData.length / this.numPerPage) - 1
+        this.currentPage()
     },
+    watch: {
+        page: function() {
+            this.pageNum = Math.ceil(this.totalData.length / this.numPerPage) - 1
+            this.current = []
+            this.currentPage()
+        },
+        // numPerPage: function() {
+        //     this.pageNum = Math.ceil(this.totalData.length / this.numPerPage) - 1
+        //     this.page = 0
+        //     this.current = []
+        //     this.currentPage()
+        // },
+    },
+
     methods: {
         sortBy(mode) {
             if (this.filtri.stato != mode) {
                 this.filtri.stato = mode
                 this.filtraHIT()
+            }
+        },
+        currentPage() {
+            for (
+                let i = this.page * this.numPerPage;
+                i < this.page * this.numPerPage + parseInt(this.numPerPage);
+                i++
+            ) {
+                if (this.totalData[i]) {
+                    this.current.push(this.totalData[i])
+                }
             }
         },
         // mostra solo le HIT di una categoria (quella passata nell funzione filtraHIT)

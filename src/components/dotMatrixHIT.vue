@@ -118,7 +118,7 @@ import matrixPart from '../components/matrixPart'
 export default {
     name: 'dotMatrixHIT',
     props: {
-        tmpData: Array,
+        sortedData: Array,
     },
     components: {
         matrixPart,
@@ -130,122 +130,8 @@ export default {
             hoverArr: '',
             isOpen: false,
             colors: [],
-
             totalComp: 0,
             totalAvai: 0,
-
-            sortedData: [],
-
-            // tmpData: [
-            //     {
-            //         assignments_approved: '3',
-            //         assignments_available: '0',
-            //         assignments_completed: '3',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '0',
-            //         count: 252,
-            //         max_assignments: '4',
-            //     },
-            //     {
-            //         assignments_approved: '3',
-            //         assignments_available: '0',
-            //         assignments_completed: '4',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '1',
-            //         count: 45,
-            //         max_assignments: '4',
-            //     },
-            //     {
-            //         assignments_approved: '2',
-            //         assignments_available: '0',
-            //         assignments_completed: '4',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '2',
-            //         count: 78,
-            //         max_assignments: '4',
-            //     },
-            //     {
-            //         assignments_approved: '1',
-            //         assignments_available: '0',
-            //         assignments_completed: '4',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '3',
-            //         count: 26,
-            //         max_assignments: '4',
-            //     },
-            //     {
-            //         assignments_approved: '0',
-            //         assignments_available: '0',
-            //         assignments_completed: '4',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '4',
-            //         count: 5,
-            //         max_assignments: '4',
-            //     },
-            //     {
-            //         assignments_approved: '1',
-            //         assignments_available: '2',
-            //         assignments_completed: '2',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '1',
-            //         count: 12,
-            //         max_assignments: '4',
-            //     },
-            //     {
-            //         assignments_approved: '2',
-            //         assignments_available: '1',
-            //         assignments_completed: '3',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '1',
-            //         count: 10,
-            //         max_assignments: '4',
-            //     },
-            //     {
-            //         assignments_approved: '2',
-            //         assignments_available: '1',
-            //         assignments_completed: '2',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '0',
-            //         count: 29,
-            //         max_assignments: '4',
-            //     },
-            //     {
-            //         assignments_approved: '1',
-            //         assignments_available: '2',
-            //         assignments_completed: '1',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '0',
-            //         count: 21,
-            //         max_assignments: '4',
-            //     },
-            //     {
-            //         assignments_approved: '1',
-            //         assignments_available: '1',
-            //         assignments_completed: '3',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '2',
-            //         count: 3,
-            //         max_assignments: '4',
-            //     },
-            //     {
-            //         assignments_approved: '0',
-            //         assignments_available: '2',
-            //         assignments_completed: '2',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '2',
-            //         count: 5,
-            //         max_assignments: '4',
-            //     },
-            //     {
-            //         assignments_approved: '0',
-            //         assignments_available: '1',
-            //         assignments_completed: '3',
-            //         assignments_pending: '0',
-            //         assignments_rejected: '3',
-            //         count: 9,
-            //         max_assignments: '4',
-            //     },
-            // ],
         }
     },
     methods: {
@@ -278,38 +164,9 @@ export default {
         },
     },
     created() {
-        for (let i = 0; i < this.tmpData.length; i++) {
-            this.totalHITs += this.tmpData[i].count
+        for (let i = 0; i < this.sortedData.length; i++) {
+            this.totalHITs += this.sortedData[i].count
         }
-
-        //data sorting: first completed hits, then incomplete hits (each category ordered by most approved hits  to least approved)
-
-        var arrComp = []
-        var arrNotComp = []
-
-        for (let i = 0; i < this.tmpData.length; i++) {
-            this.tmpData[i].assignments_available > 0 ? arrNotComp.push(this.tmpData[i]) : arrComp.push(this.tmpData[i])
-        }
-
-        arrComp = arrComp.sort(function(a, b) {
-            return (
-                a.assignments_rejected - b.assignments_rejected ||
-                b.assignments_approved - a.assignments_approved ||
-                b.assignments_available - a.assignments_available
-            )
-        })
-
-        arrNotComp = arrNotComp.sort(function(a, b) {
-            return (
-                a.assignments_rejected - b.assignments_rejected ||
-                b.assignments_approved - a.assignments_approved ||
-                b.assignments_available - a.assignments_available
-            )
-        })
-
-        this.sortedData = arrComp.concat(arrNotComp)
-
-        //
 
         //colors and gradients creation
 
@@ -341,9 +198,7 @@ export default {
             grad[i] = 'linear-gradient(rgb(163, 206, 241), ' + grad[i] + ')'
         }
 
-        //console.log(grad)
-
-        this.colors = this.interpolateColors('rgb(14, 173, 105)', 'rgb(14, 173, 105)', pos)
+        this.colors = this.interpolateColors('rgb(14, 173, 105)', 'rgb(49, 203, 0)', pos)
             .concat(this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', neg))
             .concat(grad)
 
