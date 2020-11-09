@@ -3,6 +3,7 @@
         <modalEliminazione v-if="modal" @hideModal="toggleModal" />
         <div class="flex justify-between flex-wrap items-center" v-if="!loading">
             <h1 class="text-2xl text-primary overflow-ellipsis">HIT {{ prjData.values.id_hit }}</h1>
+            <!--
             <div class="flex relative">
                 <span class="tooltip hidden md:block relative md:mr-2">
                     <button
@@ -78,6 +79,7 @@
                     </div>
                 </transition>
             </div>
+            -->
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 mt-2">
             <div class="mr-0 xs2:mr-1">

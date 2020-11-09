@@ -232,8 +232,8 @@
             </span>
         </div>
         <div v-for="(n, i) in titles.length" :key="n" v-else class="">
-            <span class="font-bold ">{{ titles[i] }}:&nbsp;</span>
-            <p class="overflow-ellipsis  ">{{ data[i] }}</p>
+            <span class="font-bold">{{ titles[i] }}:&nbsp;</span>
+            <p class="overflow-ellipsis" v-html="data[i]"></p>
             <hr v-if="n != titles.length" />
         </div>
     </div>
@@ -282,7 +282,9 @@ export default {
                         this.projectData.reward + '$',
                         this.projectData.workers,
                         this.time(parseInt(this.projectData.max_time)),
-                        this.projectData.expiry,
+                        "<span class='flex flex-col xs:flex-row justify-between content-center items-center mb-1'>" +
+                            this.projectData.expiry +
+                            "<span class='tooltip relative ml-2'><button class='ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button><span class='tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1'>Edit expiry</span></span></span>",
                         this.time(parseInt(this.projectData.auto_approve)),
                     ]
                 } else {

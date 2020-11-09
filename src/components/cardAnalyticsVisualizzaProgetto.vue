@@ -23,15 +23,41 @@
                     <span>{{ dati.totale }}</span>
                 </div>
             </div>
-            <div class="flex content-center flex-col sm:flex-row" v-if="dati.type == 'assignment'">
+            <div class="flex content-center flex-row items-center flex-wrap" v-if="dati.type == 'assignment'">
                 <svg style="width:24px;" viewBox="0 0 24 24">
                     <path
                         d="M17,9H7V7H17M17,13H7V11H17M14,17H7V15H14M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z"
                     />
                 </svg>
                 <div>
-                    <span class="font-bold ">Assignment total:&nbsp;</span>
-                    <span>{{ dati.totale }}</span>
+                    <span class="font-bold ">Assignment total:</span>
+                </div>
+                <div class="flex flew-row justify-between ml-1">
+                    <span class="flex items-center">
+                        {{ dati.totale }}
+                    </span>
+                    <span class="tooltip relative ml-2">
+                        <button
+                            class="ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                style="width:24px; height:24px;"
+                            >
+                                <path
+                                    fill="rgba(26, 32, 44, 1)"
+                                    d="M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z" />
+                                />
+                            </svg>
+                            <span class="sr-only">Extend assignments</span>
+                        </button>
+                        <span
+                            class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
+                        >
+                            Extend assignments
+                        </span>
+                    </span>
                 </div>
             </div>
         </div>
