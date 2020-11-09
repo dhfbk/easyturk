@@ -47,6 +47,7 @@
 
         <span v-for="(x, y) in sortedData.length" :key="y">
             <matrixPart :num="sortedData[x - 1]" :color="colors[y]" :total="totalHITs" :hoverColor="hoverArr" />
+            <br v-if="y == totalComp - 1" />
         </span>
         <div class="text-lg mb-1 font-bold">Legend</div>
         <span class="flex flex-row flex-wrap justify-around border rounded p-2 bg-white">
@@ -252,7 +253,7 @@ export default {
             this.hoverArr = arr
         },
         interpolateColors(color1, color2, step) {
-            if (step == 1) return color2
+            if (step == 1) return [color2]
             var stepFactor = 1 / (step - 1)
 
             color1 = color1.match(/\d+/g).map(Number)
@@ -291,39 +292,22 @@ export default {
         }
 
         arrComp = arrComp.sort(function(a, b) {
-            if (a.assignments_rejected == 0) a.assignments_rejected = 0.1
-            if (a.assignments_approved == 0) a.assignments_approved = 0.1
-            if (b.assignments_rejected == 0) b.assignments_rejected = 0.1
-            if (b.assignments_approved == 0) b.assignments_approved = 0.1
-
             return (
-                a.assignments_rejected / a.assignments_approved - b.assignments_rejected / b.assignments_approved ||
                 a.assignments_rejected - b.assignments_rejected ||
-                a.assignments_available - b.assignments_available
+                b.assignments_approved - a.assignments_approved ||
+                b.assignments_available - a.assignments_available
             )
         })
 
         arrNotComp = arrNotComp.sort(function(a, b) {
-            if (a.assignments_rejected == 0) a.assignments_rejected = 0.1
-            if (a.assignments_approved == 0) a.assignments_approved = 0.1
-            if (b.assignments_rejected == 0) b.assignments_rejected = 0.1
-            if (b.assignments_approved == 0) b.assignments_approved = 0.1
-
             return (
-                a.assignments_rejected / a.assignments_approved - b.assignments_rejected / b.assignments_approved ||
                 a.assignments_rejected - b.assignments_rejected ||
-                a.assignments_available - b.assignments_available
+                b.assignments_approved - a.assignments_approved ||
+                b.assignments_available - a.assignments_available
             )
         })
 
-        var tmp = arrComp.concat(arrNotComp)
-
-        for (let i = 0; i < tmp.length; i++) {
-            if (tmp[i].assignments_rejected == 0.1) tmp[i].assignments_rejected = 0
-            if (tmp[i].assignments_approved == 0.1) tmp[i].assignments_approved = 0
-        }
-
-        this.sortedData = tmp
+        this.sortedData = arrComp.concat(arrNotComp)
 
         //
 
@@ -337,8 +321,8 @@ export default {
 
         for (let x = 0; x < this.sortedData.length; x++) {
             if (this.sortedData[x].assignments_available > 0) {
-                this.sortedData[x].assignments_approved > this.sortedData[x].assignments_rejected ? avaPos++ : avaNeg++
-            } else if (this.sortedData[x].assignments_approved > this.sortedData[x].assignments_rejected) {
+                this.sortedData[x].assignments_rejected == 0 ? avaPos++ : avaNeg++
+            } else if (this.sortedData[x].assignments_rejected == 0) {
                 pos++
             } else {
                 neg++
@@ -359,7 +343,7 @@ export default {
 
         //console.log(grad)
 
-        this.colors = this.interpolateColors('rgb(14, 173, 105)', 'rgb(4, 240, 106)', pos)
+        this.colors = this.interpolateColors('rgb(14, 173, 105)', 'rgb(14, 173, 105)', pos)
             .concat(this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', neg))
             .concat(grad)
 
