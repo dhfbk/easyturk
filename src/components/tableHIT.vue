@@ -117,7 +117,7 @@ export default {
                     assignments_available: this.sortedData[i].assignments_available,
                     assignments_approved: this.sortedData[i].assignments_approved,
                     assignments_rejected: this.sortedData[i].assignments_rejected,
-                    id: x,
+                    id: this.sortedData[i].hits[x],
                 }
                 this.totalData.push(hit)
             }
