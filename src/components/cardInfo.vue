@@ -195,6 +195,57 @@
                 </span>
             </div>
         </div>
+        <div v-else-if="mode == 'projectTable'">
+            <div class="rounded border -mx-4 -my-4 overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="">
+                            <th class="text-xs text-white px-1">
+                                TOTAL HITs
+                            </th>
+                            <th class="text-xs text-white px-1">APPROVED</th>
+                            <th class="text-xs text-white px-1">REJECTED</th>
+                            <th class="text-xs text-white px-1">COMPLETED</th>
+                            <th class="text-xs text-white px-1">AVAILABLE</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr v-for="(i, k) in projectData.summary" :key="k" class="hover:bg-gray-100">
+                            <td
+                                class="border-r text-sm text-gray-700 font-medium"
+                                :class="k != projectData.summary.length - 1 ? 'border-b' : ''"
+                            >
+                                {{ i.count }}
+                            </td>
+                            <td
+                                class="border-r text-sm text-gray-700 font-medium"
+                                :class="k != projectData.summary.length - 1 ? 'border-b' : ''"
+                            >
+                                {{ i.assignments_approved }}
+                            </td>
+                            <td
+                                class="border-r text-sm text-gray-700 font-medium"
+                                :class="k != projectData.summary.length - 1 ? 'border-b' : ''"
+                            >
+                                {{ i.assignments_rejected }}
+                            </td>
+                            <td
+                                class="border-r text-sm text-gray-700 font-medium"
+                                :class="k != projectData.summary.length - 1 ? 'border-b' : ''"
+                            >
+                                {{ i.assignments_completed }}
+                            </td>
+                            <td
+                                class="text-sm text-gray-700 font-medium"
+                                :class="k != projectData.summary.length - 1 ? 'border-b' : ''"
+                            >
+                                {{ i.assignments_available }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div v-else-if="mode == 'status'">
             <span class="font-bold ">Status:</span>
             <span class="flex flex-col justify-between buttonsData items-start">
@@ -246,7 +297,6 @@ export default {
         projectData: Object,
         mode: String,
     },
-
     data() {
         return {
             titles: [],
@@ -396,5 +446,27 @@ export default {
     .smallScreenFix4 {
         margin-left: -38px;
     }
+}
+table tr th {
+    background: #0068b4;
+}
+/* top-left border-radius */
+table tr:first-child th:first-child {
+    border-top-left-radius: 0.25rem;
+}
+
+/* top-right border-radius */
+table tr:first-child th:last-child {
+    border-top-right-radius: 0.25rem;
+}
+
+/* bottom-left border-radius */
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 0.25rem;
+}
+
+/* bottom-right border-radius */
+table tr:last-child td:last-child {
+    border-bottom-right-radius: 0.25rem;
 }
 </style>

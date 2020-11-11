@@ -322,97 +322,59 @@
                 </div>
             </div>
         </div>
+        <div class="grid grid-cols-1 xs2:grid-cols-2">
+            <div class="mr-0 xs2:mr-1">
+                <div class="w-full flex flex-col justify-center" v-if="loading">
+                    <loader :type="'cardInfoVisualizza'" />
+                </div>
+                <div v-else>
+                    <cardInfo :projectData="project" :mode="'general'" />
+                </div>
+            </div>
+            <div class="ml-0 xs2:ml-1">
+                <div class="w-full flex flex-col justify-center" v-if="loading">
+                    <loader :type="'cardInfoVisualizza'" />
+                </div>
+                <div v-else>
+                    <cardInfo :projectData="project" :mode="'status'" @modal="toggleModal" />
+                </div>
+            </div>
+        </div>
         <div class="col-span-2 mt-2">
             <loader :type="'progressVisualizza'" v-if="loading" />
             <div class="bg-white rounded shadow-md p-4 mb-4" v-else-if="!loading && project.status == 3">
                 <span class="font-bold">HITs progress:</span>
                 <progressBar :progressData="progressData" />
-                <div class="flex md:flex-row content-center flex-col-reverse">
-                    <div class="md:w-1/2">
-                        <div class="rounded border mr-2 my-2 overflow-x-auto">
-                            <table class="w-full">
-                                <thead>
-                                    <tr class="">
-                                        <th class="text-xs text-white px-1">
-                                            TOTAL HITs
-                                        </th>
-                                        <th class="text-xs text-white px-1">APPROVED</th>
-                                        <th class="text-xs text-white px-1">REJECTED</th>
-                                        <th class="text-xs text-white px-1">COMPLETED</th>
-                                        <th class="text-xs text-white px-1">AVAILABLE</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-center">
-                                    <tr v-for="(i, k) in project.summary" :key="k" class="hover:bg-gray-100">
-                                        <td
-                                            class="border-r py-1 text-sm text-gray-700 font-medium"
-                                            :class="k != project.summary.length - 1 ? 'border-b' : ''"
-                                        >
-                                            {{ i.count }}
-                                        </td>
-                                        <td
-                                            class="py-1 border-r text-sm text-gray-700 font-medium"
-                                            :class="k != project.summary.length - 1 ? 'border-b' : ''"
-                                        >
-                                            {{ i.assignments_approved }}
-                                        </td>
-                                        <td
-                                            class="py-1 border-r text-sm text-gray-700 font-medium"
-                                            :class="k != project.summary.length - 1 ? 'border-b' : ''"
-                                        >
-                                            {{ i.assignments_rejected }}
-                                        </td>
-                                        <td
-                                            class="border-r py-1 text-sm text-gray-700 font-medium"
-                                            :class="k != project.summary.length - 1 ? 'border-b' : ''"
-                                        >
-                                            {{ i.assignments_completed }}
-                                        </td>
-                                        <td
-                                            class="py-1 text-sm text-gray-700 font-medium"
-                                            :class="k != project.summary.length - 1 ? 'border-b' : ''"
-                                        >
-                                            {{ i.assignments_available }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="flex flex-row flex-wrap w-full md:w-1/2 mt-2 self-start ml-2">
-                        <div
-                            class="w-full flex flex-col customFlex xs2:flex-row md:flex-col lg:flex-row justify-around"
-                        >
-                            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
-                                <div class="w-8 h-4 rounded-md bg-green-500 my-1 mr-2"></div>
-                                <span>Submitted</span>
-                            </span>
-                            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
-                                <div class="w-8 h-4 rounded-md bg-blue-500 my-1 mr-2"></div>
-                                <span>Published</span>
-                            </span>
-                            <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
-                                <div class="w-8 h-4 rounded-md bg-gray-400 my-1 mr-2"></div>
-                                <span>Not published</span></span
-                            >
-                        </div>
-                        <span class="w-full">
-                            <div>
-                                <span class="font-bold">Remaining assignments projected:</span>
-                                <span> {{ totalProjected }}</span>
-                            </div>
-                            <hr />
-                            <div>
-                                <span class="font-bold">Assignments approved:</span>
-                                <span> {{ approved }}</span>
-                            </div>
-                            <hr />
-                            <div>
-                                <span class="font-bold">Assignments rejected:</span><span> {{ rejected }}</span>
-                            </div>
-                            <hr />
+                <div class="flex lg:flex-row content-center flex-col width-full mx-auto lg:w-11/12 mt-2">
+                    <div class="w-full flex flex-col customFlex xs2:flex-row justify-around lg:mr-1">
+                        <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
+                            <div class="w-8 h-4 rounded-md bg-green-500 my-1 mr-2"></div>
+                            <span>Submitted</span>
                         </span>
+                        <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
+                            <div class="w-8 h-4 rounded-md bg-blue-500 my-1 mr-2"></div>
+                            <span>Published</span>
+                        </span>
+                        <span class="flex flex-row mb-2 w-full xs2:w-auto">
+                            <div class="w-8 h-4 rounded-md bg-gray-400 my-1 mr-2"></div>
+                            <span>Not published</span></span
+                        >
                     </div>
+                    <span class="w-full lg:ml-1">
+                        <div>
+                            <span class="font-bold">Remaining assignments projected:</span>
+                            <span> {{ totalProjected }}</span>
+                        </div>
+                        <hr />
+                        <div>
+                            <span class="font-bold">Assignments approved:</span>
+                            <span> {{ approved }}</span>
+                        </div>
+                        <hr />
+                        <div>
+                            <span class="font-bold">Assignments rejected:</span><span> {{ rejected }}</span>
+                        </div>
+                    </span>
                 </div>
                 <button
                     @click="
@@ -431,12 +393,11 @@
         <div class="grid grid-cols-1 xs2:grid-cols-2">
             <div class="mr-0 xs2:mr-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading">
-                    <loader :type="'cardInfoVisualizza'" v-for="n in 4" :key="n" />
+                    <loader :type="'cardInfoVisualizza'" v-for="n in 3" :key="n" />
                 </div>
                 <div v-else>
-                    <cardInfo :projectData="project" :mode="'general'" />
-                    <cardInfo :projectData="project" :mode="'layout'" />
-                    <cardInfo :projectData="project" :mode="'status'" @modal="toggleModal" />
+                    <cardInfo :projectData="project" :mode="'projectTable'" v-if="project.status == 3" />
+                    <cardInfo :projectData="project" :mode="'csv'" @modal="toggleModal" />
                     <cardInfo v-if="project.status > 0" :projectData="project" :mode="'hits'" />
                 </div>
             </div>
@@ -445,9 +406,9 @@
                     <loader :type="'cardInfoVisualizza'" v-for="n in 3" :key="n" />
                 </div>
                 <div v-else>
+                    <cardInfo :projectData="project" :mode="'layout'" />
                     <cardInfo :projectData="project" :mode="'payment'" />
                     <cardInfo :projectData="project" :mode="'qualifications'" />
-                    <cardInfo :projectData="project" :mode="'csv'" @modal="toggleModal" />
                     <!--
                         <cardAnalytics
                         :dati="datiCardAnalytics.cardHIT"
@@ -687,28 +648,6 @@ export default {
     visibility: visible;
     opacity: 85%;
 } */
-table tr th {
-    background: #0068b4;
-}
-/* top-left border-radius */
-table tr:first-child th:first-child {
-    border-top-left-radius: 0.25rem;
-}
-
-/* top-right border-radius */
-table tr:first-child th:last-child {
-    border-top-right-radius: 0.25rem;
-}
-
-/* bottom-left border-radius */
-table tr:last-child td:first-child {
-    border-bottom-left-radius: 0.25rem;
-}
-
-/* bottom-right border-radius */
-table tr:last-child td:last-child {
-    border-bottom-right-radius: 0.25rem;
-}
 @media (max-width: 476px) {
     .customFlex {
         flex-direction: column;
