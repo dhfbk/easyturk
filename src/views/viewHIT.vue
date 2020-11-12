@@ -1,5 +1,5 @@
 <template>
-    <div class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 ">
+    <div class="relative lg:w-5/6 pt-2 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <modalEliminazione v-if="modal" @hideModal="toggleModal" />
         <div class="flex justify-between flex-wrap items-center" v-if="!loading">
             <h1 class="text-2xl text-primary overflow-ellipsis">HIT {{ prjData.values.id_hit }}</h1>

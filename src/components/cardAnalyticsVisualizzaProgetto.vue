@@ -36,28 +36,20 @@
                     <span class="flex items-center">
                         {{ dati.totale }}
                     </span>
-                    <span class="tooltip relative ml-2">
-                        <button
-                            class="ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                style="width:24px; height:24px;"
-                            >
-                                <path
-                                    fill="rgba(26, 32, 44, 1)"
-                                    d="M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z" />
-                                />
-                            </svg>
-                            <span class="sr-only">Extend assignments</span>
-                        </button>
-                        <span
-                            class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1"
-                        >
-                            Extend assignments
-                        </span>
-                    </span>
+                    <button
+                        :content="'Extend assignments'"
+                        v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                        class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:24px; height:24px;">
+                            <path
+                                fill="rgba(26, 32, 44, 1)"
+                                d="M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z"
+                            />
+                            />
+                        </svg>
+                        <span class="sr-only">Extend assignments</span>
+                    </button>
                 </div>
             </div>
         </div>

@@ -16,6 +16,7 @@
         "vue-click-outside": "^1.1.0",
         "vue-ellipse-progress": "^1.2.0",
         "vue-router": "^3.2.0",
+        "vue-tippy": "^4.7.2",
         "vuelidate": "^0.7.5",
         "vuex": "^3.5.1"
     },

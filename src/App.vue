@@ -8,8 +8,8 @@
             <p>You are using the sandbox version</p>
         </div>
         <snack-bar :msg="messaggio" v-if="snack" />
-        <transition name="fade" mode="out-in">
-            <router-view v-if="!wait" @snackbar="showSnack" @sandbox="setSandbox" />
+        <transition name="fade" mode="out-in" v-if="!wait">
+            <router-view @snackbar="showSnack" @sandbox="setSandbox" />
         </transition>
     </div>
 </template>
@@ -30,22 +30,32 @@ export default {
             messaggio: '',
             sandbox: false,
             wait: true,
-            timeout: 4000
+            timeout: 4000,
         }
     },
     created() {
         axios
-            .get(this.APIURL + '?action=getOptions')
-            .then(res => {
-                this.$store.state.defaults = res.data.defaults
-                this.wait = false
-                //this.loadingProjects = false
+            .get(this.APIURL + '?action=login&username=user&password=pippo')
+            .then(() => {
+                this.setDefault()
             })
             .catch(err => {
-                console.log(err)
+                console.error(err)
             })
     },
     methods: {
+        setDefault() {
+            axios
+                .get(this.APIURL + '?action=getOptions')
+                .then(res => {
+                    this.$store.state.defaults = res.data.defaults
+                    this.wait = false
+                    //this.loadingProjects = false
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
         setSandbox(show) {
             this.sandbox = show
             if (show == 1) {

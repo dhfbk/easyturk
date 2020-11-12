@@ -27,34 +27,22 @@
                             >
                                 View data
                             </button>
-                            <span class="tooltip relative ml-2" v-if="projectData.status < 1">
-                                <button
-                                    @click="$emit('modal', 'std')"
-                                    class="tooltip ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
-                                >
-                                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                        <path
-                                            fill="rgba(26, 32, 44, 1)"
-                                            d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M12,17V15H7V17H12M17,11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11M17,9V7H7V9H17Z"
-                                        />
-                                    </svg>
-                                    <span class="sr-only" v-if="projectData.numData > 0">Overwrite standard csv</span>
-                                    <span class="sr-only" v-else>Upload standard csv</span>
-                                </button>
-                                <span
-                                    v-if="projectData.numData > 0"
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix1"
-                                >
-                                    Overwrite standard csv
-                                </span>
-
-                                <span
-                                    v-else
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix2"
-                                >
-                                    Upload standard csv
-                                </span>
-                            </span>
+                            <button
+                                v-if="projectData.status < 1"
+                                :content="projectData.numData > 0 ? 'Overwrite standard csv' : 'Upload standard csv'"
+                                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                                @click="$emit('modal', 'std')"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                            >
+                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                    <path
+                                        fill="rgba(26, 32, 44, 1)"
+                                        d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M12,17V15H7V17H12M17,11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11M17,9V7H7V9H17Z"
+                                    />
+                                </svg>
+                                <span class="sr-only" v-if="projectData.numData > 0">Overwrite standard csv</span>
+                                <span class="sr-only" v-else>Upload standard csv</span>
+                            </button>
                         </span>
                     </div>
                 </span>
@@ -64,25 +52,21 @@
                             <span>Data:&nbsp;</span><span class="text-red-500"> not uploaded</span>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
-                            <span class="tooltip relative ml-2" v-if="projectData.status < 1">
-                                <button
-                                    @click="$emit('modal', 'std')"
-                                    class="tooltip ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
-                                >
-                                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                        <path
-                                            fill="rgba(26, 32, 44, 1)"
-                                            d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M12,17V15H7V17H12M17,11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11M17,9V7H7V9H17Z"
-                                        />
-                                    </svg>
-                                    <span class="sr-only">Upload standard csv</span>
-                                </button>
-                                <span
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix2"
-                                >
-                                    Upload standard csv
-                                </span>
-                            </span>
+                            <button
+                                v-if="projectData.status < 1"
+                                :content="'Upload standard csv'"
+                                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                                @click="$emit('modal', 'std')"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                            >
+                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                    <path
+                                        fill="rgba(26, 32, 44, 1)"
+                                        d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M12,17V15H7V17H12M17,11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11M17,9V7H7V9H17Z"
+                                    />
+                                </svg>
+                                <span class="sr-only">Upload standard csv</span>
+                            </button>
                         </span>
                     </div>
                 </span>
@@ -113,44 +97,33 @@
                             >
                                 View gold
                             </button>
-                            <span class="tooltip relative ml-2" v-if="projectData.status < 1">
-                                <button
-                                    @click="$emit('modal', 'gld')"
-                                    :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                    class="ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                            <button
+                                v-if="projectData.status < 1"
+                                :content="projectData.numGold > 0 ? 'Overwrite gold csv' : 'Upload gold csv'"
+                                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                                @click="$emit('modal', 'gld')"
+                                :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    style="width:24px; height:24px;"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        style="width:24px; height:24px;"
-                                    >
+                                    <path
+                                        fill="rgba(26, 32, 44, 1)"
+                                        d="m11.99806,14.99892l-5,0l0,2l5,0m5,-6l-10,0l0,2l7.69,0c-1.62,1.07 -2.69,2.91 -2.69,5c0,1.09 0.29,2.12 0.8,3l-7.8,0c-1.11,0 -2,-0.9 -2,-2l0,-14c0,-1.11 0.89,-2 2,-2l14,0a2,2 0 0 1 2,2l0,7.8c-0.88,-0.51 -1.91,-0.8 -3,-0.8l-1,0.08l0,-1.08m0,-2l0,-2l-10,0l0,2"
+                                    />
+                                    <g>
                                         <path
                                             fill="rgba(26, 32, 44, 1)"
-                                            d="m11.99806,14.99892l-5,0l0,2l5,0m5,-6l-10,0l0,2l7.69,0c-1.62,1.07 -2.69,2.91 -2.69,5c0,1.09 0.29,2.12 0.8,3l-7.8,0c-1.11,0 -2,-0.9 -2,-2l0,-14c0,-1.11 0.89,-2 2,-2l14,0a2,2 0 0 1 2,2l0,7.8c-0.88,-0.51 -1.91,-0.8 -3,-0.8l-1,0.08l0,-1.08m0,-2l0,-2l-10,0l0,2"
+                                            d="m15.75665,19.4418l1.01849,0c0,0.54999 0.69767,1.01849 1.52774,1.01849c0.83007,0 1.52774,-0.46851 1.52774,-1.01849c0,-0.56017 -0.52962,-0.76387 -1.64996,-1.03377c-1.0796,-0.2699 -2.42402,-0.606 -2.42402,-2.02171c0,-0.91155 0.74859,-1.68561 1.78237,-1.94532l0,-1.11016l1.52774,0l0,1.11016c1.03377,0.25972 1.78237,1.03377 1.78237,1.94532l-1.01849,0c0,-0.54999 -0.69767,-1.01849 -1.52774,-1.01849c-0.83007,0 -1.52774,0.46851 -1.52774,1.01849c0,0.56017 0.52962,0.76387 1.64996,1.03377c1.0796,0.2699 2.42402,0.606 2.42402,2.02171c0,0.91155 -0.74859,1.68561 -1.78237,1.94532l0,1.11016l-1.52774,0l0,-1.11016c-1.03377,-0.25972 -1.78237,-1.03377 -1.78237,-1.94532z"
                                         />
-                                        <g>
-                                            <path
-                                                fill="rgba(26, 32, 44, 1)"
-                                                d="m15.75665,19.4418l1.01849,0c0,0.54999 0.69767,1.01849 1.52774,1.01849c0.83007,0 1.52774,-0.46851 1.52774,-1.01849c0,-0.56017 -0.52962,-0.76387 -1.64996,-1.03377c-1.0796,-0.2699 -2.42402,-0.606 -2.42402,-2.02171c0,-0.91155 0.74859,-1.68561 1.78237,-1.94532l0,-1.11016l1.52774,0l0,1.11016c1.03377,0.25972 1.78237,1.03377 1.78237,1.94532l-1.01849,0c0,-0.54999 -0.69767,-1.01849 -1.52774,-1.01849c-0.83007,0 -1.52774,0.46851 -1.52774,1.01849c0,0.56017 0.52962,0.76387 1.64996,1.03377c1.0796,0.2699 2.42402,0.606 2.42402,2.02171c0,0.91155 -0.74859,1.68561 -1.78237,1.94532l0,1.11016l-1.52774,0l0,-1.11016c-1.03377,-0.25972 -1.78237,-1.03377 -1.78237,-1.94532z"
-                                            />
-                                        </g>
-                                    </svg>
-                                    <span class="sr-only" v-if="projectData.numGold > 0">Overwrite gold csv</span>
-                                    <span class="sr-only" v-else>Upload gold csv</span>
-                                </button>
-                                <span
-                                    v-if="projectData.numGold > 0"
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix3"
-                                >
-                                    Overwrite gold csv
-                                </span>
-                                <span
-                                    v-else
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix4"
-                                >
-                                    Upload gold csv
-                                </span>
-                            </span>
+                                    </g>
+                                </svg>
+                                <span class="sr-only" v-if="projectData.numGold > 0">Overwrite gold csv</span>
+                                <span class="sr-only" v-else>Upload gold csv</span>
+                            </button>
                         </span>
                     </div>
                 </span>
@@ -160,36 +133,32 @@
                             <span>Gold:&nbsp;</span><span class="text-red-500"> not uploaded</span>
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
-                            <span class="tooltip relative ml-2" v-if="projectData.status < 1">
-                                <button
-                                    @click="$emit('modal', 'gld')"
-                                    :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                    class="ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                            <button
+                                v-if="projectData.status < 1"
+                                :content="'Upload gold csv'"
+                                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                                @click="$emit('modal', 'gld')"
+                                :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    style="width:24px; height:24px;"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        style="width:24px; height:24px;"
-                                    >
+                                    <path
+                                        fill="rgba(26, 32, 44, 1)"
+                                        d="m11.99806,14.99892l-5,0l0,2l5,0m5,-6l-10,0l0,2l7.69,0c-1.62,1.07 -2.69,2.91 -2.69,5c0,1.09 0.29,2.12 0.8,3l-7.8,0c-1.11,0 -2,-0.9 -2,-2l0,-14c0,-1.11 0.89,-2 2,-2l14,0a2,2 0 0 1 2,2l0,7.8c-0.88,-0.51 -1.91,-0.8 -3,-0.8l-1,0.08l0,-1.08m0,-2l0,-2l-10,0l0,2"
+                                    />
+                                    <g>
                                         <path
                                             fill="rgba(26, 32, 44, 1)"
-                                            d="m11.99806,14.99892l-5,0l0,2l5,0m5,-6l-10,0l0,2l7.69,0c-1.62,1.07 -2.69,2.91 -2.69,5c0,1.09 0.29,2.12 0.8,3l-7.8,0c-1.11,0 -2,-0.9 -2,-2l0,-14c0,-1.11 0.89,-2 2,-2l14,0a2,2 0 0 1 2,2l0,7.8c-0.88,-0.51 -1.91,-0.8 -3,-0.8l-1,0.08l0,-1.08m0,-2l0,-2l-10,0l0,2"
+                                            d="m15.75665,19.4418l1.01849,0c0,0.54999 0.69767,1.01849 1.52774,1.01849c0.83007,0 1.52774,-0.46851 1.52774,-1.01849c0,-0.56017 -0.52962,-0.76387 -1.64996,-1.03377c-1.0796,-0.2699 -2.42402,-0.606 -2.42402,-2.02171c0,-0.91155 0.74859,-1.68561 1.78237,-1.94532l0,-1.11016l1.52774,0l0,1.11016c1.03377,0.25972 1.78237,1.03377 1.78237,1.94532l-1.01849,0c0,-0.54999 -0.69767,-1.01849 -1.52774,-1.01849c-0.83007,0 -1.52774,0.46851 -1.52774,1.01849c0,0.56017 0.52962,0.76387 1.64996,1.03377c1.0796,0.2699 2.42402,0.606 2.42402,2.02171c0,0.91155 -0.74859,1.68561 -1.78237,1.94532l0,1.11016l-1.52774,0l0,-1.11016c-1.03377,-0.25972 -1.78237,-1.03377 -1.78237,-1.94532z"
                                         />
-                                        <g>
-                                            <path
-                                                fill="rgba(26, 32, 44, 1)"
-                                                d="m15.75665,19.4418l1.01849,0c0,0.54999 0.69767,1.01849 1.52774,1.01849c0.83007,0 1.52774,-0.46851 1.52774,-1.01849c0,-0.56017 -0.52962,-0.76387 -1.64996,-1.03377c-1.0796,-0.2699 -2.42402,-0.606 -2.42402,-2.02171c0,-0.91155 0.74859,-1.68561 1.78237,-1.94532l0,-1.11016l1.52774,0l0,1.11016c1.03377,0.25972 1.78237,1.03377 1.78237,1.94532l-1.01849,0c0,-0.54999 -0.69767,-1.01849 -1.52774,-1.01849c-0.83007,0 -1.52774,0.46851 -1.52774,1.01849c0,0.56017 0.52962,0.76387 1.64996,1.03377c1.0796,0.2699 2.42402,0.606 2.42402,2.02171c0,0.91155 -0.74859,1.68561 -1.78237,1.94532l0,1.11016l-1.52774,0l0,-1.11016c-1.03377,-0.25972 -1.78237,-1.03377 -1.78237,-1.94532z"
-                                            />
-                                        </g>
-                                    </svg>
-                                    <span class="sr-only">Upload gold csv</span>
-                                </button>
-                                <span
-                                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1 smallScreenFix4"
-                                >
-                                    Upload gold csv
-                                </span>
-                            </span>
+                                    </g>
+                                </svg>
+                                <span class="sr-only">Upload gold csv</span>
+                            </button>
                         </span>
                     </div>
                 </span>
@@ -334,7 +303,9 @@ export default {
                         this.time(parseInt(this.projectData.max_time)),
                         "<span class='flex flex-col xs:flex-row justify-between content-center items-center mb-1'>" +
                             this.projectData.expiry +
-                            "<span class='tooltip relative ml-2'><button class='ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button><span class='tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-1'>Edit expiry</span></span></span>",
+                            "<button :content='Edit expiry' v-tippy='" +
+                            "{ placement: 'bottom', arrow: false, theme: 'google' }" +
+                            "' class='ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button>",
                         this.time(parseInt(this.projectData.auto_approve)),
                     ]
                 } else {
