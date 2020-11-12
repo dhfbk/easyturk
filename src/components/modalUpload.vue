@@ -82,6 +82,7 @@
                                     v-model="delimiter"
                                 >
                                     <option value="" disabled selected hidden>Choose delimiter...</option>
+                                    <option value="none">None</option>
                                     <option value="double">"</option>
                                     <option value="single">'</option>
                                     <!--<option value="none">None</option>-->

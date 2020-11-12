@@ -217,6 +217,30 @@ export default {
     transform: translateY(50%) !important;
     -webkit-transform: translateX(-50%) !important;
 }
+
+.tooltip .tooltip-text {
+    visibility      : hidden;
+    text-align      : center;
+    padding         : 4px 8px;
+    z-index         : 100;
+    left            : 0;
+    transition      : opacity .15s ease-out !important;
+    opacity         : 0;
+    transition-delay: 0.15s;
+}
+
+.tooltip-text {
+    font-weight      : 500;
+    left             : 50% !important;
+    -webkit-transform: translateX(-50%) !important;
+    transform        : translateX(-50%) !important;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    transition: opacity .2s ease-out !important;
+    opacity   : 85%;
+}
 @media (max-width: 460px) {
     .tooltip-text {
         visibility: hidden !important;
