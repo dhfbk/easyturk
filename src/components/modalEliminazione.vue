@@ -51,9 +51,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-//let $ = require('jquery')
-
 export default {
     name: 'modalEliminazione',
     props: { id: String },
@@ -79,10 +76,7 @@ export default {
         deleteProject() {
             //var self = this
             this.loading = true
-            axios({
-                url: this.APIURL + '?action=deleteProject&id=' + this.id,
-                method: 'get',
-            })
+            this.API.get('?action=deleteProject&id=' + this.id)
                 .then(res => {
                     console.log(res.data.result)
                     this.loading = false

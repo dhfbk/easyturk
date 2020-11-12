@@ -79,7 +79,6 @@
 import firstPart from '../components/firstPartLayoutModal.vue'
 import secondPart from '../components/secondPartLayoutModal.vue'
 import thirdPart from '../components/thirdPartLayoutModal.vue'
-import axios from 'axios'
 const { required, between } = require('vuelidate/lib/validators')
 const notEmpty = value => value != ''
 
@@ -174,8 +173,8 @@ export default {
             this.$v.$touch()
             if (!this.$v.$invalid || (this.rejectIfGoldWrong == 0 && this.$v.rejectReason.$invalid)) {
                 this.loading = true
-                var url = this.APIURL + '?action=updateProjectStatus'
-                axios({
+                var url = '?action=updateProjectStatus'
+                this.API({
                     method: 'post',
                     url: url,
                     data: {
@@ -207,9 +206,10 @@ export default {
                     })
             }
         },
+        //check the url
         getCsvFields() {
-            var url = this.APIURL + '?action=getData&id=' + this.project.id + '&howMany=1&page=1&isGold=0'
-            axios
+            var url = '?action=getData&id=' + this.project.id + '&howMany=1&page=1&isGold=0'
+            this.API
                 .get(url)
                 .then(res => {
                     this.csvValues = res.data.fields

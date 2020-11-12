@@ -172,7 +172,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 const { required } = require('vuelidate/lib/validators')
 const notEmpty = value => value != ''
 
@@ -249,8 +248,8 @@ export default {
                         formData.append('isGold', 0)
                     }
                     formData.append('fieldTitles', this.customTitles)
-                    axios
-                        .post(this.APIURL + '?action=uploadFile', formData, {
+                    this.API
+                        .post('?action=uploadFile', formData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data',
                             },

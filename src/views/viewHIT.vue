@@ -111,7 +111,6 @@ import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import loader from '../components/loader.vue'
-import axios from 'axios'
 
 export default {
     name: 'viewHIT',
@@ -147,10 +146,7 @@ export default {
     },
     methods: {
         getData() {
-            axios({
-                method: 'get',
-                url: this.APIURL + '?action=getHitInfo&hitID=' + this.$route.params.hitId,
-            })
+            this.API.get('?action=getHitInfo&hitID=' + this.$route.params.hitId)
                 .then(res => {
                     this.prjData = res.data
                     var tmpDate = new Date(res.data.values.hit_info.Expiration)

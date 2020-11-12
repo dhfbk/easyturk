@@ -35,7 +35,6 @@
 <script>
 import tableHIT from '../components/tableHIT.vue'
 import dotMatrixHIT from '../components/dotMatrixHIT.vue'
-import axios from 'axios'
 export default {
     name: 'HITList',
     components: {
@@ -57,8 +56,8 @@ export default {
     methods: {
         getData() {
             this.id = this.$route.params.projectId
-            axios
-                .get(this.APIURL + '?action=getProjectInfo&id=' + this.id)
+            this.API
+                .get('?action=getProjectInfo&id=' + this.id)
                 .then(res => {
                     this.progressData = res.data.summary
 

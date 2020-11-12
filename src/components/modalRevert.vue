@@ -52,8 +52,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
     name: 'modalRevert',
     props: { id: String, toStatus: Number },
@@ -82,9 +80,9 @@ export default {
         },
         revertProject() {
             this.loading = true
-            axios({
+            this.API({
                 method: 'post',
-                url: this.APIURL + '?action=updateProjectStatus&id=' + this.id,
+                url: '?action=updateProjectStatus&id=' + this.id,
                 data: {
                     toStatus: this.toStatus,
                 },

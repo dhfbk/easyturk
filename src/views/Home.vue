@@ -196,8 +196,7 @@ export default {
     },
     methods: {
         getPrjData() {
-            axios
-                .get(this.APIURL + '?action=listProjects')
+            this.API.get('?action=listProjects')
                 .then(res => {
                     this.projects = res.data.values
                     this.loadingProjects = false
@@ -207,8 +206,7 @@ export default {
                 })
         },
         getData() {
-            axios
-                .all([axios.get(this.APIURL + '?action=listProjects'), axios.get(this.APIURL + '?action=getUserInfo')])
+            axios.all([this.API.get('?action=listProjects'), this.API.get('?action=getUserInfo')])
                 .then(
                     axios.spread((...responses) => {
                         this.projects = responses[0].data.values

@@ -17,7 +17,6 @@
 <script>
 import navbar from './components/navBar.vue'
 import snackBar from './components/snackBar.vue'
-import axios from 'axios'
 export default {
     components: {
         navbar,
@@ -34,8 +33,7 @@ export default {
         }
     },
     created() {
-        axios
-            .get(this.APIURL + '?action=login&username=user&password=pippo')
+        this.API.get('?action=login&username=user&password=pippo')
             .then(() => {
                 this.setDefault()
             })
@@ -45,8 +43,7 @@ export default {
     },
     methods: {
         setDefault() {
-            axios
-                .get(this.APIURL + '?action=getOptions')
+            this.API.get('?action=getOptions')
                 .then(res => {
                     this.$store.state.defaults = res.data.defaults
                     this.wait = false

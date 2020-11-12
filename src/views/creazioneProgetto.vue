@@ -315,28 +315,22 @@
                         required
                     />
                     <span class="absolute right-0">
-                        <span class="tooltip relative">
-                            <button
-                                @click="downloadLayoutId"
-                                type="button"
-                                class="bg-transparent py-2 px-2 rounded focus:outline-none"
-                                style="width: 40px; height: 40px"
-                                :class="downloadID ? 'animate__heartBeat' : ''"
-                            >
-                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                    <path
-                                        d="M7.5,5.6L5,7L6.4,4.5L5,2L7.5,3.4L10,2L8.6,4.5L10,7L7.5,5.6M19.5,15.4L22,14L20.6,16.5L22,19L19.5,17.6L17,19L18.4,16.5L17,14L19.5,15.4M22,2L20.6,4.5L22,7L19.5,5.6L17,7L18.4,4.5L17,2L19.5,3.4L22,2M13.34,12.78L15.78,10.34L13.66,8.22L11.22,10.66L13.34,12.78M14.37,7.29L16.71,9.63C17.1,10 17.1,10.65 16.71,11.04L5.04,22.71C4.65,23.1 4,23.1 3.63,22.71L1.29,20.37C0.9,20 0.9,19.35 1.29,18.96L12.96,7.29C13.35,6.9 14,6.9 14.37,7.29Z"
-                                    />
-                                </svg>
-                                <span class="sr-only">Load examples per hit and params fields for this layout</span>
-                            </button>
-                            <span
-                                class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-12 -ml-27"
-                                >Load examples per hit <br />
-                                and params fields <br />
-                                for this layout</span
-                            >
-                        </span>
+                        <button
+                            @click="downloadLayoutId"
+                            :content="'Load examples per hit\nand params fields\nfor this layout'"
+                            v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                            type="button"
+                            class="bg-transparent py-2 px-2 rounded focus:outline-none"
+                            style="width: 40px; height: 40px"
+                            :class="downloadID ? 'animate__heartBeat' : ''"
+                        >
+                            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <path
+                                    d="M7.5,5.6L5,7L6.4,4.5L5,2L7.5,3.4L10,2L8.6,4.5L10,7L7.5,5.6M19.5,15.4L22,14L20.6,16.5L22,19L19.5,17.6L17,19L18.4,16.5L17,14L19.5,15.4M22,2L20.6,4.5L22,7L19.5,5.6L17,7L18.4,4.5L17,2L19.5,3.4L22,2M13.34,12.78L15.78,10.34L13.66,8.22L11.22,10.66L13.34,12.78M14.37,7.29L16.71,9.63C17.1,10 17.1,10.65 16.71,11.04L5.04,22.71C4.65,23.1 4,23.1 3.63,22.71L1.29,20.37C0.9,20 0.9,19.35 1.29,18.96L12.96,7.29C13.35,6.9 14,6.9 14.37,7.29Z"
+                                />
+                            </svg>
+                            <span class="sr-only">Load examples per hit and params fields for this layout</span>
+                        </button>
                     </span>
                 </div>
                 <p class="text-gray-700 text-xs italic mt-2">
@@ -578,7 +572,6 @@
 </template>
 
 <script>
-//let $ = require('jquery')
 import axios from 'axios'
 const { required } = require('vuelidate/lib/validators')
 
@@ -793,10 +786,7 @@ export default {
         },
         downloadLayoutId() {
             this.downloadID = true
-            axios({
-                url: this.APIURL + '?action=testLayout&layout_id=' + '3STE4BH37WDDZU4T6EST3NHZXYBYHI',
-                method: 'get',
-            }).then(res => {
+            this.API.get('?action=testLayout&layout_id=' + this.layout_id).then(res => {
                 this.downloadID = false
                 this.params_fields = res.data.params_fields
                 this.params = parseInt(res.data.examples_per_hit)
@@ -811,8 +801,8 @@ export default {
             this.$emit('snackbar', msg)
         },
         getDatiPrj() {
-            axios({
-                url: this.APIURL + '?action=getProjectInfo&id=' + this.$route.params.projectId,
+            this.API({
+                url: '?action=getProjectInfo&id=' + this.$route.params.projectId,
                 method: 'get',
             })
                 .then(res => {
@@ -870,11 +860,11 @@ export default {
                 this.elaboraTempo('max_time')
                 this.elaboraTempo('expiry')
                 this.elaboraTempo('auto_approve')
-                var url = this.APIURL + '?action=addProject'
+                var url = '?action=addProject'
                 if (this.mode == 'edit') {
                     url = url + '&id=' + this.id
                 }
-                axios({
+                this.API({
                     method: 'post',
                     url: url,
                     data: {

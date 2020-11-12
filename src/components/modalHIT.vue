@@ -171,7 +171,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 const { required } = require('vuelidate/lib/validators')
 const notEmpty = value => value != ''
 
@@ -239,12 +238,12 @@ export default {
             this.$v.$touch()
             if (!this.$v.$invalid) {
                 this.loading = true
-                var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
+                var url = '?action=updateProjectStatus&id=' + this.id
                 var deleteExceedingValues = 0
                 if (this.leftover == 'no_use') {
                     deleteExceedingValues = 1
                 }
-                axios({
+                this.API({
                     method: 'post',
                     url: url,
                     data: {

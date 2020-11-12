@@ -96,7 +96,6 @@
 <script>
 //aggiungere calcolo per le qualifications master e adult
 const { required, between } = require('vuelidate/lib/validators')
-import axios from 'axios'
 export default {
     name: 'modalLaunch',
     data() {
@@ -121,8 +120,8 @@ export default {
         this.hitMax = parseInt(this.hitsTotal) - parseInt(this.hitsSubmitted)
         this.calculatePrice()
         if (this.$route.name == 'Home') {
-            axios
-                .get(this.APIURL + '?action=getProjectInfo&id=' + this.id)
+            this.API
+                .get('?action=getProjectInfo&id=' + this.id)
                 .then(res => {
                     this.$emit('changeQualification', res.data.values.master)
                 })
@@ -191,8 +190,8 @@ export default {
             }
             if (!this.$v.$invalid) {
                 this.loading = true
-                var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
-                axios({
+                var url = '?action=updateProjectStatus&id=' + this.id
+                this.API({
                     method: 'post',
                     url: url,
                     data: {

@@ -1,21 +1,16 @@
 <template>
     <div class="block lg:w-5/6 mx-2 xs2:mx-4 lg:mx-auto pt-2">
-        <span class="tooltip relative">
-            <button
-                @click="$router.go(-1)"
-                class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
-            >
-                <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
-                </svg>
-                <span class="sr-only">Back to project</span>
-            </button>
-            <span
-                class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light mt-12"
-            >
-                Back
-            </span>
-        </span>
+        <button
+            @click="$router.go(-1)"
+            :content="'Back'"
+            v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+            class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
+        >
+            <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+            </svg>
+            <span class="sr-only">Back to project</span>
+        </button>
         <p class="text-md sm:text-lg md:text-xl text-primary mr-auto ml-2 overflow-ellipsis">{{ filename }}</p>
         <div class="flex flex-row justify-start mr-auto mb-1 ml-2">
             <p class="text-md my-auto mr-1">Results per page:</p>
@@ -85,7 +80,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import loader from '../components/loader'
 
 export default {
@@ -118,7 +112,6 @@ export default {
         update() {
             this.loading = true
             var url =
-                this.APIURL +
                 '?action=getData&id=' +
                 this.projectId +
                 '&howMany=' +
@@ -127,8 +120,7 @@ export default {
                 this.page +
                 '&isGold=' +
                 this.isGold
-            axios
-                .get(url)
+            this.API.get(url)
                 .then(res => {
                     console.log(res.data)
                     this.current = res.data.data
