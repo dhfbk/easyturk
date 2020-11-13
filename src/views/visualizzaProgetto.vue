@@ -37,6 +37,14 @@
             :priceData="priceData"
             :qualifications="qualifications"
         />
+        <modalCsvEliminazione
+            :isGold="isGold"
+            :id="id"
+            @close="uploaded"
+            v-if="modalCsvElim"
+            @deleteModal="toggleModal"
+            :goldUploaded="goldUploaded"
+        />
         <div v-if="!loading" class="flex justify-between flex-wrap items-center">
             <h1 class="text-2xl text-primary w-auto inline-block">{{ project.name }}</h1>
             <div class="sm:w-auto w-full flex relative justify-end content-center items-center float-right">
@@ -284,11 +292,6 @@
                 </div>
                 <span class="w-full lg:ml-1">
                     <div>
-                        <span class="font-bold">Remaining assignments projected:</span>
-                        <span> {{ totalProjected }}</span>
-                    </div>
-                    <hr />
-                    <div>
                         <span class="font-bold">Assignments approved:</span>
                         <span> {{ approved }}</span>
                     </div>
@@ -355,6 +358,7 @@ import modalLayout from '../components/modalLayout.vue'
 import modalLaunch from '../components/modalLaunch.vue'
 import loader from '../components/loader.vue'
 import modalInstructions from '../components/modalInstructions.vue'
+import modalCsvEliminazione from '../components/modalCsvEliminazione.vue'
 import progressBar from '../components/progressBar'
 
 export default {
@@ -371,6 +375,7 @@ export default {
         modalRevert,
         modalLayout,
         modalInstructions,
+        modalCsvEliminazione,
         modalLaunch,
         loader,
         progressBar,
@@ -387,6 +392,7 @@ export default {
             modalLayout: false,
             modalInstructions: false,
             modalLaunch: false,
+            modalCsvElim: false,
             loading: true,
             project: [],
             hitsSubmitted: 0,
@@ -396,7 +402,8 @@ export default {
             progressData: {},
             approved: 0,
             rejected: 0,
-            totalProjected: 0,
+            isGold: null,
+            goldUploaded: false,
         }
     },
     created() {
@@ -415,6 +422,7 @@ export default {
             }
         },
         getDatiPrj() {
+            console.log('entrato nel refresh!!!')
             this.id = this.$route.params.projectId
             this.API.get('?action=getProjectInfo&id=' + this.id)
                 .then(res => {
@@ -428,6 +436,7 @@ export default {
                     this.qualifications.master = res.data.values.master
                     this.project.hits_inserted = res.data.hits_inserted
                     this.project.summary = res.data.summary
+                    this.goldUploaded = res.data.numGold > 0
                     console.log(res.data)
                     if ((this.project.status == 2 || this.project.status == 3) && this.hitsTotal > this.hitsSubmitted) {
                         this.priceData.reward = parseFloat(this.project.reward)
@@ -499,6 +508,12 @@ export default {
                 this.modalLayout = !this.modalLayout
             } else if (mode == 'instructions') {
                 this.modalInstructions = !this.modalInstructions
+            } else if (mode == 'deleteGld') {
+                this.isGold = 1
+                this.modalCsvElim = !this.modalCsvElim
+            } else if (mode == 'deleteStd') {
+                this.isGold = 0
+                this.modalCsvElim = !this.modalCsvElim
             } else if (mode == 'launch') {
                 if (this.hitsSubmitted == this.hitsTotal) {
                     this.$emit('snackbar', 'All HITs have already been submitted', '')
