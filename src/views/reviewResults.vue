@@ -1,6 +1,19 @@
 <template>
     <div class="relative lg:w-5/6 pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
-        <p class="text-2xl mb-4 text-primary">Review results</p>
+        <button
+            @click="$router.go(-1)"
+            :content="'Back'"
+            v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+            class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
+        >
+            <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+            </svg>
+            <span class="sr-only">Back</span>
+        </button>
+        <p class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">
+            Review results
+        </p>
         <div class="container mx-auto">
             <div class="mb-2">
                 <p class="text-lg mb-2">Filters</p>
