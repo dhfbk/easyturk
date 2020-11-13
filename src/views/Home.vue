@@ -44,9 +44,9 @@
                 <h2 class="text-lg font-semibold ml-1  text-gray-800">Projects</h2>
             </div>
             <div class="my-1 mx-2 p-2 flex items-center flex-wrap" v-if="projects.length != 0">
-                <div class="hidden w-2/3 md:flex text-center items-center flex-wrap text-lg">
-                    <span class="w-1/4 font-light">Project Id</span>
-                    <span class="w-1/4 font-light">Title</span>
+                <div class="hidden w-1/2 lg:w-3/5 xl:w-2/3 md:flex text-center items-center flex-wrap text-lg">
+                    <span class="w-1/2 lg:w-1/4 font-light">Project Id</span>
+                    <span class="w-1/2 lg:w-1/4 font-light">Title</span>
                     <span class="hidden lg:block w-1/4 font-light">Created</span>
                     <span class="hidden xl:block w-1/4 font-light">Last edited</span>
                 </div>

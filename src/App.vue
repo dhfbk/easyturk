@@ -50,6 +50,7 @@ export default {
                     axios.spread((...res) => {
                         this.$store.state.defaults = res[0].data.defaults
                         this.$store.state.userInfo = res[1].data.data
+                        console.log(res[1].data)
                         this.sandbox = this.$store.state.userInfo.use_sandbox
                         this.wait = false
                         //this.loadingProjects = false
