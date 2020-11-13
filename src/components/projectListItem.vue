@@ -7,13 +7,13 @@
         @mouseleave="waitZ"
     >
         <div
-            class="flex contenutoPrj text-center items-center flex-wrap text-md w-full xs2:w-1/2 md:w-2/3 focus:outline-none"
+            class="flex contenutoPrj text-center items-center flex-wrap text-md w-full xs2:w-1/2 lg:w-3/5 xl:w-2/3 focus:outline-none"
         >
-            <div class="flex flex-col w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+            <div class="flex flex-col w-1/2 lg:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden font-bold ">Project Id:</p>
                 <p>{{ projectData.id }}</p>
             </div>
-            <div class="block w-1/2 md:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
+            <div class="block w-1/2 lg:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden font-bold ">Title:</p>
                 <p class="overflow-ellipsis">{{ projectData.title }}</p>
             </div>
@@ -26,7 +26,7 @@
                 <p>{{ lastEdited }}</p>
             </div>
         </div>
-        <span class="flex-grow flex justify-end md:w-1/4">
+        <span class="flex-grow flex justify-end lg:w-2/5 xl:w-1/3">
             <button
                 v-if="projectData.status < 1"
                 :content="'Upload standard csv'"
