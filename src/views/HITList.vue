@@ -1,9 +1,22 @@
 <template>
-    <div class="relative pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 ">
+    <div class="relative lg:w-5/6 pt-2 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <div v-if="loading"></div>
-        <div v-else>
-            <h1 class="text-2xl mb-4 text-primary">HITs results (project ID: {{ $route.params.projectId }})</h1>
-            <div class="flex flex-col xs:flex-row justify-end mb-2">
+        <div class="flex justify-between flex-wrap items-center" v-else>
+            <button
+                @click="$router.go(-1)"
+                :content="'Back'"
+                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
+            >
+                <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+                </svg>
+                <span class="sr-only">Back to project</span>
+            </button>
+            <p class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">
+                HITs results (project ID: {{ $route.params.projectId }})
+            </p>
+            <div class="w-full flex flex-col xs:flex-row justify-end mb-2">
                 <p class="text-md my-auto mr-1">View:</p>
                 <div class="relative">
                     <select
@@ -56,8 +69,7 @@ export default {
     methods: {
         getData() {
             this.id = this.$route.params.projectId
-            this.API
-                .get('?action=getProjectInfo&id=' + this.id)
+            this.API.get('?action=getProjectInfo&id=' + this.id)
                 .then(res => {
                     this.progressData = res.data.summary
 

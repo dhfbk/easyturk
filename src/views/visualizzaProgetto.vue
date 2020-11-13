@@ -45,9 +45,22 @@
             @deleteModal="toggleModal"
             :goldUploaded="goldUploaded"
         />
-        <div v-if="!loading" class="flex justify-between flex-wrap items-center">
-            <h1 class="text-2xl text-primary w-auto inline-block">{{ project.name }}</h1>
-            <div class="sm:w-auto w-full flex relative justify-end content-center items-center float-right">
+        <div class="flex justify-between flex-wrap items-center">
+            <button
+                @click="$router.go(-1)"
+                :content="'Back'"
+                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
+            >
+                <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+                </svg>
+                <span class="sr-only">Back to HIT list</span>
+            </button>
+            <p v-if="!loading" class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">
+                {{ project.name }}
+            </p>
+            <div class="xs2:w-auto w-full flex relative justify-end content-center items-center float-right">
                 <button
                     v-if="project.status == 3"
                     @click="toggleModal('launch')"

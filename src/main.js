@@ -38,6 +38,7 @@ const store = new Vuex.Store({
     state: {
         defaults: [],
         isSandbox: true,
+        userInfo: []
     },
 })
 

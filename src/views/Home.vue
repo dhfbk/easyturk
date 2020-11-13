@@ -1,6 +1,6 @@
 <template>
     <div class="home mt-4 mx-2 xs2:mx-4 lg:mx-auto lg:w-5/6 pt-2 pb-6">
-        <p class="text-3xl sm:text-4xl font-light mb-4">Welcome, {{ userInfo.common_name }}</p>
+        <p class="text-3xl sm:text-4xl font-light mb-4">Welcome, {{ $store.state.userInfo.common_name }}</p>
         <modalEliminazione v-if="modalElim" @deleteModal="toggleModal" @deleted="deleted" :id="modalId" />
         <modalUpload v-if="modalStd" @uploadModal="toggleModal" @uploaded="toggleModal" :type="'std'" :id="modalId" />
         <modalUpload v-if="modalGld" @uploadModal="toggleModal" @uploaded="toggleModal" :type="'gld'" :id="modalId" />
@@ -122,7 +122,7 @@
                     <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
                 </svg>
                 <p class="text-black font-light text-2xl xs2:text-4xl m-1 text-center overflow-ellipsis" v-else>
-                    ${{ userInfo.balance }}
+                    ${{ $store.state.userInfo.balance }}
                 </p>
             </div>
             <div class="rounded shadow-md m-2 p-2 flex flex-col justify-around bg-white">
@@ -149,7 +149,6 @@ import modalHit from '../components/modalHIT.vue'
 import modalLayout from '../components/modalLayout.vue'
 import loader from '../components/loader.vue'
 import modalLaunch from '../components/modalLaunch.vue'
-import axios from 'axios'
 
 export default {
     name: 'Home',
@@ -167,7 +166,6 @@ export default {
         return {
             projects: [],
             modalId: '',
-            userInfo: [],
             modalElim: false,
             modalStd: false,
             modalGld: false,
@@ -192,7 +190,6 @@ export default {
 
     created() {
         this.getData()
-        console.log(this.$store.state.defaults)
     },
     methods: {
         getPrjData() {
@@ -206,16 +203,12 @@ export default {
                 })
         },
         getData() {
-            axios.all([this.API.get('?action=listProjects'), this.API.get('?action=getUserInfo')])
-                .then(
-                    axios.spread((...responses) => {
-                        this.projects = responses[0].data.values
-                        this.userInfo = responses[1].data.data
-                        this.$emit('sandbox', this.userInfo.use_sandbox)
-                        this.loadingProjects = false
-                        this.loadingOther = false
-                    })
-                )
+            this.API.get('?action=listProjects')
+                .then(res => {
+                    this.projects = res.data.values
+                    this.loadingProjects = false
+                    this.loadingOther = false
+                })
                 .catch(errors => {
                     console.log(errors)
                 })

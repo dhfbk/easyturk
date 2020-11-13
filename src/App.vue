@@ -9,7 +9,7 @@
         </div>
         <snack-bar :msg="messaggio" v-if="snack" />
         <transition name="fade" mode="out-in" v-if="!wait">
-            <router-view @snackbar="showSnack" @sandbox="setSandbox" />
+            <router-view @snackbar="showSnack" />
         </transition>
     </div>
 </template>
@@ -17,6 +17,7 @@
 <script>
 import navbar from './components/navBar.vue'
 import snackBar from './components/snackBar.vue'
+import axios from 'axios'
 export default {
     components: {
         navbar,
@@ -43,12 +44,17 @@ export default {
     },
     methods: {
         setDefault() {
-            this.API.get('?action=getOptions')
-                .then(res => {
-                    this.$store.state.defaults = res.data.defaults
-                    this.wait = false
-                    //this.loadingProjects = false
-                })
+            axios
+                .all([this.API.get('?action=getOptions'), this.API.get('?action=getUserInfo')])
+                .then(
+                    axios.spread((...res) => {
+                        this.$store.state.defaults = res[0].data.defaults
+                        this.$store.state.userInfo = res[1].data.data
+                        this.sandbox = this.$store.state.userInfo.use_sandbox
+                        this.wait = false
+                        //this.loadingProjects = false
+                    })
+                )
                 .catch(err => {
                     console.log(err)
                 })
