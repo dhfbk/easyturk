@@ -271,15 +271,15 @@
                 <div class="w-full flex flex-col customFlex xs2:flex-row justify-around lg:mr-1">
                     <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
                         <div class="w-8 h-4 rounded-md bg-green-500 my-1 mr-2"></div>
-                        <span>Submitted</span>
+                        <span>Submitted ({{ progressData.hits_submitted }})</span>
                     </span>
                     <span class="flex flex-row mb-2 w-full xs2:w-auto xs2:mr-4">
                         <div class="w-8 h-4 rounded-md bg-blue-500 my-1 mr-2"></div>
-                        <span>Published</span>
+                        <span>To submit ({{ progressData.hits_inserted - progressData.hits_submitted }})</span>
                     </span>
                     <span class="flex flex-row mb-2 w-full xs2:w-auto">
                         <div class="w-8 h-4 rounded-md bg-gray-400 my-1 mr-2"></div>
-                        <span>Not published</span></span
+                        <span>Not published ({{ progressData.hits_total - progressData.hits_inserted}})</span></span
                     >
                 </div>
                 <span class="w-full lg:ml-1">
