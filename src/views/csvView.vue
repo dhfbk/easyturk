@@ -11,7 +11,7 @@
             </svg>
             <span class="sr-only">Back to project</span>
         </button>
-        <p class="text-md sm:text-lg md:text-xl text-primary mr-auto ml-2 overflow-ellipsis">{{ filename }}</p>
+        <p v-if="!loading" class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">{{ filename }}</p>
         <div class="flex flex-row justify-start mr-auto mb-1 ml-2">
             <p class="text-md my-auto mr-1">Results per page:</p>
             <input

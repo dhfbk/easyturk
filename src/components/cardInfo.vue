@@ -29,6 +29,23 @@
                             </button>
                             <button
                                 v-if="projectData.status < 1"
+                                @click="$emit('modal', 'deleteStd')"
+                                :content="'Delete standard csv'"
+                                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                            >
+                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                    <path
+                                        fill="rgba(26, 32, 44, 1)"
+                                        d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                                    />
+                                </svg>
+                                <span class="sr-only">Delete standard csv</span>
+                                <!-- <span class="sr-only" v-if="projectData.numData > 0">Overwrite standard csv</span>
+                                <span class="sr-only" v-else>Upload standard csv</span> -->
+                            </button>
+                            <button
+                                v-if="projectData.status < 1"
                                 :content="projectData.numData > 0 ? 'Overwrite standard csv' : 'Upload standard csv'"
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                                 @click="$emit('modal', 'std')"
@@ -96,6 +113,21 @@
                                 "
                             >
                                 View gold
+                            </button>
+                            <button
+                                v-if="projectData.status < 1"
+                                @click="$emit('modal', 'deleteGld')"
+                                :content="'Delete gold csv'"
+                                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                            >
+                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                    <path
+                                        fill="rgba(26, 32, 44, 1)"
+                                        d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                                    />
+                                </svg>
+                                <span class="sr-only">Delete gold csv</span>
                             </button>
                             <button
                                 v-if="projectData.status < 1"

@@ -1,8 +1,21 @@
 <template>
     <div class="relative lg:w-5/6 pt-2 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <modalEliminazione v-if="modal" @hideModal="toggleModal" />
-        <div class="flex justify-between flex-wrap items-center" v-if="!loading">
-            <h1 class="text-2xl text-primary overflow-ellipsis">HIT {{ prjData.values.id_hit }}</h1>
+        <div class="flex justify-between flex-wrap items-center">
+            <button
+                @click="$router.go(-1)"
+                :content="'Back'"
+                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
+            >
+                <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+                </svg>
+                <span class="sr-only">Back to HIT list</span>
+            </button>
+            <p v-if="!loading" class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">
+                HIT {{ prjData.values.id_hit }}
+            </p>
             <!--
             <div class="flex relative">
                 <span class="tooltip hidden md:block relative md:mr-2">
