@@ -252,35 +252,37 @@
                     </thead>
                     <tbody class="text-center">
                         <tr v-for="(i, k) in projectData.summary" :key="k" class="hover:bg-gray-100">
-                            <td
-                                class="border-r text-sm text-gray-700 font-medium"
-                                :class="k != projectData.summary.length - 1 ? 'border-b' : ''"
-                            >
+                            <td class="border-r text-sm text-gray-700 font-medium border-b">
                                 {{ i.count }}
                             </td>
-                            <td
-                                class="border-r text-sm text-gray-700 font-medium"
-                                :class="k != projectData.summary.length - 1 ? 'border-b' : ''"
-                            >
+                            <td class="border-r text-sm text-gray-700 font-medium border-b">
                                 {{ i.assignments_approved }}
                             </td>
-                            <td
-                                class="border-r text-sm text-gray-700 font-medium"
-                                :class="k != projectData.summary.length - 1 ? 'border-b' : ''"
-                            >
+                            <td class="border-r text-sm text-gray-700 font-medium border-b">
                                 {{ i.assignments_rejected }}
                             </td>
-                            <td
-                                class="border-r text-sm text-gray-700 font-medium"
-                                :class="k != projectData.summary.length - 1 ? 'border-b' : ''"
-                            >
+                            <td class="border-r text-sm text-gray-700 font-medium border-b">
                                 {{ i.assignments_completed }}
                             </td>
-                            <td
-                                class="text-sm text-gray-700 font-medium"
-                                :class="k != projectData.summary.length - 1 ? 'border-b' : ''"
-                            >
+                            <td class="border-r text-sm text-gray-700 font-medium border-b">
                                 {{ i.assignments_available }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border-r text-sm text-gray-100 bg-gray-800 font-medium">
+                                {{ totals.count }}
+                            </td>
+                            <td class="border-r text-sm text-gray-100 bg-gray-800 font-medium">
+                                {{ totals.assignments_approved }}
+                            </td>
+                            <td class="border-r text-sm text-gray-100 bg-gray-800 font-medium">
+                                {{ totals.assignments_rejected }}
+                            </td>
+                            <td class="border-r text-sm text-gray-100 bg-gray-800 font-medium">
+                                {{ totals.assignments_completed }}
+                            </td>
+                            <td class="border-r text-sm text-gray-100 bg-gray-800 font-medium">
+                                {{ totals.assignments_available }}
                             </td>
                         </tr>
                     </tbody>
@@ -337,6 +339,24 @@ export default {
     props: {
         projectData: Object,
         mode: String,
+    },
+    computed: {
+        totals: function() {
+            var ret = {};
+            ret.count = 0;
+            ret.assignments_approved = 0;
+            ret.assignments_rejected = 0;
+            ret.assignments_completed = 0;
+            ret.assignments_available = 0;
+            for (var k in this.projectData.summary) {
+                ret.count += this.projectData.summary[k].count;
+                ret.assignments_approved += this.projectData.summary[k].count * this.projectData.summary[k].assignments_approved;
+                ret.assignments_available += this.projectData.summary[k].count * this.projectData.summary[k].assignments_available;
+                ret.assignments_rejected += this.projectData.summary[k].count * this.projectData.summary[k].assignments_rejected;
+                ret.assignments_completed += this.projectData.summary[k].count * this.projectData.summary[k].assignments_completed;
+            }
+            return ret;
+        }
     },
     data() {
         return {
