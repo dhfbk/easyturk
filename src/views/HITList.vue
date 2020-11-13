@@ -2,41 +2,45 @@
     <div class="relative lg:w-5/6 pt-2 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <div v-if="loading"></div>
         <div class="flex justify-between flex-wrap items-center" v-else>
-            <button
-                @click="$router.go(-1)"
-                :content="'Back'"
-                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
-            >
-                <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
-                </svg>
-                <span class="sr-only">Back to project</span>
-            </button>
-            <p class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">
-                HITs results (project ID: {{ $route.params.projectId }})
-            </p>
-            <div class="w-full flex flex-col xs:flex-row justify-end mb-2">
-                <p class="text-md my-auto mr-1">View:</p>
-                <div class="relative">
-                    <select
-                        class="appearance-none h-full rounded border block appearance-none bg-white border-gray-400 text-gray-700 py-1 pl-2 pr-12 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                        name="sortBy"
-                        id="sortBy"
-                        @change="view(viewType)"
-                        v-model="viewType"
-                    >
-                        <option value="dots">
-                            Dot Matrix
-                        </option>
-                        <option value="table">
-                            Table
-                        </option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
+            <div class="flex flex-row place-content-center w-full mb-2">
+                <button
+                    @click="$router.go(-1)"
+                    :content="'Back'"
+                    v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                    class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
+                >
+                    <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+                    </svg>
+                    <span class="sr-only">Back to project</span>
+                </button>
+                <span class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis mt-2">
+                    HITs results (project ID: {{ $route.params.projectId }})
+                </span>
+                <div class="flex flex-col xs:flex-row justify-end">
+                    <p class="text-md my-auto mr-1">View:</p>
+                    <div class="relative">
+                        <select
+                            class="appearance-none h-full rounded border block appearance-none bg-white border-gray-400 text-gray-700 py-1 pl-2 pr-12 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            name="sortBy"
+                            id="sortBy"
+                            @change="view(viewType)"
+                            v-model="viewType"
+                        >
+                            <option value="dots">
+                                Dot Matrix
+                            </option>
+                            <option value="table">
+                                Table
+                            </option>
+                        </select>
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                        >
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
