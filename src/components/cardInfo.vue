@@ -196,8 +196,48 @@
                 </span>
             </div>
         </div>
+        <div v-else-if="mode == 'hitTable'">
+            <div v-if="projectData.assignments.length == 0">
+                No workers to display!
+            </div>
+            <div class="rounded-md border -mx-4 -my-4 overflow-x-auto" v-else>
+                <table class="w-full rounded-md">
+                    <thead>
+                        <tr class="">
+                            <th class="text-xs text-white px-1">
+                                Worker ID
+                            </th>
+                            <th class="text-xs text-white px-1">Status</th>
+                            <th class="text-xs text-white px-1">Assignment ID</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center rounded-b-md">
+                        <tr v-for="(i, k) in projectData.assignments" :key="k" class="hover:bg-gray-100">
+                            <td
+                                class="border-r text-sm text-gray-700 font-medium"
+                                :class="k != projectData.assignments.length - 1 ? 'border-b' : 'rounded-bl-md'"
+                            >
+                                {{ i.worker_id }}
+                            </td>
+                            <td
+                                class="border-r text-sm text-gray-700 font-medium"
+                                :class="k != projectData.assignments.length - 1 ? 'border-b' : ''"
+                            >
+                                {{ i.status }}
+                            </td>
+                            <td
+                                class="border-r text-sm text-gray-700 font-medium"
+                                :class="k != projectData.assignments.length - 1 ? 'border-b' : 'rounded-br-md'"
+                            >
+                                {{ i.assignment_id }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div v-else-if="mode == 'projectTable'">
-            <div class="rounded border -mx-4 -my-4 overflow-x-auto">
+            <div class="rounded-md border -mx-4 -my-4 overflow-x-auto">
                 <table class="w-full">
                     <thead>
                         <tr class="">

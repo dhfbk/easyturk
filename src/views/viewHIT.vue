@@ -101,7 +101,7 @@
                 </div>
                 <div v-else>
                     <cardInfo :projectData="project" :mode="'general'" />
-                    <cardInfo :projectData="project" :mode="'layout'" />
+                    <cardInfo :projectData="prjData" :mode="'hitTable'" />
                 </div>
             </div>
             <div class="ml-0 xs2:ml-1">
@@ -161,6 +161,7 @@ export default {
         getData() {
             this.API.get('?action=getHitInfo&hitID=' + this.$route.params.hitId)
                 .then(res => {
+                    console.log(res)
                     this.prjData = res.data
                     var tmpDate = new Date(res.data.values.hit_info.Expiration)
                     var expiration = this.timeConverter(tmpDate.getTime() / 1000)
@@ -207,12 +208,12 @@ export default {
             this.analytics = {
                 cardHIT: {
                     titolo: 'Assignments',
-                    totale: parseInt(this.prjData.values.max_assignments),
+                    totale: parseInt(this.prjData.values.hit_info.MaxAssignments),
                     type: 'assignment',
                     ellipse_progress: {
                         progress1: {
                             progress: this.progressData.completed,
-                            legend_value: parseInt(this.prjData.values.assignments_completed),
+                            legend_value: parseInt(this.prjData.values.hit_info.NumberOfAssignmentsCompleted),
                             color: '#f6ad55',
                             half: true,
                             angle: 0,
@@ -220,7 +221,7 @@ export default {
                         },
                         progress2: {
                             progress: this.progressData.available,
-                            legend_value: parseInt(this.prjData.values.assignments_available),
+                            legend_value: parseInt(this.prjData.values.hit_info.NumberOfAssignmentsAvailable),
                             color: '#f6ad55',
                             half: true,
                             angle: 0,
@@ -228,7 +229,7 @@ export default {
                         },
                         progress3: {
                             progress: this.progressData.pending,
-                            legend_value: parseInt(this.prjData.values.assignments_pending),
+                            legend_value: parseInt(this.prjData.values.hit_info.NumberOfAssignmentsPending),
                             color: '#f6ad55',
                             half: true,
                             angle: 0,
@@ -250,14 +251,14 @@ export default {
         //calcola il numero da utilizzare nei grafici delle analytics
         convertProgress() {
             this.progressData.completed =
-                (100 * parseInt(this.prjData.values.assignments_completed)) /
-                parseInt(this.prjData.values.max_assignments)
+                (100 * parseInt(this.prjData.values.hit_info.NumberOfAssignmentsCompleted)) /
+                parseInt(this.prjData.values.hit_info.MaxAssignments)
             this.progressData.available =
-                (100 * parseInt(this.prjData.values.assignments_available)) /
-                parseInt(this.prjData.values.max_assignments)
+                (100 * parseInt(this.prjData.values.hit_info.NumberOfAssignmentsAvailable)) /
+                parseInt(this.prjData.values.hit_info.MaxAssignments)
             this.progressData.pending =
-                (100 * parseInt(this.prjData.values.assignments_pending)) /
-                parseInt(this.prjData.values.max_assignments)
+                (100 * parseInt(this.prjData.values.hit_info.NumberOfAssignmentsPending)) /
+                parseInt(this.prjData.values.hit_info.MaxAssignments)
         },
     },
 }
