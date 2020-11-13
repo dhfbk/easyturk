@@ -26,4 +26,7 @@ inc/composer.lock
 inc/vendor
 inc/config.php
 
+server/server.log
+TODO.md
+info.php
 temp

@@ -33,7 +33,7 @@ session_start();
 require_once("../inc/include.php");
 
 $Action = isset($_REQUEST['action']) ? $_REQUEST['action'] : "";
-$User = 1;
+// $User = 1;
 
 $_SESSION['Options'] = loadOptions();
 if (!isset($_SESSION['Options'])) {
@@ -58,26 +58,11 @@ if (strlen($json_params) > 0 && isValidJSON($json_params)) {
 
 $ret['debug']['request'] = $_REQUEST;
 
-$Delimiters = array("tab" => '\t', "comma" => ',', "semicolon" => ';');
-$Enclosures = array("single" => '\'', "double" => '\"', "none" => chr(8));
+$Delimiters = array("tab" => "\t", "comma" => ',', "semicolon" => ';');
+$Enclosures = array("single" => "'", "double" => "\"", "none" => "none");
 
 // $ret['comments'] = $json_params;
 // $ret['post'] = print_r($_POST, true);
-
-$UserInfo = find("users", $User, "User not found");
-$UseSandbox = $UserInfo['use_sandbox'];
-$mTurkOptions = [
-    'version' => 'latest',
-    'region'  => $UserInfo['region_name'],
-    'credentials' => [
-        'key' => $UserInfo['aws_access_key_id'],
-        'secret' => $UserInfo['aws_secret_access_key'],
-    ]
-];
-if ($UseSandbox) {
-    $mTurkOptions['endpoint'] = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com';
-}
-$mTurk = new Aws\MTurk\MTurkClient($mTurkOptions);
 
 switch ($Action) {
 
@@ -161,6 +146,30 @@ switch ($Action) {
 
         break;
 
+    case "logout":
+        session_destroy();
+        $ret['result'] = "OK";
+        break;
+
+    case "login":
+        $username = addslashes($_REQUEST['username']);
+        $password = md5($_REQUEST['password']);
+
+        $query = "SELECT * FROM users
+            WHERE username = '$username' AND password = '$password'
+            AND deleted = '0'";
+        if ($DB->querynum($query)) {
+            $row = $DB->fetch();
+            $ret['result'] = "OK";
+            // $ret['sess_id'] = session_id();
+            $_SESSION['User'] = $row['id'];
+        }
+        else {
+            $ret['result'] = "ERR";
+            $ret['error'] = "Invalid login information";
+        }
+        break;
+
     case "listProjects":
     case "addProject":
     case "deleteProject":
@@ -174,12 +183,31 @@ switch ($Action) {
     case "getHits":
     case "getHitInfo":
     case "testLayout":
+    case "getResults":
+    case "random":
 
-        // if (!$_SESSION['Admin']) {
-        //     $ret['result'] = "ERR";
-        //     $ret['error'] = $Lang["not_logged"];
-        //     break;
-        // }
+        if (!isset($_SESSION['User'])) {
+            $ret['result'] = "ERR";
+            $ret['error'] = "User is not logged in";
+            break;
+        }
+
+        $User = $_SESSION['User'];
+
+        $UserInfo = find("users", $User, "User not found");
+        $UseSandbox = $UserInfo['use_sandbox'];
+        $mTurkOptions = [
+            'version' => 'latest',
+            'region'  => $UserInfo['region_name'],
+            'credentials' => [
+                'key' => $UserInfo['aws_access_key_id'],
+                'secret' => $UserInfo['aws_secret_access_key'],
+            ]
+        ];
+        if ($UseSandbox) {
+            $mTurkOptions['endpoint'] = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com';
+        }
+        $mTurk = new Aws\MTurk\MTurkClient($mTurkOptions);
 
         switch ($Action) {
 
@@ -364,17 +392,35 @@ switch ($Action) {
                 $okData = array();
                 $line = 0;
                 if (($handle = fopen($_FILES['csvFile']['tmp_name'], "r")) !== FALSE) {
-                    while (($data = fgetcsv($handle, 0, $delimiter, $enclosure)) !== FALSE) {
-                        $line++;
-                        if ($fieldCount >= 0 && count($data) != $fieldCount) {
-                            $ret['result'] = "ERR";
-                            $ret['error'] = "Wrong field number on line $line.";
-                            break 2;
+                    if ($enclosure != "none") {
+                        while (($data = fgetcsv($handle, 0, $delimiter, $enclosure)) !== FALSE) {
+                            $line++;
+                            if ($fieldCount >= 0 && count($data) != $fieldCount) {
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "Wrong field number on line $line.";
+                                break 2;
+                            }
+                            if ($fieldCount == -1) {
+                                $fieldCount = count($data);
+                            }
+                            $okData[] = $data;
                         }
-                        if ($fieldCount == -1) {
-                            $fieldCount = count($data);
+                    }
+                    else {
+                        while ($textLine = fgets($handle)) {
+                            $textLine = rtrim($textLine, "\r\n");
+                            $data = explode($delimiter, $textLine);
+                            $line++;
+                            if ($fieldCount >= 0 && count($data) != $fieldCount) {
+                                $ret['result'] = "ERR";
+                                $ret['error'] = "Wrong field number on line $line.";
+                                break 2;
+                            }
+                            if ($fieldCount == -1) {
+                                $fieldCount = count($data);
+                            }
+                            $okData[] = $data;
                         }
-                        $okData[] = $data;
                     }
                     fclose($handle);
                 }
@@ -402,6 +448,24 @@ switch ($Action) {
                         $ret['result'] = "ERR";
                         $ret['error'] = "The gold file must contain at least one field more than the training file.";
                         break;
+                    }
+                }
+                else {
+                    $query = "SELECT * FROM project_files WHERE project_id = '{$r['id']}' AND deleted = '0' AND is_gold = '1'";
+                    if ($DB->querynum($query)) {
+                        $rG = $DB->fetch();
+                        $fieldsG = unserialize($rG['fields']);
+                        if (count(array_intersect($fieldsG, $fields)) != count($fields)) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "Fields in the training file are not included in the gold file.";
+                            break;
+                        }
+                        $diff = array_diff($fieldsG, $fields);
+                        if (!count($diff)) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = "The gold file must contain at least one field more than the training file.";
+                            break;
+                        }
                     }
                 }
 
@@ -597,8 +661,10 @@ switch ($Action) {
                             }
                         }
                         else {
-                            for ($i = 0; $i < $dataBunch - $remain; $i++) {
-                                $trainData[] = $trainData[$i];
+                            if ($remain) {
+                                for ($i = 0; $i < $dataBunch - $remain; $i++) {
+                                    $trainData[] = $trainData[$i];
+                                }
                             }
                         }
 
@@ -610,8 +676,6 @@ switch ($Action) {
 
                         $DB->startTransaction();
                         $success = true;
-
-                        // todo: mix
 
                         $goldIndex = 0;
                         for ($i = 0; $i < count($trainData); $i += $dataBunch) {
@@ -1008,6 +1072,7 @@ switch ($Action) {
                         catch (Exception $e) {
                             $ret['result'] = "ERR";
                             $ret['error'] = "AWS error (see logs for details)";
+                            $ret['error'] = $e->getMessage();
                             $ret['hitData'] = $toSave['hitData'];
                             $ret['error_message'] = $e->getMessage();
                             l(1, "create_preview_hit", $e->getMessage(), $r['id']);
@@ -1092,6 +1157,11 @@ switch ($Action) {
                 }
                 break;
 
+            case "getResults":
+                $r = find("projects", $_REQUEST['id'], "Project not found");
+                $ret['result'] = "OK";
+                break;
+
             case "getProjectInfo":
                 $r = find("projects", $_REQUEST['id'], "Project not found");
                 $qualificationRequirements = unserialize($r['qualifications']);
@@ -1154,29 +1224,36 @@ switch ($Action) {
 
                 // $ret['hits'] = [];
                 $summary = [];
-                $query = "SELECT h.*,
+                $hits = [];
+                $query = "SELECT h.*, p.workers,
                         SUM(IF(a.status = 'Approved', 1, 0)) assignments_approved,
                         SUM(IF(a.status = 'Rejected', 1, 0)) assignments_rejected,
                         SUM(IF(a.status = 'Submitted', 1, 0)) assignments_pending
                     FROM `cluster_to_hit` h
                     LEFT JOIN assignments a ON a.hit_id = h.id_hit
+                    LEFT JOIN projects p ON h.id_project = p.id
                     WHERE h.id_project = '{$r['id']}' AND h.deleted = 0 AND h.id_hit IS NOT NULL
                     GROUP BY h.id_hit";
                 $DB->query($query);
                 while ($row = $DB->fetch_a()) {
                     $ret['hits_submitted']++;
                     $key = implode(" ", [
-                        $row['max_assignments'],
-                        $row['assignments_available'],
-                        $row['assignments_completed'],
+                        // $row['max_assignments'] ?: $row['workers'],
+                        // $row['assignments_available'] ?: $row['workers'],
+                        // $row['assignments_completed'] ?: 0,
+                        $row['max_assignments'] ?? $row['workers'],
+                        $row['assignments_available'] ?? $row['workers'],
+                        $row['assignments_completed'] ?? 0,
                         $row['assignments_pending'],
                         $row['assignments_approved'],
                         $row['assignments_rejected']
                     ]);
                     if (!isset($summary[$key])) {
                         $summary[$key] = 0;
+                        $hits[$key] = [];
                     }
                     $summary[$key]++;
+                    $hits[$key][] = $row['id_hit'];
                     // $ret['hits'][] = $row;
                 }
 
@@ -1192,6 +1269,7 @@ switch ($Action) {
                     $s['assignments_approved'] = $values[4];
                     $s['assignments_rejected'] = $values[5];
                     $s['count'] = $value;
+                    $s['hits'] = $hits[$key];
                     $ret['summary'][] = $s;
                 }
 
@@ -1306,7 +1384,8 @@ switch ($Action) {
                 $query = "SELECT h.*
                     FROM cluster_to_hit h
                     LEFT JOIN projects p ON h.id_project = p.id
-                    WHERE p.deleted = '0' AND h.deleted = '0' AND p.user_id = '$User' AND h.id_hit = '$hitID'";
+                    WHERE p.deleted = '0' AND h.deleted = '0'
+                        AND p.user_id = '$User' AND h.id_hit = '$hitID'";
                 if (!$DB->querynum($query)) {
                     $ret['result'] = "ERR";
                     $ret['error'] = "HIT not found.";
@@ -1315,9 +1394,36 @@ switch ($Action) {
 
                 $row = $DB->fetch_a();
                 $row['hit_info'] = unserialize($row['hit_info']);
+                $ret['values'] = $row;
                 if (!$leaveQuestion) {
                     unset($row['hit_info']['Question']);
                 }
+
+                $lines = [];
+                $query = "SELECT line_text, is_gold, fields
+                    FROM `clusters` c
+                    LEFT JOIN file_lines l ON l.id = c.line_id
+                    LEFT JOIN project_files f ON f.id = l.file_id
+                    WHERE c.deleted = '0' AND f.deleted = '0'
+                    AND f.project_id = '{$row['id_project']}' AND cluster_index = '{$row['id_cluster']}'";
+                $DB->query($query);
+                $allFields = [];
+                while ($rowL = $DB->fetch_a()) {
+                    $fields = unserialize($rowL['fields']);
+                    $values = unserialize($rowL['line_text']);
+
+                    if ($rowL['is_gold']) {
+                        $allFields = $fields;
+                    }
+
+                    $line = [];
+                    for ($i = 0; $i < count($fields); $i++) {
+                        $line[$fields[$i]] = $values[$i];
+                    }
+                    $lines[] = $line;
+                }
+                $ret['fields'] = $allFields;
+                $ret['lines'] = $lines;
 
                 $assignments = [];
                 $query = "SELECT * FROM assignments
@@ -1330,10 +1436,9 @@ switch ($Action) {
                     }
                     $assignments[] = $rowA;
                 }
+                $ret['assignments'] = $assignments;
 
                 $ret['result'] = "OK";
-                $ret['values'] = $row;
-                $ret['assignments'] = $assignments;
                 break;
 
             case "addProject":
@@ -1387,6 +1492,7 @@ switch ($Action) {
                 // Important to avoid that malicious $_REQUEST indexes
                 // are added to the SQL insert statement
                 $data = array();
+                $data['user_id'] = $User;
                 foreach ($fields as $field) {
                     $data[$field] = $_REQUEST[$field];
                 }
@@ -1496,6 +1602,99 @@ switch ($Action) {
                     break;
                 }
 
+                break;
+
+            case "random":
+
+                $rand_inserted = 0.2;
+                $rand_reviewable = 0.5;
+                $rand_rejected = 0.2;
+                $rand_pending = 0.1;
+
+                $r = find("projects", $_REQUEST['id'], "Project not found");
+
+                $numAssignments = $r['workers'];
+                $maxAssignments = $assignments;
+
+                $hit_details = unserialize($r['hit_details']);
+                if ($hit_details['assignNumber']) {
+                    $maxAssignments = $hit_details['assignNumber'];
+                }
+
+                $query = "DELETE a
+                    FROM assignments a
+                    LEFT JOIN cluster_to_hit h ON a.hit_id = h.id_hit
+                    WHERE h.id_project = '{$r['id']}' AND h.deleted = '0'";
+                $DB->query($query);
+
+                $query = "UPDATE `cluster_to_hit`
+                    SET hit_status = 'Inserted', id_hit = NULL,
+                        max_assignments = NULL, assignments_pending = NULL,
+                        assignments_completed = NULL, assignments_available = NULL
+                    WHERE `id_project` = '{$r['id']}' AND `deleted` = '0'";
+                $DB->query($query);
+
+                $assCreated = 0;
+                // $ret['debug']['rows'] = [];
+                $query = "SELECT * FROM `cluster_to_hit`
+                    WHERE `id_project` = '{$r['id']}' AND `deleted` = '0'";
+                $DB->query($query, "randomQuery");
+                while ($row = $DB->fetch("randomQuery")) {
+                    $data = [];
+                    $data['id_hit'] = md5($row['id']);
+                    $leaveInserted = rand(0, 100) / 100 <= $rand_inserted;
+                    if (!$leaveInserted) {
+                        $data['hit_status'] = "Assignable";
+                        $assignments = [];
+
+                        $reviewable = rand(0, 100) / 100 <= $rand_reviewable;
+                        $leave = 0;
+                        if (!$reviewable) {
+                            $leave = rand(0, $numAssignments);
+                            $data['hit_status'] = "Reviewable";
+                        }
+                        // $data['leave'] = $leave;
+
+                        $data['max_assignments'] = $numAssignments;
+                        $index = 0;
+                        while ($data['max_assignments'] - count($assignments) > $leave) {
+                            $index++;
+                            $rejected = rand(0, 100) / 100 <= $rand_rejected;
+
+                            $ass = [];
+                            $ass['assignment_id'] = md5($row['id'] . "_ass_" . $index);
+                            $ass['worker_id'] = md5($row['id'] . "_worker_" . $index);
+                            $ass['status'] = $rejected ? "Rejected" : "Approved";
+                            $ass['hit_id'] = $data['id_hit'];
+                            $assignments[] = $ass;
+
+                            if ($rejected && $data['max_assignments'] < $maxAssignments) {
+                                $data['max_assignments']++;
+                            }
+                        }
+
+                        $data['assignments_completed'] = count($assignments);
+                        $data['assignments_available'] = $data['max_assignments'] - $data['assignments_completed'];
+
+                        $data['assignments_pending'] = 0;
+                        $pending = rand(0, 100) / 100 <= $rand_pending;
+                        if ($data['assignments_available'] && $pending) {
+                            $data['assignments_pending'] = 1;
+                            $data['assignments_available']--;
+                        }
+
+                        // print_r($data);
+                        // print_r($assignments);
+
+                        $DB->queryupdate("cluster_to_hit", $data, ["id" => $row['id']]);
+                        foreach ($assignments as $assignment) {
+                            $DB->queryinsert("assignments", $assignment);
+                            $assCreated++;
+                        }
+                    }
+                    // $ret['debug']['rows'][] = $data['id_hit'] . " " . $leaveInserted;
+                }
+                $ret['debug']['created'] = $assCreated;
                 break;
         }
         

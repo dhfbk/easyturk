@@ -75,6 +75,7 @@ while (true) {
                 FROM cluster_to_hit h
                 LEFT JOIN projects p ON p.id = h.id_project
                 WHERE h.id_hit IS NULL AND h.deleted = '0' AND p.user_id = '{$UserID}'
+                AND hit_details IS NOT NULL AND h.hit_status != 'Error'
                 LIMIT 1
                 FOR UPDATE";
             $DB->query($query, 2);
@@ -138,13 +139,14 @@ while (true) {
                     // }
                     // $hit_data['QualificationRequirements'] = $start_array;
 
-                    // print_r($hit_data);
                     try {
                         $response = $mTurk->createHIT($hit_data);
                     }
                     catch (Exception $e) {
                         print_r($e->getMessage());
+                        print_r($hit_data);
                         l(0, "create_hit", $e->getMessage(), $r['id']);
+                        $DB->queryupdate("cluster_to_hit", array("hit_status" => "Error"), array("id" => $rowH['id_h']));
                         break;
                     }
                     $response = $response->toArray();
@@ -187,8 +189,9 @@ while (true) {
                     hit_status != 'Reviewable'
                     AND hit_status != 'Disposed'
                     AND hit_status != 'Inserted'
-                    AND (checked_at IS NULL OR DATE_ADD(checked_at, INTERVAL 10 MINUTE) < NOW())
+                    AND (checked_at IS NULL OR DATE_ADD(checked_at, INTERVAL 5 MINUTE) < NOW())
                     AND deleted = '0'
+                    AND assignments_pending > 0
                 LIMIT 1
                 FOR UPDATE";
             // $query = "SELECT * FROM cluster_to_hit

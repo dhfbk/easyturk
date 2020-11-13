@@ -4,6 +4,8 @@ require_once("config.php");
 require_once("Mysql_connector.class.php");
 require_once("vendor/autoload.php");
 
+require_once("emoji.php");
+
 $DB = new Mysql_connector($DB_HOST, $DB_USERNAME, $DB_PASSWORD);
 $DB->select_db($DB_NAME);
 $mysqli = $DB->connection;
@@ -59,6 +61,10 @@ function getHITLayoutParameters($r, $project_id, $cluster_index, $goldFields, $t
     foreach ($toSave['layoutData'] as $layoutData) {
         if (substr($layoutData['field'], -1) !== "#") {
             $val = $layoutData['isHandWritten'] ? $layoutData['customValue'] : $r[substr($layoutData['valueFrom'], 1)];
+            $val = htmlentities($val);
+            $val = wp_encode_emoji($val);
+            $val = mb_encode_numericentity($val, array(0x0080, 0xffff, 0, 0xffff), 'UTF-8');
+            // $val = preg_replace('/[\x{10000}-\x{10FFFF}]/u', "\xEF\xBF\xBD", $val);
             $HITLayoutParameters[] = [
                 "Name" => $layoutData['field'],
                 "Value" => $val
@@ -68,6 +74,10 @@ function getHITLayoutParameters($r, $project_id, $cluster_index, $goldFields, $t
             $field = substr($layoutData['field'], 0, strlen($layoutData['field']) - 1);
             for ($i = 1; $i <= $r['params']; $i++) {
                 $value = $cluster_data[$i - 1][$layoutData['valueFrom']];
+                $value = htmlentities($value);
+                $value = wp_encode_emoji($value);
+                $value = mb_encode_numericentity($value, array(0x0080, 0x10ffff, 0, 0xffffff), 'UTF-8');
+                # $value = preg_replace('/[\x{10000}-\x{10FFFF}]/u', "\xEF\xBF\xBD", $value);
                 $HITLayoutParameters[] = [
                     "Name" => $field . $i,
                     "Value" => $value
@@ -90,10 +100,9 @@ function getHITLayoutParameters($r, $project_id, $cluster_index, $goldFields, $t
             }
         }
 
-        if (!count($mapEntries)) {
-            throw new Exception("No rules found");
-            // throw new Exception(print_r($goldIndexes, true));
-        }
+        // if (!count($mapEntries)) {
+        //     throw new Exception("No rules found");
+        // }
     
         if ($toSave['rejectIfGoldWrong'] || $toSave['acceptIfGoldRight']) {
             $AssignmentReviewPolicy['PolicyName'] = "ScoreMyKnownAnswers/2011-09-01";
