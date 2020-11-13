@@ -4,7 +4,12 @@
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
             @click="toggleModal('close')"
         >
-            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 mx-2 overflow-y-auto" @click.stop>
+            <div
+                tabindex="-1"
+                id="modal"
+                class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto focus:outline-none"
+                @click.stop
+            >
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <h2 class="text-gray-900 font-bold text-lg text-primary">HIT settings</h2>
@@ -171,7 +176,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 const { required } = require('vuelidate/lib/validators')
 const notEmpty = value => value != ''
 
@@ -218,12 +222,13 @@ export default {
     },
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
+        document.getElementById('modal').focus()
     },
     methods: {
-        keyboardEvent(event) {
-            if (event.code == 'Escape') {
+        keyboardEvent(e) {
+            if (e.code == 'Escape') {
                 this.toggleModal('close')
-            } else if (event.code == 'Enter') {
+            } else if (e.code == 'Enter') {
                 this.confirm()
             }
         },
@@ -239,12 +244,12 @@ export default {
             this.$v.$touch()
             if (!this.$v.$invalid) {
                 this.loading = true
-                var url = this.APIURL + '?action=updateProjectStatus&id=' + this.id
+                var url = '?action=updateProjectStatus&id=' + this.id
                 var deleteExceedingValues = 0
                 if (this.leftover == 'no_use') {
                     deleteExceedingValues = 1
                 }
-                axios({
+                this.API({
                     method: 'post',
                     url: url,
                     data: {

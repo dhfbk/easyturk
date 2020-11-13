@@ -8,8 +8,8 @@
             <p>You are using the sandbox version</p>
         </div>
         <snack-bar :msg="messaggio" v-if="snack" />
-        <transition name="fade" mode="out-in">
-            <router-view v-if="!wait" @snackbar="showSnack" @sandbox="setSandbox" />
+        <transition name="fade" mode="out-in" v-if="!wait">
+            <router-view @snackbar="showSnack" />
         </transition>
     </div>
 </template>
@@ -30,22 +30,36 @@ export default {
             messaggio: '',
             sandbox: false,
             wait: true,
-            timeout: 4000
+            timeout: 4000,
         }
     },
     created() {
-        axios
-            .get(this.APIURL + '?action=getOptions')
-            .then(res => {
-                this.$store.state.defaults = res.data.defaults
-                this.wait = false
-                //this.loadingProjects = false
+        this.API.get('?action=login&username=user&password=pippo')
+            .then(() => {
+                this.setDefault()
             })
             .catch(err => {
-                console.log(err)
+                console.error(err)
             })
     },
     methods: {
+        setDefault() {
+            axios
+                .all([this.API.get('?action=getOptions'), this.API.get('?action=getUserInfo')])
+                .then(
+                    axios.spread((...res) => {
+                        this.$store.state.defaults = res[0].data.defaults
+                        this.$store.state.userInfo = res[1].data.data
+                        console.log(res[1].data)
+                        this.sandbox = this.$store.state.userInfo.use_sandbox
+                        this.wait = false
+                        //this.loadingProjects = false
+                    })
+                )
+                .catch(err => {
+                    console.log(err)
+                })
+        },
         setSandbox(show) {
             this.sandbox = show
             if (show == 1) {

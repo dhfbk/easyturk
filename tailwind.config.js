@@ -33,6 +33,7 @@ module.exports = {
         extend: {
             width: {
                 '12/25': '48%',
+                '8/25': '32%',
             },
             boxShadow: {
                 focus: '0 0 0 3px rgba(66, 153, 225, 0.5)',

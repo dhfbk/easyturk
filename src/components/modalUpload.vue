@@ -4,7 +4,12 @@
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
             @click="toggleModal"
         >
-            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 mx-2 overflow-y-auto" @click.stop>
+            <div
+                tabindex="-1"
+                id="modal"
+                class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto focus:outline-none"
+                @click.stop
+            >
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <h2 class="text-gray-900 font-bold text-lg text-primary">Choose the file to upload</h2>
@@ -82,6 +87,7 @@
                                     v-model="delimiter"
                                 >
                                     <option value="" disabled selected hidden>Choose delimiter...</option>
+                                    <option value="none">None</option>
                                     <option value="double">"</option>
                                     <option value="single">'</option>
                                     <!--<option value="none">None</option>-->
@@ -172,7 +178,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 const { required } = require('vuelidate/lib/validators')
 const notEmpty = value => value != ''
 
@@ -205,6 +210,7 @@ export default {
     },
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
+        document.getElementById('modal').focus()
     },
     methods: {
         keyboardEvent(event) {
@@ -249,17 +255,16 @@ export default {
                         formData.append('isGold', 0)
                     }
                     formData.append('fieldTitles', this.customTitles)
-                    axios
-                        .post(this.APIURL + '?action=uploadFile', formData, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data',
-                            },
-                            onUploadProgress: function(progressEvent) {
-                                this.uploadPercentage = parseInt(
-                                    Math.round((progressEvent.loaded / progressEvent.total) * 100)
-                                )
-                            }.bind(this),
-                        })
+                    this.API.post('?action=uploadFile', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                        onUploadProgress: function(progressEvent) {
+                            this.uploadPercentage = parseInt(
+                                Math.round((progressEvent.loaded / progressEvent.total) * 100)
+                            )
+                        }.bind(this),
+                    })
                         .then(res => {
                             if (res.data.result != 'ERR') {
                                 if (this.type == 'std') {

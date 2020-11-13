@@ -2,24 +2,32 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import Vuex from 'vuex'
-
 Vue.use(Vuex)
 
 import './assets/styles/index.css'
 
 import VueEllipseProgress from 'vue-ellipse-progress'
-
 Vue.use(VueEllipseProgress)
 
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 
+import VueTippy, { TippyComponent } from "vue-tippy";
+import "tippy.js/themes/google.css";
+Vue.use(VueTippy);
+Vue.component("tippy", TippyComponent);
+
+import axios from 'axios'
+
 Vue.mixin({
-    data: function() {
+    data: function () {
         return {
-            get APIURL() {
-                return 'https://dh-server.fbk.eu/mturk_frontend/api/'
-            },
+            get API() {
+                return axios.create({
+                    withCredentials: true,
+                    baseURL: "https://dh-server.fbk.eu/mturk_frontend/api/"
+                })
+            }
         }
     },
 })
@@ -30,6 +38,7 @@ const store = new Vuex.Store({
     state: {
         defaults: [],
         isSandbox: true,
+        userInfo: []
     },
 })
 

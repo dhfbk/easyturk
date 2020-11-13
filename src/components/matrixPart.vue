@@ -2,20 +2,14 @@
     <span @mouseenter="hovering = true" @mouseleave="hovering = false">
         <span>
             <span v-for="(i, p) in num.count" :key="p">
-                <span class="tooltip relative ">
-                    <span
-                        class="h-5 w-5 m-1 rounded-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-focus"
-                        :style="{ background: color }"
-                        :class="hoveringFull ? 'shadow-focus' : ''"
-                    ></span>
-                    <span
-                        class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
-                        >ID: {{ i }}
-                        <!-- <br />Status:<br />
-                    {{ num.assignments_approved }} approved <br />
-                    {{ num.assignments_rejected }} rejected -->
-                    </span>
-                </span>
+                <span
+                    @click="$router.push({ name: 'viewHIT', params: { hitId: num.hits[p] } })"
+                    class="h-5 w-5 m-1 rounded-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-focus"
+                    :style="{ background: color }"
+                    :class="hoveringFull ? 'shadow-focus' : ''"
+                    :content="'ID: ' + num.hits[p]"
+                    v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                ></span>
             </span>
         </span>
         <!-- <transition name="fade">

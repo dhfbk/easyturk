@@ -1,10 +1,10 @@
 <template>
     <div class="container mx-auto">
-        <div class="flex flex-col xs:flex-row justify-end mb-2">
+        <!-- <div class="flex flex-col xs:flex-row justify-end mb-2">
             <p class="text-md my-auto mr-1">Status:</p>
             <div class="relative">
                 <select
-                    class="appearance-none h-full rounded border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 pl-2 pr-12 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    class="appearance-none h-full rounded border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-1 pl-2 pr-12 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     name="sortBy"
                     id="sortBy"
                     @change="sortBy(sortType)"
@@ -20,66 +20,63 @@
                     </svg>
                 </div>
             </div>
+        </div> -->
+        <div class="overflow-x-auto">
+            <table class="w-full shadow-lg rounded">
+                <thead>
+                    <tr class="text-center bg-primary border-b border-gray-300 uppercase ">
+                        <th class="p-1 text-sm text-white">HIT ID</th>
+                        <th class="p-1 text-sm text-white">Status</th>
+                        <th class="p-1 table-cell text-sm text-white">Approved</th>
+                        <th class="p-1 table-cell text-sm text-white">Rejected</th>
+                        <th class="p-1 table-cell text-sm text-white">Available</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white text-center">
+                    <tr class="border-b border-gray-300 hover:bg-gray-100" v-for="(hit, id) in current" :key="id">
+                        <td class="table-cell py-1 border-r border-gray-300">
+                            <router-link :to="{ name: 'viewHIT', params: { hitId: hit.id } }">
+                                <p class="text-sm text-gray-700 font-medium">{{ hit.id }}</p>
+                            </router-link>
+                        </td>
+
+                        <td class="table-cell py-1 border-r border-gray-300">
+                            <p class="text-sm text-gray-700 font-medium">
+                                {{ hit.assignments_available == 0 ? 'Completed' : 'Assignable' }}
+                            </p>
+                        </td>
+                        <td class="table-cell py-1 border-r border-gray-300">
+                            <p class="text-sm text-gray-700 font-medium">{{ hit.assignments_approved }}</p>
+                        </td>
+                        <td class="table-cell py-1 border-r border-gray-300">
+                            <p class="text-sm text-gray-700 font-medium">{{ hit.assignments_rejected }}</p>
+                        </td>
+                        <td class="table-cell py-1 border-r border-gray-300">
+                            <p class="text-sm text-gray-700 font-medium">{{ hit.assignments_available }}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="grid grid-cols-3 mt-2" v-if="totalData.length > numPerPage">
+                <button
+                    @click="page--"
+                    v-if="totalData.length > numPerPage && page >= 1"
+                    class="bg-gray-400 md:w-48 w-24 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
+                >
+                    Previous
+                </button>
+                <div v-else></div>
+                <p class="text-center">Page {{ page + 1 }} of {{ pageNum + 1 }}</p>
+                <button
+                    @click="page++"
+                    v-if="totalData.length > numPerPage && page < pageNum"
+                    class="bg-gray-400 md:w-48 w-24 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
+                >
+                    Next
+                </button>
+                <div v-else></div>
+            </div>
         </div>
-        <table class="w-full shadow-lg rounded">
-            <thead>
-                <tr class="text-center bg-primary border-b border-gray-300 uppercase ">
-                    <th class="py-2 px-2 text-sm text-white">HIT ID</th>
-                    <th class="py-2 px-2 text-sm text-white">Status</th>
-                    <th class="py-2 px-2 hidden sm:table-cell text-sm text-white">Creation</th>
-                    <th class="py-2 px-2 hidden md:table-cell text-sm text-white">N. of assignments</th>
-                    <th class="py-2 px-2 hidden md:table-cell text-sm text-white">Submitted</th>
-                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-white">Approved</th>
-                    <th class="py-2 px-2 hidden lg:table-cell text-sm text-white">Rejected</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white text-center">
-                <tr class="border-b border-gray-300 hover:bg-gray-100" v-for="hit in hitDaMostrare" :key="hit.HITId">
-                    <td class="table-cell py-2 border-r border-gray-300">
-                        <router-link to="/hit">
-                            <p class="text-sm text-gray-700 font-medium">{{ hit.HITId }}</p>
-                        </router-link>
-                    </td>
-                    <td
-                        class="table-cell py-2 border-r border-gray-300 whitespace-no-wrap text-blue-900 text-sm leading-5"
-                    >
-                        <span class="relative inline-block px-3 py-1 italic text-green-900">
-                            <span
-                                aria-hidden
-                                v-if="hit.HITStatus == 'Reviewable'"
-                                class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-                            ></span>
-                            <span
-                                aria-hidden
-                                v-if="hit.HITStatus == 'Assignable'"
-                                class="absolute inset-0 bg-yellow-400 opacity-50 rounded-full"
-                            ></span>
-                            <span
-                                aria-hidden
-                                v-if="hit.HITStatus == 'Disposed'"
-                                class="absolute inset-0 bg-red-400 opacity-50 rounded-full"
-                            ></span>
-                            <span class="relative text-xs">{{ hit.HITStatus }}</span>
-                        </span>
-                    </td>
-                    <td class="hidden sm:table-cell py-2 border-r border-gray-300">
-                        <p class="text-sm text-gray-700 font-medium">{{ hit.CreationTime }}</p>
-                    </td>
-                    <td class="hidden md:table-cell py-2 border-r border-gray-300">
-                        <p class="text-sm text-gray-700 font-medium">{{ hit.MaxAssignments }}</p>
-                    </td>
-                    <td class="hidden md:table-cell py-2 border-r border-gray-300">
-                        <p class="text-sm text-gray-700 font-medium">{{ hit.NumberOfAssignmentsSubmitted }}</p>
-                    </td>
-                    <td class="hidden lg:table-cell py-2 border-r border-gray-300">
-                        <p class="text-sm text-gray-700 font-medium">{{ hit.NumberOfAssignmentsApproved }}</p>
-                    </td>
-                    <td class="hidden lg:table-cell py-2">
-                        <p class="text-sm text-gray-700 font-medium">{{ hit.NumberOfAssignmentsRejected }}</p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 </template>
 
@@ -87,7 +84,7 @@
 export default {
     name: 'tableHIT',
     props: {
-        datiHIT: Array,
+        sortedData: Array,
     },
     data() {
         return {
@@ -103,11 +100,43 @@ export default {
                 creazione: 'all',
             },
             hitDaMostrare: [],
+            page: 0,
+            numPerPage: 20,
+            current: [],
+            pageNum: 1,
+            totalData: [],
         }
     },
     created() {
-        this.filtraHIT()
+        // this.filtraHIT()
+        for (let i = 0; i < this.sortedData.length; i++) {
+            for (let x = 0; x < this.sortedData[i].count; x++) {
+                var hit = {
+                    assignments_available: this.sortedData[i].assignments_available,
+                    assignments_approved: this.sortedData[i].assignments_approved,
+                    assignments_rejected: this.sortedData[i].assignments_rejected,
+                    id: this.sortedData[i].hits[x],
+                }
+                this.totalData.push(hit)
+            }
+        }
+        this.pageNum = Math.ceil(this.totalData.length / this.numPerPage) - 1
+        this.currentPage()
     },
+    watch: {
+        page: function() {
+            this.pageNum = Math.ceil(this.totalData.length / this.numPerPage) - 1
+            this.current = []
+            this.currentPage()
+        },
+        // numPerPage: function() {
+        //     this.pageNum = Math.ceil(this.totalData.length / this.numPerPage) - 1
+        //     this.page = 0
+        //     this.current = []
+        //     this.currentPage()
+        // },
+    },
+
     methods: {
         sortBy(mode) {
             if (this.filtri.stato != mode) {
@@ -115,22 +144,33 @@ export default {
                 this.filtraHIT()
             }
         },
-        // mostra solo le HIT di una categoria (quella passata nell funzione filtraHIT)
-        filtraHIT() {
-            if (this.filtri.stato == 'all') {
-                this.hitDaMostrare = JSON.parse(JSON.stringify(this.datiHIT))
-            } else {
-                this.hitDaMostrare = JSON.parse(JSON.stringify(this.datiHIT))
-                let i = 0
-                while (this.hitDaMostrare[i] != undefined) {
-                    if (this.hitDaMostrare[i].HITStatus != this.filtri.stato) {
-                        this.hitDaMostrare.splice(i, 1)
-                        i--
-                    }
-                    i++
+        currentPage() {
+            for (
+                let i = this.page * this.numPerPage;
+                i < this.page * this.numPerPage + parseInt(this.numPerPage);
+                i++
+            ) {
+                if (this.totalData[i]) {
+                    this.current.push(this.totalData[i])
                 }
             }
         },
+        // mostra solo le HIT di una categoria (quella passata nell funzione filtraHIT)
+        // filtraHIT() {
+        //     if (this.filtri.stato == 'all') {
+        //         this.hitDaMostrare = JSON.parse(JSON.stringify(this.datiHIT))
+        //     } else {
+        //         this.hitDaMostrare = JSON.parse(JSON.stringify(this.datiHIT))
+        //         let i = 0
+        //         while (this.hitDaMostrare[i] != undefined) {
+        //             if (this.hitDaMostrare[i].HITStatus != this.filtri.stato) {
+        //                 this.hitDaMostrare.splice(i, 1)
+        //                 i--
+        //             }
+        //             i++
+        //         }
+        //     }
+        // },
     },
 }
 </script>

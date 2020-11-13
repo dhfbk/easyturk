@@ -21,26 +21,21 @@
                     v-model="first.field"
                 />
             </div>
-            <span class="tooltip relative">
-                <span
-                    class="bg-white border-2 mx-4 mt-2 md:mt-0 md:mb-2 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
-                    @click="first.isHandWritten = !first.isHandWritten"
+            <span
+                class="bg-white border-2 mx-4 mt-2 md:mt-0 md:mb-2 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                @click="first.isHandWritten = !first.isHandWritten"
+                :content="'Handwritten value?'"
+                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+            >
+                <input type="checkbox" class="opacity-0 absolute" v-model="first.isHandWritten" />
+                <svg
+                    :class="first.isHandWritten ? '' : 'hidden'"
+                    class="fill-current w-4 h-4 text-secondary pointer-events-none"
+                    viewBox="0 0 20 20"
                 >
-                    <input type="checkbox" class="opacity-0 absolute" v-model="first.isHandWritten" />
-                    <svg
-                        :class="first.isHandWritten ? '' : 'hidden'"
-                        class="fill-current w-4 h-4 text-secondary pointer-events-none"
-                        viewBox="0 0 20 20"
-                    >
-                        <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
-                    </svg>
-                    <span class="sr-only">Handwritten value?</span>
-                </span>
-                <span
-                    class="tooltip-text bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light ml-1"
-                >
-                    Handwritten value?
-                </span>
+                    <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                </svg>
+                <span class="sr-only">Handwritten value?</span>
             </span>
 
             <div

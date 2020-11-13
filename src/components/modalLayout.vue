@@ -4,7 +4,12 @@
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
             @click="toggleModal"
         >
-            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto" @click.stop>
+            <div
+                tabindex="-1"
+                id="modal"
+                class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto focus:outline-none"
+                @click.stop
+            >
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
                         <div class="text-gray-900 font-bold text-lg text-primary">Set layout for the project</div>
@@ -79,7 +84,6 @@
 import firstPart from '../components/firstPartLayoutModal.vue'
 import secondPart from '../components/secondPartLayoutModal.vue'
 import thirdPart from '../components/thirdPartLayoutModal.vue'
-import axios from 'axios'
 const { required, between } = require('vuelidate/lib/validators')
 const notEmpty = value => value != ''
 
@@ -161,6 +165,7 @@ export default {
     },
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
+        document.getElementById('modal').focus()
     },
     methods: {
         keyboardEvent(event) {
@@ -174,8 +179,8 @@ export default {
             this.$v.$touch()
             if (!this.$v.$invalid || (this.rejectIfGoldWrong == 0 && this.$v.rejectReason.$invalid)) {
                 this.loading = true
-                var url = this.APIURL + '?action=updateProjectStatus'
-                axios({
+                var url = '?action=updateProjectStatus'
+                this.API({
                     method: 'post',
                     url: url,
                     data: {
@@ -207,10 +212,10 @@ export default {
                     })
             }
         },
+        //check the url
         getCsvFields() {
-            var url = this.APIURL + '?action=getData&id=' + this.project.id + '&howMany=1&page=1&isGold=0'
-            axios
-                .get(url)
+            var url = '?action=getData&id=' + this.project.id + '&howMany=1&page=1&isGold=0'
+            this.API.get(url)
                 .then(res => {
                     this.csvValues = res.data.fields
                     this.loadingCsv = false

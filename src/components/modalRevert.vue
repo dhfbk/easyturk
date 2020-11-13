@@ -4,7 +4,12 @@
             class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
             @click="toggleModal('close')"
         >
-            <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto" @click.stop>
+            <div
+                tabindex="-1"
+                id="modal"
+                class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto focus:outline-none"
+                @click.stop
+            >
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <div class="text-gray-900 font-bold text-lg text-primary">Confirm action</div>
@@ -52,8 +57,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
     name: 'modalRevert',
     props: { id: String, toStatus: Number },
@@ -64,6 +67,7 @@ export default {
     },
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
+        document.getElementById('modal').focus()
     },
     methods: {
         keyboardEvent(event) {
@@ -82,9 +86,9 @@ export default {
         },
         revertProject() {
             this.loading = true
-            axios({
+            this.API({
                 method: 'post',
-                url: this.APIURL + '?action=updateProjectStatus&id=' + this.id,
+                url: '?action=updateProjectStatus&id=' + this.id,
                 data: {
                     toStatus: this.toStatus,
                 },
