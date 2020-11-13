@@ -47,7 +47,7 @@
         />
         <div class="flex justify-between flex-wrap items-center">
             <button
-                @click="$router.go(-1)"
+                @click="$router.push({ name: 'Home' })"
                 :content="'Back'"
                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                 class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
@@ -55,7 +55,7 @@
                 <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
                 </svg>
-                <span class="sr-only">Back to HIT list</span>
+                <span class="sr-only">Back to project list</span>
             </button>
             <p v-if="!loading" class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">
                 {{ project.name }}
@@ -300,7 +300,7 @@
                     </span>
                     <span class="flex flex-row mb-2 w-full xs2:w-auto">
                         <div class="w-8 h-4 rounded-md bg-gray-400 my-1 mr-2"></div>
-                        <span>Not published ({{ progressData.hits_total - progressData.hits_inserted}})</span></span
+                        <span>Not published ({{ progressData.hits_total - progressData.hits_inserted }})</span></span
                     >
                 </div>
                 <span class="w-full lg:ml-1">

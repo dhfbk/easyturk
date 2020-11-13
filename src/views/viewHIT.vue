@@ -3,7 +3,7 @@
         <modalEliminazione v-if="modal" @hideModal="toggleModal" />
         <div class="flex justify-between flex-wrap items-center">
             <button
-                @click="$router.go(-1)"
+                @click="$router.push({ name: 'HITlist', params: { projectId: $route.params.projectId } })"
                 :content="'Back'"
                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                 class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"

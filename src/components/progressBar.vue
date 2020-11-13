@@ -5,8 +5,8 @@
                 <div
                     :content="progressData.hits_submitted + '/' + progressData.hits_total"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                    class="h-8 bg-green-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
-                    :class="[published == 0 ? 'rounded-l' : '', notPublished == 0 ? 'rounded-l' : '']"
+                    class="h-8 bg-green-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg rounded-l"
+                    :class="[notPublished == 0 && published == 0 ? 'rounded-r' : '']"
                 ></div>
             </span>
             <span :style="{ width: published + '%' }" v-if="published != 0">
@@ -14,18 +14,14 @@
                     :content="progressData.hits_inserted - progressData.hits_submitted + '/' + progressData.hits_total"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     class="h-8 bg-blue-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
-                    :class="[
-                        notPublished + published >= 99 ? 'rounded-l' : '',
-                        notPublished == 0 && submitted == 0 ? 'rounded-r' : '',
-                    ]"
+                    :class="[submitted == 0 ? 'rounded-l' : '', notPublished == 0 ? 'rounded-r' : '']"
                 ></div>
             </span>
             <span :style="{ width: notPublished + '%' }" v-if="notPublished != 0">
                 <div
                     :content="progressData.hits_total - progressData.hits_inserted + '/' + progressData.hits_total"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                    class="h-8 bg-gray-400 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
-                    :class="notPublished > 0 ? 'rounded-r' : ''"
+                    class="h-8 bg-gray-400 transition duration-200 ease-in-out transform hover:-translate-y-1 rounded-r hover:shadow-lg"
                 ></div>
             </span>
         </div>

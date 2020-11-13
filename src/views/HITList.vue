@@ -2,9 +2,9 @@
     <div class="relative lg:w-5/6 pt-2 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <div v-if="loading"></div>
         <div class="flex justify-between flex-wrap items-center" v-else>
-            <div class="flex flex-row place-content-center w-full mb-2">
+            <div class="flex flex-row place-content-center w-full mb-4">
                 <button
-                    @click="$router.go(-1)"
+                    @click="$router.push({ name: 'projectView', params: { projectId: $route.params.projectId } })"
                     :content="'Back'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
