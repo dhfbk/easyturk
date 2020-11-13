@@ -90,11 +90,16 @@ export default {
 
                     var arrComp = []
                     var arrNotComp = []
+                    var arrNotTou = []
 
                     for (let i = 0; i < this.progressData.length; i++) {
-                        this.progressData[i].assignments_available > 0
-                            ? arrNotComp.push(this.progressData[i])
-                            : arrComp.push(this.progressData[i])
+                        if (this.progressData[i].assignments_completed == 0) {
+                            arrNotTou.push(this.progressData[i])
+                        } else if (this.progressData[i].assignments_available > 0) {
+                            arrNotComp.push(this.progressData[i])
+                        } else {
+                            arrComp.push(this.progressData[i])
+                        }
                     }
 
                     arrComp = arrComp.sort(function(a, b) {
@@ -113,7 +118,9 @@ export default {
                         )
                     })
 
-                    this.sortedData = arrComp.concat(arrNotComp)
+                    this.sortedData = arrComp.concat(arrNotComp).concat(arrNotTou)
+
+                    console.log(this.sortedData)
 
                     //
 
