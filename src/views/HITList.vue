@@ -1,8 +1,8 @@
 <template>
-    <div class="relative pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 ">
+    <div class="relative  pt-2 pb-8 flex flex-col mt-4 mx-2 xs2:mx-4 ">
         <div v-if="loading"></div>
-        <div v-else>
-            <h1 class="text-2xl mb-4 text-primary">HITs results (project ID: {{ $route.params.projectId }})</h1>
+        <div class="container mx-auto" v-else>
+            <h1 class="text-2xl mb-4 text-primary">HITs results (project {{ $route.params.projectId }})</h1>
             <div class="flex flex-col xs:flex-row justify-end mb-2">
                 <p class="text-md my-auto mr-1">View:</p>
                 <div class="relative">
@@ -56,8 +56,7 @@ export default {
     methods: {
         getData() {
             this.id = this.$route.params.projectId
-            this.API
-                .get('?action=getProjectInfo&id=' + this.id)
+            this.API.get('?action=getProjectInfo&id=' + this.id)
                 .then(res => {
                     this.progressData = res.data.summary
 
@@ -78,11 +77,16 @@ export default {
 
                     var arrComp = []
                     var arrNotComp = []
+                    var arrNotTou = []
 
                     for (let i = 0; i < this.progressData.length; i++) {
-                        this.progressData[i].assignments_available > 0
-                            ? arrNotComp.push(this.progressData[i])
-                            : arrComp.push(this.progressData[i])
+                        if (this.progressData[i].assignments_completed == 0) {
+                            arrNotTou.push(this.progressData[i])
+                        } else if (this.progressData[i].assignments_available > 0) {
+                            arrNotComp.push(this.progressData[i])
+                        } else {
+                            arrComp.push(this.progressData[i])
+                        }
                     }
 
                     arrComp = arrComp.sort(function(a, b) {
@@ -101,7 +105,9 @@ export default {
                         )
                     })
 
-                    this.sortedData = arrComp.concat(arrNotComp)
+                    this.sortedData = arrComp.concat(arrNotComp).concat(arrNotTou)
+
+                    console.log(this.sortedData)
 
                     //
 
