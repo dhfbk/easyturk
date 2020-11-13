@@ -269,19 +269,19 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="border-r text-sm text-gray-100 bg-gray-800 font-medium">
+                            <td class="border-r text-sm text-gray-100 bg-primary font-medium">
                                 {{ totals.count }}
                             </td>
-                            <td class="border-r text-sm text-gray-100 bg-gray-800 font-medium">
+                            <td class="border-r text-sm text-gray-100 bg-primary font-medium">
                                 {{ totals.assignments_approved }}
                             </td>
-                            <td class="border-r text-sm text-gray-100 bg-gray-800 font-medium">
+                            <td class="border-r text-sm text-gray-100 bg-primary font-medium">
                                 {{ totals.assignments_rejected }}
                             </td>
-                            <td class="border-r text-sm text-gray-100 bg-gray-800 font-medium">
+                            <td class="border-r text-sm text-gray-100 bg-primary font-medium">
                                 {{ totals.assignments_completed }}
                             </td>
-                            <td class="border-r text-sm text-gray-100 bg-gray-800 font-medium">
+                            <td class="border-r text-sm text-gray-100 bg-primary font-medium">
                                 {{ totals.assignments_available }}
                             </td>
                         </tr>
