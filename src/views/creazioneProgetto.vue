@@ -796,6 +796,9 @@ export default {
             if (event.code == 'Escape') {
                 this.goBack()
             }
+            else if (event.code == 'Enter') {
+                this.caricaProgetto()
+            }
         },
         emitSnackbar(msg) {
             this.$emit('snackbar', msg)
