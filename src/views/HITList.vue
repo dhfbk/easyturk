@@ -1,6 +1,8 @@
 <template>
     <div class="relative lg:w-5/6 pt-2 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
-        <div v-if="loading"></div>
+        <div v-if="loading">
+            <loader :type="'hitList'" />
+        </div>
         <div class="flex justify-between flex-wrap items-center" v-else>
             <div class="flex flex-row place-content-center w-full mb-4">
                 <button
@@ -9,7 +11,7 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
                 >
-                    <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <svg class="inline" style="width: 24px; height: 24px" viewBox="0 0 24 24">
                         <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
                     </svg>
                     <span class="sr-only">Back to project</span>
@@ -27,12 +29,8 @@
                             @change="view(viewType)"
                             v-model="viewType"
                         >
-                            <option value="dots">
-                                Dot Matrix
-                            </option>
-                            <option value="table">
-                                Table
-                            </option>
+                            <option value="dots">Dot Matrix</option>
+                            <option value="table">Table</option>
                         </select>
                         <div
                             class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
@@ -52,11 +50,13 @@
 <script>
 import tableHIT from '../components/tableHIT.vue'
 import dotMatrixHIT from '../components/dotMatrixHIT.vue'
+import loader from '../components/loader.vue'
 export default {
     name: 'HITList',
     components: {
         tableHIT,
         dotMatrixHIT,
+        loader,
     },
     data() {
         return {
@@ -74,7 +74,7 @@ export default {
         getData() {
             this.id = this.$route.params.projectId
             this.API.get('?action=getProjectInfo&id=' + this.id)
-                .then(res => {
+                .then((res) => {
                     this.progressData = res.data.summary
 
                     //count to set defualt data view
@@ -106,7 +106,7 @@ export default {
                         }
                     }
 
-                    arrComp = arrComp.sort(function(a, b) {
+                    arrComp = arrComp.sort(function (a, b) {
                         return (
                             a.assignments_rejected - b.assignments_rejected ||
                             b.assignments_approved - a.assignments_approved ||
@@ -114,7 +114,7 @@ export default {
                         )
                     })
 
-                    arrNotComp = arrNotComp.sort(function(a, b) {
+                    arrNotComp = arrNotComp.sort(function (a, b) {
                         return (
                             a.assignments_rejected - b.assignments_rejected ||
                             b.assignments_approved - a.assignments_approved ||
@@ -130,7 +130,7 @@ export default {
 
                     this.loading = false
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(err)
                 })
         },
