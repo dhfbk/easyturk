@@ -110,7 +110,6 @@ export default {
         } else {
             this.isGold = 0
         }
-        console.log(this.projectId)
         this.update()
     },
     mounted() {
@@ -136,20 +135,24 @@ export default {
                 this.page +
                 '&isGold=' +
                 this.isGold
-            this.API.get(url)
-                .then((res) => {
-                    console.log(res.data)
-                    this.current = res.data.data
-                    this.cluster = res.data.cluster_indexes
-                    this.headers = res.data.fields
-                    this.totalNum = res.data.num
-                    this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
-                    this.filename = res.data.filename
-                    this.loading = false
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+            if (isNaN(this.projectId)) {
+                this.$router.replace({ name: 'Home' })
+            } else {
+                this.API.get(url)
+                    .then((res) => {
+                        console.log(res.data)
+                        this.current = res.data.data
+                        this.cluster = res.data.cluster_indexes
+                        this.headers = res.data.fields
+                        this.totalNum = res.data.num
+                        this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
+                        this.filename = res.data.filename
+                        this.loading = false
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            }
         },
     },
     watch: {

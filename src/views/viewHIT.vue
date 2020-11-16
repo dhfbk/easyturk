@@ -191,7 +191,7 @@ export default {
                     this.loading = false
                 })
                 .catch((err) => {
-                    console.log(err)
+                    console.error(err)
                 })
         },
         timeConverter(tmp) {

@@ -413,59 +413,66 @@ export default {
             }
         },
         getDatiPrj() {
-            this.id = this.$route.params.projectId
-            this.API.get('?action=getProjectInfo&id=' + this.id)
-                .then((res) => {
-                    this.project = res.data.values
-                    this.hitsSubmitted = res.data.hits_submitted
-                    this.hitsTotal = res.data.hits_total
-                    this.project.hits_submitted = res.data.hits_submitted
-                    this.project.hits_total = res.data.hits_total
-                    this.project.numGold = res.data.numGold
-                    this.project.numData = res.data.numData
-                    this.qualifications.master = res.data.values.master
-                    this.project.hits_inserted = res.data.hits_inserted
-                    this.project.summary = res.data.summary
-                    this.goldUploaded = res.data.numGold > 0
-                    console.log(res.data)
-                    if ((this.project.status == 2 || this.project.status == 3) && this.hitsTotal > this.hitsSubmitted) {
-                        this.priceData.reward = parseFloat(this.project.reward)
-                        this.priceData.assignment = parseInt(this.project.workers)
-                    }
-                    if (this.project.status == 3) {
-                        this.progressData.hits_inserted = res.data.hits_inserted
-                        this.progressData.hits_total = res.data.hits_total
-                        this.progressData.hits_submitted = res.data.hits_submitted
-                    }
-                    for (let i = 0; i < this.project.summary.length; i++) {
-                        this.rejected =
-                            this.rejected +
-                            parseInt(this.project.summary[i].assignments_rejected) * this.project.summary[i].count
-                        this.approved =
-                            this.approved +
-                            parseInt(this.project.summary[i].assignments_approved) * this.project.summary[i].count
-                    }
-                    if (res.data.summary.length > 0) {
-                        if (res.data.summary[0].max_assignments != this.project.workers) {
-                            this.totalProjected =
-                                (this.project.hits_total - this.project.hits_inserted) * this.project.workers +
-                                ' - ' +
-                                (this.project.hits_total - this.project.hits_inserted) *
-                                    parseInt(res.data.summary[0].max_assignments)
+            this.id = parseInt(this.$route.params.projectId)
+            if (isNaN(this.id)) {
+                this.$router.replace({ name: 'Home' })
+            } else {
+                this.API.get('?action=getProjectInfo&id=' + this.id)
+                    .then((res) => {
+                        this.project = res.data.values
+                        this.hitsSubmitted = res.data.hits_submitted
+                        this.hitsTotal = res.data.hits_total
+                        this.project.hits_submitted = res.data.hits_submitted
+                        this.project.hits_total = res.data.hits_total
+                        this.project.numGold = res.data.numGold
+                        this.project.numData = res.data.numData
+                        this.qualifications.master = res.data.values.master
+                        this.project.hits_inserted = res.data.hits_inserted
+                        this.project.summary = res.data.summary
+                        this.goldUploaded = res.data.numGold > 0
+                        console.log(res.data)
+                        if (
+                            (this.project.status == 2 || this.project.status == 3) &&
+                            this.hitsTotal > this.hitsSubmitted
+                        ) {
+                            this.priceData.reward = parseFloat(this.project.reward)
+                            this.priceData.assignment = parseInt(this.project.workers)
+                        }
+                        if (this.project.status == 3) {
+                            this.progressData.hits_inserted = res.data.hits_inserted
+                            this.progressData.hits_total = res.data.hits_total
+                            this.progressData.hits_submitted = res.data.hits_submitted
+                        }
+                        for (let i = 0; i < this.project.summary.length; i++) {
+                            this.rejected =
+                                this.rejected +
+                                parseInt(this.project.summary[i].assignments_rejected) * this.project.summary[i].count
+                            this.approved =
+                                this.approved +
+                                parseInt(this.project.summary[i].assignments_approved) * this.project.summary[i].count
+                        }
+                        if (res.data.summary.length > 0) {
+                            if (res.data.summary[0].max_assignments != this.project.workers) {
+                                this.totalProjected =
+                                    (this.project.hits_total - this.project.hits_inserted) * this.project.workers +
+                                    ' - ' +
+                                    (this.project.hits_total - this.project.hits_inserted) *
+                                        parseInt(res.data.summary[0].max_assignments)
+                            } else {
+                                this.totalProjected =
+                                    (this.project.hits_total - this.project.hits_inserted) * this.project.workers
+                            }
                         } else {
                             this.totalProjected =
                                 (this.project.hits_total - this.project.hits_inserted) * this.project.workers
                         }
-                    } else {
-                        this.totalProjected =
-                            (this.project.hits_total - this.project.hits_inserted) * this.project.workers
-                    }
 
-                    this.loading = false
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+                        this.loading = false
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            }
         },
         open(mode) {
             this.$router.push({

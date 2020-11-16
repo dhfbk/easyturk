@@ -40,12 +40,12 @@ export default {
                 axios.spread((...res) => {
                     if (res[1].data.result == 'ERR') {
                         if (this.$route.name != 'login') {
-                            this.$router.replace({ path: '/' })
+                            this.$router.replace({ path: '/login' })
                         }
                         this.wait = false
                     } else {
                         if (this.$route.name == 'login') {
-                            this.$router.replace({ path: '/home' })
+                            this.$router.replace({ path: '/' })
                         }
                         this.$store.state.defaults = res[0].data.defaults
                         this.$store.state.userInfo = res[1].data.data

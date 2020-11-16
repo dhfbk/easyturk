@@ -30,7 +30,7 @@
                 <div class="flex items-center justify-end">
                     <button
                         class="ripple transition ease-out duration-100 bg-primary hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white focus:outline-none"
-                        type="submit"
+                        type="button"
                         @click="login"
                     >
                         <svg
@@ -76,7 +76,6 @@ export default {
                 this.API.get('?action=login&username=' + this.username + '&password=' + this.password)
                     .then((res) => {
                         console.log(res)
-                        /*
                         if (res.data.result == 'ERR') {
                             this.loading = false
                             this.$emit('snackbar', 'Error. ' + res.data.error)
@@ -84,14 +83,13 @@ export default {
                             this.API.get('?action=getUserInfo')
                                 .then((res) => {
                                     this.$store.state.userInfo = res.data.data
-                                    this.$router.replace({ path: '/home' })
+                                    this.$router.replace({ path: '/' })
                                     this.loading = false
                                 })
                                 .catch((err) => {
                                     console.error(err)
                                 })
                         }
-                        */
                     })
                     .catch((err) => {
                         console.error(err)
@@ -101,5 +99,3 @@ export default {
     },
 }
 </script>
-
-<style></style>

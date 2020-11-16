@@ -10,15 +10,15 @@ function lazyLoad(view) {
 const routes = [
     {
         path: '*',
-        redirect: '/home',
+        redirect: '/',
     },
     {
-        path: '/',
+        path: '/login',
         name: 'login',
         component: lazyLoad('login'),
     },
     {
-        path: '/home',
+        path: '/',
         name: 'Home',
         component: lazyLoad('Home'),
     },
