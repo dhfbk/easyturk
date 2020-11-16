@@ -8,7 +8,7 @@
                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                 class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
             >
-                <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+                <svg class="inline" style="width: 24px; height: 24px" viewBox="0 0 24 24">
                     <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
                 </svg>
                 <span class="sr-only">Back to HIT list</span>
@@ -155,12 +155,20 @@ export default {
         this.getData()
     },
     mounted() {
-        this.popupItem = this.$el
+        window.addEventListener('keydown', this.keyboardEvent)
     },
     methods: {
+        keyboardEvent(event) {
+            if (event.code == 'Escape') {
+                this.$router.push({
+                    name: 'HITlist',
+                    params: { projectId: this.$route.params.projectId },
+                })
+            }
+        },
         getData() {
             this.API.get('?action=getHitInfo&hitID=' + this.$route.params.hitId)
-                .then(res => {
+                .then((res) => {
                     console.log(res)
                     this.prjData = res.data
                     var tmpDate = new Date(res.data.values.hit_info.Expiration)
@@ -182,7 +190,7 @@ export default {
                     this.setAnalyticsCard()
                     this.loading = false
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(err)
                 })
         },
@@ -260,6 +268,18 @@ export default {
                 (100 * parseInt(this.prjData.values.hit_info.NumberOfAssignmentsPending)) /
                 parseInt(this.prjData.values.hit_info.MaxAssignments)
         },
+    },
+    watch: {
+        modal() {
+            if (this.modal) {
+                window.removeEventListener('keydown', this.keyboardEvent)
+            } else {
+                window.addEventListener('keydown', this.keyboardEvent)
+            }
+        },
+    },
+    beforeDestroy() {
+        window.removeEventListener('keydown', this.keyboardEvent)
     },
 }
 </script>

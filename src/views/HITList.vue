@@ -70,7 +70,18 @@ export default {
     created() {
         this.getData()
     },
+    mounted() {
+        window.addEventListener('keydown', this.keyboardEvent)
+    },
     methods: {
+        keyboardEvent(event) {
+            if (event.code == 'Escape') {
+                this.$router.push({
+                    name: 'projectView',
+                    params: { projectId: this.$route.params.projectId },
+                })
+            }
+        },
         getData() {
             this.id = this.$route.params.projectId
             this.API.get('?action=getProjectInfo&id=' + this.id)
@@ -139,6 +150,9 @@ export default {
                 this.viewType = type
             }
         },
+    },
+    beforeDestroy() {
+        window.removeEventListener('keydown', this.keyboardEvent)
     },
 }
 </script>

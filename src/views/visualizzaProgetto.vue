@@ -169,21 +169,6 @@
                     </svg>
                     <span class="sr-only">Delete</span>
                 </button>
-                <button
-                    v-if="project.status == 3"
-                    @click="open('results')"
-                    :content="'Results'"
-                    v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                    type="submit"
-                    class="hidden md:block ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
-                >
-                    <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
-                        <path
-                            d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z"
-                        />
-                    </svg>
-                    <span class="sr-only">Results</span>
-                </button>
                 <div class="relative">
                     <button
                         @click="dropdownOpen = !dropdownOpen"
@@ -239,12 +224,6 @@
                                 @click="toggleModal('revert')"
                                 class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
                                 >Revert HIT settings</a
-                            >
-                            <router-link
-                                v-if="project.status == 3"
-                                to="results"
-                                class="block md:hidden cursor-pointer px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
-                                >Results</router-link
                             >
                             <a
                                 v-if="project.status != 3"
@@ -425,17 +404,15 @@ export default {
         console.log(this.priceData)
     },
     mounted() {
-        this.popupItem = this.$el
         window.addEventListener('keydown', this.keyboardEvent)
     },
     methods: {
         keyboardEvent(event) {
             if (event.code == 'Escape') {
-                this.$router.go(-1)
+                this.$router.push({ name: 'Home' })
             }
         },
         getDatiPrj() {
-            console.log('entrato nel refresh!!!')
             this.id = this.$route.params.projectId
             this.API.get('?action=getProjectInfo&id=' + this.id)
                 .then((res) => {
@@ -490,14 +467,12 @@ export default {
                     console.log(err)
                 })
         },
-        //metodo per aprire il link dei vari button
         open(mode) {
             this.$router.push({
                 name: mode,
                 params: { projectId: this.projectid },
             })
         },
-
         toggleModal(mode) {
             if (mode == 'delete') {
                 this.modalElim = !this.modalElim

@@ -43,11 +43,6 @@ const routes = [
         component: lazyLoad('HITList'),
     },
     {
-        path: '/:projectId/results',
-        name: 'results',
-        component: lazyLoad('reviewResults'),
-    },
-    {
         path: '/:projectId/hitlist/:hitId',
         name: 'viewHIT',
         component: lazyLoad('viewHIT'),
