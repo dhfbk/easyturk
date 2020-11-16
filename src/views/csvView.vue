@@ -38,9 +38,12 @@
                 </thead>
                 <tbody>
                     <tr v-for="(x, index) in current" :key="index" class="border-b border-gray-300 hover:bg-gray-100">
-                        <td class="p-1 px-2 border-r border-gray-300" v-for="i in headers.length" :key="i">
-                            {{ x[i - 1] }}
-                        </td>
+                        <td
+                            class="p-1 px-2 border-r border-gray-300"
+                            v-for="i in headers.length"
+                            :key="i"
+                            v-html="x[i - 1]"
+                        ></td>
                         <td class="p-1 px-2" v-if="cluster[index]">{{ cluster[index] }}</td>
                         <td class="p-1 px-2" v-else>No cluster</td>
                     </tr>
