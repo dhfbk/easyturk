@@ -1,17 +1,19 @@
 <template>
     <div class="block lg:w-5/6 mx-2 xs2:mx-4 lg:mx-auto pt-2">
         <button
-            @click="$router.go(-1)"
+            @click="$router.push({ name: 'Home' })"
             :content="'Back'"
             v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
             class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
         >
-            <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+            <svg class="inline" style="width: 24px; height: 24px" viewBox="0 0 24 24">
                 <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
             </svg>
-            <span class="sr-only">Back to project</span>
+            <span class="sr-only">Back to project list</span>
         </button>
-        <p v-if="!loading" class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">{{ filename }}</p>
+        <p v-if="!loading" class="inline text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">
+            {{ filename }}
+        </p>
         <div class="flex flex-row justify-start mr-auto mb-1 ml-2">
             <p class="text-md my-auto mr-1">Results per page:</p>
             <input
@@ -29,7 +31,7 @@
         <div class="overflow-x-auto" v-else>
             <table class="shadow-md rounded xs2:min-w-5/6 bg-white mx-auto">
                 <thead>
-                    <tr class="text-left text-white bg-primary border-b border-gray-300 uppercase ">
+                    <tr class="text-left text-white bg-primary border-b border-gray-300 uppercase">
                         <th class="px-2" v-for="x in headers" :key="x">{{ x }}</th>
                         <th class="px-2" v-if="cluster.length > 0">Cluster indexes</th>
                     </tr>
@@ -121,7 +123,7 @@ export default {
                 '&isGold=' +
                 this.isGold
             this.API.get(url)
-                .then(res => {
+                .then((res) => {
                     console.log(res.data)
                     this.current = res.data.data
                     this.cluster = res.data.cluster_indexes
@@ -131,19 +133,19 @@ export default {
                     this.filename = res.data.filename
                     this.loading = false
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(err)
                 })
         },
     },
     watch: {
-        page: function() {
+        page: function () {
             this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
             this.current = []
             this.cluster = []
             this.update()
         },
-        numPerPage: function() {
+        numPerPage: function () {
             this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
             this.page = 1
             this.current = []

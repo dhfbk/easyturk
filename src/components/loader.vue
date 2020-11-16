@@ -70,9 +70,9 @@
             </div>
         </div>
     </div>
-    <div v-else-if="type == 'csvData'" class="lg:w-5/6 mx-2 xs2:mx-4 lg:mx-auto">
+    <div v-else-if="type == 'csvData'">
         <div class="animate-pulse">
-            <table class="shadow-md rounded xs2:min-w-5/6 bg-white mx-auto">
+            <table class="shadow-md rounded w-full bg-white mx-auto">
                 <thead>
                     <tr class="text-left text-white bg-primary border-b border-gray-300 uppercase">
                         <td class="p-1 px-2 border-r border-gray-300" v-for="i in 3" :key="i">
