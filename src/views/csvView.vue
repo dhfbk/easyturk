@@ -110,7 +110,18 @@ export default {
         console.log(this.projectId)
         this.update()
     },
+    mounted() {
+        window.addEventListener('keydown', this.keyboardEvent)
+    },
     methods: {
+        keyboardEvent(event) {
+            if (event.code == 'Escape') {
+                this.$router.push({
+                    name: 'projectView',
+                    params: { projectId: this.$route.params.projectId },
+                })
+            }
+        },
         update() {
             this.loading = true
             var url =
@@ -152,6 +163,9 @@ export default {
             this.cluster = []
             this.update()
         },
+    },
+    beforeDestroy() {
+        window.removeEventListener('keydown', this.keyboardEvent)
     },
 }
 </script>
