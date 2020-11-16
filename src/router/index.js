@@ -9,7 +9,16 @@ function lazyLoad(view) {
 
 const routes = [
     {
+        path: '*',
+        redirect: '/home',
+    },
+    {
         path: '/',
+        name: 'login',
+        component: lazyLoad('login'),
+    },
+    {
+        path: '/home',
         name: 'Home',
         component: lazyLoad('Home'),
     },

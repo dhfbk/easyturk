@@ -1,6 +1,6 @@
 <template>
     <div id="app" class="antialiased pb-6">
-        <navbar />
+        <navbar class="relative z-10" />
         <div
             v-if="sandbox"
             class="w-full customEl bg-orange-400 text-center flex justify-center content-center items-center"

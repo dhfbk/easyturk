@@ -1,7 +1,7 @@
 <template>
     <nav class="bg-primary p-6">
         <div class="text-white mr-6 w-auto">
-            <router-link to="/">
+            <router-link to="/" :disabled="$route.name == 'login'">
                 <svg
                     width="100px"
                     height="28px"
@@ -68,7 +68,7 @@
                 </svg>
             </router-link>
         </div>
-        <div class="block sm:hidden float-right ml-2">
+        <div class="block sm:hidden float-right ml-2" v-if="$route.name != 'login'">
             <button
                 @click="open = !open"
                 class="ripple  items-center mx-0 px-3 py-2 border rounded transition duration-100 ease-out text-black border-black hover:text-white hover:border-white focus:outline-none"
@@ -81,12 +81,13 @@
         </div>
         <div class="clearfix sm:hidden"></div>
         <div
+            v-if="$route.name != 'login'"
             :class="open ? 'block' : 'hidden'"
             class="w-full flex-grow sm:flex sm:items-center sm:w-auto justify-end text-right sm:text-justify"
         >
             <div>
                 <router-link
-                    to="/"
+                    to="/home"
                     class="block mt-4 sm:inline-block sm:mt-0 transition duration-100 ease-out text-white hover:text-gray-400 sm:mr-4 focus:outline-none"
                 >
                     Home
