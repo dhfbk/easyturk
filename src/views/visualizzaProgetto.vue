@@ -306,7 +306,7 @@
             </button>
             <div class="clearfix"></div>
         </div>
-        <div class="grid grid-cols-1 xs2:grid-cols-2" :class="!loading && project.status == 3 ? '' : 'mt-2'">
+        <div class="grid grid-cols-1 md:grid-cols-2" :class="!loading && project.status == 3 ? '' : 'mt-2'">
             <div class="mr-0 xs2:mr-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading">
                     <loader :type="'cardInfoVisualizza'" v-for="n in 4" :key="n" />
