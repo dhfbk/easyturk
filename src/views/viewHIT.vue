@@ -101,7 +101,9 @@
                 </div>
                 <div v-else>
                     <cardInfo :projectData="project" :mode="'general'" />
-                    <cardInfo :projectData="prjData" :mode="'hitTable'" />
+                    <!-- <cardInfo :projectData="prjData" :mode="'hitTable'" /> -->
+                    <cardTable :tableData="assignmentData" :emptyText="'No data to display'" />
+                    <cardTable :tableData="tableData" :emptyText="'No data to display'" />
                 </div>
             </div>
             <div class="ml-0 xs2:ml-1">
@@ -124,6 +126,7 @@ import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import loader from '../components/loader.vue'
+import cardTable from '../components/cardTable.vue'
 
 export default {
     name: 'viewHIT',
@@ -134,6 +137,7 @@ export default {
         modalEliminazione,
         cardInfo,
         cardAnalytics,
+        cardTable,
         loader,
     },
     data() {
@@ -157,7 +161,59 @@ export default {
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
     },
+    computed: {
+        assignmentData: function() {
+            var ret = {};
+            var assignments = { ...this.prjData.assignments };
+
+            if (assignments) {
+                ret['head'] = ["Worker ID", "Status", "Assignment ID"];
+                ret['body'] = [];
+                for (var assIndex in assignments) {
+                    var thisLine = [];
+                    thisLine.push(assignments[assIndex]['worker_id']);
+                    thisLine.push(assignments[assIndex]['status']);
+                    thisLine.push(assignments[assIndex]['assignment_id']);
+                    ret['body'].push(thisLine);
+                }
+            }
+
+            return ret;
+        },
+        tableData: function() {
+            var ret = {};
+            var fields = this.prjData.fields.slice();
+            var lines = { ...this.prjData.lines };
+
+            if (fields) {
+                ret['head'] = fields;
+                ret['body'] = [];
+                if (lines) {
+                    for (var line in lines) {
+                        var thisLine = [];
+                        for (var field in fields) {
+                            if (lines[line][fields[field]]) {
+                                thisLine.push(this.truncateString(lines[line][fields[field]], 30));
+                            }
+                            else {
+                                thisLine.push('');
+                            }
+                        }
+                        ret['body'].push(thisLine);
+                    }
+                }
+            }
+            return ret;
+        }
+    },
     methods: {
+        truncateString(str, num) {
+            if (str.length > num) {
+                return str.slice(0, num) + "...";
+            } else {
+                return str;
+            }
+        },
         keyboardEvent(event) {
             if (event.code == 'Escape') {
                 this.$router.push({
