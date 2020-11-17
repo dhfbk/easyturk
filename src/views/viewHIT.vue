@@ -94,7 +94,7 @@
             </div>
             -->
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 mt-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 mt-2">
             <div class="mr-0 xs2:mr-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading">
                     <loader :type="'cardInfoVisualizza'" v-for="n in 2" :key="n" />
