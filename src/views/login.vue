@@ -89,11 +89,15 @@ export default {
                             this.loading = false
                             this.$emit('snackbar', 'Error. ' + res.data.error)
                         } else {
+                            var path
                             this.API.get('?action=getUserInfo')
                                 .then((res) => {
                                     this.$store.state.userInfo = res.data.data
+                                    this.$store.state.currentRoute != ''
+                                        ? (path = this.$store.state.currentRoute)
+                                        : (path = '/')
                                     this.$emit('sandbox', this.$store.state.userInfo.use_sandbox)
-                                    this.$router.replace({ path: '/' })
+                                    this.$router.replace({ path: path })
                                     this.loading = false
                                 })
                                 .catch((err) => {

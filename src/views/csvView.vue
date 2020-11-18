@@ -140,14 +140,17 @@ export default {
             } else {
                 this.API.get(url)
                     .then((res) => {
-                        console.log(res.data)
-                        this.current = res.data.data
-                        this.cluster = res.data.cluster_indexes
-                        this.headers = res.data.fields
-                        this.totalNum = res.data.num
-                        this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
-                        this.filename = res.data.filename
-                        this.loading = false
+                        if (res.data.result == 'ERR') {
+                            this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                        } else {
+                            this.current = res.data.data
+                            this.cluster = res.data.cluster_indexes
+                            this.headers = res.data.fields
+                            this.totalNum = res.data.num
+                            this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
+                            this.filename = res.data.filename
+                            this.loading = false
+                        }
                     })
                     .catch((err) => {
                         console.log(err)

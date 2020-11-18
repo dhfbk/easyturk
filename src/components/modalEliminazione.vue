@@ -35,7 +35,7 @@
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                                style="width:24px;height:24px"
+                                style="width: 24px; height: 24px"
                                 viewBox="0 0 24 24"
                             >
                                 <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
@@ -83,18 +83,20 @@ export default {
             //var self = this
             this.loading = true
             this.API.get('?action=deleteProject&id=' + this.id)
-                .then(res => {
+                .then((res) => {
                     console.log(res.data.result)
                     this.loading = false
                     if (res.data.result == 'ERR') {
-                        this.$emit('deleted', 'Error: ' + res.data.error)
+                        res.data.error.includes('User')
+                            ? this.$emit('deleted', 'Error: ' + res.data.error + '.')
+                            : this.$emit('deleted', 'Error: ' + res.data.error)
                     } else {
                         this.$emit('deleted', 'Project deleted')
                         this.toggleModal()
                     }
                     // this.$emit('snackbar', ['success', this.id, 'Progetto eliminato'])
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(err)
                     this.$emit('deleted', 'Error: server unreachable')
                     this.loading = false

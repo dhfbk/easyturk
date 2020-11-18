@@ -123,7 +123,7 @@
                             type="file"
                             ref="file"
                             accept=".csv, text/csv, .txt, .tsv"
-                            style="display:none;"
+                            style="display: none"
                             :disabled="inputLocked"
                             @change="displayFile"
                         />
@@ -158,7 +158,7 @@
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                                style="width:24px;height:24px"
+                                style="width: 24px; height: 24px"
                                 viewBox="0 0 24 24"
                             >
                                 <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
@@ -179,7 +179,7 @@
 
 <script>
 const { required } = require('vuelidate/lib/validators')
-const notEmpty = value => value != ''
+const notEmpty = (value) => value != ''
 
 export default {
     name: 'modalUpload',
@@ -259,13 +259,13 @@ export default {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
-                        onUploadProgress: function(progressEvent) {
+                        onUploadProgress: function (progressEvent) {
                             this.uploadPercentage = parseInt(
                                 Math.round((progressEvent.loaded / progressEvent.total) * 100)
                             )
                         }.bind(this),
                     })
-                        .then(res => {
+                        .then((res) => {
                             if (res.data.result != 'ERR') {
                                 if (this.type == 'std') {
                                     this.$emit('uploaded', ['std', '', 'Upload completed'])
@@ -274,9 +274,13 @@ export default {
                                 }
                             } else {
                                 if (this.type == 'std') {
-                                    this.$emit('uploaded', ['std', '', 'Error. Try again' + res.data.error])
+                                    res.data.error.includes('User')
+                                        ? this.$emit('uploaded', ['std', '', 'Error. ' + res.data.error + '.'])
+                                        : this.$emit('uploaded', ['std', '', 'Error. ' + res.data.error])
                                 } else {
-                                    this.$emit('uploaded', ['gld', '', 'Error. Try again' + res.data.error])
+                                    res.data.error.includes('User')
+                                        ? this.$emit('uploaded', ['gld', '', 'Error. ' + res.data.error + '.'])
+                                        : this.$emit('uploaded', ['gld', '', 'Error. ' + res.data.error])
                                 }
                             }
                             this.loading = false

@@ -204,7 +204,6 @@ export default {
             qualifications: {},
         }
     },
-
     created() {
         this.getData()
     },
@@ -233,9 +232,13 @@ export default {
         getData() {
             this.API.get('?action=listProjects')
                 .then((res) => {
-                    this.projects = res.data.values
-                    this.loadingProjects = false
-                    this.loadingOther = false
+                    if (res.data.result == 'ERR') {
+                        this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                    } else {
+                        this.projects = res.data.values
+                        this.loadingProjects = false
+                        this.loadingOther = false
+                    }
                 })
                 .catch((errors) => {
                     console.log(errors)

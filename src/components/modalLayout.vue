@@ -61,7 +61,7 @@
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                                style="width:24px;height:24px"
+                                style="width: 24px; height: 24px"
                                 viewBox="0 0 24 24"
                             >
                                 <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
@@ -85,7 +85,7 @@ import firstPart from '../components/firstPartLayoutModal.vue'
 import secondPart from '../components/secondPartLayoutModal.vue'
 import thirdPart from '../components/thirdPartLayoutModal.vue'
 const { required, between } = require('vuelidate/lib/validators')
-const notEmpty = value => value != ''
+const notEmpty = (value) => value != ''
 
 export default {
     name: 'modalLayout',
@@ -118,7 +118,7 @@ export default {
         }
     },
     computed: {
-        splitFields: function() {
+        splitFields: function () {
             return this.project.layout_fields.replace(/\s/g, '').split(',')
         },
         thirdPartData() {
@@ -195,17 +195,19 @@ export default {
                     },
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
-                    .then(response => {
+                    .then((response) => {
                         this.loading = false
                         console.log(response.data)
                         if (response.data.result == 'ERR') {
-                            this.$emit('snackbar', 'Error: ' + response.data.error)
+                            response.data.error.includes('User')
+                                ? this.$emit('snackbar', 'Error: ' + response.data.error + '.')
+                                : this.$emit('snackbar', 'Error: ' + response.data.error)
                         } else {
                             this.toggleModal()
                             this.$emit('layoutSet', 'Layout successfully set.')
                         }
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         this.$emit('snackbar', 'Error: server unreacheable')
                         console.log(err)
                         this.loading = false
@@ -216,11 +218,11 @@ export default {
         getCsvFields() {
             var url = '?action=getData&id=' + this.project.id + '&howMany=1&page=1&isGold=0'
             this.API.get(url)
-                .then(res => {
+                .then((res) => {
                     this.csvValues = res.data.fields
                     this.loadingCsv = false
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(err)
                 })
         },
@@ -238,7 +240,7 @@ export default {
             this.secondPartData.push(tmp)
         },
         removeElement(arr) {
-            this.secondPartData = this.secondPartData.filter(function(obj) {
+            this.secondPartData = this.secondPartData.filter(function (obj) {
                 return obj.id !== arr[1]
             })
         },

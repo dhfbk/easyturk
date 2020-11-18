@@ -40,9 +40,12 @@ export default {
                 axios.spread((...res) => {
                     if (res[1].data.result == 'ERR') {
                         if (this.$route.name != 'login') {
+                            this.$store.state.currentRoute = this.$route.path
                             this.$router.replace({ path: '/login' })
                         }
-                        this.wait = false
+                        setTimeout(() => {
+                            this.wait = false
+                        }, 500)
                     } else {
                         if (this.$route.name == 'login') {
                             this.$router.replace({ path: '/' })

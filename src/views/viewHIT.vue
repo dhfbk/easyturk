@@ -172,9 +172,9 @@ export default {
                 var thisLine = []
                 for (var assIndex in assignments) {
                     thisLine = []
-                    thisLine.push(assignments[assIndex]['worker_id'])// eslint-disable-line vue/no-side-effects-in-computed-properties
-                    thisLine.push(assignments[assIndex]['status'])// eslint-disable-line vue/no-side-effects-in-computed-properties
-                    thisLine.push(assignments[assIndex]['assignment_id'])// eslint-disable-line vue/no-side-effects-in-computed-properties
+                    thisLine.push(assignments[assIndex]['worker_id']) // eslint-disable-line vue/no-side-effects-in-computed-properties
+                    thisLine.push(assignments[assIndex]['status']) // eslint-disable-line vue/no-side-effects-in-computed-properties
+                    thisLine.push(assignments[assIndex]['assignment_id']) // eslint-disable-line vue/no-side-effects-in-computed-properties
                     ret['body'].push(thisLine)
                 }
             }
@@ -194,10 +194,10 @@ export default {
                         var thisLine = []
                         for (var field in fields) {
                             if (lines[line][fields[field]]) {
-                                thisLine.push(this.truncateString(lines[line][fields[field]], 50))// eslint-disable-line vue/no-side-effects-in-computed-properties
+                                thisLine.push(this.truncateString(lines[line][fields[field]], 50)) // eslint-disable-line vue/no-side-effects-in-computed-properties
                                 // thisLine.push(lines[line][fields[field]])// eslint-disable-line vue/no-side-effects-in-computed-properties
                             } else {
-                                thisLine.push('')// eslint-disable-line vue/no-side-effects-in-computed-properties
+                                thisLine.push('') // eslint-disable-line vue/no-side-effects-in-computed-properties
                             }
                         }
                         ret['body'].push(thisLine)
@@ -226,27 +226,30 @@ export default {
         getData() {
             this.API.get('?action=getHitInfo&hitID=' + this.$route.params.hitId)
                 .then((res) => {
-                    console.log(res)
-                    this.prjData = res.data
-                    var tmpDate = new Date(res.data.values.hit_info.Expiration)
-                    var expiration = this.timeConverter(tmpDate.getTime() / 1000)
-                    this.project = {
-                        description: res.data.values.hit_info.Description,
-                        title: res.data.values.hit_info.Title,
-                        keywords: res.data.values.hit_info.Keywords,
-                        created_at: res.data.values.hit_info.CreationTime,
-                        layout_id: res.data.values.hit_info.HITLayoutId,
-                        params: res.data.values.hit_info.MaxAssignments, //mettere il params giusto
-                        reward: res.data.values.hit_info.Reward,
-                        hit_group_id: res.data.values.hit_info.HITGroupId,
-                        workers: res.data.values.hit_info.MaxAssignments,
-                        max_time: res.data.values.hit_info.AssignmentDurationInSeconds / 60, //converti in X
-                        expiry: expiration, //convertire da data a X
-                        auto_approve: res.data.values.hit_info.AutoApprovalDelayInSeconds / 60, //convertire da secondi a x
+                    if (res.data.result == 'ERR') {
+                        this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                    } else {
+                        this.prjData = res.data
+                        var tmpDate = new Date(res.data.values.hit_info.Expiration)
+                        var expiration = this.timeConverter(tmpDate.getTime() / 1000)
+                        this.project = {
+                            description: res.data.values.hit_info.Description,
+                            title: res.data.values.hit_info.Title,
+                            keywords: res.data.values.hit_info.Keywords,
+                            created_at: res.data.values.hit_info.CreationTime,
+                            layout_id: res.data.values.hit_info.HITLayoutId,
+                            params: res.data.values.hit_info.MaxAssignments, //mettere il params giusto
+                            reward: res.data.values.hit_info.Reward,
+                            hit_group_id: res.data.values.hit_info.HITGroupId,
+                            workers: res.data.values.hit_info.MaxAssignments,
+                            max_time: res.data.values.hit_info.AssignmentDurationInSeconds / 60, //converti in X
+                            expiry: expiration, //convertire da data a X
+                            auto_approve: res.data.values.hit_info.AutoApprovalDelayInSeconds / 60, //convertire da secondi a x
+                        }
+                        this.convertProgress()
+                        this.setAnalyticsCard()
+                        this.loading = false
                     }
-                    this.convertProgress()
-                    this.setAnalyticsCard()
-                    this.loading = false
                 })
                 .catch((err) => {
                     console.error(err)
