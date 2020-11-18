@@ -46,6 +46,11 @@ export default {
 
 <style scoped>
 
+table {
+    width: 99%;
+    margin: 2px auto;
+}
+
 table tr th {
     background: #0068b4;
 }

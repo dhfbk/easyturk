@@ -166,7 +166,7 @@ export default {
             var ret = {}
             var assignments = { ...this.prjData.assignments }
 
-            if (assignments) {
+            if (!(Object.keys(assignments).length === 0 && assignments.constructor === Object)) {
                 ret['head'] = ['Worker ID', 'Status', 'Assignment ID']
                 ret['body'] = []
                 var thisLine = []
@@ -190,12 +190,12 @@ export default {
                 ret['head'] = fields
                 ret['body'] = []
                 if (lines) {
-                    var thisLine = []
                     for (var line in lines) {
-                        thisLine = []
+                        var thisLine = []
                         for (var field in fields) {
                             if (lines[line][fields[field]]) {
-                                thisLine.push(this.truncateString(lines[line][fields[field]], 30))// eslint-disable-line vue/no-side-effects-in-computed-properties
+                                thisLine.push(this.truncateString(lines[line][fields[field]], 50))// eslint-disable-line vue/no-side-effects-in-computed-properties
+                                // thisLine.push(lines[line][fields[field]])// eslint-disable-line vue/no-side-effects-in-computed-properties
                             } else {
                                 thisLine.push('')// eslint-disable-line vue/no-side-effects-in-computed-properties
                             }
@@ -238,6 +238,7 @@ export default {
                         layout_id: res.data.values.hit_info.HITLayoutId,
                         params: res.data.values.hit_info.MaxAssignments, //mettere il params giusto
                         reward: res.data.values.hit_info.Reward,
+                        hit_group_id: res.data.values.hit_info.HITGroupId,
                         workers: res.data.values.hit_info.MaxAssignments,
                         max_time: res.data.values.hit_info.AssignmentDurationInSeconds / 60, //converti in X
                         expiry: expiration, //convertire da data a X
