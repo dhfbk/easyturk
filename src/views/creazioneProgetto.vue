@@ -980,11 +980,11 @@ export default {
                 }
             } else {
                 if (this.selectAutoApprove == 'hours') {
-                    this.auto_approvesend = this.auto_approve * 60
+                    this.auto_approve_send = this.auto_approve * 60
                 } else if (this.selectAutoApprove == 'days') {
-                    this.auto_approvesend = this.auto_approve * 1440
+                    this.auto_approve_send = this.auto_approve * 1440
                 } else {
-                    this.auto_approvesend = this.auto_approve
+                    this.auto_approve_send = this.auto_approve
                 }
             }
         },
