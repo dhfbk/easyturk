@@ -9,7 +9,7 @@
         </div>
         <snack-bar :msg="messaggio" v-if="snack" />
         <transition name="fade" mode="out-in" v-if="!wait">
-            <router-view @snackbar="showSnack" />
+            <router-view @snackbar="showSnack" @sandbox="setSandbox" />
         </transition>
     </div>
 </template>
@@ -50,7 +50,7 @@ export default {
                         this.$store.state.defaults = res[0].data.defaults
                         this.$store.state.userInfo = res[1].data.data
                         console.log(res[1].data)
-                        this.sandbox = this.$store.state.userInfo.use_sandbox
+                        this.setSandbox(this.$store.state.userInfo.use_sandbox)
                         this.wait = false
                     }
                 })
@@ -60,6 +60,9 @@ export default {
             })
     },
     methods: {
+        setSandbox(val) {
+            this.sandbox = val
+        },
         showSnack(msg) {
             //this.snackType = arr[0]
             this.messaggio = msg

@@ -162,56 +162,57 @@ export default {
         window.addEventListener('keydown', this.keyboardEvent)
     },
     computed: {
-        assignmentData: function() {
-            var ret = {};
-            var assignments = { ...this.prjData.assignments };
+        assignmentData: function () {
+            var ret = {}
+            var assignments = { ...this.prjData.assignments }
 
             if (assignments) {
-                ret['head'] = ["Worker ID", "Status", "Assignment ID"];
-                ret['body'] = [];
+                ret['head'] = ['Worker ID', 'Status', 'Assignment ID']
+                ret['body'] = []
+                var thisLine = []
                 for (var assIndex in assignments) {
-                    var thisLine = [];
-                    thisLine.push(assignments[assIndex]['worker_id']);
-                    thisLine.push(assignments[assIndex]['status']);
-                    thisLine.push(assignments[assIndex]['assignment_id']);
-                    ret['body'].push(thisLine);
+                    thisLine = []
+                    thisLine.push(assignments[assIndex]['worker_id'])// eslint-disable-line vue/no-side-effects-in-computed-properties
+                    thisLine.push(assignments[assIndex]['status'])// eslint-disable-line vue/no-side-effects-in-computed-properties
+                    thisLine.push(assignments[assIndex]['assignment_id'])// eslint-disable-line vue/no-side-effects-in-computed-properties
+                    ret['body'].push(thisLine)
                 }
             }
 
-            return ret;
+            return ret
         },
-        tableData: function() {
-            var ret = {};
-            var fields = this.prjData.fields.slice();
-            var lines = { ...this.prjData.lines };
+        tableData: function () {
+            var ret = {}
+            var fields = this.prjData.fields.slice()
+            var lines = { ...this.prjData.lines }
 
             if (fields) {
-                ret['head'] = fields;
-                ret['body'] = [];
+                ret['head'] = fields
+                ret['body'] = []
                 if (lines) {
+                    var thisLine = []
                     for (var line in lines) {
-                        var thisLine = [];
+                        thisLine = []
                         for (var field in fields) {
                             if (lines[line][fields[field]]) {
-                                thisLine.push(this.truncateString(lines[line][fields[field]], 30));
-                            }
-                            else {
-                                thisLine.push('');
+                                thisLine.push(this.truncateString(lines[line][fields[field]], 30))// eslint-disable-line vue/no-side-effects-in-computed-properties
+                            } else {
+                                thisLine.push('')// eslint-disable-line vue/no-side-effects-in-computed-properties
                             }
                         }
-                        ret['body'].push(thisLine);
+                        ret['body'].push(thisLine)
                     }
                 }
             }
-            return ret;
-        }
+            return ret
+        },
     },
     methods: {
         truncateString(str, num) {
             if (str.length > num) {
-                return str.slice(0, num) + "...";
+                return str.slice(0, num) + '...'
             } else {
-                return str;
+                return str
             }
         },
         keyboardEvent(event) {

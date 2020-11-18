@@ -68,8 +68,17 @@ export default {
             },
         }
     },
+    mounted() {
+        window.addEventListener('keydown', this.keyboardEvent)
+    },
     methods: {
+        keyboardEvent(event) {
+            if (event.code == 'Enter') {
+                this.login()
+            }
+        },
         login() {
+            this.loading = true
             this.$v.$touch()
             if (!this.$v.$invalid) {
                 //this.loading = true
@@ -83,6 +92,7 @@ export default {
                             this.API.get('?action=getUserInfo')
                                 .then((res) => {
                                     this.$store.state.userInfo = res.data.data
+                                    this.$emit('sandbox', this.$store.state.userInfo.use_sandbox)
                                     this.$router.replace({ path: '/' })
                                     this.loading = false
                                 })
@@ -90,12 +100,19 @@ export default {
                                     console.error(err)
                                 })
                         }
+                        this.loading = false
                     })
                     .catch((err) => {
                         console.error(err)
+                        this.loading = false
                     })
+            } else {
+                this.loading = false
             }
         },
+    },
+    beforeDestroy() {
+        window.removeEventListener('keydown', this.keyboardEvent)
     },
 }
 </script>
