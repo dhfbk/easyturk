@@ -9,7 +9,7 @@
         </div>
         <snack-bar :msg="messaggio" v-if="snack" />
         <transition name="fade" mode="out-in" v-if="!wait">
-            <router-view @snackbar="showSnack" @sandbox="setSandbox" />
+            <router-view @snackbar="showSnack" @sandbox="setSandbox" :key="$route.fullPath" />
         </transition>
     </div>
 </template>
@@ -33,6 +33,11 @@ export default {
             timeout: 4000,
         }
     },
+    updated: function () {
+        if (this.$route.path != '/login') {
+            this.$store.state.currentRoute = this.$route.path
+        }
+    },
     created() {
         axios
             .all([this.API.get('?action=getOptions'), this.API.get('?action=getUserInfo')])
@@ -40,7 +45,6 @@ export default {
                 axios.spread((...res) => {
                     if (res[1].data.result == 'ERR') {
                         if (this.$route.name != 'login') {
-                            this.$store.state.currentRoute = this.$route.path
                             this.$router.replace({ path: '/login' })
                         }
                         setTimeout(() => {
@@ -52,7 +56,6 @@ export default {
                         }
                         this.$store.state.defaults = res[0].data.defaults
                         this.$store.state.userInfo = res[1].data.data
-                        console.log(res[1].data)
                         this.setSandbox(this.$store.state.userInfo.use_sandbox)
                         this.wait = false
                     }
