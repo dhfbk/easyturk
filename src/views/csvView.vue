@@ -141,7 +141,9 @@ export default {
                 this.API.get(url)
                     .then((res) => {
                         if (res.data.result == 'ERR') {
-                            this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                            res.data.error.includes('User')
+                            ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                            : this.$emit('snackbar', 'Error. ' + res.data.error)
                         } else {
                             this.current = res.data.data
                             this.cluster = res.data.cluster_indexes

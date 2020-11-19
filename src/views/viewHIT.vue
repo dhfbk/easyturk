@@ -227,7 +227,9 @@ export default {
             this.API.get('?action=getHitInfo&hitID=' + this.$route.params.hitId)
                 .then((res) => {
                     if (res.data.result == 'ERR') {
-                        this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                        res.data.error.includes('User')
+                            ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                            : this.$emit('snackbar', 'Error. ' + res.data.error)
                     } else {
                         this.prjData = res.data
                         var tmpDate = new Date(res.data.values.hit_info.Expiration)

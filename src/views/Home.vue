@@ -233,7 +233,9 @@ export default {
             this.API.get('?action=listProjects')
                 .then((res) => {
                     if (res.data.result == 'ERR') {
-                        this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                        res.data.error.includes('User')
+                            ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                            : this.$emit('snackbar', 'Error. ' + res.data.error)
                     } else {
                         this.projects = res.data.values
                         this.loadingProjects = false

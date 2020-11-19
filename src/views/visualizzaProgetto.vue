@@ -420,7 +420,9 @@ export default {
                 this.API.get('?action=getProjectInfo&id=' + this.id)
                     .then((res) => {
                         if (res.data.result == 'ERR') {
-                            this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                            res.data.error.includes('User')
+                                ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                                : this.$emit('snackbar', 'Error. ' + res.data.error)
                         } else {
                             this.project = res.data.values
                             this.hitsSubmitted = res.data.hits_submitted
