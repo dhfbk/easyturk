@@ -179,7 +179,7 @@
 
 <script>
 const { required } = require('vuelidate/lib/validators')
-const notEmpty = (value) => value != ''
+const notEmpty = value => value != ''
 
 export default {
     name: 'modalUpload',
@@ -241,6 +241,11 @@ export default {
             if ((this.picked == 0 && this.$v.customTitles.$invalid == false) || this.picked == 1) {
                 if (this.file == '') {
                     console.log('nessun file da caricare')
+                    if (this.type == 'std') {
+                        this.$emit('uploaded', ['std', '', "Error. You haven't uploaded the CSV file."])
+                    } else {
+                        this.$emit('uploaded', ['gld', '', "Error. You haven't uploaded the CSV file."])
+                    }
                 } else {
                     this.loading = true
                     let formData = new FormData()
@@ -259,13 +264,13 @@ export default {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
-                        onUploadProgress: function (progressEvent) {
+                        onUploadProgress: function(progressEvent) {
                             this.uploadPercentage = parseInt(
                                 Math.round((progressEvent.loaded / progressEvent.total) * 100)
                             )
                         }.bind(this),
                     })
-                        .then((res) => {
+                        .then(res => {
                             if (res.data.result != 'ERR') {
                                 if (this.type == 'std') {
                                     this.$emit('uploaded', ['std', '', 'Upload completed'])

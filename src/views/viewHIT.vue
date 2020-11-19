@@ -162,7 +162,7 @@ export default {
         window.addEventListener('keydown', this.keyboardEvent)
     },
     computed: {
-        assignmentData: function () {
+        assignmentData: function() {
             var ret = {}
             var assignments = { ...this.prjData.assignments }
 
@@ -181,7 +181,7 @@ export default {
 
             return ret
         },
-        tableData: function () {
+        tableData: function() {
             var ret = {}
             var fields = this.prjData.fields.slice()
             var lines = { ...this.prjData.lines }
@@ -225,7 +225,7 @@ export default {
         },
         getData() {
             this.API.get('?action=getHitInfo&hitID=' + this.$route.params.hitId)
-                .then((res) => {
+                .then(res => {
                     if (res.data.result == 'ERR') {
                         res.data.error.includes('User')
                             ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
@@ -253,8 +253,13 @@ export default {
                         this.loading = false
                     }
                 })
-                .catch((err) => {
-                    console.error(err)
+                .catch(err => {
+                    console.error(err.message)
+                    this.$emit('snackbar', 'Error. ' + err.message)
+                    this.$router.push({
+                        name: 'HITlist',
+                        params: { projectId: this.$route.params.projectId },
+                    })
                 })
         },
         timeConverter(tmp) {
