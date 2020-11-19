@@ -87,13 +87,13 @@
         >
             <div class="sm:flex items-center content-center">
                 <router-link
-                    to="/home"
+                    :to="{ name: 'Home' }"
                     class="block mt-4 sm:inline-block sm:mt-0 transition duration-100 ease-out text-white hover:text-blue-300 sm:mr-4 focus:outline-none"
                 >
                     Home
                 </router-link>
                 <router-link
-                    to="workers"
+                    :to="{ name: 'workerList' }"
                     class="block mt-4 sm:inline-block sm:mt-0 transition duration-100 ease-out text-white hover:text-blue-300 sm:mr-4 focus:outline-none"
                 >
                     Workers
@@ -150,7 +150,7 @@ export default {
                     this.$router.replace({ path: '/login' })
                     this.loadLogout = false
                 })
-                .catch((err) => {
+                .catch(err => {
                     console.error(err)
                 })
         },
