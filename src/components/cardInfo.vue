@@ -268,7 +268,7 @@
                             <td class="border-r text-sm text-gray-700 font-medium border-b">
                                 {{ i.assignments_available }}
                             </td>
-                            <td class="border-r text-sm text-gray-700 font-medium border-b">
+                            <td class="text-sm text-gray-700 font-medium border-b">
                                 {{ i.assignments_pending }}
                             </td>
                         </tr>
@@ -288,7 +288,7 @@
                             <td class="border-r text-sm text-gray-100 bg-primary font-medium">
                                 {{ totals.assignments_available }}
                             </td>
-                            <td class="border-r text-sm text-gray-100 bg-primary font-medium">
+                            <td class="text-sm text-gray-100 bg-primary font-medium">
                                 {{ totals.assignments_pending }}
                             </td>
                         </tr>

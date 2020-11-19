@@ -54,11 +54,11 @@ export default {
                         if (this.$route.name == 'login') {
                             this.$router.replace({ path: '/' })
                         }
-                        this.$store.state.defaults = res[0].data.defaults
                         this.$store.state.userInfo = res[1].data.data
                         this.setSandbox(this.$store.state.userInfo.use_sandbox)
                         this.wait = false
                     }
+                    this.$store.state.defaults = res[0].data.defaults
                 })
             )
             .catch((err) => {
