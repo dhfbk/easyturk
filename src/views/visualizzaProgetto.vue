@@ -132,7 +132,8 @@
                     :content="'Revert HIT settings'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
-                    class="hidden md:block md:mr-2 ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                    :class="project.status == 3 ? 'md:mr-0' : 'md:mr-2'"
+                    class="hidden md:block ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -401,7 +402,7 @@ export default {
     created() {
         this.getDatiPrj()
 
-        console.log(this.priceData)
+        //console.log(this.priceData)
     },
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
@@ -416,14 +417,17 @@ export default {
             this.id = parseInt(this.$route.params.projectId)
             if (isNaN(this.id)) {
                 this.$router.replace({ name: 'Home' })
+                this.$emit('snackbar', "Error. Project doesn't exist.")
             } else {
                 this.API.get('?action=getProjectInfo&id=' + this.id)
                     .then((res) => {
+                        console.log(res.data)
                         if (res.data.result == 'ERR') {
                             res.data.error.includes('User')
                                 ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
                                 : this.$emit('snackbar', 'Error. ' + res.data.error)
                         } else {
+                            this.id = this.id + ''
                             this.project = res.data.values
                             this.hitsSubmitted = res.data.hits_submitted
                             this.hitsTotal = res.data.hits_total

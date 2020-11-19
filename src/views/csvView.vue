@@ -1,7 +1,7 @@
 <template>
     <div class="block lg:w-5/6 mx-2 xs2:mx-4 lg:mx-auto pt-2">
         <button
-            @click="$router.push({ name: 'Home' })"
+            @click="$router.push({ name: 'projectView', params: { projectId: $route.params.projectId } })"
             :content="'Back'"
             v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
             class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
