@@ -62,7 +62,7 @@
             </p>
             <div class="xs2:w-auto w-full flex relative justify-end content-center items-center float-right">
                 <button
-                    v-if="project.status == 3"
+                    v-if="project.status == 3 && !loading"
                     @click="toggleModal('launch')"
                     :content="'Launch HITs'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
@@ -78,7 +78,7 @@
                     <span class="sr-only">Launch HITs</span>
                 </button>
                 <button
-                    v-if="project.status == 2"
+                    v-if="project.status == 2 && !loading"
                     @click="toggleModal('launch')"
                     :content="'Publish project'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
@@ -93,7 +93,7 @@
                     <span class="sr-only">Publish project</span>
                 </button>
                 <button
-                    v-if="project.status == 1"
+                    v-if="project.status == 1 && !loading"
                     @click="toggleModal('layout')"
                     :content="'Set layout'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
@@ -108,7 +108,7 @@
                     <span class="sr-only">Set layout</span>
                 </button>
                 <button
-                    v-if="project.status == 0"
+                    v-if="project.status == 0 && !loading"
                     :class="{ 'cursor-not-allowed': project.numData == 0 }"
                     @click="toggleModal('hit')"
                     :content="'Create HITs'"
@@ -125,8 +125,8 @@
                 </button>
                 <button
                     v-if="
-                        (project.status >= 1 && project.status != 3) ||
-                        (project.status == 3 && $store.state.isSandbox == true)
+                        (project.status >= 1 && project.status != 3 && !loading) ||
+                        (project.status == 3 && $store.state.isSandbox == true && !loading)
                     "
                     @click="toggleModal('revert')"
                     :content="'Revert HIT settings'"
@@ -142,7 +142,7 @@
                     <span class="sr-only">Revert HIT settings</span>
                 </button>
                 <button
-                    v-if="project.status != 3"
+                    v-if="project.status != 3 && !loading"
                     @click="$router.push({ name: 'edit', params: { projectId: id } })"
                     :content="'Edit'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
@@ -157,7 +157,7 @@
                     <span class="sr-only">Edit</span>
                 </button>
                 <button
-                    v-if="project.status != 3"
+                    v-if="project.status != 3 && !loading"
                     @click="toggleModal('delete')"
                     :content="'Delete'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"

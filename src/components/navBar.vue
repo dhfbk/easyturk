@@ -120,8 +120,8 @@
                         />
                     </svg>
                     <svg
-                        :class="loadLogout ? 'animate-spin fill-current' : 'hidden'"
-                        style="width: 24px; height: 24px"
+                        :class="loadLogout ? 'animate-spin' : 'hidden'"
+                        style="width: 24px; height: 24px; fill: white"
                         viewBox="0 0 24 24"
                     >
                         <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
@@ -150,7 +150,7 @@ export default {
                     this.$router.replace({ path: '/login' })
                     this.loadLogout = false
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.error(err)
                 })
         },
