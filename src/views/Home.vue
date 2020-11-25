@@ -245,7 +245,6 @@ export default {
             this.project = this.projects.filter(function (project) {
                 return project.id == id
             })
-            console.log(this.project)
         },
         // getUserInfo() {
         //     axios({
@@ -269,7 +268,6 @@ export default {
             this.$emit('snackbar', msg)
         },
         toggleModal(arr) {
-            console.log(arr)
             this.modalId = arr[1]
             if (arr[0] == 'std') {
                 this.modalStd = !this.modalStd
