@@ -63,7 +63,7 @@ export default {
             id: '',
             loading: true,
             progressData: [],
-            viewType: 'table',
+            viewType: 'dots',
             sortedData: [],
         }
     },
@@ -89,60 +89,67 @@ export default {
             } else {
                 this.API.get('?action=getProjectInfo&id=' + this.id)
                     .then((res) => {
-                        this.progressData = res.data.summary
-
-                        //count to set defualt data view
-
-                        var cout = 0
-                        for (let i = 0; i < this.progressData.length; i++) {
-                            cout += this.progressData[i].count
-                            if (cout >= 20) {
-                                this.viewType = 'dots'
-                                break
+                        if (res.data.result == 'ERR') {
+                            res.data.error.includes('User')
+                            ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                            : this.$emit('snackbar', 'Error. ' + res.data.error)
+                        } else {
+                            this.progressData = res.data.summary
+                            //count to set defualt data view
+                            //this code can be used to set the default view to dots only if the results number is bigger than a threshold
+                            /*
+                            var cout = 0
+                            for (let i = 0; i < this.progressData.length; i++) {
+                                cout += this.progressData[i].count
+                                if (cout >= 20) {
+                                    this.viewType = 'dots'
+                                    break
+                                }
                             }
-                        }
+                            */
 
-                        //
+                            //
 
-                        //data sorting: first completed hits, then incomplete hits (each category ordered by most approved hits  to least approved)
+                            //data sorting: first completed hits, then incomplete hits (each category ordered by most approved hits  to least approved)
 
-                        var arrComp = []
-                        var arrNotComp = []
-                        var arrNotTou = []
+                            var arrComp = []
+                            var arrNotComp = []
+                            var arrNotTou = []
 
-                        for (let i = 0; i < this.progressData.length; i++) {
-                            if (this.progressData[i].assignments_completed == 0) {
-                                arrNotTou.push(this.progressData[i])
-                            } else if (this.progressData[i].assignments_available > 0) {
-                                arrNotComp.push(this.progressData[i])
-                            } else {
-                                arrComp.push(this.progressData[i])
+                            for (let i = 0; i < this.progressData.length; i++) {
+                                if (this.progressData[i].assignments_completed == 0) {
+                                    arrNotTou.push(this.progressData[i])
+                                } else if (this.progressData[i].assignments_available > 0) {
+                                    arrNotComp.push(this.progressData[i])
+                                } else {
+                                    arrComp.push(this.progressData[i])
+                                }
                             }
+
+                            arrComp = arrComp.sort(function (a, b) {
+                                return (
+                                    a.assignments_rejected - b.assignments_rejected ||
+                                    b.assignments_approved - a.assignments_approved ||
+                                    b.assignments_available - a.assignments_available
+                                )
+                            })
+
+                            arrNotComp = arrNotComp.sort(function (a, b) {
+                                return (
+                                    a.assignments_rejected - b.assignments_rejected ||
+                                    b.assignments_approved - a.assignments_approved ||
+                                    b.assignments_available - a.assignments_available
+                                )
+                            })
+
+                            this.sortedData = arrComp.concat(arrNotComp).concat(arrNotTou)
+
+                            console.log(this.sortedData)
+
+                            //
+
+                            this.loading = false
                         }
-
-                        arrComp = arrComp.sort(function (a, b) {
-                            return (
-                                a.assignments_rejected - b.assignments_rejected ||
-                                b.assignments_approved - a.assignments_approved ||
-                                b.assignments_available - a.assignments_available
-                            )
-                        })
-
-                        arrNotComp = arrNotComp.sort(function (a, b) {
-                            return (
-                                a.assignments_rejected - b.assignments_rejected ||
-                                b.assignments_approved - a.assignments_approved ||
-                                b.assignments_available - a.assignments_available
-                            )
-                        })
-
-                        this.sortedData = arrComp.concat(arrNotComp).concat(arrNotTou)
-
-                        console.log(this.sortedData)
-
-                        //
-
-                        this.loading = false
                     })
                     .catch((err) => {
                         console.log(err)

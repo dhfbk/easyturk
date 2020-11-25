@@ -62,7 +62,7 @@
             </p>
             <div class="xs2:w-auto w-full flex relative justify-end content-center items-center float-right">
                 <button
-                    v-if="project.status == 3"
+                    v-if="project.status == 3 && !loading"
                     @click="toggleModal('launch')"
                     :content="'Launch HITs'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
@@ -78,7 +78,7 @@
                     <span class="sr-only">Launch HITs</span>
                 </button>
                 <button
-                    v-if="project.status == 2"
+                    v-if="project.status == 2 && !loading"
                     @click="toggleModal('launch')"
                     :content="'Publish project'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
@@ -93,7 +93,7 @@
                     <span class="sr-only">Publish project</span>
                 </button>
                 <button
-                    v-if="project.status == 1"
+                    v-if="project.status == 1 && !loading"
                     @click="toggleModal('layout')"
                     :content="'Set layout'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
@@ -108,7 +108,7 @@
                     <span class="sr-only">Set layout</span>
                 </button>
                 <button
-                    v-if="project.status == 0"
+                    v-if="project.status == 0 && !loading"
                     :class="{ 'cursor-not-allowed': project.numData == 0 }"
                     @click="toggleModal('hit')"
                     :content="'Create HITs'"
@@ -125,14 +125,15 @@
                 </button>
                 <button
                     v-if="
-                        (project.status >= 1 && project.status != 3) ||
-                        (project.status == 3 && $store.state.isSandbox == true)
+                        (project.status >= 1 && project.status != 3 && !loading) ||
+                        (project.status == 3 && $store.state.isSandbox == true && !loading)
                     "
                     @click="toggleModal('revert')"
                     :content="'Revert HIT settings'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
-                    class="hidden md:block md:mr-2 ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                    :class="project.status == 3 ? 'md:mr-0' : 'md:mr-2'"
+                    class="hidden md:block ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -142,7 +143,7 @@
                     <span class="sr-only">Revert HIT settings</span>
                 </button>
                 <button
-                    v-if="project.status != 3"
+                    v-if="project.status != 3 && !loading"
                     @click="$router.push({ name: 'edit', params: { projectId: id } })"
                     :content="'Edit'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
@@ -157,7 +158,7 @@
                     <span class="sr-only">Edit</span>
                 </button>
                 <button
-                    v-if="project.status != 3"
+                    v-if="project.status != 3 && !loading"
                     @click="toggleModal('delete')"
                     :content="'Delete'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
@@ -401,7 +402,7 @@ export default {
     created() {
         this.getDatiPrj()
 
-        console.log(this.priceData)
+        //console.log(this.priceData)
     },
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
@@ -416,58 +417,68 @@ export default {
             this.id = parseInt(this.$route.params.projectId)
             if (isNaN(this.id)) {
                 this.$router.replace({ name: 'Home' })
+                this.$emit('snackbar', "Error. Project doesn't exist.")
             } else {
                 this.API.get('?action=getProjectInfo&id=' + this.id)
                     .then((res) => {
-                        this.project = res.data.values
-                        this.hitsSubmitted = res.data.hits_submitted
-                        this.hitsTotal = res.data.hits_total
-                        this.project.hits_submitted = res.data.hits_submitted
-                        this.project.hits_total = res.data.hits_total
-                        this.project.numGold = res.data.numGold
-                        this.project.numData = res.data.numData
-                        this.qualifications.master = res.data.values.master
-                        this.project.hits_inserted = res.data.hits_inserted
-                        this.project.summary = res.data.summary
-                        this.goldUploaded = res.data.numGold > 0
                         console.log(res.data)
-                        if (
-                            (this.project.status == 2 || this.project.status == 3) &&
-                            this.hitsTotal > this.hitsSubmitted
-                        ) {
-                            this.priceData.reward = parseFloat(this.project.reward)
-                            this.priceData.assignment = parseInt(this.project.workers)
-                        }
-                        if (this.project.status == 3) {
-                            this.progressData.hits_inserted = res.data.hits_inserted
-                            this.progressData.hits_total = res.data.hits_total
-                            this.progressData.hits_submitted = res.data.hits_submitted
-                        }
-                        for (let i = 0; i < this.project.summary.length; i++) {
-                            this.rejected =
-                                this.rejected +
-                                parseInt(this.project.summary[i].assignments_rejected) * this.project.summary[i].count
-                            this.approved =
-                                this.approved +
-                                parseInt(this.project.summary[i].assignments_approved) * this.project.summary[i].count
-                        }
-                        if (res.data.summary.length > 0) {
-                            if (res.data.summary[0].max_assignments != this.project.workers) {
-                                this.totalProjected =
-                                    (this.project.hits_total - this.project.hits_inserted) * this.project.workers +
-                                    ' - ' +
-                                    (this.project.hits_total - this.project.hits_inserted) *
-                                        parseInt(res.data.summary[0].max_assignments)
+                        if (res.data.result == 'ERR') {
+                            res.data.error.includes('User')
+                                ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                                : this.$emit('snackbar', 'Error. ' + res.data.error)
+                        } else {
+                            this.id = this.id + ''
+                            this.project = res.data.values
+                            this.hitsSubmitted = res.data.hits_submitted
+                            this.hitsTotal = res.data.hits_total
+                            this.project.hits_submitted = res.data.hits_submitted
+                            this.project.hits_total = res.data.hits_total
+                            this.project.numGold = res.data.numGold
+                            this.project.numData = res.data.numData
+                            this.qualifications.master = res.data.values.master
+                            this.project.hits_inserted = res.data.hits_inserted
+                            this.project.summary = res.data.summary
+                            this.goldUploaded = res.data.numGold > 0
+                            if (
+                                (this.project.status == 2 || this.project.status == 3) &&
+                                this.hitsTotal > this.hitsSubmitted
+                            ) {
+                                this.priceData.reward = parseFloat(this.project.reward)
+                                this.priceData.assignment = parseInt(this.project.workers)
+                            }
+                            if (this.project.status == 3) {
+                                this.progressData.hits_inserted = res.data.hits_inserted
+                                this.progressData.hits_total = res.data.hits_total
+                                this.progressData.hits_submitted = res.data.hits_submitted
+                            }
+                            for (let i = 0; i < this.project.summary.length; i++) {
+                                this.rejected =
+                                    this.rejected +
+                                    parseInt(this.project.summary[i].assignments_rejected) *
+                                        this.project.summary[i].count
+                                this.approved =
+                                    this.approved +
+                                    parseInt(this.project.summary[i].assignments_approved) *
+                                        this.project.summary[i].count
+                            }
+                            if (res.data.summary.length > 0) {
+                                if (res.data.summary[0].max_assignments != this.project.workers) {
+                                    this.totalProjected =
+                                        (this.project.hits_total - this.project.hits_inserted) * this.project.workers +
+                                        ' - ' +
+                                        (this.project.hits_total - this.project.hits_inserted) *
+                                            parseInt(res.data.summary[0].max_assignments)
+                                } else {
+                                    this.totalProjected =
+                                        (this.project.hits_total - this.project.hits_inserted) * this.project.workers
+                                }
                             } else {
                                 this.totalProjected =
                                     (this.project.hits_total - this.project.hits_inserted) * this.project.workers
                             }
-                        } else {
-                            this.totalProjected =
-                                (this.project.hits_total - this.project.hits_inserted) * this.project.workers
-                        }
 
-                        this.loading = false
+                            this.loading = false
+                        }
                     })
                     .catch((err) => {
                         console.log(err)

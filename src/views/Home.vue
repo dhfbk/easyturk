@@ -32,25 +32,9 @@
             @layoutSet="launched"
             @snackbar="uploaded"
         />
-        <div class="mb-4 flex flex-col sm:flex-row content-center items-center">
-            <span class="text-3xl sm:text-4xl font-light">Welcome, {{ $store.state.userInfo.common_name }}</span>
-            <button
-                class="ripple transition ease-out duration-100 bg-red-600 hover:bg-red-400 flex flex-row items-center py-2 px-4 rounded-md text-white hover:text-black focus:outline-none ml-4"
-                type="button"
-                @click="logout"
-            >
-                <svg
-                    :class="loadLogout ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                    style="width: 24px; height: 24px"
-                    viewBox="0 0 24 24"
-                >
-                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-                </svg>
-                Logout
-            </button>
-        </div>
+        <span class="text-3xl sm:text-4xl font-light">Welcome, {{ $store.state.userInfo.common_name }}</span>
         <!--<modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />-->
-        <div class="mb-6">
+        <div class="mb-6 mt-2">
             <div class="flex content-center flex-col sm:flex-row px-4">
                 <svg style="width: 24px" viewBox="0 0 24 24">
                     <path
@@ -190,7 +174,6 @@ export default {
             modalLayout: false,
             modalLaunch: false,
             loading: true,
-            loadLogout: false,
             loadingProjects: true,
             loadingOther: true,
             gldPresent: 0,
@@ -204,22 +187,10 @@ export default {
             qualifications: {},
         }
     },
-
     created() {
         this.getData()
     },
     methods: {
-        logout() {
-            this.loadLogout = true
-            this.API.get('?action=logout')
-                .then(() => {
-                    this.$router.replace({ path: '/login' })
-                    this.loadLogout = false
-                })
-                .catch((err) => {
-                    console.error(err)
-                })
-        },
         getPrjData() {
             this.API.get('?action=listProjects')
                 .then((res) => {
@@ -233,9 +204,15 @@ export default {
         getData() {
             this.API.get('?action=listProjects')
                 .then((res) => {
-                    this.projects = res.data.values
-                    this.loadingProjects = false
-                    this.loadingOther = false
+                    if (res.data.result == 'ERR') {
+                        res.data.error.includes('User')
+                            ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                            : this.$emit('snackbar', 'Error. ' + res.data.error)
+                    } else {
+                        this.projects = res.data.values
+                        this.loadingProjects = false
+                        this.loadingOther = false
+                    }
                 })
                 .catch((errors) => {
                     console.log(errors)

@@ -83,26 +83,34 @@ export default {
             if (!this.$v.$invalid) {
                 //this.loading = true
                 this.API.get('?action=login&username=' + this.username + '&password=' + this.password)
-                    .then((res) => {
+                    .then(res => {
                         console.log(res)
                         if (res.data.result == 'ERR') {
                             this.loading = false
                             this.$emit('snackbar', 'Error. ' + res.data.error)
                         } else {
+                            var path
                             this.API.get('?action=getUserInfo')
-                                .then((res) => {
+                                .then(res => {
                                     this.$store.state.userInfo = res.data.data
+                                    this.$store.state.currentRoute != ''
+                                        ? (path = this.$store.state.currentRoute)
+                                        : (path = '/')
                                     this.$emit('sandbox', this.$store.state.userInfo.use_sandbox)
-                                    this.$router.replace({ path: '/' })
+                                    this.$router.replace({ path: path })
+                                    this.$emit(
+                                        'snackbar',
+                                        'You have logged in, welcome ' + res.data.data.common_name + '.'
+                                    )
                                     this.loading = false
                                 })
-                                .catch((err) => {
+                                .catch(err => {
                                     console.error(err)
                                 })
                         }
                         this.loading = false
                     })
-                    .catch((err) => {
+                    .catch(err => {
                         console.error(err)
                         this.loading = false
                     })

@@ -26,9 +26,7 @@
                             <span class="sr-only">Close</span>
                         </span>
                     </div>
-                    <div class="py-2">
-                        Are you sure you want to revert your changes to the previous state?
-                    </div>
+                    <div class="py-2">Are you sure you want to revert your changes to the previous state?</div>
 
                     <div class="ml-auto flex flex-col xs2:flex-row">
                         <button
@@ -37,7 +35,7 @@
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                                style="width:24px;height:24px"
+                                style="width: 24px; height: 24px"
                                 viewBox="0 0 24 24"
                             >
                                 <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
@@ -94,10 +92,12 @@ export default {
                 },
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             })
-                .then(res => {
+                .then((res) => {
                     this.loading = false
                     if (res.data.result == 'ERR') {
-                        this.$emit('reverted', 'Error: ' + res.data.error)
+                        res.data.error.includes('User')
+                            ? this.$emit('reverted', 'Error: ' + res.data.error + '.')
+                            : this.$emit('reverted', 'Error: ' + res.data.error)
                     } else {
                         this.$emit('reverted', 'Project succesfully reverted.')
                         this.toggleModal('close')

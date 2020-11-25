@@ -79,7 +79,7 @@
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                                style="width:24px;height:24px"
+                                style="width: 24px; height: 24px"
                                 viewBox="0 0 24 24"
                             >
                                 <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
@@ -126,10 +126,10 @@ export default {
         this.calculatePrice()
         if (this.$route.name == 'Home') {
             this.API.get('?action=getProjectInfo&id=' + this.id)
-                .then(res => {
+                .then((res) => {
                     this.$emit('changeQualification', res.data.values.master)
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(err)
                 })
         }
@@ -215,10 +215,12 @@ export default {
                     },
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
-                    .then(response => {
+                    .then((response) => {
                         console.log(response.data)
                         if (response.data.result == 'ERR') {
-                            this.$emit('err', 'Error: ' + response.data.error)
+                            response.data.error.includes('User')
+                                ? this.$emit('err', 'Error: ' + response.data.error + '.')
+                                : this.$emit('err', 'Error: ' + response.data.error)
                         } else {
                             this.$emit('launched', x + ' launched successfully!')
                             this.toggleModal()

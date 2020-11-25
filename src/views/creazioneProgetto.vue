@@ -532,7 +532,7 @@
                 v-if="mode == 'edit'"
             >
                 <svg
-                    :class="loading ? 'animate-spin mr-1' : 'hidden'"
+                    :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
@@ -552,7 +552,7 @@
                 v-else
             >
                 <svg
-                    :class="loading ? 'animate-spin mr-1' : 'hidden'"
+                    :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
@@ -795,9 +795,6 @@ export default {
         keyboardEvent(event) {
             if (event.code == 'Escape') {
                 this.goBack()
-            }
-            else if (event.code == 'Enter') {
-                this.caricaProgetto()
             }
         },
         emitSnackbar(msg) {

@@ -61,7 +61,7 @@
                         </label>
                     </div>
                     <div class="flex flex-col sm:flex-row items-center content-center w-full py-2">
-                        <label class="block tracking-wide text-gray-900 text-md font-bold  mr-2" for="gold"
+                        <label class="block tracking-wide text-gray-900 text-md font-bold mr-2" for="gold"
                             >Golden data per HIT:</label
                         >
                         <input
@@ -111,7 +111,7 @@
                         </label>
                     </div>
                     <div class="flex flex-col sm:flex-row items-center content-center w-full py-2 mb-2">
-                        <label class="block tracking-wide text-gray-900 text-md font-bold  mr-2" for="action"
+                        <label class="block tracking-wide text-gray-900 text-md font-bold mr-2" for="action"
                             >Action for the leftover records:</label
                         >
                         <div class="relative mt-1 sm:mt-0 sm:ml-2">
@@ -156,7 +156,7 @@
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                                style="width:24px;height:24px"
+                                style="width: 24px; height: 24px"
                                 viewBox="0 0 24 24"
                             >
                                 <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
@@ -177,7 +177,7 @@
 
 <script>
 const { required } = require('vuelidate/lib/validators')
-const notEmpty = value => value != ''
+const notEmpty = (value) => value != ''
 
 export default {
     name: 'modalHIT',
@@ -261,10 +261,12 @@ export default {
                     },
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
-                    .then(response => {
+                    .then((response) => {
                         console.log(response.data)
                         if (response.data.result == 'ERR') {
-                            this.$emit('hitCreated', 'Error: ' + response.data.error)
+                            response.data.error.includes('User')
+                                ? this.$emit('hitCreated', 'Error: ' + response.data.error + '.')
+                                : this.$emit('hitCreated', 'Error: ' + response.data.error)
                         } else {
                             this.$emit('hitCreated', 'HIT setup completed')
                             this.toggleModal('close')
@@ -272,7 +274,7 @@ export default {
                         this.loading = false
                     })
                     .catch(() => {
-                        this.toggleModal('error')
+                        this.$emit('hitCreated', 'Error: server unreachable')
                         this.loading = false
                     })
             }
@@ -286,7 +288,7 @@ export default {
                 this.hitInfo = Math.ceil(this.baseDataStatus / (this.params - this.goldPerHit))
             }
         },
-        goldPerHit: function() {
+        goldPerHit: function () {
             if (this.leftover == 'no_use') {
                 this.hitInfo = Math.floor(this.baseDataStatus / (this.params - this.goldPerHit))
             } else {

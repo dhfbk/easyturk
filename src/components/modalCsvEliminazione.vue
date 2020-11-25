@@ -41,7 +41,7 @@
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                                style="width:24px;height:24px"
+                                style="width: 24px; height: 24px"
                                 viewBox="0 0 24 24"
                             >
                                 <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
@@ -97,11 +97,13 @@ export default {
             //var self = this
             this.loading = true
             this.API.get('?action=deleteFile&id=' + this.id + '&isGold=' + this.isGold)
-                .then(res => {
+                .then((res) => {
                     console.log(res.data.result)
                     this.loading = false
                     if (res.data.result == 'ERR') {
-                        this.$emit('close', 'Error: ' + res.data.error)
+                        res.data.error.includes('User')
+                            ? this.$emit('close', 'Error: ' + res.data.error + '.')
+                            : this.$emit('close', 'Error: ' + res.data.error)
                     } else {
                         if ((this.type == 'standard' && !this.goldUploaded) || this.type == 'gold') {
                             const t = this.type.charAt(0).toUpperCase() + this.type.slice(1)
@@ -109,7 +111,7 @@ export default {
                             this.toggleModal()
                         } else if (this.goldUploaded && this.type == 'standard') {
                             this.API.get('?action=deleteFile&id=' + this.id + '&isGold=1')
-                                .then(res => {
+                                .then((res) => {
                                     console.log(res.data.result)
                                     this.loading = false
                                     if (res.data.result == 'ERR') {
@@ -120,7 +122,7 @@ export default {
                                     }
                                     // this.$emit('snackbar', ['success', this.id, 'Progetto eliminato'])
                                 })
-                                .catch(err => {
+                                .catch((err) => {
                                     console.log(err)
                                     this.$emit('close', 'Error: server unreachable')
                                     this.loading = false
@@ -130,7 +132,7 @@ export default {
 
                     // this.$emit('snackbar', ['success', this.id, 'Progetto eliminato'])
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(err)
                     this.$emit('close', 'Error: server unreachable')
                     this.loading = false
