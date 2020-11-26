@@ -15,7 +15,7 @@
             </div>
             <div class="block w-1/2 lg:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden font-bold ">Title:</p>
-                <p class="overflow-ellipsis">{{ projectData.title }}</p>
+                <p class="overflow-ellipsis">{{ projectData.name }}</p>
             </div>
             <div class="hidden lg:flex flex-col w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
                 <p class="block md:hidden font-bold ">Created:</p>

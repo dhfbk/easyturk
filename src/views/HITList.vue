@@ -1,6 +1,8 @@
 <template>
     <div class="relative lg:w-5/6 pt-2 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
-        <div v-if="loading"></div>
+        <div v-if="loading">
+            <loader :type="'hitList'" />
+        </div>
         <div class="flex justify-between flex-wrap items-center" v-else>
             <div class="flex flex-row place-content-center w-full mb-4">
                 <button
@@ -9,7 +11,7 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
                 >
-                    <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <svg class="inline" style="width: 24px; height: 24px" viewBox="0 0 24 24">
                         <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
                     </svg>
                     <span class="sr-only">Back to project</span>
@@ -27,12 +29,8 @@
                             @change="view(viewType)"
                             v-model="viewType"
                         >
-                            <option value="dots">
-                                Dot Matrix
-                            </option>
-                            <option value="table">
-                                Table
-                            </option>
+                            <option value="dots">Dot Matrix</option>
+                            <option value="table">Table</option>
                         </select>
                         <div
                             class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
@@ -52,93 +50,120 @@
 <script>
 import tableHIT from '../components/tableHIT.vue'
 import dotMatrixHIT from '../components/dotMatrixHIT.vue'
+import loader from '../components/loader.vue'
 export default {
     name: 'HITList',
     components: {
         tableHIT,
         dotMatrixHIT,
+        loader,
     },
     data() {
         return {
             id: '',
             loading: true,
             progressData: [],
-            viewType: 'table',
+            viewType: 'dots',
             sortedData: [],
         }
     },
     created() {
         this.getData()
     },
+    mounted() {
+        window.addEventListener('keydown', this.keyboardEvent)
+    },
     methods: {
+        keyboardEvent(event) {
+            if (event.code == 'Escape') {
+                this.$router.push({
+                    name: 'projectView',
+                    params: { projectId: this.$route.params.projectId },
+                })
+            }
+        },
         getData() {
-            this.id = this.$route.params.projectId
-            this.API.get('?action=getProjectInfo&id=' + this.id)
-                .then(res => {
-                    this.progressData = res.data.summary
-
-                    //count to set defualt data view
-
-                    var cout = 0
-                    for (let i = 0; i < this.progressData.length; i++) {
-                        cout += this.progressData[i].count
-                        if (cout >= 20) {
-                            this.viewType = 'dots'
-                            break
-                        }
-                    }
-
-                    //
-
-                    //data sorting: first completed hits, then incomplete hits (each category ordered by most approved hits  to least approved)
-
-                    var arrComp = []
-                    var arrNotComp = []
-                    var arrNotTou = []
-
-                    for (let i = 0; i < this.progressData.length; i++) {
-                        if (this.progressData[i].assignments_completed == 0) {
-                            arrNotTou.push(this.progressData[i])
-                        } else if (this.progressData[i].assignments_available > 0) {
-                            arrNotComp.push(this.progressData[i])
+            this.id = parseInt(this.$route.params.projectId)
+            if (isNaN(this.id)) {
+                this.$router.replace({ name: 'Home' })
+            } else {
+                this.API.get('?action=getProjectInfo&id=' + this.id)
+                    .then((res) => {
+                        if (res.data.result == 'ERR') {
+                            res.data.error.includes('User')
+                            ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                            : this.$emit('snackbar', 'Error. ' + res.data.error)
                         } else {
-                            arrComp.push(this.progressData[i])
+                            this.progressData = res.data.summary
+                            //count to set defualt data view
+                            //this code can be used to set the default view to dots only if the results number is bigger than a threshold
+                            /*
+                            var cout = 0
+                            for (let i = 0; i < this.progressData.length; i++) {
+                                cout += this.progressData[i].count
+                                if (cout >= 20) {
+                                    this.viewType = 'dots'
+                                    break
+                                }
+                            }
+                            */
+
+                            //
+
+                            //data sorting: first completed hits, then incomplete hits (each category ordered by most approved hits  to least approved)
+
+                            var arrComp = []
+                            var arrNotComp = []
+                            var arrNotTou = []
+
+                            for (let i = 0; i < this.progressData.length; i++) {
+                                if (this.progressData[i].assignments_completed == 0) {
+                                    arrNotTou.push(this.progressData[i])
+                                } else if (this.progressData[i].assignments_available > 0) {
+                                    arrNotComp.push(this.progressData[i])
+                                } else {
+                                    arrComp.push(this.progressData[i])
+                                }
+                            }
+
+                            arrComp = arrComp.sort(function (a, b) {
+                                return (
+                                    a.assignments_rejected - b.assignments_rejected ||
+                                    b.assignments_approved - a.assignments_approved ||
+                                    b.assignments_available - a.assignments_available
+                                )
+                            })
+
+                            arrNotComp = arrNotComp.sort(function (a, b) {
+                                return (
+                                    a.assignments_rejected - b.assignments_rejected ||
+                                    b.assignments_approved - a.assignments_approved ||
+                                    b.assignments_available - a.assignments_available
+                                )
+                            })
+
+                            this.sortedData = arrComp.concat(arrNotComp).concat(arrNotTou)
+
+                            console.log(this.sortedData)
+
+                            //
+
+                            this.loading = false
                         }
-                    }
-
-                    arrComp = arrComp.sort(function(a, b) {
-                        return (
-                            a.assignments_rejected - b.assignments_rejected ||
-                            b.assignments_approved - a.assignments_approved ||
-                            b.assignments_available - a.assignments_available
-                        )
                     })
-
-                    arrNotComp = arrNotComp.sort(function(a, b) {
-                        return (
-                            a.assignments_rejected - b.assignments_rejected ||
-                            b.assignments_approved - a.assignments_approved ||
-                            b.assignments_available - a.assignments_available
-                        )
+                    .catch((err) => {
+                        console.log(err)
                     })
-
-                    this.sortedData = arrComp.concat(arrNotComp).concat(arrNotTou)
-
-                    console.log(this.sortedData)
-
-                    //
-
-                    this.loading = false
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+            }
         },
         view(type) {
             if (type != this.viewType) {
                 this.viewType = type
             }
         },
+    },
+    beforeDestroy() {
+        window.removeEventListener('keydown', this.keyboardEvent)
     },
 }
 </script>

@@ -22,14 +22,50 @@
             </div>
         </div> -->
         <div class="overflow-x-auto">
-            <table class="w-full shadow-lg rounded">
+            <table class="w-full shadow-lg rounded border">
                 <thead>
                     <tr class="text-center bg-primary border-b border-gray-300 uppercase ">
                         <th class="p-1 text-sm text-white">HIT ID</th>
                         <th class="p-1 text-sm text-white">Status</th>
-                        <th class="p-1 table-cell text-sm text-white">Approved</th>
-                        <th class="p-1 table-cell text-sm text-white">Rejected</th>
-                        <th class="p-1 table-cell text-sm text-white">Available</th>
+                        <th class="p-1 table-cell text-sm text-white" @click="sort('assignments_approved', orderApp)">
+                            Approved<svg
+                                class="inline"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="white"
+                                width="24px"
+                                height="24px"
+                            >
+                                <path d="M0 0h24v24H0z" fill="none" />
+                                <path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z" />
+                            </svg>
+                        </th>
+                        <th class="p-1 table-cell text-sm text-white" @click="sort('assignments_rejected', orderRej)">
+                            Rejected<svg
+                                class="inline"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="white"
+                                width="24px"
+                                height="24px"
+                            >
+                                <path d="M0 0h24v24H0z" fill="none" />
+                                <path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z" />
+                            </svg>
+                        </th>
+                        <th class="p-1 table-cell text-sm text-white" @click="sort('assignments_available', orderAva)">
+                            Available<svg
+                                class="inline"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="white"
+                                width="24px"
+                                height="24px"
+                            >
+                                <path d="M0 0h24v24H0z" fill="none" />
+                                <path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z" />
+                            </svg>
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="bg-white text-center">
@@ -88,23 +124,14 @@ export default {
     },
     data() {
         return {
-            sortType: 'all',
-            sortOptions: [
-                { text: 'Tutte', value: 'all' },
-                { text: 'Assignable', value: 'Assignable' },
-                { text: 'Disposed', value: 'Disposed' },
-                { text: 'Reviewable', value: 'Reviewable' },
-            ],
-            filtri: {
-                stato: 'all',
-                creazione: 'all',
-            },
-            hitDaMostrare: [],
             page: 0,
             numPerPage: 20,
             current: [],
             pageNum: 1,
             totalData: [],
+            orderApp: 'asc',
+            orderRej: 'asc',
+            orderAva: 'asc',
         }
     },
     created() {
@@ -154,6 +181,37 @@ export default {
                     this.current.push(this.totalData[i])
                 }
             }
+        },
+        sort(mode, order) {
+            if (order == 'asc') {
+                this.totalData.sort((x, y) => {
+                    return x[mode] - y[mode]
+                })
+            } else {
+                this.totalData.sort((x, y) => {
+                    return y[mode] - x[mode]
+                })
+            }
+            if (order == 'asc') {
+                if (mode == 'assignments_approved') {
+                    this.orderApp = 'desc'
+                } else if (mode == 'assignments_rejected') {
+                    this.orderRej = 'desc'
+                } else if (mode == 'assignments_available') {
+                    this.orderAva = 'desc'
+                }
+            } else {
+                if (mode == 'assignments_approved') {
+                    this.orderApp = 'asc'
+                } else if (mode == 'assignments_rejected') {
+                    this.orderRej = 'asc'
+                } else if (mode == 'assignments_available') {
+                    this.orderAva = 'asc'
+                }
+            }
+            this.current = []
+            this.page = 0
+            this.currentPage()
         },
         // mostra solo le HIT di una categoria (quella passata nell funzione filtraHIT)
         // filtraHIT() {

@@ -123,7 +123,7 @@
                             type="file"
                             ref="file"
                             accept=".csv, text/csv, .txt, .tsv"
-                            style="display:none;"
+                            style="display: none"
                             :disabled="inputLocked"
                             @change="displayFile"
                         />
@@ -158,7 +158,7 @@
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                                style="width:24px;height:24px"
+                                style="width: 24px; height: 24px"
                                 viewBox="0 0 24 24"
                             >
                                 <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
@@ -241,6 +241,11 @@ export default {
             if ((this.picked == 0 && this.$v.customTitles.$invalid == false) || this.picked == 1) {
                 if (this.file == '') {
                     console.log('nessun file da caricare')
+                    if (this.type == 'std') {
+                        this.$emit('uploaded', ['std', '', "Error. You haven't uploaded the CSV file."])
+                    } else {
+                        this.$emit('uploaded', ['gld', '', "Error. You haven't uploaded the CSV file."])
+                    }
                 } else {
                     this.loading = true
                     let formData = new FormData()
@@ -274,9 +279,13 @@ export default {
                                 }
                             } else {
                                 if (this.type == 'std') {
-                                    this.$emit('uploaded', ['std', '', 'Error. Try again' + res.data.error])
+                                    res.data.error.includes('User')
+                                        ? this.$emit('uploaded', ['std', '', 'Error. ' + res.data.error + '.'])
+                                        : this.$emit('uploaded', ['std', '', 'Error. ' + res.data.error])
                                 } else {
-                                    this.$emit('uploaded', ['gld', '', 'Error. Try again' + res.data.error])
+                                    res.data.error.includes('User')
+                                        ? this.$emit('uploaded', ['gld', '', 'Error. ' + res.data.error + '.'])
+                                        : this.$emit('uploaded', ['gld', '', 'Error. ' + res.data.error])
                                 }
                             }
                             this.loading = false

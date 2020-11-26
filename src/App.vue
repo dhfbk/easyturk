@@ -1,6 +1,6 @@
 <template>
     <div id="app" class="antialiased pb-6">
-        <navbar />
+        <navbar class="relative z-10" />
         <div
             v-if="sandbox"
             class="w-full customEl bg-orange-400 text-center flex justify-center content-center items-center"
@@ -9,7 +9,7 @@
         </div>
         <snack-bar :msg="messaggio" v-if="snack" />
         <transition name="fade" mode="out-in" v-if="!wait">
-            <router-view @snackbar="showSnack" />
+            <router-view @snackbar="showSnack" @sandbox="setSandbox" :key="$route.fullPath" />
         </transition>
     </div>
 </template>
@@ -33,41 +33,41 @@ export default {
             timeout: 4000,
         }
     },
+    updated: function () {
+        if (this.$route.path != '/login') {
+            this.$store.state.currentRoute = this.$route.path
+        }
+    },
     created() {
-        this.API.get('?action=login&username=user&password=pippo')
-            .then(() => {
-                this.setDefault()
-            })
-            .catch(err => {
-                console.error(err)
+        axios
+            .all([this.API.get('?action=getOptions'), this.API.get('?action=getUserInfo')])
+            .then(
+                axios.spread((...res) => {
+                    if (res[1].data.result == 'ERR') {
+                        if (this.$route.name != 'login') {
+                            this.$router.replace({ path: '/login' })
+                        }
+                        setTimeout(() => {
+                            this.wait = false
+                        }, 500)
+                    } else {
+                        if (this.$route.name == 'login') {
+                            this.$router.replace({ path: '/' })
+                        }
+                        this.$store.state.userInfo = res[1].data.data
+                        this.setSandbox(this.$store.state.userInfo.use_sandbox)
+                        this.wait = false
+                    }
+                    this.$store.state.defaults = res[0].data.defaults
+                })
+            )
+            .catch((err) => {
+                console.log(err)
             })
     },
     methods: {
-        setDefault() {
-            axios
-                .all([this.API.get('?action=getOptions'), this.API.get('?action=getUserInfo')])
-                .then(
-                    axios.spread((...res) => {
-                        this.$store.state.defaults = res[0].data.defaults
-                        this.$store.state.userInfo = res[1].data.data
-                        console.log(res[1].data)
-                        this.sandbox = this.$store.state.userInfo.use_sandbox
-                        this.wait = false
-                        //this.loadingProjects = false
-                    })
-                )
-                .catch(err => {
-                    console.log(err)
-                })
-        },
-        setSandbox(show) {
-            this.sandbox = show
-            if (show == 1) {
-                this.$store.state.isSandbox = true
-            } else {
-                this.$store.state.isSandbox = false
-            }
-            // console.log(this.$store.state.isSandbox)
+        setSandbox(val) {
+            this.sandbox = val
         },
         showSnack(msg) {
             //this.snackType = arr[0]

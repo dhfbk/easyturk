@@ -237,17 +237,18 @@
             </div>
         </div>
         <div v-else-if="mode == 'projectTable'">
-            <div class="rounded-md border -mx-4 -my-4 overflow-x-auto">
+            <div class="rounded-md border -mx-4 -my-4">
                 <table class="w-full">
                     <thead>
-                        <tr class="">
+                        <tr class="sm-rotated">
                             <th class="text-xs text-white px-1">
-                                TOTAL HITs
+                                <div><span># HITs</span></div>
                             </th>
-                            <th class="text-xs text-white px-1">APPROVED</th>
-                            <th class="text-xs text-white px-1">REJECTED</th>
-                            <th class="text-xs text-white px-1">COMPLETED</th>
-                            <th class="text-xs text-white px-1">AVAILABLE</th>
+                            <th class="text-xs text-white px-1"><span>APPROVED</span></th>
+                            <th class="text-xs text-white px-1"><span>REJECTED</span></th>
+                            <th class="text-xs text-white px-1"><span>COMPLETED</span></th>
+                            <th class="text-xs text-white px-1"><span>AVAILABLE</span></th>
+                            <th class="text-xs text-white px-1"><span>PENDING</span></th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
@@ -267,6 +268,9 @@
                             <td class="border-r text-sm text-gray-700 font-medium border-b">
                                 {{ i.assignments_available }}
                             </td>
+                            <td class="text-sm text-gray-700 font-medium border-b">
+                                {{ i.assignments_pending }}
+                            </td>
                         </tr>
                         <tr>
                             <td class="border-r text-sm text-gray-100 bg-primary font-medium">
@@ -283,6 +287,9 @@
                             </td>
                             <td class="border-r text-sm text-gray-100 bg-primary font-medium">
                                 {{ totals.assignments_available }}
+                            </td>
+                            <td class="text-sm text-gray-100 bg-primary font-medium">
+                                {{ totals.assignments_pending }}
                             </td>
                         </tr>
                     </tbody>
@@ -348,12 +355,14 @@ export default {
             ret.assignments_rejected = 0;
             ret.assignments_completed = 0;
             ret.assignments_available = 0;
+            ret.assignments_pending = 0;
             for (var k in this.projectData.summary) {
                 ret.count += this.projectData.summary[k].count;
                 ret.assignments_approved += this.projectData.summary[k].count * this.projectData.summary[k].assignments_approved;
                 ret.assignments_available += this.projectData.summary[k].count * this.projectData.summary[k].assignments_available;
                 ret.assignments_rejected += this.projectData.summary[k].count * this.projectData.summary[k].assignments_rejected;
                 ret.assignments_completed += this.projectData.summary[k].count * this.projectData.summary[k].assignments_completed;
+                ret.assignments_pending += this.projectData.summary[k].count * this.projectData.summary[k].assignments_pending;
             }
             return ret;
         }
@@ -388,6 +397,7 @@ export default {
                         'Time allotted per assignment',
                         'Expiry',
                         'Auto-approve and pay Workers in',
+                        'HIT group'
                     ]
                     this.data = [
                         this.projectData.reward + '$',
@@ -399,6 +409,7 @@ export default {
                             "{ placement: 'bottom', arrow: false, theme: 'google' }" +
                             "' class='ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button>",
                         this.time(parseInt(this.projectData.auto_approve)),
+                        this.projectData.hit_group_id
                     ]
                 } else {
                     this.titles = [

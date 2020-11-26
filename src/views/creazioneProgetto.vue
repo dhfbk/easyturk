@@ -532,7 +532,7 @@
                 v-if="mode == 'edit'"
             >
                 <svg
-                    :class="loading ? 'animate-spin mr-1' : 'hidden'"
+                    :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
@@ -552,7 +552,7 @@
                 v-else
             >
                 <svg
-                    :class="loading ? 'animate-spin mr-1' : 'hidden'"
+                    :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
                     style="width:24px;height:24px"
                     viewBox="0 0 24 24"
                 >
@@ -796,9 +796,6 @@ export default {
             if (event.code == 'Escape') {
                 this.goBack()
             }
-            else if (event.code == 'Enter') {
-                this.caricaProgetto()
-            }
         },
         emitSnackbar(msg) {
             this.$emit('snackbar', msg)
@@ -980,11 +977,11 @@ export default {
                 }
             } else {
                 if (this.selectAutoApprove == 'hours') {
-                    this.auto_approvesend = this.auto_approve * 60
+                    this.auto_approve_send = this.auto_approve * 60
                 } else if (this.selectAutoApprove == 'days') {
-                    this.auto_approvesend = this.auto_approve * 1440
+                    this.auto_approve_send = this.auto_approve * 1440
                 } else {
-                    this.auto_approvesend = this.auto_approve
+                    this.auto_approve_send = this.auto_approve
                 }
             }
         },

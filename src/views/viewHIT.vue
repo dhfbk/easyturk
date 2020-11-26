@@ -8,7 +8,7 @@
                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                 class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
             >
-                <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+                <svg class="inline" style="width: 24px; height: 24px" viewBox="0 0 24 24">
                     <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
                 </svg>
                 <span class="sr-only">Back to HIT list</span>
@@ -94,14 +94,16 @@
             </div>
             -->
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 mt-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 mt-2">
             <div class="mr-0 xs2:mr-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading">
                     <loader :type="'cardInfoVisualizza'" v-for="n in 2" :key="n" />
                 </div>
                 <div v-else>
                     <cardInfo :projectData="project" :mode="'general'" />
-                    <cardInfo :projectData="prjData" :mode="'hitTable'" />
+                    <!-- <cardInfo :projectData="prjData" :mode="'hitTable'" /> -->
+                    <cardTable :tableData="assignmentData" :emptyText="'No data to display'" />
+                    <cardTable :tableData="tableData" :emptyText="'No data to display'" />
                 </div>
             </div>
             <div class="ml-0 xs2:ml-1">
@@ -124,6 +126,7 @@ import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import loader from '../components/loader.vue'
+import cardTable from '../components/cardTable.vue'
 
 export default {
     name: 'viewHIT',
@@ -134,6 +137,7 @@ export default {
         modalEliminazione,
         cardInfo,
         cardAnalytics,
+        cardTable,
         loader,
     },
     data() {
@@ -155,35 +159,107 @@ export default {
         this.getData()
     },
     mounted() {
-        this.popupItem = this.$el
+        window.addEventListener('keydown', this.keyboardEvent)
+    },
+    computed: {
+        assignmentData: function() {
+            var ret = {}
+            var assignments = { ...this.prjData.assignments }
+
+            if (!(Object.keys(assignments).length === 0 && assignments.constructor === Object)) {
+                ret['head'] = ['Worker ID', 'Status', 'Assignment ID']
+                ret['body'] = []
+                var thisLine = []
+                for (var assIndex in assignments) {
+                    thisLine = []
+                    thisLine.push(assignments[assIndex]['worker_id']) // eslint-disable-line vue/no-side-effects-in-computed-properties
+                    thisLine.push(assignments[assIndex]['status']) // eslint-disable-line vue/no-side-effects-in-computed-properties
+                    thisLine.push(assignments[assIndex]['assignment_id']) // eslint-disable-line vue/no-side-effects-in-computed-properties
+                    ret['body'].push(thisLine)
+                }
+            }
+
+            return ret
+        },
+        tableData: function() {
+            var ret = {}
+            var fields = this.prjData.fields.slice()
+            var lines = { ...this.prjData.lines }
+
+            if (fields) {
+                ret['head'] = fields
+                ret['body'] = []
+                if (lines) {
+                    for (var line in lines) {
+                        var thisLine = []
+                        for (var field in fields) {
+                            if (lines[line][fields[field]]) {
+                                thisLine.push(this.truncateString(lines[line][fields[field]], 50)) // eslint-disable-line vue/no-side-effects-in-computed-properties
+                                // thisLine.push(lines[line][fields[field]])// eslint-disable-line vue/no-side-effects-in-computed-properties
+                            } else {
+                                thisLine.push('') // eslint-disable-line vue/no-side-effects-in-computed-properties
+                            }
+                        }
+                        ret['body'].push(thisLine)
+                    }
+                }
+            }
+            return ret
+        },
     },
     methods: {
+        truncateString(str, num) {
+            if (str.length > num) {
+                return str.slice(0, num) + '...'
+            } else {
+                return str
+            }
+        },
+        keyboardEvent(event) {
+            if (event.code == 'Escape') {
+                this.$router.push({
+                    name: 'HITlist',
+                    params: { projectId: this.$route.params.projectId },
+                })
+            }
+        },
         getData() {
             this.API.get('?action=getHitInfo&hitID=' + this.$route.params.hitId)
                 .then(res => {
-                    console.log(res)
-                    this.prjData = res.data
-                    var tmpDate = new Date(res.data.values.hit_info.Expiration)
-                    var expiration = this.timeConverter(tmpDate.getTime() / 1000)
-                    this.project = {
-                        description: res.data.values.hit_info.Description,
-                        title: res.data.values.hit_info.Title,
-                        keywords: res.data.values.hit_info.Keywords,
-                        created_at: res.data.values.hit_info.CreationTime,
-                        layout_id: res.data.values.hit_info.HITLayoutId,
-                        params: res.data.values.hit_info.MaxAssignments, //mettere il params giusto
-                        reward: res.data.values.hit_info.Reward,
-                        workers: res.data.values.hit_info.MaxAssignments,
-                        max_time: res.data.values.hit_info.AssignmentDurationInSeconds / 60, //converti in X
-                        expiry: expiration, //convertire da data a X
-                        auto_approve: res.data.values.hit_info.AutoApprovalDelayInSeconds / 60, //convertire da secondi a x
+                    if (res.data.result == 'ERR') {
+                        res.data.error.includes('User')
+                            ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                            : this.$emit('snackbar', 'Error. ' + res.data.error)
+                    } else {
+                        this.prjData = res.data
+                        var tmpDate = new Date(res.data.values.hit_info.Expiration)
+                        var expiration = this.timeConverter(tmpDate.getTime() / 1000)
+                        this.project = {
+                            description: res.data.values.hit_info.Description,
+                            title: res.data.values.hit_info.Title,
+                            keywords: res.data.values.hit_info.Keywords,
+                            created_at: res.data.values.hit_info.CreationTime,
+                            layout_id: res.data.values.hit_info.HITLayoutId,
+                            params: res.data.values.hit_info.MaxAssignments, //mettere il params giusto
+                            reward: res.data.values.hit_info.Reward,
+                            hit_group_id: res.data.values.hit_info.HITGroupId,
+                            workers: res.data.values.hit_info.MaxAssignments,
+                            max_time: res.data.values.hit_info.AssignmentDurationInSeconds / 60, //converti in X
+                            expiry: expiration, //convertire da data a X
+                            auto_approve: res.data.values.hit_info.AutoApprovalDelayInSeconds / 60, //convertire da secondi a x
+                        }
+                        this.convertProgress()
+                        this.setAnalyticsCard()
+                        this.loading = false
                     }
-                    this.convertProgress()
-                    this.setAnalyticsCard()
-                    this.loading = false
                 })
                 .catch(err => {
-                    console.log(err)
+                    console.error(err.message)
+                    this.$emit('snackbar', 'Error. ' + err.message)
+                    this.$router.push({
+                        name: 'HITlist',
+                        params: { projectId: this.$route.params.projectId },
+                    })
                 })
         },
         timeConverter(tmp) {
@@ -260,6 +336,18 @@ export default {
                 (100 * parseInt(this.prjData.values.hit_info.NumberOfAssignmentsPending)) /
                 parseInt(this.prjData.values.hit_info.MaxAssignments)
         },
+    },
+    watch: {
+        modal() {
+            if (this.modal) {
+                window.removeEventListener('keydown', this.keyboardEvent)
+            } else {
+                window.addEventListener('keydown', this.keyboardEvent)
+            }
+        },
+    },
+    beforeDestroy() {
+        window.removeEventListener('keydown', this.keyboardEvent)
     },
 }
 </script>

@@ -61,7 +61,7 @@
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                                style="width:24px;height:24px"
+                                style="width: 24px; height: 24px"
                                 viewBox="0 0 24 24"
                             >
                                 <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
@@ -85,7 +85,7 @@ import firstPart from '../components/firstPartLayoutModal.vue'
 import secondPart from '../components/secondPartLayoutModal.vue'
 import thirdPart from '../components/thirdPartLayoutModal.vue'
 const { required, between } = require('vuelidate/lib/validators')
-const notEmpty = value => value != ''
+const notEmpty = (value) => value != ''
 
 export default {
     name: 'modalLayout',
@@ -110,37 +110,46 @@ export default {
                     varValueTo: '',
                 },
             ],
-            assignNumber: this.project.workers,
-            acceptIfGoldRight: 0,
-            rejectIfGoldWrong: 0,
-            rejectReason: this.$store.state.defaults.reject_reason,
+            thirdPartData: {
+                assignNumber: this.project.workers,
+                rejectReason: this.$store.state.defaults.reject_reason,
+            },
+            // assignNumber: this.project.workers,
+            // acceptIfGoldRight: 0,
+            // rejectIfGoldWrong: 0,
+            // rejectReason: "Prova",
+
+            // rejectReason: this.$store.state.defaults.reject_reason,
+
             lastChar: /^[a-z|A-Z|0-9]+[^#]\s?#{1}$/,
         }
     },
     computed: {
-        splitFields: function() {
+        splitFields: function () {
             return this.project.layout_fields.replace(/\s/g, '').split(',')
         },
-        thirdPartData() {
-            return {
-                assignNumber: this.assignNumber,
-                acceptIfGoldRight: this.acceptIfGoldRight,
-                rejectIfGoldWrong: this.rejectIfGoldWrong,
-                rejectReason: this.rejectReason,
-            }
-        },
+        // thirdPartData() {
+        //     return {
+        //         assignNumber: this.assignNumber,
+        //         acceptIfGoldRight: this.acceptIfGoldRight,
+        //         rejectIfGoldWrong: this.rejectIfGoldWrong,
+        //         rejectReason: this.rejectReason,
+        //     }
+        // },
     },
     validations() {
         return {
-            assignNumber: {
-                required,
-                between: between(this.project.workers, 5),
+            thirdPartData: {
+                assignNumber: {
+                    required,
+                    between: between(this.project.workers, 5),
+                },
+                rejectReason: {
+                    required,
+                },
             },
             whatToDo: {
                 notEmpty,
-            },
-            rejectReason: {
-                required,
             },
         }
     },
@@ -180,47 +189,47 @@ export default {
             if (!this.$v.$invalid || (this.rejectIfGoldWrong == 0 && this.$v.rejectReason.$invalid)) {
                 this.loading = true
                 var url = '?action=updateProjectStatus'
+                var dataToSend = {
+                    id: this.project.id,
+                    toStatus: 2,
+                    layoutData: this.firstPartData,
+                    answerData: this.secondPartData,
+                }
+                dataToSend = { ...dataToSend, ...this.thirdPartData }
                 this.API({
                     method: 'post',
                     url: url,
-                    data: {
-                        id: this.project.id,
-                        toStatus: 2,
-                        layoutData: this.firstPartData,
-                        answerData: this.secondPartData,
-                        assignNumber: this.assignNumber,
-                        acceptIfGoldRight: this.acceptIfGoldRight,
-                        rejectIfGoldWrong: this.rejectIfGoldWrong,
-                        rejectReason: this.rejectReason,
-                    },
+                    data: dataToSend,
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
-                    .then(response => {
-                        this.loading = false
-                        console.log(response.data)
-                        if (response.data.result == 'ERR') {
-                            this.$emit('snackbar', 'Error: ' + response.data.error)
-                        } else {
-                            this.toggleModal()
-                            this.$emit('layoutSet', 'Layout successfully set.')
-                        }
-                    })
-                    .catch(err => {
-                        this.$emit('snackbar', 'Error: server unreacheable')
-                        console.log(err)
-                        this.loading = false
-                    })
+                .then((response) => {
+                    this.loading = false
+                    console.log(response.data)
+                    if (response.data.result == 'ERR') {
+                        response.data.error.includes('User')
+                            ? this.$emit('snackbar', 'Error: ' + response.data.error + '.')
+                            : this.$emit('snackbar', 'Error: ' + response.data.error)
+                    } else {
+                        this.toggleModal()
+                        this.$emit('layoutSet', 'Layout successfully set.')
+                    }
+                })
+                .catch((err) => {
+                    this.$emit('snackbar', 'Error: server unreacheable')
+                    console.log(err)
+                    this.loading = false
+                })
             }
         },
         //check the url
         getCsvFields() {
             var url = '?action=getData&id=' + this.project.id + '&howMany=1&page=1&isGold=0'
             this.API.get(url)
-                .then(res => {
+                .then((res) => {
                     this.csvValues = res.data.fields
                     this.loadingCsv = false
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(err)
                 })
         },
@@ -238,7 +247,7 @@ export default {
             this.secondPartData.push(tmp)
         },
         removeElement(arr) {
-            this.secondPartData = this.secondPartData.filter(function(obj) {
+            this.secondPartData = this.secondPartData.filter(function (obj) {
                 return obj.id !== arr[1]
             })
         },
@@ -250,10 +259,11 @@ export default {
                 } else if (arr[0] == 'second') {
                     this.secondPartData = arr[1]
                 } else if (arr[0] == 'third') {
-                    this.assignNumber = arr[1].assignNumber
-                    this.acceptIfGoldRight = arr[1].acceptIfGoldRight
-                    this.rejectIfGoldWrong = arr[1].rejectIfGoldWrong
-                    this.rejectReason = arr[1].rejectReason
+                    this.thirdPartData = { ...arr[1] }
+                    // this.assignNumber = arr[1].assignNumber
+                    // this.acceptIfGoldRight = arr[1].acceptIfGoldRight
+                    // this.rejectIfGoldWrong = arr[1].rejectIfGoldWrong
+                    // this.rejectReason = arr[1].rejectReason
                 }
             }
         },
