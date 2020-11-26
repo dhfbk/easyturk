@@ -81,18 +81,17 @@ switch ($Action) {
             $success = false;
             $db_error = $DB->get_error();
         }
-        $query = "DELETE FROM assignments
-            WHERE hit_id != ALL (
-                SELECT id_hit FROM cluster_to_hit
-            )";
+        $query = "DELETE a
+            FROM assignments a
+            LEFT JOIN cluster_to_hit h ON h.id_hit = a.hit_id
+            WHERE h.id IS NULL";
         if (!$DB->query($query)) {
             $success = false;
             $db_error = $DB->get_error();
         }
-        $query = "DELETE FROM answers
-            WHERE assignment_id != ALL (
-                SELECT assignment_id FROM assignments
-            )";
+        $query = "DELETE w FROM answers w
+            LEFT JOIN assignments a ON w.assignment_id = a.assignment_id
+            WHERE a.id IS NULL";
         if (!$DB->query($query)) {
             $success = false;
             $db_error = $DB->get_error();
@@ -184,6 +183,7 @@ switch ($Action) {
     case "getHitInfo":
     case "testLayout":
     case "getResults":
+    case "unReject":
     case "random":
 
         if (!isset($_SESSION['User'])) {
@@ -210,6 +210,65 @@ switch ($Action) {
         $mTurk = new Aws\MTurk\MTurkClient($mTurkOptions);
 
         switch ($Action) {
+
+            case "unReject":
+                if (isset($_REQUEST['assignment'])) {
+                    $assignment_id = addslashes($_REQUEST['assignment']);
+                    $query = "SELECT a.hit_id
+                        FROM assignments a
+                        LEFT JOIN cluster_to_hit h ON h.id_hit = a.hit_id
+                        LEFT JOIN projects p ON p.id = h.id_project
+                        WHERE p.deleted = '0' AND h.deleted = '0'
+                            AND p.user_id = '$User' AND a.assignment_id = '$assignment_id'";
+                    if (!$DB->querynum($query)) {
+                        $ret['result'] = "ERR";
+                        $ret['error'] = "Unable to find assignment.";
+                        break;
+                    }
+                    $row = $DB->fetch();
+
+                    try {
+                        $response = $mTurk->approveAssignment([
+                            "AssignmentId" => $assignment_id,
+                            "OverrideRejection" => true,
+                            "RequesterFeedback" => "Accepted"
+                        ]);
+                        l(1, "approve_assignment", $response, $assignment_id);
+                    }
+                    catch (Exception $e) {
+                        l(1, "approve_assignment", $e->getMessage(), $assignment_id);
+                        $ret['result'] = "ERR";
+                        $ret['error'] = $e->getMessage();
+                        break;
+                    }
+
+                    $DB->startTransaction();
+                    updateHIT($row['hit_id'], 0);
+                    $DB->commitTransaction();
+                }
+
+                $accepted = [];
+
+                if (isset($_REQUEST['worker'])) {
+                    $worker_id = addslashes($_REQUEST['worker']);
+                    $query = "SELECT a.*, h.id_project, p.hit_details
+                        FROM assignments a
+                        LEFT JOIN cluster_to_hit h ON h.id_hit = a.hit_id
+                        LEFT JOIN projects p ON p.id = h.id_project
+                        WHERE h.deleted = '0' AND p.deleted = '0'
+                            AND a.worker_id = '$worker_id' AND p.user_id = '$User' AND a.status = 'Rejected'";
+                    if ($DB->querynum($query)) {
+                        while ($row = $DB->fetch()) {
+                            $hit_details = unserialize($row['hit_details']);
+                            $accept = acceptOrReject($row['hit_id'], $row['assignment_id'], $hit_details, $row['id_project'], 1, true);
+                            $accepted[$row['assignment_id']] = $accept;
+                        }
+                    }
+                }
+                
+                $ret['accepted'] = $accepted;
+                $ret['result'] = "OK";
+                break;
 
             case "getUserInfo":
                 $ret['data'] = array();
@@ -267,7 +326,7 @@ switch ($Action) {
                 //     WHERE f.deleted = '0' AND f.project_id = '{$project['id']}' AND f.is_gold = '$isGold'
                 //     GROUP BY l.id
                 //     LIMIT $offset, $howMany";
-                $query = "SELECT l.line_text, GROUP_CONCAT(c.cluster_index) cluster_index,  GROUP_CONCAT(DISTINCT h.id_hit) id_hit,
+                $query = "SELECT l.line_text, GROUP_CONCAT(DISTINCT c.cluster_index) cluster_index,  GROUP_CONCAT(DISTINCT h.id_hit) id_hit,
                         SUM(IF(a.status = 'Approved', 1, 0)) assignments_approved,
                         SUM(IF(a.status = 'Rejected', 1, 0)) assignments_rejected,
                         SUM(IF(a.status = 'Submitted', 1, 0)) assignments_pending
@@ -279,6 +338,7 @@ switch ($Action) {
                     WHERE f.deleted = '0' AND f.project_id = '{$project['id']}' AND f.is_gold = '$isGold'
                     GROUP BY l.id
                     LIMIT $offset, $howMany";
+                $ret['debug']['query'] = $query;
 
                 // $query = "SELECT line_text FROM file_lines
                 //     WHERE file_id = '{$r['id']}'
@@ -889,6 +949,36 @@ switch ($Action) {
                             $toSave['rejectReason'] = $_REQUEST['rejectReason'];
                         }
 
+                        $toSave['reject_old'] = boolval($_REQUEST['reject_old'] ?: false);
+
+                        $toSave['block_worker_fast'] = boolval($_REQUEST['block_worker_fast'] ?: false);
+                        if ($toSave['block_worker_fast']) {
+                            if (!preg_match("/[0-9]+/", $_REQUEST['rejectTime'])) {
+                                throw new Exception("Invalid value {$_REQUEST['rejectTime']} for rejectTime");
+                            }
+                            if ($_REQUEST['rejectTime'] < 10) {
+                                throw new Exception("Value {$_REQUEST['rejectTime']} for rejectTime must be greater than 10");
+                            }
+                            $toSave['rejectTime'] = $_REQUEST['rejectTime'];
+                        }
+
+                        $toSave['block_worker_bad'] = boolval($_REQUEST['block_worker_bad'] ?: false);
+                        if ($toSave['block_worker_bad']) {
+                            if (!preg_match("/[0-9]+/", $_REQUEST['missNumberTotal'])) {
+                                throw new Exception("Invalid value {$_REQUEST['missNumberTotal']} for missNumberTotal");
+                            }
+                            if (!preg_match("/[0-9]+/", $_REQUEST['missNumber'])) {
+                                throw new Exception("Invalid value {$_REQUEST['missNumber']} for missNumber");
+                            }
+                            if ($_REQUEST['missNumber'] > $_REQUEST['missNumberTotal']) {
+                                throw new Exception("missNumber should be less than missNumberTotal");
+                            }
+                            $toSave['missNumberTotal'] = $_REQUEST['missNumberTotal'];
+                            $toSave['missNumber'] = $_REQUEST['missNumber'];
+                        }
+
+                        $toSave['skip_check'] = $toSave['block_worker_bad'] || $toSave['block_worker_fast'] || $toSave['reject_old'];
+
                         $toSave['hitData'] = [
                             "AssignmentDurationInSeconds" => $r['max_time'] * 60,
                             "AutoApprovalDelayInSeconds" => $r['auto_approve'] * 60,
@@ -909,125 +999,6 @@ switch ($Action) {
                             $ret['error'] = $e->getMessage();
                             break;
                         }
-
-                        // $ret['toSave'] = $toSave;
-                        // $ret['result'] = "ERR";
-                        // $ret['error'] = "Work in progress";
-                        // break;
-
-                        // $cluster_data = array();
-                        // $goldIndexes = [];
-                        // $query = "SELECT l.line_text, f.fields, f.is_gold
-                        //     FROM clusters c
-                        //     LEFT JOIN file_lines l ON l.id = c.line_id
-                        //     LEFT JOIN project_files f ON f.id = l.file_id
-                        //     WHERE c.deleted = '0' AND f.deleted = '0'
-                        //         AND f.project_id = '{$r['id']}' AND c.cluster_index = '1'
-                        //     ORDER BY c.alea";
-                        // $num = $DB->querynum($query);
-                        // if (!$num) {
-                        //     $ret['result'] = "ERR";
-                        //     $ret['error'] = "No clusters found";
-                        //     break;
-                        // }
-                        // if ($num != $r['params']) {
-                        //     $ret['result'] = "ERR";
-                        //     $ret['error'] = "Number of parameters does not match";
-                        //     break;
-                        // }
-                        // while ($row = $DB->fetch()) {
-                        //     $fields = unserialize($row['fields']);
-                        //     $data = unserialize($row['line_text']);
-                        //     $okData = array();
-                        //     for ($i = 0; $i < count($fields); $i++) {
-                        //         $okData[$fields[$i]] = $data[$i];
-                        //     }
-                        //     $cluster_data[] = $okData;
-                        //     if ($row['is_gold']) {
-                        //         $goldIndexes[count($cluster_data)] = [];
-                        //         foreach ($goldFields as $goldField) {
-                        //             $thisGoldIndex = array_search($goldField, $fields);
-                        //             $goldIndexes[count($cluster_data)][$goldField] = $data[$thisGoldIndex];
-                        //         }
-                        //     }
-                        // }
-
-                        // $HITLayoutParameters = [];
-                        // foreach ($_REQUEST['layoutData'] as $layoutData) {
-                        //     if (substr($layoutData['field'], -1) !== "#") {
-                        //         $val = $layoutData['isHandWritten'] ? $layoutData['customValue'] : $r[substr($layoutData['valueFrom'], 1)];
-                        //         $HITLayoutParameters[] = [
-                        //             "Name" => $layoutData['field'],
-                        //             "Value" => $val
-                        //         ];
-                        //     }
-                        //     else {
-                        //         $field = substr($layoutData['field'], 0, strlen($layoutData['field']) - 1);
-                        //         for ($i = 1; $i <= $r['params']; $i++) {
-                        //             $value = $cluster_data[$i - 1][$layoutData['valueFrom']];
-                        //             $HITLayoutParameters[] = [
-                        //                 "Name" => $field . $i,
-                        //                 "Value" => $value
-                        //             ];
-                        //         }
-                        //     }
-                        // }
-
-                        // $AssignmentReviewPolicy = [];
-                        // if ($goldInfo && ($toSave['rejectIfGoldWrong'] || $toSave['acceptIfGoldRight'])) {
-                        //     $toSave['assignNumber'] = 0;
-                        //     $toSave['rejectReason'] = "";
-
-                        //     if ($toSave['rejectIfGoldWrong']) {
-                        //         if (!preg_match("/[0-9]+/", $_REQUEST['assignNumber'])) {
-                        //             $ret['result'] = "ERR";
-                        //             $ret['error'] = "Invalid value {$_REQUEST['assignNumber']} for assignNumber";
-                        //             break;
-                        //         }
-                        //         if ($_REQUEST['assignNumber'] < $r['workers']) {
-                        //             $ret['result'] = "ERR";
-                        //             $ret['error'] = "assignNumber must be at least {$r['workers']} in this project";
-                        //             break;
-                        //         }
-
-                        //         $toSave['assignNumber'] = $_REQUEST['assignNumber'];
-                        //         $toSave['rejectReason'] = $_REQUEST['rejectReason'];
-                        //     }
-
-                        //     $mapEntries = [];
-                        //     foreach ($goldIndexes as $key => $value) {
-                        //         foreach ($value as $key2 => $value2) {
-                        //             foreach ($answerDataAll as $answerData) {
-                        //                 if ($answerData['varNameTo'] == $key2 && $answerData['varValueTo'] == $value2) {
-                        //                     $mapEntries[] = ["Key" => str_replace("#", $key, $answerData['varName']), "Values" => [$answerData['varValue']]];
-                        //                 }
-                        //             }
-                        //         }
-                        //     }
-                        //     $ret['mapEntries'] = $mapEntries;
-    
-                        //     if ($toSave['rejectIfGoldWrong'] || $toSave['acceptIfGoldRight']) {
-                        //         $AssignmentReviewPolicy['PolicyName'] = "ScoreMyKnownAnswers/2011-09-01";
-                        //         $AssignmentReviewPolicy['Parameters'] = [];
-                        //         $AssignmentReviewPolicy['Parameters'][] = ["Key" => "AnswerKey", "MapEntries" => $mapEntries];
-                        //         if ($toSave['rejectIfGoldWrong']) {
-                        //             $AssignmentReviewPolicy['Parameters'][] = ["Key" => "RejectReason", "Values" => [$toSave['rejectReason']]];
-                        //             $AssignmentReviewPolicy['Parameters'][] = ["Key" => "RejectIfKnownAnswerScoreIsLessThan", "Values" => ["99"]];
-                        //             if ($toSave['assignNumber'] > $r['workers']) {
-                        //                 $AssignmentReviewPolicy['Parameters'][] = ["Key" => "ExtendMaximumAssignments", "Values" => ["{$toSave['assignNumber']}"]];
-                        //                 $AssignmentReviewPolicy['Parameters'][] = ["Key" => "ExtendIfKnownAnswerScoreIsLessThan", "Values" => ["99"]];
-                        //             }
-                        //         }
-                        //         if ($toSave['acceptIfGoldRight']) {
-                        //             $AssignmentReviewPolicy['Parameters'][] = ["Key" => "ApproveIfKnownAnswerScoreIsAtLeast", "Values" => ["100"]];
-                        //         }
-                        //     }
-                        // }
-
-                        // $toSave['hitData']['HITLayoutParameters'] = $HITLayoutParameters;
-                        // if (count($AssignmentReviewPolicy)) {
-                        //     $toSave['hitData']['AssignmentReviewPolicy'] = $AssignmentReviewPolicy;
-                        // }
 
                         $masterQualification = "2F1QJWKUDD8XADTFD2Q0G6UTO95ALH";
                         if ($UseSandbox) {
@@ -1159,6 +1130,18 @@ switch ($Action) {
 
             case "getResults":
                 $r = find("projects", $_REQUEST['id'], "Project not found");
+
+                $hit_to_line = getResults($r['id']);
+
+                $output = [];
+                foreach ($hit_to_line as $hit) {
+                    foreach ($hit as $record) {
+                        $output[] = $record;
+                    }
+                }
+
+                // $ret['debug']['hit_to_line'] = array_keys($hit_to_line);
+                $ret['data'] = $output;
                 $ret['result'] = "OK";
                 break;
 
@@ -1379,8 +1362,8 @@ switch ($Action) {
 
             case "getHitInfo":
                 $hitID = addslashes($_REQUEST['hitID']);
-                $leaveQuestion = boolval($_REQUEST['leaveQuestion'] ?: false);
-                $leaveAnswer = boolval($_REQUEST['leaveAnswer'] ?: false);
+                @$leaveQuestion = boolval($_REQUEST['leaveQuestion'] ?: false);
+                @$leaveAnswer = boolval($_REQUEST['leaveAnswer'] ?: false);
                 $query = "SELECT h.*
                     FROM cluster_to_hit h
                     LEFT JOIN projects p ON h.id_project = p.id
@@ -1437,6 +1420,10 @@ switch ($Action) {
                     $assignments[] = $rowA;
                 }
                 $ret['assignments'] = $assignments;
+
+                // ob_start();
+                updateHIT($hitID);
+                // $ret['debug']['assInfo'] = unserialize(ob_get_clean());
 
                 $ret['result'] = "OK";
                 break;

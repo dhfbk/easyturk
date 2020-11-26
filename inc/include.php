@@ -10,7 +10,182 @@ $DB = new Mysql_connector($DB_HOST, $DB_USERNAME, $DB_PASSWORD);
 $DB->select_db($DB_NAME);
 $mysqli = $DB->connection;
 
+$DB->query("SET SESSION group_concat_max_len = 1000000");
+
 // Functions
+
+function acceptOrReject($thisHit, $thisAssignment, $hit_details, $id_project, $type = 0, $overrideRejection = false) {
+    global $mTurk, $DB;
+
+    $accept = true;
+
+    if ($hit_details['rejectIfGoldWrong']) {
+
+        $goldInfo = false;
+        $trainingInfo = false;
+        $query = "SELECT * FROM project_files WHERE project_id = '{$id_project}' AND deleted = '0'";
+        $DB->query($query, "acceptOrReject");
+        while ($rr = $DB->fetch("acceptOrReject")) {
+            if ($rr['is_gold']) {
+                $goldInfo = $rr;
+            }
+            else {
+                $trainingInfo = $rr;
+            }
+        }
+
+        if ($goldInfo) {
+            $trainingFields = unserialize($trainingInfo['fields']);
+            $goldFields = unserialize($goldInfo['fields']);
+            $goldFields = array_diff($goldFields, $trainingFields);
+
+            $hit_to_line = getResults($id_project, $thisHit);
+            foreach ($hit_to_line[$thisHit] as $lineInfo) {
+                if ($lineInfo['isGold']) {
+                    foreach ($goldFields as $goldVariable) {
+                        if (!isset($lineInfo[$goldVariable])) {
+                            continue;
+                        }
+                        foreach ($lineInfo[$goldVariable]['details'] as $annotation) {
+                            if ($annotation['assignment_id'] == $thisAssignment) {
+                                if ($annotation['value'] != $lineInfo['inputData'][$goldVariable]) {
+                                    $accept = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    try {
+        if ($accept) {
+            $mTurk->approveAssignment(["AssignmentId" => $thisAssignment, "OverrideRejection" => $overrideRejection]);
+            if ($type == 0) {
+                print("Accepted {$thisAssignment} in {$thisHit}\n");
+            }
+        }
+        else if (!$overrideRejection) {
+            $mTurk->rejectAssignment(["AssignmentId" => $thisAssignment, "RequesterFeedback" => $hit_details['rejectReason']]);
+            if ($type == 0) {
+                print("Rejected {$thisAssignment} in {$thisHit}\n");
+            }
+
+            $response = $mTurk->getHIT(["HITId" => $thisHit]);
+            $response = $response->toArray();
+
+            $actualAssignments = $response['HIT']['MaxAssignments'];
+            if ($actualAssignments < $hit_details['assignNumber']) {
+                $mTurk->createAdditionalAssignmentsForHIT(["HITId" => $thisHit, "NumberOfAdditionalAssignments" => 1]);
+                if ($type == 0) {
+                    print("Extended {$thisHit}\n");
+                }
+            }
+        }
+    }
+    catch (Exception $e) {
+        if ($type == 0) {
+            print_r($e->getMessage());
+        }
+        l($type, "accept_reject_assignment", $e->getMessage(), $thisAssignment);
+    }
+    l($type, "accept_reject_assignment", "", $thisAssignment);
+    updateHIT($thisHit, $type);
+
+    return $accept;
+}
+
+function getResults($projectID, $hitID = "") {
+    global $DB;
+
+    $hit_to_line = [];
+    $projectID = addslashes($projectID);
+    $hitID = addslashes($hitID);
+
+    $hitPart = "AND h.id_hit IS NOT NULL";
+    if ($hitID) {
+        $hitPart = "AND h.id_hit = '$hitID'";
+    }
+    $query = "SELECT l.line_text, f.is_gold, cl.cluster_index, h.id_hit, f.fields
+        FROM clusters cl
+        LEFT JOIN file_lines l ON cl.line_id = l.id
+        LEFT JOIN project_files f ON l.file_id = f.id
+        LEFT JOIN cluster_to_hit h ON h.id_cluster = cl.cluster_index AND h.id_project = '{$projectID}' AND h.deleted = '0'
+        WHERE f.deleted = '0' AND cl.deleted = '0'
+            AND f.project_id = '{$projectID}'
+            $hitPart
+        ORDER BY cl.alea";
+    $DB->query($query, "getResults");
+    while ($row = $DB->fetch("getResults")) {
+        if (!isset($hit_to_line[$row['id_hit']])) {
+            $hit_to_line[$row['id_hit']] = [];
+        }
+        $line_text = unserialize($row['line_text']);
+        $fields = [];
+        foreach ($line_text as $key => $value) {
+            $fields[unserialize($row['fields'])[$key]] = $value;
+        }
+        $hit_to_line[$row['id_hit']][] = [
+            "inputData" => $fields,
+            "isGold" => $row['is_gold'],
+            "hit_id" => $row['id_hit']
+        ];
+    }
+
+    $query = "SELECT a.*, p.hit_details, p.params
+        FROM assignments a
+        LEFT JOIN cluster_to_hit h ON h.id_hit = a.hit_id
+        LEFT JOIN projects p ON p.id = h.id_project
+        WHERE h.deleted = '0' AND p.deleted = '0'
+            $hitPart
+            AND h.id_project = '{$projectID}'";
+    $DB->query($query, "getResults");
+    while ($row = $DB->fetch("getResults")) {
+        $info = unserialize($row['assignment_info']);
+        $data = simplexml_load_string($info['Answer']);
+
+        $answers = [];
+        foreach ($data->Answer as $record) {
+            $answers[(string) $record->QuestionIdentifier] = (string) $record->FreeText;
+        }
+
+        $hit_id = $row['hit_id'];
+        $hit_details = unserialize($row['hit_details']);
+
+        for ($i = 0; $i < $row['params']; $i++) {
+            foreach ($hit_details['answerData'] as $rule) {
+                $varName = str_replace("#", $i + 1, $rule['varName']);
+                if (!isset($hit_to_line[$hit_id][$i][$rule['varNameTo']])) {
+                    $hit_to_line[$hit_id][$i][$rule['varNameTo']] = [];
+                    $hit_to_line[$hit_id][$i][$rule['varNameTo']]["details"] = [];
+                    $hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"] = [];
+                    $hit_to_line[$hit_id][$i][$rule['varNameTo']]["winners"] = [];
+                    $hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"][$rule['varValueTo']] = 0;
+                }
+                if ($answers[$varName] == $rule['varValue']) {
+                    if ($row['status'] == "Approved") {
+                        if (!isset($hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"][$rule['varValueTo']])) {
+                            $hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"][$rule['varValueTo']] = 0;
+                        }
+                        $hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"][$rule['varValueTo']]++;
+                    }
+                    $hit_to_line[$hit_id][$i][$rule['varNameTo']]["details"][] = [
+                        "value" => $rule['varValueTo'],
+                        "status" => $row['status'],
+                        "worker_id" => $row['worker_id'],
+                        "assignment_id" => $row['assignment_id'],
+                    ];
+                }
+                $maxVal = max($hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"]);
+                $maxValKeys = array_keys($hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"], $maxVal);
+                $hit_to_line[$hit_id][$i][$rule['varNameTo']]["winners"] = $maxValKeys;
+            }
+        }
+    }
+
+    return $hit_to_line;
+}
 
 function getHITLayoutParameters($r, $project_id, $cluster_index, $goldFields, $toSave) {
     global $DB, $mysqli;
@@ -88,7 +263,7 @@ function getHITLayoutParameters($r, $project_id, $cluster_index, $goldFields, $t
     $toSave['hitData']['HITLayoutParameters'] = $HITLayoutParameters;
 
     $AssignmentReviewPolicy = [];
-    if ($goldInfo && ($toSave['rejectIfGoldWrong'] || $toSave['acceptIfGoldRight'])) {
+    if (!$toSave['skip_check'] && $goldInfo && ($toSave['rejectIfGoldWrong'] || $toSave['acceptIfGoldRight'])) {
         $mapEntries = [];
         foreach ($goldIndexes as $key => $value) {
             foreach ($value as $key2 => $value2) {
@@ -134,7 +309,7 @@ function updateHIT($hit_id, $code = 2) {
 
     $query = "SELECT h.id, u.region_name, u.aws_access_key_id,
             u.aws_secret_access_key, u.use_sandbox, p.params, p.hit_details,
-            h.id_project, h.id_cluster
+            h.id_project, h.id_cluster, p.user_id
         FROM `cluster_to_hit` h
         LEFT JOIN projects p ON p.id = h.id_project
         LEFT JOIN users u ON u.id = p.user_id
@@ -147,6 +322,7 @@ function updateHIT($hit_id, $code = 2) {
         return;
     }
     $taskInfo = $result->fetch_assoc();
+    $layout_details = unserialize($taskInfo['hit_details']);
 
     $UseSandbox = $taskInfo['use_sandbox'];
 
@@ -231,7 +407,6 @@ function updateHIT($hit_id, $code = 2) {
                 $answers[$key] = trim($value);
             }
             // print_r($answers);
-            $layout_details = unserialize($taskInfo['hit_details']);
             $a = array();
             for ($i = 0; $i < $taskInfo['params']; $i++) {
                 $a[$i] = [];
@@ -271,6 +446,44 @@ function updateHIT($hit_id, $code = 2) {
         }        
     }
 
+    // Check the project properties
+    if ($layout_details['block_worker_fast']) {
+        $Seconds = $layout_details['rejectTime'];
+        $Reason = "You answered too quickly to the HIT";
+
+        $BlockList = [];
+        $query = "SELECT *
+            FROM assignments
+            WHERE hit_id = ? AND status = 'Submitted'";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("s", $hit_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($assignment = $result->fetch_assoc()) {
+            $assignmentInfo = unserialize($assignment['assignment_info']);
+            $start = strtotime($assignmentInfo['AcceptTime']);
+            $end = strtotime($assignmentInfo['SubmitTime']);
+
+            $timeInSeconds = $end - $start;
+            if ($timeInSeconds < $Seconds) {
+                $worker_id = $assignmentInfo['WorkerId'];
+                
+                $data = [];
+                $data['worker_id'] = $worker_id;
+                $data['user_id'] = $taskInfo['user_id'];
+                $DB->queryinsert("blocked_workers", $data);
+
+                try {
+                    $hitResponse = $mTurk->createWorkerBlock(["Reason" => $Reason, "WorkerId" => $worker_id]);
+                }
+                catch (Exception $e) {
+                    l($code, "block_worker_fast", $e->getMessage(), $worker_id);
+                }
+                $hitResponse = $hitResponse->toArray();
+                l($code, "block_worker_fast", $hitResponse, $worker_id);
+            }
+        }        
+    }
 
     $query = "UPDATE cluster_to_hit SET checked_at = NOW() WHERE id = '{$taskInfo['id']}'";
     $mysqli->query($query);

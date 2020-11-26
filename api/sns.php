@@ -26,19 +26,7 @@ if ($validator->isValid($message)) {
                 }
 
                 updateHIT($hit_id, 2);
-
-                // switch ($event['EventType']) {
-                //     case "AssignmentAccepted":
-                //     case "AssignmentSubmitted":
-                //     case "AssignmentReturned":
-                //     case "AssignmentAbandoned":
-                //         $assignment_id = $event['AssignmentId'];
-                //         break;
-                //     case "HITExpired":
-                //     case "HITReviewable":
-                //         $hit_id = $event['HITId'];
-                //         break;
-                // }
+                
             }
             break;
     }
