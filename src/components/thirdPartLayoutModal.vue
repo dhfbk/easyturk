@@ -128,7 +128,7 @@
                             id="rejectTime"
                             name="rejectTime"
                             type="number"
-                            min="30"
+                            min="20"
                             step="10"
                             placeholder="1"
                             required
