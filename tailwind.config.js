@@ -1,8 +1,5 @@
 module.exports = {
-    purge: {
-        mode: 'all',
-        content: ['./public/**/*.html'],
-    },
+    purge: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
     theme: {
         maxHeight: {
             '0': '0',
