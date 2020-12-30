@@ -154,32 +154,35 @@ function getResults($projectID, $hitID = "") {
         $hit_details = unserialize($row['hit_details']);
 
         for ($i = 0; $i < $row['params']; $i++) {
+            if (!isset($hit_to_line[$hit_id][$i]["answers"])) {
+                $hit_to_line[$hit_id][$i]["answers"] = [];
+            }
             foreach ($hit_details['answerData'] as $rule) {
                 $varName = str_replace("#", $i + 1, $rule['varName']);
-                if (!isset($hit_to_line[$hit_id][$i][$rule['varNameTo']])) {
-                    $hit_to_line[$hit_id][$i][$rule['varNameTo']] = [];
-                    $hit_to_line[$hit_id][$i][$rule['varNameTo']]["details"] = [];
-                    $hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"] = [];
-                    $hit_to_line[$hit_id][$i][$rule['varNameTo']]["winners"] = [];
-                    $hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"][$rule['varValueTo']] = 0;
+                if (!isset($hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']])) {
+                    $hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']] = [];
+                    $hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']]["details"] = [];
+                    $hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']]["values"] = [];
+                    $hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']]["winners"] = [];
+                    $hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']]["values"][$rule['varValueTo']] = 0;
                 }
                 if ($answers[$varName] == $rule['varValue']) {
                     if ($row['status'] == "Approved") {
-                        if (!isset($hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"][$rule['varValueTo']])) {
-                            $hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"][$rule['varValueTo']] = 0;
+                        if (!isset($hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']]["values"][$rule['varValueTo']])) {
+                            $hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']]["values"][$rule['varValueTo']] = 0;
                         }
-                        $hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"][$rule['varValueTo']]++;
+                        $hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']]["values"][$rule['varValueTo']]++;
                     }
-                    $hit_to_line[$hit_id][$i][$rule['varNameTo']]["details"][] = [
+                    $hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']]["details"][] = [
                         "value" => $rule['varValueTo'],
                         "status" => $row['status'],
                         "worker_id" => $row['worker_id'],
                         "assignment_id" => $row['assignment_id'],
                     ];
                 }
-                $maxVal = max($hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"]);
-                $maxValKeys = array_keys($hit_to_line[$hit_id][$i][$rule['varNameTo']]["values"], $maxVal);
-                $hit_to_line[$hit_id][$i][$rule['varNameTo']]["winners"] = $maxValKeys;
+                $maxVal = max($hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']]["values"]);
+                $maxValKeys = array_keys($hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']]["values"], $maxVal);
+                $hit_to_line[$hit_id][$i]["answers"][$rule['varNameTo']]["winners"] = $maxValKeys;
             }
         }
     }
@@ -456,33 +459,40 @@ function updateHIT($hit_id, $code = 2) {
             FROM assignments
             WHERE hit_id = ? AND status = 'Submitted'";
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param("s", $hit_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while ($assignment = $result->fetch_assoc()) {
-            $assignmentInfo = unserialize($assignment['assignment_info']);
-            $start = strtotime($assignmentInfo['AcceptTime']);
-            $end = strtotime($assignmentInfo['SubmitTime']);
+        if ($stmt) {
+            $stmt->bind_param("s", $hit_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($assignment = $result->fetch_assoc()) {
+                $assignmentInfo = unserialize($assignment['assignment_info']);
+                $start = strtotime($assignmentInfo['AcceptTime']);
+                $end = strtotime($assignmentInfo['SubmitTime']);
 
-            $timeInSeconds = $end - $start;
-            if ($timeInSeconds < $Seconds) {
-                $worker_id = $assignmentInfo['WorkerId'];
-                
-                $data = [];
-                $data['worker_id'] = $worker_id;
-                $data['user_id'] = $taskInfo['user_id'];
-                $DB->queryinsert("blocked_workers", $data);
+                $timeInSeconds = $end - $start;
+                if ($timeInSeconds < $Seconds) {
+                    $worker_id = $assignmentInfo['WorkerId'];
+                    
+                    $data = [];
+                    $data['worker_id'] = $worker_id;
+                    $data['user_id'] = $taskInfo['user_id'];
+                    $DB->queryinsert("blocked_workers", $data);
 
-                try {
-                    $hitResponse = $mTurk->createWorkerBlock(["Reason" => $Reason, "WorkerId" => $worker_id]);
+                    try {
+                        $hitResponse = $mTurk->createWorkerBlock(["Reason" => $Reason, "WorkerId" => $worker_id]);
+                    }
+                    catch (Exception $e) {
+                        l($code, "block_worker_fast", $e->getMessage(), $worker_id);
+                    }
+                    $hitResponse = $hitResponse->toArray();
+                    l($code, "block_worker_fast", $hitResponse, $worker_id);
                 }
-                catch (Exception $e) {
-                    l($code, "block_worker_fast", $e->getMessage(), $worker_id);
-                }
-                $hitResponse = $hitResponse->toArray();
-                l($code, "block_worker_fast", $hitResponse, $worker_id);
+            }        
+        }
+        else {
+            if ($code == 0) {
+                  print("prepare() failed: {$mysqli->error}\n");
             }
-        }        
+        }
     }
 
     $query = "UPDATE cluster_to_hit SET checked_at = NOW() WHERE id = '{$taskInfo['id']}'";

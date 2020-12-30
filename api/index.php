@@ -185,6 +185,8 @@ switch ($Action) {
     case "getResults":
     case "unReject":
     case "random":
+    case "deleteAllHits":
+    case "workerSummary":
 
         if (!isset($_SESSION['User'])) {
             $ret['result'] = "ERR";
@@ -210,6 +212,48 @@ switch ($Action) {
         $mTurk = new Aws\MTurk\MTurkClient($mTurkOptions);
 
         switch ($Action) {
+
+            case "deleteAllHits":
+                $project = find("projects", $_REQUEST['id'], "Project not found");
+                $query = "SELECT id_hit FROM `cluster_to_hit` WHERE `id_project` = '{$project['id']}'";
+                $DB->query($query);
+                $data = [];
+                while ($row = $DB->fetch_a()) {
+                    $response = $mTurk->updateExpirationForHIT([
+                        "ExpireAt" => "-1 day",
+                        "HITId" => $row['id_hit']
+                    ]);
+                    l(1, "delete_hit", $response, $row['id_hit']);
+                    $data[] = $row['id_hit'];
+                }
+
+                $ret['data'] = $data;
+                $ret['result'] = "OK";
+                break;
+
+            case "workerSummary":
+                $project = find("projects", $_REQUEST['id'], "Project not found");
+                $query = "SELECT a.worker_id, a.assignment_id, a.status,
+                        h.id_project, h.id_hit,
+                        bl.updated_at blocked, p.hit_details
+                    FROM assignments a
+                    LEFT JOIN cluster_to_hit h ON h.id_hit = a.hit_id
+                    LEFT JOIN projects p ON p.id = h.id_project
+                    LEFT JOIN blocked_workers bl ON bl.worker_id = a.worker_id AND bl.user_id = '{$project['user_id']}'
+                    WHERE h.deleted = '0' AND p.deleted = '0' AND p.id = '{$project['id']}'";
+                $data = [];
+                $DB->query($query);
+                while ($row = $DB->fetch_a()) {
+                    $row['hit_details'] = unserialize($row['hit_details']);
+                    unset($row['hit_details']['hitData']);
+                    unset($row['hit_details']['HIT_response']);
+                    unset($row['hit_details']['expiration_response']);
+                    $data[] = $row;
+                }
+
+                $ret['data'] = $data;
+                $ret['result'] = "OK";
+                break;
 
             case "unReject":
                 if (isset($_REQUEST['assignment'])) {
@@ -243,7 +287,7 @@ switch ($Action) {
                     }
 
                     $DB->startTransaction();
-                    updateHIT($row['hit_id'], 0);
+                    updateHIT($row['hit_id'], 1);
                     $DB->commitTransaction();
                 }
 
@@ -1422,7 +1466,7 @@ switch ($Action) {
                 $ret['assignments'] = $assignments;
 
                 // ob_start();
-                updateHIT($hitID);
+                updateHIT($hitID, 1);
                 // $ret['debug']['assInfo'] = unserialize(ob_get_clean());
 
                 $ret['result'] = "OK";
