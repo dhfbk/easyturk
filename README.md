@@ -14,7 +14,7 @@ In particular, EasyTurk adds two features that are not included out-of-the-box i
 * Login to the [AWS console](https://aws.amazon.com/it/console/).
 * Go to Simple Notification Service.
 * Create new subscription pointing to the `sns.php` file on your server (see below).
-* In the [Mturk Requester developer console](https://requester.mturk.com/developer), link your Amazon account and create access keys.
+* In the [Mturk Requester developer console](https://requester.mturk.com/developer), link your Amazon account and create the access keys.
 
 ## Database configuration
 
