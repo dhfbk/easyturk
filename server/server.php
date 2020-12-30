@@ -3,17 +3,23 @@
 $parent_folder = dirname(dirname(__FILE__));
 require_once($parent_folder . "/inc/include.php");
 
-$createHITs = true;
-$updateHITs = true;
-$updateBlockedWorkers = true;
-$updateApprovalRejection = true;
+$query = "SELECT * FROM options";
+$DB->query($query);
+while ($row = $DB->fetch()) {
+    ${$row['id']} = $row['value']; // really bad
+}
 
-$ManageAllSubmitted = false;
+// $createHITs = true;
+// $updateHITs = true;
+// $updateBlockedWorkers = true;
+// $updateApprovalRejection = true;
 
-$IntervalForUpdateHits = 60;
-$IntervalForBlockedWorkers = 300;
-$IntervalForApprovalRejection = 60;
-$IntervalInDaysForBlockingBadWorkers = 10;
+// $ManageAllSubmitted = false;
+
+// $IntervalForUpdateHits = 60;
+// $IntervalForBlockedWorkers = 300;
+// $IntervalForApprovalRejection = 60;
+// $IntervalInDaysForBlockingBadWorkers = 10;
 $IntervalForApprovalRejectionOnExpiration = 2 * ($IntervalForUpdateHits + $IntervalForApprovalRejection);
 
 while (true) {
@@ -143,8 +149,8 @@ while (true) {
                             if ($hit_info['isGold']) {
                                 $thisCorrect = true;
                                 foreach (array_keys($hit_info['inputData']) as $key) {
-                                    if (isset($hit_info[$key])) {
-                                        foreach ($hit_info[$key]['details'] as $answer) {
+                                    if (isset($hit_info['answers'][$key])) {
+                                        foreach ($hit_info['answers'][$key]['details'] as $answer) {
                                             if ($answer['worker_id'] == $row['worker_id']) {
                                                 $thisCorrect = $thisCorrect && ($answer['value'] == $hit_info['inputData'][$key]);
                                             }
@@ -160,11 +166,13 @@ while (true) {
                     $wrong = min($row['num'], $missNumberTotal) - $correct;
 
                     if ($hit_details['block_worker_bad']) {
-                        echo "{$row['worker_id']}\t{$row['id_project']}\t{$row['num']}\t($wrong)";
-                        if ($row['blocked']) {
-                            echo "\tBLOCKED!";
-                        }
-                        echo "\n";
+                        // if ($row['num'] > 2) {
+                            echo "{$row['worker_id']}\t{$row['id_project']}\t{$row['num']}\t($wrong)";
+                            if ($row['blocked']) {
+                                echo "\tBLOCKED!";
+                            }
+                            echo "\n";
+                        // }
                         if ($row['blocked']) {
                             continue;
                         }
@@ -319,7 +327,7 @@ while (true) {
                         'Active' => true,
                         'HITTypeId' => $response['HIT']['HITTypeId'],
                         'Notification' => [
-                            'Destination' => 'arn:aws:sns:us-east-2:477794837227:mturk_frontend',
+                            'Destination' => $arn,
                             'EventTypes' => ["AssignmentAccepted", "AssignmentAbandoned", "AssignmentReturned", "AssignmentSubmitted", "HITReviewable", "HITExpired"],
                             'Transport' => 'SNS',
                             'Version' => '2006-05-05',
