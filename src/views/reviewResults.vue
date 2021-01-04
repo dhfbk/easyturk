@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <button
-                        class=" inline-flex flex-row items-center py-2 px-4 ml-auto rounded-md transition duration-100 ease-out bg-gray-400 hover:bg-gray-400 focus:outline-none"
+                        class=" inline-flex flex-row items-center py-2 px-4 ml-auto rounded transition duration-100 ease-out bg-gray-400 hover:bg-gray-400 focus:outline-none"
                     >
                         <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />

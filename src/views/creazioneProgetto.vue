@@ -2,10 +2,10 @@
     <div v-if="loadingPage1 || loadingPage2"></div>
     <form
         v-else
-        class="md:w-5/6 bg-white shadow-md rounded pt-2 pb-8 flex flex-col mt-4 mx-2 md:mx-auto px-8"
+        class="md:w-5/6 bg-white shadow-md rounded py-4 flex flex-col mt-4 mx-2 md:mx-auto px-8"
         @submit.prevent="caricaProgetto"
     >
-        <p class="text-2xl mb-4 text-primary">{{ pageTitle }}</p>
+        <p class="text-2xl mb-4 mt-0 text-primary">{{ pageTitle }}</p>
         <div class="-mx-3 md:flex md:flex-col">
             <div class="w-full px-3 mb-4">
                 <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="name">Project Name</label>
@@ -525,10 +525,10 @@
                 </div>
             </div>
         </div>
-        <div class="w-full flex justify-end flex-row">
+        <div class="w-full flex justify-start md:justify-end flex-row">
             <button
                 type="submit"
-                class="ripple m-1 hover:bg-primary py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary transition duration-100 ease-out hover:text-white focus:outline-none"
+                class="ripple mr-1 hover:bg-primaryDark bg-primary py-2 px-4 rounded transition duration-100 ease-out text-white focus:outline-none"
                 v-if="mode == 'edit'"
             >
                 <svg
@@ -545,10 +545,10 @@
                 :disabled="disableBtn"
                 :class="
                     disableBtn
-                        ? 'cursor-not-allowed bg-gray-400 text-gray-800 border-none hover:bg-gray-600'
-                        : 'ripple hover:bg-primary bg-transparent border-primary hover:text-white'
+                        ? 'cursor-not-allowed bg-gray-400 text-gray-800 hover:bg-gray-600'
+                        : 'ripple hover:bg-primaryDark bg-primary text-white'
                 "
-                class="m-1 py-2 px-4 rounded-md border-2 border-solid transition duration-100 ease-out focus:outline-none"
+                class="mr-1 py-2 px-4 rounded transition duration-100 ease-out focus:outline-none"
                 v-else
             >
                 <svg
@@ -563,7 +563,7 @@
             <button
                 @click="goBack"
                 type="button"
-                class="ripple bg-transparent hover:bg-gray-400 py-2 px-4 text-gray-900 transition duration-100 ease-out rounded m-1 focus:outline-none"
+                class="ripple bg-transparent hover:bg-gray-400 py-2 px-4 text-gray-900 transition border-2 border-solid border-gray-400 duration-100 ease-out rounded ml-1 focus:outline-none"
             >
                 Cancel
             </button>

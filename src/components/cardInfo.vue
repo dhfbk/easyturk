@@ -135,7 +135,7 @@
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                                 @click="$emit('modal', 'gld')"
                                 :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +171,7 @@
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                                 @click="$emit('modal', 'gld')"
                                 :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"

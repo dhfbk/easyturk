@@ -125,6 +125,7 @@
                     ${{ $store.state.userInfo.balance }}
                 </p>
             </div>
+            <!--
             <div class="rounded shadow-md m-2 p-2 flex flex-col justify-around bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
                     <svg style="width: 24px" viewBox="0 0 24 24">
@@ -136,6 +137,7 @@
                 </div>
                 <p class="text-black font-light text-2xl xs2:text-4xl m-1 text-center">93</p>
             </div>
+            -->
         </div>
     </div>
 </template>
