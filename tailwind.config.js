@@ -1,4 +1,9 @@
 module.exports = {
+    future: {
+        removeDeprecatedGapUtilities: true,
+        purgeLayersByDefault: true,
+        standardFontWeights: true
+    },
     purge: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
     theme: {
         maxHeight: {
@@ -18,7 +23,6 @@ module.exports = {
             '3/4': '75%',
             '5/6': '83.333333%',
         },
-
         screens: {
             xs: '270px',
             xs2: '400px',

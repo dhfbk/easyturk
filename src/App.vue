@@ -61,8 +61,8 @@ export default {
                     this.$store.state.defaults = res[0].data.defaults
                 })
             )
-            .catch((err) => {
-                console.log(err)
+            .catch(err => {
+                console.error(err)
             })
     },
     methods: {

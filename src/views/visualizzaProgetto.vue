@@ -420,7 +420,7 @@ export default {
                 this.$emit('snackbar', "Error. Project doesn't exist.")
             } else {
                 this.API.get('?action=getProjectInfo&id=' + this.id)
-                    .then((res) => {
+                    .then(res => {
                         console.log(res.data)
                         if (res.data.result == 'ERR') {
                             res.data.error.includes('User')
@@ -480,8 +480,8 @@ export default {
                             this.loading = false
                         }
                     })
-                    .catch((err) => {
-                        console.log(err)
+                    .catch(err => {
+                        console.error(err)
                     })
             }
         },

@@ -214,9 +214,9 @@ export default {
                         this.$emit('layoutSet', 'Layout successfully set.')
                     }
                 })
-                .catch((err) => {
+                .catch(err => {
                     this.$emit('snackbar', 'Error: server unreacheable')
-                    console.log(err)
+                    console.error(err)
                     this.loading = false
                 })
             }
@@ -225,12 +225,12 @@ export default {
         getCsvFields() {
             var url = '?action=getData&id=' + this.project.id + '&howMany=1&page=1&isGold=0'
             this.API.get(url)
-                .then((res) => {
+                .then(res => {
                     this.csvValues = res.data.fields
                     this.loadingCsv = false
                 })
-                .catch((err) => {
-                    console.log(err)
+                .catch(err => {
+                    console.error(err)
                 })
         },
         toggleModal() {

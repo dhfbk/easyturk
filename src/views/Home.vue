@@ -195,17 +195,17 @@ export default {
     methods: {
         getPrjData() {
             this.API.get('?action=listProjects')
-                .then((res) => {
+                .then(res => {
                     this.projects = res.data.values
                     this.loadingProjects = false
                 })
-                .catch((err) => {
-                    console.log(err)
+                .catch(err => {
+                    console.error(err)
                 })
         },
         getData() {
             this.API.get('?action=listProjects')
-                .then((res) => {
+                .then(res => {
                     if (res.data.result == 'ERR') {
                         res.data.error.includes('User')
                             ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')

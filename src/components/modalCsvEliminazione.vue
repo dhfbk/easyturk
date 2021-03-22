@@ -97,7 +97,7 @@ export default {
             //var self = this
             this.loading = true
             this.API.get('?action=deleteFile&id=' + this.id + '&isGold=' + this.isGold)
-                .then((res) => {
+                .then(res => {
                     console.log(res.data.result)
                     this.loading = false
                     if (res.data.result == 'ERR') {
@@ -111,7 +111,7 @@ export default {
                             this.toggleModal()
                         } else if (this.goldUploaded && this.type == 'standard') {
                             this.API.get('?action=deleteFile&id=' + this.id + '&isGold=1')
-                                .then((res) => {
+                                .then(res => {
                                     console.log(res.data.result)
                                     this.loading = false
                                     if (res.data.result == 'ERR') {
@@ -122,8 +122,8 @@ export default {
                                     }
                                     // this.$emit('snackbar', ['success', this.id, 'Progetto eliminato'])
                                 })
-                                .catch((err) => {
-                                    console.log(err)
+                                .catch(err => {
+                                    console.error(err)
                                     this.$emit('close', 'Error: server unreachable')
                                     this.loading = false
                                 })
@@ -132,8 +132,8 @@ export default {
 
                     // this.$emit('snackbar', ['success', this.id, 'Progetto eliminato'])
                 })
-                .catch((err) => {
-                    console.log(err)
+                .catch(err => {
+                    console.error(err)
                     this.$emit('close', 'Error: server unreachable')
                     this.loading = false
                 })

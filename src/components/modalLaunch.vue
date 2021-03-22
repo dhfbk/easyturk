@@ -126,11 +126,11 @@ export default {
         this.calculatePrice()
         if (this.$route.name == 'Home') {
             this.API.get('?action=getProjectInfo&id=' + this.id)
-                .then((res) => {
+                .then(res => {
                     this.$emit('changeQualification', res.data.values.master)
                 })
-                .catch((err) => {
-                    console.log(err)
+                .catch(err => {
+                    console.error(err)
                 })
         }
     },

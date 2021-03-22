@@ -92,7 +92,7 @@ export default {
                 },
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             })
-                .then((res) => {
+                .then(res => {
                     this.loading = false
                     if (res.data.result == 'ERR') {
                         res.data.error.includes('User')
