@@ -95,7 +95,7 @@
             -->
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 mt-2">
-            <div class="mr-0 xs2:mr-1">
+            <div class="mr-0 md:mr-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading">
                     <loader :type="'cardInfoVisualizza'" v-for="n in 2" :key="n" />
                 </div>
@@ -106,7 +106,7 @@
                     <cardTable :tableData="tableData" :emptyText="'No data to display'" />
                 </div>
             </div>
-            <div class="ml-0 xs2:ml-1">
+            <div class="ml-0 md:ml-1">
                 <div class="w-full flex flex-col justify-center" v-if="loading">
                     <loader :type="'cardInfoVisualizza'" />
                     <loader :type="'cardAnalyticsVisualizza'" :num="3" />

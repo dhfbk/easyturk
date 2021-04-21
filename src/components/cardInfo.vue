@@ -237,10 +237,10 @@
             </div>
         </div>
         <div v-else-if="mode == 'projectTable'">
-            <div class="rounded-md border -mx-4 -my-4">
+            <div class="rounded-md -mx-4 -my-4">
                 <table class="w-full">
                     <thead>
-                        <tr class="sm-rotated">
+                        <tr class="sm-rotated tracking-widest sm:tracking-normal">
                             <th class="text-xs text-white px-1">
                                 <div><span># HITs</span></div>
                             </th>
@@ -512,21 +512,21 @@ table tr th {
 }
 /* top-left border-radius */
 table tr:first-child th:first-child {
-    border-top-left-radius: 0.25rem;
+    border-top-left-radius: 0.375rem;
 }
 
 /* top-right border-radius */
 table tr:first-child th:last-child {
-    border-top-right-radius: 0.25rem;
+    border-top-right-radius: 0.375rem;
 }
 
 /* bottom-left border-radius */
 table tr:last-child td:first-child {
-    border-bottom-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.375rem;
 }
 
 /* bottom-right border-radius */
 table tr:last-child td:last-child {
-    border-bottom-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.375rem;
 }
 </style>

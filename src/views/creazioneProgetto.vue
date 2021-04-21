@@ -2,7 +2,7 @@
     <div v-if="loadingPage1 || loadingPage2"></div>
     <form
         v-else
-        class="md:w-5/6 bg-white shadow-md rounded py-4 flex flex-col mt-4 mx-2 md:mx-auto px-8"
+        class="lg:w-5/6 bg-white shadow-md rounded py-4 flex flex-col px-8 mt-4 mx-2 xs2:mx-4 lg:mx-auto lg:w-5/6 pt-2"
         @submit.prevent="caricaProgetto"
     >
         <p class="text-2xl mb-4 mt-0 text-primary">{{ pageTitle }}</p>
@@ -92,7 +92,7 @@
             <div class="w-full xl:w-1/2">
                 <div class="w-full lg:w-auto px-3 mb-4">
                     <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="reward">
-                        Reward per response
+                        Reward per response (in $)
                     </label>
                     <input
                         :class="
@@ -297,7 +297,7 @@
             </div>
         </div>
         <hr class="solid mb-4" />
-        <div class="-mx-3 md:flex md:flex-col lg:grid lg:grid-cols-3 lg:gap-2">
+        <div class="-mx-3 md:flex md:flex-col lg:flex-row lg:justify-between lg:gap-2">
             <div class="w-full px-3 mb-4 mx-auto">
                 <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="layoutId">Layout ID</label>
                 <div class="flex content-center items-center flex-wrap relative sm:max-w-xs">
@@ -324,7 +324,7 @@
                             style="width: 40px; height: 40px"
                             :class="downloadID ? 'animate__heartBeat' : ''"
                         >
-                            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                            <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                                 <path
                                     d="M7.5,5.6L5,7L6.4,4.5L5,2L7.5,3.4L10,2L8.6,4.5L10,7L7.5,5.6M19.5,15.4L22,14L20.6,16.5L22,19L19.5,17.6L17,19L18.4,16.5L17,14L19.5,15.4M22,2L20.6,4.5L22,7L19.5,5.6L17,7L18.4,4.5L17,2L19.5,3.4L22,2M13.34,12.78L15.78,10.34L13.66,8.22L11.22,10.66L13.34,12.78M14.37,7.29L16.71,9.63C17.1,10 17.1,10.65 16.71,11.04L5.04,22.71C4.65,23.1 4,23.1 3.63,22.71L1.29,20.37C0.9,20 0.9,19.35 1.29,18.96L12.96,7.29C13.35,6.9 14,6.9 14.37,7.29Z"
                                 />
@@ -353,6 +353,7 @@
                     v-model.trim="$v.params.$model"
                     required
                 />
+                <p class="text-gray-700 text-xs italic">Number of tasks per HIT</p>
             </div>
             <div class="w-full px-3 mb-4 mx-auto">
                 <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="params_fields">
@@ -380,7 +381,7 @@
             @submit="handleSubmit"
             class="mb-4"
         ></autocomplete> -->
-        <div class="flex flex-col  md:grid md:grid-cols-2">
+        <div class="flex flex-col md:grid md:grid-cols-2">
             <div class="mr-4" @keydown.enter.prevent.self>
                 <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="countries">
                     Locations of Workers
@@ -419,9 +420,7 @@
                 <span class="text-gray-700 text-xs italic mt-2">
                     Your Workers will be picked from the countries you select.
                 </span>
-                <div v-if="selected.length == 0" class="font-thin w-full mt-6 text-center">
-                    No countries selected.
-                </div>
+                <div v-if="selected.length == 0" class="font-thin w-full mt-6 text-center">No countries selected.</div>
                 <div v-else class="flex flex-wrap w-full mb-4 mt-2">
                     <div
                         v-for="country in selected"
@@ -438,7 +437,7 @@
                             @click="deleteSelected(country)"
                             @keydown.enter.prevent.self
                         >
-                            <svg style="width:21px;height:21px" viewBox="0 0 24 24">
+                            <svg style="width: 21px; height: 21px" viewBox="0 0 24 24">
                                 <path
                                     fill="rgba(74, 85, 104, 1)"
                                     d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z"
@@ -533,7 +532,7 @@
             >
                 <svg
                     :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                    style="width:24px;height:24px"
+                    style="width: 24px; height: 24px"
                     viewBox="0 0 24 24"
                 >
                     <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
@@ -553,7 +552,7 @@
             >
                 <svg
                     :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
-                    style="width:24px;height:24px"
+                    style="width: 24px; height: 24px"
                     viewBox="0 0 24 24"
                 >
                     <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
@@ -771,7 +770,7 @@ export default {
                 url: 'https://restcountries.eu/rest/v2/all',
                 method: 'get',
             })
-                .then(res => {
+                .then((res) => {
                     this.countries = res.data
                     this.loadingPage2 = false
                 })
@@ -780,13 +779,13 @@ export default {
                         this.getDatiPrj()
                     }
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.error(err)
                 })
         },
         downloadLayoutId() {
             this.downloadID = true
-            this.API.get('?action=testLayout&layout_id=' + this.layout_id).then(res => {
+            this.API.get('?action=testLayout&layout_id=' + this.layout_id).then((res) => {
                 this.downloadID = false
                 this.params_fields = res.data.params_fields
                 this.params = parseInt(res.data.examples_per_hit)
@@ -805,7 +804,7 @@ export default {
                 url: '?action=getProjectInfo&id=' + this.$route.params.projectId,
                 method: 'get',
             })
-                .then(res => {
+                .then((res) => {
                     this.disableBtn = false
                     this.id = res.data.values.id
                     this.name = res.data.values.name
@@ -833,7 +832,7 @@ export default {
                     this.elaboraTempoGET('auto_approve')
                     for (let i = 0; i < this.selectedCodes.length; i++) {
                         this.selected.push(
-                            this.countries.find(country => {
+                            this.countries.find((country) => {
                                 return country.alpha2Code == this.selectedCodes[i]
                             })
                         )
@@ -845,7 +844,7 @@ export default {
                     this.fixMax(2)
                     this.fixMax(3)
                 })
-                .catch(err => {
+                .catch((err) => {
                     var msg = 'Error. Project not found'
                     this.emitSnackbar(msg)
                     console.error(err)
@@ -886,7 +885,7 @@ export default {
                     },
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
-                    .then(response => {
+                    .then((response) => {
                         this.loading = false
                         console.log(response.data)
                         if (response.data.result == 'OK') {
@@ -1040,11 +1039,11 @@ export default {
             if (newValue.length == 0) {
                 this.tmp = []
             } else if (newValue.length > oldValue.length && this.tmp.length > 0) {
-                this.tmp = this.tmp.filter(country => {
+                this.tmp = this.tmp.filter((country) => {
                     return country.name.toLowerCase().startsWith(this.input)
                 })
             } else {
-                this.tmp = this.countries.filter(country => {
+                this.tmp = this.countries.filter((country) => {
                     return country.name.toLowerCase().startsWith(this.input)
                 })
             }
