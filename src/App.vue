@@ -3,7 +3,7 @@
         <navbar class="relative z-10" />
         <div
             v-if="sandbox"
-            class="w-full customEl bg-orange-400 text-center flex justify-center content-center items-center"
+            class="w-full customEl bg-yellow-500 text-center flex justify-center content-center items-center"
         >
             <p>You are using the sandbox version</p>
         </div>
@@ -33,7 +33,7 @@ export default {
             timeout: 4000,
         }
     },
-    updated: function () {
+    updated() {
         if (this.$route.path != '/login') {
             this.$store.state.currentRoute = this.$route.path
         }
@@ -61,7 +61,7 @@ export default {
                     this.$store.state.defaults = res[0].data.defaults
                 })
             )
-            .catch(err => {
+            .catch((err) => {
                 console.error(err)
             })
     },

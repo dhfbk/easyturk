@@ -39,7 +39,7 @@
                     <button
                         :content="'Extend assignments'"
                         v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                        class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                        class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:24px; height:24px;">
                             <path

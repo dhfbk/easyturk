@@ -17,7 +17,7 @@
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-400 rounded focus:outline-none"
+                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-300 rounded focus:outline-none"
                                 @click="
                                     $router.push({
                                         name: 'csv',
@@ -32,7 +32,7 @@
                                 @click="$emit('modal', 'deleteStd')"
                                 :content="'Delete standard csv'"
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
                             >
                                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                     <path
@@ -49,7 +49,7 @@
                                 :content="projectData.numData > 0 ? 'Overwrite standard csv' : 'Upload standard csv'"
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                                 @click="$emit('modal', 'std')"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
                             >
                                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                     <path
@@ -74,7 +74,7 @@
                                 :content="'Upload standard csv'"
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                                 @click="$emit('modal', 'std')"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
                             >
                                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                     <path
@@ -104,7 +104,7 @@
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-400 rounded focus:outline-none"
+                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-300 rounded focus:outline-none"
                                 @click="
                                     $router.push({
                                         name: 'csv',
@@ -119,7 +119,7 @@
                                 @click="$emit('modal', 'deleteGld')"
                                 :content="'Delete gold csv'"
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
                             >
                                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                     <path
@@ -135,7 +135,7 @@
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                                 @click="$emit('modal', 'gld')"
                                 :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +171,7 @@
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                                 @click="$emit('modal', 'gld')"
                                 :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -326,7 +326,7 @@
                 </span>
                 <button
                     @click="$emit('modal', 'instructions')"
-                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-400 rounded focus:outline-none transition duration-100 ease-out self-end"
+                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-300 rounded focus:outline-none transition duration-100 ease-out self-end"
                 >
                     Need help?
                 </button>
@@ -407,7 +407,7 @@ export default {
                             this.projectData.expiry +
                             "<button :content='Edit expiry' v-tippy='" +
                             "{ placement: 'bottom', arrow: false, theme: 'google' }" +
-                            "' class='ripple bg-gray-200 hover:bg-gray-400 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button>",
+                            "' class='ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button>",
                         this.time(parseInt(this.projectData.auto_approve)),
                         this.projectData.hit_group_id
                     ]

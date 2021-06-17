@@ -13,7 +13,7 @@
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
                         <div class="text-gray-900 font-bold text-lg text-primary">Confirm action</div>
-                        <span class="ml-auto rounded hover:bg-gray-400 p-1" @click="toggleModal('close')">
+                        <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal('close')">
                             <svg
                                 class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@
                             >Proceed
                         </button>
                         <button
-                            class="ripple transition duration-100 ease-out hover:bg-gray-400 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="ripple transition duration-100 ease-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
                             @click="toggleModal('close')"
                         >
                             Cancel

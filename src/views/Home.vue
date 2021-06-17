@@ -34,8 +34,8 @@
         />
         <span class="text-3xl sm:text-4xl font-light">Welcome, {{ $store.state.userInfo.common_name }}</span>
         <!--<modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />-->
-        <div class="mb-6 mt-2">
-            <div class="flex content-center flex-col sm:flex-row px-4">
+        <div class="mb-6 mt-4">
+            <div class="flex content-center flex-col sm:flex-row px-2">
                 <svg style="width: 24px" viewBox="0 0 24 24">
                     <path
                         d="M17,17H15V13H17M13,17H11V7H13M9,17H7V10H9M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z"
@@ -43,7 +43,7 @@
                 </svg>
                 <h2 class="text-lg font-semibold ml-1 text-gray-800">Projects</h2>
             </div>
-            <div class="my-1 mx-2 p-2 flex items-center flex-wrap" v-if="projects.length != 0">
+            <div class="my-2 mx-2 flex items-center flex-wrap" v-if="projects.length != 0">
                 <div class="hidden w-1/2 lg:w-3/5 xl:w-2/3 md:flex text-center items-center flex-wrap text-lg">
                     <span class="w-1/2 lg:w-1/4 font-light">Project Id</span>
                     <span class="w-1/2 lg:w-1/4 font-light">Title</span>
@@ -104,7 +104,7 @@
                 <tabellaWorker />
             </div>
             -->
-            <div class="rounded shadow-md m-2 p-2 flex flex-col justify-around bg-white">
+            <div class="rounded shadow-md p-2 flex flex-col justify-around bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
                     <svg style="width: 24px" viewBox="0 0 24 24">
                         <path

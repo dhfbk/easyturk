@@ -32,7 +32,7 @@
                 :content="'Upload standard csv'"
                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                 @click.stop="upload('std')"
-                class="ripple bg-transparent hover:bg-gray-400 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
             >
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path
@@ -48,7 +48,7 @@
                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                 :class="{ 'cursor-not-allowed': baseCsvStatus == 0 }"
                 @click.stop="upload('gld')"
-                class="ripple bg-transparent hover:bg-gray-400 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
+                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden sm:flex flex-row"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:24px; height:24px;">
                     <path
@@ -76,7 +76,7 @@
                 "
                 :content="'Edit'"
                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                class="ripple bg-transparent hover:bg-gray-400 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
+                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
             >
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path
@@ -91,7 +91,7 @@
                 @click.stop="deleteItem()"
                 :content="'Delete'"
                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                class="ripple bg-transparent hover:bg-gray-400 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
+                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 transition duration-100 ease-out text-gray-900 rounded m-1 focus:outline-none hidden md:flex flex-row"
             >
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path
@@ -161,7 +161,7 @@
             </button>
             <span v-click-outside="hide" class="md:hidden flex align-center">
                 <button
-                    class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded transition duration-100 ease-out hover:bg-gray-400"
+                    class="ripple-light py-2 px-2 m-1 focus:outline-none bg-white rounded transition duration-100 ease-out hover:bg-gray-300"
                     @click.stop="dropdown = !dropdown"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
@@ -340,7 +340,7 @@
                     <p slot="legend-caption">Completed</p>
                 </vue-ellipse-progress>
                 <button
-                    class="absolute ripple-light bg-white hover:bg-gray-400 py-2 px-2 m-1 rounded focus:outline-none bottom-0 right-0"
+                    class="absolute ripple-light bg-white hover:bg-gray-300 py-2 px-2 m-1 rounded focus:outline-none bottom-0 right-0"
                     @click.stop="refresh()"
                 >
                     <svg

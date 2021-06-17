@@ -37,7 +37,7 @@
             <span class="w-px bg-gray-300" v-if="totalComp > 0"></span>
             <span v-if="totalAvai > 0" :class="classCreator(totalComp, totalNotTou)">
                 <div class="text-center">Incomplete HITs</div>
-                <span class="flex flex-row mt-2 justify-around ">
+                <span class="flex flex-row mt-2 justify-around">
                     <span v-for="(i, e) in totalAvai" :key="e" :style="{ width: (1 / totalAvai) * 100 + '%' }">
                         <span class="tooltip relative">
                             <span

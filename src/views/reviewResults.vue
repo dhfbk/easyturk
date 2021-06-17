@@ -4,7 +4,7 @@
             @click="$router.go(-1)"
             :content="'Back'"
             v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-            class="rounded ripple bg-transparent hover:bg-gray-400 p-2 focus:outline-none"
+            class="rounded ripple bg-transparent hover:bg-gray-300 p-2 focus:outline-none"
         >
             <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <button
-                        class=" inline-flex flex-row items-center py-2 px-4 ml-auto rounded transition duration-100 ease-out bg-gray-400 hover:bg-gray-400 focus:outline-none"
+                        class=" inline-flex flex-row items-center py-2 px-4 ml-auto rounded transition duration-100 ease-out bg-gray-400 hover:bg-gray-300 focus:outline-none"
                     >
                         <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
@@ -63,7 +63,7 @@
                 <button
                     @click="page--"
                     v-if="data.length > numPerPage && page >= 1"
-                    class="bg-gray-400 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
+                    class="bg-gray-400 w-48 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
                 >
                     Previous
                 </button>
@@ -72,7 +72,7 @@
                 <button
                     @click="page++"
                     v-if="data.length > numPerPage && page < pageNum"
-                    class="bg-gray-400 w-48 hover:bg-gray-400 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
+                    class="bg-gray-400 w-48 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
                 >
                     Next
                 </button>
