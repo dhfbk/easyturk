@@ -1,7 +1,18 @@
 <template>
     <transition name="fade" mode="out-in" appear>
         <div
-            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
+            class="
+                flex
+                items-center
+                justify-center
+                fixed
+                left-0
+                bottom-0
+                w-full
+                h-full
+                bg-gray-800 bg-opacity-25
+                customZ
+            "
             @click="toggleModal"
         >
             <div
@@ -56,7 +67,20 @@
 
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
                         <button
-                            class="ripple flex flex-row transition duration-100 ease-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            class="
+                                ripple
+                                flex flex-row
+                                transition
+                                duration-100
+                                ease-out
+                                bg-primary
+                                hover:bg-blue-600
+                                text-gray-100
+                                py-2
+                                px-4
+                                rounded
+                                focus:outline-none
+                            "
                             @click="submit()"
                         >
                             <svg
@@ -68,7 +92,21 @@
                             >Proceed
                         </button>
                         <button
-                            class="ripple transition duration-100 ease-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="
+                                ripple
+                                transition
+                                duration-100
+                                ease-out
+                                hover:bg-gray-300
+                                focus:outline-none
+                                mt-2
+                                xs2:mt-0 xs2:ml-2
+                                bg-transparent
+                                text-gray-800
+                                py-2
+                                px-4
+                                rounded
+                            "
                             @click="toggleModal()"
                         >
                             Cancel
@@ -85,7 +123,7 @@ import firstPart from '../components/firstPartLayoutModal.vue'
 import secondPart from '../components/secondPartLayoutModal.vue'
 import thirdPart from '../components/thirdPartLayoutModal.vue'
 const { required, between } = require('vuelidate/lib/validators')
-const notEmpty = (value) => value != ''
+const notEmpty = value => value != ''
 
 export default {
     name: 'modalLayout',
@@ -125,7 +163,7 @@ export default {
         }
     },
     computed: {
-        splitFields: function () {
+        splitFields: function() {
             return this.project.layout_fields.replace(/\s/g, '').split(',')
         },
         // thirdPartData() {
@@ -202,23 +240,23 @@ export default {
                     data: dataToSend,
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
-                .then((response) => {
-                    this.loading = false
-                    console.log(response.data)
-                    if (response.data.result == 'ERR') {
-                        response.data.error.includes('User')
-                            ? this.$emit('snackbar', 'Error: ' + response.data.error + '.')
-                            : this.$emit('snackbar', 'Error: ' + response.data.error)
-                    } else {
-                        this.toggleModal()
-                        this.$emit('layoutSet', 'Layout successfully set.')
-                    }
-                })
-                .catch(err => {
-                    this.$emit('snackbar', 'Error: server unreacheable')
-                    console.error(err)
-                    this.loading = false
-                })
+                    .then(response => {
+                        this.loading = false
+                        console.log(response.data)
+                        if (response.data.result == 'ERR') {
+                            response.data.error.includes('User')
+                                ? this.$emit('snackbar', 'Error: ' + response.data.error + '.')
+                                : this.$emit('snackbar', 'Error: ' + response.data.error)
+                        } else {
+                            this.toggleModal()
+                            this.$emit('layoutSet', 'Layout successfully set.')
+                        }
+                    })
+                    .catch(err => {
+                        this.$emit('snackbar', 'Error: server unreacheable')
+                        console.error(err)
+                        this.loading = false
+                    })
             }
         },
         //check the url
@@ -247,7 +285,7 @@ export default {
             this.secondPartData.push(tmp)
         },
         removeElement(arr) {
-            this.secondPartData = this.secondPartData.filter(function (obj) {
+            this.secondPartData = this.secondPartData.filter(function(obj) {
                 return obj.id !== arr[1]
             })
         },

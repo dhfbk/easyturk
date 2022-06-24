@@ -1,11 +1,20 @@
 <template>
-    <div class="flex flex-col my-6 ">
-        <div class="flex flex-row mx-auto w-11/12 ">
+    <div class="flex flex-col my-6">
+        <div class="flex flex-row mx-auto w-11/12">
             <span :style="{ width: submitted + '%' }" v-if="submitted != 0">
                 <div
                     :content="progressData.hits_submitted + '/' + progressData.hits_total"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                    class="h-8 bg-green-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg rounded-l"
+                    class="
+                        h-8
+                        bg-green-500
+                        transition
+                        duration-200
+                        ease-in-out
+                        transform
+                        hover:-translate-y-1 hover:shadow-lg
+                        rounded-l
+                    "
                     :class="[notPublished == 0 && published == 0 ? 'rounded-r' : '']"
                 ></div>
             </span>
@@ -13,7 +22,15 @@
                 <div
                     :content="progressData.hits_inserted - progressData.hits_submitted + '/' + progressData.hits_total"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                    class="h-8 bg-blue-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+                    class="
+                        h-8
+                        bg-blue-500
+                        transition
+                        duration-200
+                        ease-in-out
+                        transform
+                        hover:-translate-y-1 hover:shadow-lg
+                    "
                     :class="[submitted == 0 ? 'rounded-l' : '', notPublished == 0 ? 'rounded-r' : '']"
                 ></div>
             </span>
@@ -21,7 +38,17 @@
                 <div
                     :content="progressData.hits_total - progressData.hits_inserted + '/' + progressData.hits_total"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                    class="h-8 bg-gray-400 transition duration-200 ease-in-out transform hover:-translate-y-1 rounded-r hover:shadow-lg"
+                    class="
+                        h-8
+                        bg-gray-400
+                        transition
+                        duration-200
+                        ease-in-out
+                        transform
+                        hover:-translate-y-1
+                        rounded-r
+                        hover:shadow-lg
+                    "
                 ></div>
             </span>
         </div>

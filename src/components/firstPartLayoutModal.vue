@@ -8,11 +8,36 @@
             :class="first.id != 0 ? 'mt-3' : ''"
         >
             <div
-                class="flex flex-col xs2:grid xs2:grid-cols-8 xs2:gap-10 md:gap-0 md:flex md:flex-col w-full content-center items-center mt-2 md:mt-0"
+                class="
+                    flex flex-col
+                    xs2:grid xs2:grid-cols-8 xs2:gap-10
+                    md:gap-0 md:flex md:flex-col
+                    w-full
+                    content-center
+                    items-center
+                    mt-2
+                    md:mt-0
+                "
             >
                 <label for="sortBy" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Field:</label>
                 <input
-                    class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition duration-150 ease-out focus:outline-none"
+                    class="
+                        xs2:col-span-7
+                        md:col-auto
+                        appearance-none
+                        py-2
+                        block
+                        w-full
+                        bg-gray-100
+                        text-gray-700
+                        border border-gray-200
+                        rounded
+                        px-4
+                        transition
+                        duration-150
+                        ease-out
+                        focus:outline-none
+                    "
                     name="sortBy"
                     type="text"
                     placeholder="Text"
@@ -22,7 +47,19 @@
                 />
             </div>
             <span
-                class="bg-white border-2 mx-4 mt-2 md:mt-0 md:mb-2 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                class="
+                    bg-white
+                    border-2
+                    mx-4
+                    mt-2
+                    md:mt-0 md:mb-2
+                    rounded
+                    border-gray-400
+                    w-5
+                    h-5
+                    flex flex-shrink-0
+                    focus-within:border-blue-500
+                "
                 @click="first.isHandWritten = !first.isHandWritten"
                 :content="'Handwritten value?'"
                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
@@ -39,12 +76,38 @@
             </span>
 
             <div
-                class="flex flex-col xs2:grid xs2:grid-cols-8 xs2:gap-10 md:gap-0 md:flex md:flex-col mt-2 md:mt-0 w-full content-center items-center"
+                class="
+                    flex flex-col
+                    xs2:grid xs2:grid-cols-8 xs2:gap-10
+                    md:gap-0 md:flex md:flex-col
+                    mt-2
+                    md:mt-0
+                    w-full
+                    content-center
+                    items-center
+                "
                 v-if="first.isHandWritten"
             >
                 <label for="value" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Value:</label>
                 <input
-                    class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="
+                        xs2:col-span-7
+                        md:col-auto
+                        appearance-none
+                        py-2
+                        block
+                        w-full
+                        bg-gray-100
+                        text-gray-700
+                        border border-gray-200
+                        rounded
+                        px-4
+                        transition
+                        duration-150
+                        ease-out
+                        focus:outline-none focus:border-gray-500
+                        hover:border-gray-500
+                    "
                     id="value"
                     name="value"
                     type="text"
@@ -54,13 +117,38 @@
                 />
             </div>
             <div
-                class="flex flex-col xs2:grid xs2:grid-cols-8 xs2:gap-10 md:gap-0 md:flex md:flex-col mt-2 md:mt-0 w-full content-center items-center"
+                class="
+                    flex flex-col
+                    xs2:grid xs2:grid-cols-8 xs2:gap-10
+                    md:gap-0 md:flex md:flex-col
+                    mt-2
+                    md:mt-0
+                    w-full
+                    content-center
+                    items-center
+                "
                 v-else
             >
                 <label for="selectFrom" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Value:</label>
                 <div class="xs2:col-span-7 md:col-auto relative w-full block md:mt-0">
                     <select
-                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        class="
+                            appearance-none
+                            block
+                            w-full
+                            bg-gray-100
+                            text-gray-700
+                            border border-gray-200
+                            rounded
+                            py-2
+                            pr-4
+                            pl-2
+                            transition
+                            duration-150
+                            ease-out
+                            focus:outline-none focus:border-gray-500
+                            hover:border-gray-500
+                        "
                         id="selectFrom"
                         name="selectFrom"
                         v-model="first.valueFrom"
@@ -76,7 +164,7 @@
                             label="From CSV"
                             v-if="
                                 (first.isFromCsv && loadingCsv) ||
-                                    (!loadingCsv && csvValues.length > 0 && first.isFromCsv)
+                                (!loadingCsv && csvValues.length > 0 && first.isFromCsv)
                             "
                         >
                             <option value="loading" v-if="loadingCsv">Loading...</option>

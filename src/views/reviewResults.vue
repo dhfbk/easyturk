@@ -6,21 +6,36 @@
             v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
             class="rounded ripple bg-transparent hover:bg-gray-300 p-2 focus:outline-none"
         >
-            <svg class="inline" style="width:24px;height:24px" viewBox="0 0 24 24">
+            <svg class="inline" style="width: 24px; height: 24px" viewBox="0 0 24 24">
                 <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
             </svg>
             <span class="sr-only">Back</span>
         </button>
-        <p class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">
-            Review results
-        </p>
+        <p class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">Review results</p>
         <div class="container mx-auto">
             <div class="mb-2">
                 <p class="text-lg mb-2">Filters</p>
                 <div class="flex flex-row justify-start mb-4">
                     <p class="text-md my-auto mr-1">Results per page:</p>
                     <input
-                        class="appearance-none h-full w-20 rounded border block appearance-none bg-white border-gray-400 text-gray-700 pl-2 pr-1 py-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3"
+                        class="
+                            appearance-none
+                            h-full
+                            w-20
+                            rounded
+                            border
+                            block
+                            appearance-none
+                            bg-white
+                            border-gray-400
+                            text-gray-700
+                            pl-2
+                            pr-1
+                            py-2
+                            leading-tight
+                            focus:outline-none focus:bg-white focus:border-gray-500
+                            mr-3
+                        "
                         type="number"
                         id="quantity"
                         name="quantity"
@@ -32,7 +47,23 @@
                     <p class="text-md my-auto mr-1">Show:</p>
                     <div class="relative">
                         <select
-                            class="appearance-none h-full rounded border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 pl-2 pr-12 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            class="
+                                appearance-none
+                                h-full
+                                rounded
+                                border
+                                block
+                                appearance-none
+                                w-full
+                                bg-white
+                                border-gray-400
+                                text-gray-700
+                                py-2
+                                pl-2
+                                pr-12
+                                leading-tight
+                                focus:outline-none focus:bg-white focus:border-gray-500
+                            "
                             name="choice"
                             id="choice"
                             @change="onlyShow(sortType)"
@@ -49,9 +80,23 @@
                         </div>
                     </div>
                     <button
-                        class=" inline-flex flex-row items-center py-2 px-4 ml-auto rounded transition duration-100 ease-out bg-gray-400 hover:bg-gray-300 focus:outline-none"
+                        class="
+                            inline-flex
+                            flex-row
+                            items-center
+                            py-2
+                            px-4
+                            ml-auto
+                            rounded
+                            transition
+                            duration-100
+                            ease-out
+                            bg-gray-400
+                            hover:bg-gray-300
+                            focus:outline-none
+                        "
                     >
-                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
                         </svg>
                         <span class="ml-1">Download SVG</span>

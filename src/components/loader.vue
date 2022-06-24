@@ -37,7 +37,23 @@
             </div>
             <div class="mt-4 h-2 w-1/4 bg-gray-500 rounded"></div>
             <div
-                class="flex content-center flex-col md:flex-row justify-around md:justify-between items-center mt-4 w-full p-2 h-24 border rounded p-2 bg-white"
+                class="
+                    flex
+                    content-center
+                    flex-col
+                    md:flex-row
+                    justify-around
+                    md:justify-between
+                    items-center
+                    mt-4
+                    w-full
+                    p-2
+                    h-24
+                    border
+                    rounded
+                    p-2
+                    bg-white
+                "
             >
                 <div class="mx-auto h-2 w-5/6 md:w-1/3 bg-gray-500 rounded"></div>
                 <span class="w-px hidden md:block h-full bg-gray-300"></span>
@@ -101,6 +117,3 @@ export default {
     },
 }
 </script>
-
-<style>
-</style>

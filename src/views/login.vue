@@ -1,12 +1,33 @@
 <template>
     <div class="fixed left-0 bottom-0 w-full h-full flex items-center justify-center bg-primary">
         <form
-            class="bg-white shadow-md rounded w-5/6 md:w-1/2 max-w-3xl max-h-96 h-auto overflow-y-auto overscroll-none p-4"
+            class="
+                bg-white
+                shadow-md
+                rounded
+                w-5/6
+                md:w-1/2
+                max-w-3xl max-h-96
+                h-auto
+                overflow-y-auto
+                overscroll-none
+                p-4
+            "
         >
             <div class="mb-2">
                 <label class="block text-gray-700 text-sm mb-2" for="username"> Username </label>
                 <input
-                    class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="
+                        appearance-none
+                        border
+                        rounded
+                        w-full
+                        py-2
+                        px-3
+                        text-gray-700
+                        leading-tight
+                        focus:outline-none focus:shadow-outline
+                    "
                     id="username"
                     type="text"
                     placeholder="Username"
@@ -17,19 +38,44 @@
             <div class="mb-2">
                 <label class="block text-gray-700 text-sm mb-2" for="password"> Password </label>
                 <input
-                    class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="
+                        appearance-none
+                        border
+                        rounded
+                        w-full
+                        py-2
+                        px-3
+                        text-gray-700
+                        leading-tight
+                        focus:outline-none focus:shadow-outline
+                    "
                     id="password"
                     type="password"
                     placeholder="Password"
                     required
                     v-model.trim="$v.password.$model"
                 />
-                <p class="text-red-500 text-xs italic mt-2" v-if="$v.password.$error">
-                    Please enter your credentials
-                </p>
+                <p class="text-red-500 text-xs italic mt-2" v-if="$v.password.$error">Please enter your credentials</p>
             </div>
             <button
-                class="ripple transition ease-out duration-100 bg-primary hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded text-white focus:outline-none"
+                class="
+                    ripple
+                    transition
+                    ease-out
+                    duration-100
+                    bg-primary
+                    hover:bg-blue-600
+                    flex flex-row
+                    items-center
+                    py-2
+                    px-4
+                    border-2 border-solid border-primary
+                    hover:border-blue-600
+                    bg-transparent
+                    rounded
+                    text-white
+                    focus:outline-none
+                "
                 type="button"
                 @click="login"
             >

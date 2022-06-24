@@ -17,7 +17,24 @@
         <div class="flex flex-row justify-start mr-auto mb-1 ml-2">
             <p class="text-md my-auto mr-1">Results per page:</p>
             <input
-                class="appearance-none h-full w-20 m-2 rounded border block appearance-none bg-white border-gray-400 text-gray-700 pl-2 pr-1 py-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="
+                    appearance-none
+                    h-full
+                    w-20
+                    m-2
+                    rounded
+                    border
+                    block
+                    appearance-none
+                    bg-white
+                    border-gray-400
+                    text-gray-700
+                    pl-2
+                    pr-1
+                    py-2
+                    leading-tight
+                    focus:outline-none focus:bg-white focus:border-gray-500
+                "
                 type="number"
                 id="quantity"
                 name="quantity"
@@ -54,7 +71,18 @@
             <button
                 @click="page--"
                 v-if="totalNum > numPerPage && page >= 1"
-                class="ripple-light sm:w-48 w-32 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
+                class="
+                    ripple-light
+                    sm:w-48
+                    w-32
+                    hover:bg-gray-300
+                    py-2
+                    px-4
+                    rounded
+                    m-2
+                    focus:outline-none
+                    place-self-start
+                "
             >
                 Previous
             </button>
@@ -62,7 +90,22 @@
             <p class="text-center">
                 Page
                 <input
-                    class="appearance-none w-16 m-2 rounded border appearance-none bg-white border-gray-400 text-gray-700 pl-2 pr-1 py-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    class="
+                        appearance-none
+                        w-16
+                        m-2
+                        rounded
+                        border
+                        appearance-none
+                        bg-white
+                        border-gray-400
+                        text-gray-700
+                        pl-2
+                        pr-1
+                        py-2
+                        leading-tight
+                        focus:outline-none focus:bg-white focus:border-gray-500
+                    "
                     type="number"
                     name="quantity"
                     min="1"
@@ -75,7 +118,18 @@
             <button
                 @click="page++"
                 v-if="totalNum > numPerPage && page < pageNum"
-                class="ripple-light sm:w-48 w-32 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
+                class="
+                    ripple-light
+                    sm:w-48
+                    w-32
+                    hover:bg-gray-300
+                    py-2
+                    px-4
+                    rounded
+                    m-2
+                    focus:outline-none
+                    place-self-end
+                "
             >
                 Next
             </button>
@@ -142,8 +196,8 @@ export default {
                     .then(res => {
                         if (res.data.result == 'ERR') {
                             res.data.error.includes('User')
-                            ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
-                            : this.$emit('snackbar', 'Error. ' + res.data.error)
+                                ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                                : this.$emit('snackbar', 'Error. ' + res.data.error)
                         } else {
                             this.current = res.data.data
                             this.cluster = res.data.cluster_indexes
@@ -161,13 +215,13 @@ export default {
         },
     },
     watch: {
-        page: function () {
+        page: function() {
             this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
             this.current = []
             this.cluster = []
             this.update()
         },
-        numPerPage: function () {
+        numPerPage: function() {
             this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
             this.page = 1
             this.current = []

@@ -57,10 +57,35 @@
             <div v-else>
                 <div v-if="projects.length == 0">
                     <div
-                        class="rounded-md border-4 border-dashed border-gray-600 my-2 mx-2 px-2 py-10 flex items-center flex-wrap relative justify-center"
+                        class="
+                            rounded-md
+                            border-4 border-dashed border-gray-600
+                            my-2
+                            mx-2
+                            px-2
+                            py-10
+                            flex
+                            items-center
+                            flex-wrap
+                            relative
+                            justify-center
+                        "
                     >
                         <div
-                            class="flex mx-2 mb-2 flex-col text-xl contenutoPrj w-full font-bold text-center items-center flex-wrap justify-center"
+                            class="
+                                flex
+                                mx-2
+                                mb-2
+                                flex-col
+                                text-xl
+                                contenutoPrj
+                                w-full
+                                font-bold
+                                text-center
+                                items-center
+                                flex-wrap
+                                justify-center
+                            "
                         >
                             <svg style="width: 40px; height: 40px" viewBox="0 0 24 24">
                                 <path
@@ -216,12 +241,12 @@ export default {
                         this.loadingOther = false
                     }
                 })
-                .catch((errors) => {
+                .catch(errors => {
                     console.log(errors)
                 })
         },
         getProject(id) {
-            this.project = this.projects.filter(function (project) {
+            this.project = this.projects.filter(function(project) {
                 return project.id == id
             })
         },
@@ -241,7 +266,7 @@ export default {
         //metodi per aprire e chiudere il modal eliminazione ed eliminare l'elemento dalla lista
         deleted(msg) {
             var self = this
-            this.projects = this.projects.filter(function (el) {
+            this.projects = this.projects.filter(function(el) {
                 return el.id != self.modalId
             })
             this.$emit('snackbar', msg)
@@ -275,7 +300,7 @@ export default {
             } else if (arr[0] == 'launch') {
                 if (arr[1] != '') {
                     var self = this
-                    var launch = this.projects.find(function (el) {
+                    var launch = this.projects.find(function(el) {
                         return el.id == self.modalId
                     })
                     this.hitsSubmitted = parseInt(launch.hits_submitted)

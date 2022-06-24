@@ -68,7 +68,26 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     :class="{ 'cursor-not-allowed': hitsSubmitted == hitsTotal }"
-                    class="hidden md:block md:mr-2 ripple transition ease-out duration-100 bg-primary hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded text-white focus:outline-none"
+                    class="
+                        hidden
+                        md:block md:mr-2
+                        ripple
+                        transition
+                        ease-out
+                        duration-100
+                        bg-primary
+                        hover:bg-blue-600
+                        flex flex-row
+                        items-center
+                        py-2
+                        px-4
+                        border-2 border-solid border-primary
+                        hover:border-blue-600
+                        bg-transparent
+                        rounded
+                        text-white
+                        focus:outline-none
+                    "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -83,7 +102,26 @@
                     :content="'Publish project'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
-                    class="hidden md:block md:mr-2 ripple bg-primary transition duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded text-white focus:outline-none"
+                    class="
+                        hidden
+                        md:block md:mr-2
+                        ripple
+                        bg-primary
+                        transition
+                        duration-100
+                        ease-out
+                        hover:bg-blue-600
+                        flex flex-row
+                        items-center
+                        py-2
+                        px-4
+                        border-2 border-solid border-primary
+                        hover:border-blue-600
+                        bg-transparent
+                        rounded
+                        text-white
+                        focus:outline-none
+                    "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -98,7 +136,26 @@
                     :content="'Set layout'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
-                    class="hidden md:block md:mr-2 ripple bg-primary transition duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded text-white focus:outline-none"
+                    class="
+                        hidden
+                        md:block md:mr-2
+                        ripple
+                        bg-primary
+                        transition
+                        duration-100
+                        ease-out
+                        hover:bg-blue-600
+                        flex flex-row
+                        items-center
+                        py-2
+                        px-4
+                        border-2 border-solid border-primary
+                        hover:border-blue-600
+                        bg-transparent
+                        rounded
+                        text-white
+                        focus:outline-none
+                    "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -114,7 +171,26 @@
                     :content="'Create HITs'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
-                    class="hidden md:block md:mr-2 ripple bg-primary transition duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded text-white focus:outline-none"
+                    class="
+                        hidden
+                        md:block md:mr-2
+                        ripple
+                        bg-primary
+                        transition
+                        duration-100
+                        ease-out
+                        hover:bg-blue-600
+                        flex flex-row
+                        items-center
+                        py-2
+                        px-4
+                        border-2 border-solid border-primary
+                        hover:border-blue-600
+                        bg-transparent
+                        rounded
+                        text-white
+                        focus:outline-none
+                    "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -133,7 +209,24 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     :class="project.status == 3 ? 'md:mr-0' : 'md:mr-2'"
-                    class="hidden md:block ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white focus:outline-none"
+                    class="
+                        hidden
+                        md:block
+                        ripple
+                        transition
+                        duration-100
+                        ease-out
+                        flex flex-row
+                        hover:bg-primary
+                        items-center
+                        py-2
+                        px-4
+                        bg-transparent
+                        rounded
+                        border-2 border-solid border-primary
+                        hover:text-white
+                        focus:outline-none
+                    "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -148,7 +241,24 @@
                     :content="'Edit'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
-                    class="hidden md:block md:mr-2 ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white focus:outline-none"
+                    class="
+                        hidden
+                        md:block md:mr-2
+                        ripple
+                        transition
+                        duration-100
+                        ease-out
+                        flex flex-row
+                        hover:bg-primary
+                        items-center
+                        py-2
+                        px-4
+                        bg-transparent
+                        rounded
+                        border-2 border-solid border-primary
+                        hover:text-white
+                        focus:outline-none
+                    "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
                         <path
@@ -163,7 +273,24 @@
                     :content="'Delete'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
-                    class="hidden md:block ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white focus:outline-none"
+                    class="
+                        hidden
+                        md:block
+                        ripple
+                        transition
+                        duration-100
+                        ease-out
+                        flex flex-row
+                        hover:bg-primary
+                        items-center
+                        py-2
+                        px-4
+                        bg-transparent
+                        rounded
+                        border-2 border-solid border-primary
+                        hover:text-white
+                        focus:outline-none
+                    "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
                         <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -174,7 +301,23 @@
                     <button
                         @click="dropdownOpen = !dropdownOpen"
                         v-click-outside="hide"
-                        class="md:hidden ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded transition duration-100 ease-out border-2 border-solid border-primary hover:text-white focus:outline-none"
+                        class="
+                            md:hidden
+                            ripple
+                            hover:bg-primary
+                            flex flex-row
+                            items-center
+                            py-2
+                            px-2
+                            bg-transparent
+                            rounded
+                            transition
+                            duration-100
+                            ease-out
+                            border-2 border-solid border-primary
+                            hover:text-white
+                            focus:outline-none
+                        "
                     >
                         <svg
                             class="transition duration-100 ease-out fill-current"
@@ -199,36 +342,114 @@
                             <a
                                 v-if="project.status >= 2 && hitsSubmitted == 0"
                                 @click="toggleModal('launch')"
-                                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                class="
+                                    block
+                                    md:hidden
+                                    cursor-pointer
+                                    px-4
+                                    py-2
+                                    text-sm text-gray-800
+                                    transition
+                                    duration-100
+                                    ease-out
+                                    hover:bg-primary
+                                    rounded-t-md
+                                    hover:text-gray-100
+                                "
                                 >Launch project</a
                             >
                             <a
                                 v-else
                                 @click="toggleModal('launch')"
-                                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                class="
+                                    block
+                                    md:hidden
+                                    cursor-pointer
+                                    px-4
+                                    py-2
+                                    text-sm text-gray-800
+                                    transition
+                                    duration-100
+                                    ease-out
+                                    hover:bg-primary
+                                    rounded-t-md
+                                    hover:text-gray-100
+                                "
                                 >Launch other HITs</a
                             >
                             <a
                                 @click="toggleModal('hit')"
                                 v-if="project.status == 0"
-                                class="block md:hidden cursor-pointer px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                class="
+                                    block
+                                    md:hidden
+                                    cursor-pointer
+                                    px-4
+                                    py-2
+                                    text-sm
+                                    capitalize
+                                    text-gray-800
+                                    transition
+                                    duration-100
+                                    ease-out
+                                    hover:bg-primary
+                                    rounded-t-md
+                                    hover:text-gray-100
+                                "
                                 >Set HITs</a
                             >
                             <a
                                 @click="toggleModal('layout')"
                                 v-if="project.status == 1"
-                                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                                class="
+                                    block
+                                    md:hidden
+                                    cursor-pointer
+                                    px-4
+                                    py-2
+                                    text-sm text-gray-800
+                                    transition
+                                    duration-100
+                                    ease-out
+                                    hover:bg-primary
+                                    rounded-t-md
+                                    hover:text-gray-100
+                                "
                                 >Set layout</a
                             >
                             <a
                                 v-if="project.status >= 1 && project.status != 3"
                                 @click="toggleModal('revert')"
-                                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
+                                class="
+                                    block
+                                    md:hidden
+                                    cursor-pointer
+                                    px-4
+                                    py-2
+                                    text-sm text-gray-800
+                                    transition
+                                    duration-100
+                                    ease-out
+                                    hover:bg-primary hover:text-gray-100
+                                "
                                 >Revert HIT settings</a
                             >
                             <a
                                 v-if="project.status != 3"
-                                class="cursor-pointer block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
+                                class="
+                                    cursor-pointer
+                                    block
+                                    md:hidden
+                                    px-4
+                                    py-2
+                                    text-sm
+                                    capitalize
+                                    text-gray-800
+                                    transition
+                                    duration-100
+                                    ease-out
+                                    hover:bg-primary hover:text-gray-100
+                                "
                                 @click="toggleModal('delete')"
                                 >Delete</a
                             >
@@ -238,7 +459,20 @@
                                     params: { projectId: id },
                                 }"
                                 :class="project.status >= 0 && project.status != 3 ? '' : 'rounded-b-md'"
-                                class="block md:hidden cursor-pointer px-4 py-2 text-sm capitalize text-gray-800 transition duration-100 ease-out hover:bg-primary hover:text-gray-100"
+                                class="
+                                    block
+                                    md:hidden
+                                    cursor-pointer
+                                    px-4
+                                    py-2
+                                    text-sm
+                                    capitalize
+                                    text-gray-800
+                                    transition
+                                    duration-100
+                                    ease-out
+                                    hover:bg-primary hover:text-gray-100
+                                "
                                 >Edit</router-link
                             >
                             <!-- <a
@@ -301,7 +535,20 @@
                         params: { projectId: id },
                     })
                 "
-                class="ripple px-2 py-1 mt-2 bg-gray-200 hover:bg-gray-300 rounded focus:outline-none transition duration-100 ease-out float-right"
+                class="
+                    ripple
+                    px-2
+                    py-1
+                    mt-2
+                    bg-gray-200
+                    hover:bg-gray-300
+                    rounded
+                    focus:outline-none
+                    transition
+                    duration-100
+                    ease-out
+                    float-right
+                "
             >
                 View details
             </button>

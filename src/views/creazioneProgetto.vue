@@ -11,7 +11,21 @@
                 <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="name">Project Name</label>
                 <input
                     :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="
+                        appearance-none
+                        block
+                        w-full
+                        border border-gray-200
+                        rounded
+                        py-2
+                        px-4
+                        mb-2
+                        transition
+                        duration-150
+                        ease-out
+                        focus:outline-none focus:border-gray-500
+                        hover:border-gray-500
+                    "
                     id="name"
                     type="text"
                     placeholder="Project name"
@@ -26,7 +40,21 @@
                 <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="title">Title</label>
                 <input
                     :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full border rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="
+                        appearance-none
+                        block
+                        w-full
+                        border
+                        rounded
+                        py-2
+                        px-4
+                        mb-2
+                        transition
+                        duration-150
+                        ease-out
+                        focus:outline-none focus:border-gray-500
+                        hover:border-gray-500
+                    "
                     id="title"
                     type="text"
                     placeholder="Title"
@@ -44,7 +72,21 @@
                 <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="keywords">Keywords</label>
                 <input
                     :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="
+                        appearance-none
+                        block
+                        w-full
+                        border border-gray-200
+                        rounded
+                        py-2
+                        px-4
+                        mb-2
+                        transition
+                        duration-150
+                        ease-out
+                        focus:outline-none focus:border-gray-500
+                        hover:border-gray-500
+                    "
                     id="keywords"
                     type="text"
                     placeholder="Keywords"
@@ -72,7 +114,18 @@
                             status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700',
                             hoverDesc ? 'border-gray-500' : 'border-gray-200',
                         ]"
-                        class="w-full border transition duration-150 ease-out hover:border-gray-500 rounded py-2 px-4 focus:outline-none"
+                        class="
+                            w-full
+                            border
+                            transition
+                            duration-150
+                            ease-out
+                            hover:border-gray-500
+                            rounded
+                            py-2
+                            px-4
+                            focus:outline-none
+                        "
                         id="description"
                         @focus="hoverDesc = true"
                         @blur="hoverDesc = false"
@@ -98,7 +151,22 @@
                         :class="
                             status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
-                        class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        class="
+                            appearance-none
+                            block
+                            w-full
+                            sm:max-w-xs
+                            border border-gray-200
+                            rounded
+                            py-2
+                            px-4
+                            mb-2
+                            transition
+                            duration-150
+                            ease-out
+                            focus:outline-none focus:border-gray-500
+                            hover:border-gray-500
+                        "
                         id="reward"
                         type="number"
                         min="0.01"
@@ -121,7 +189,22 @@
                         :class="
                             status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
-                        class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        class="
+                            appearance-none
+                            block
+                            w-full
+                            sm:max-w-xs
+                            border border-gray-200
+                            rounded
+                            py-2
+                            px-4
+                            mb-2
+                            transition
+                            duration-150
+                            ease-out
+                            focus:outline-none focus:border-gray-500
+                            hover:border-gray-500
+                        "
                         id="workers"
                         type="number"
                         min="1"
@@ -148,7 +231,22 @@
                                     ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                     : 'bg-gray-100 text-gray-700'
                             "
-                            class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="
+                                appearance-none
+                                block
+                                w-full
+                                sm:max-w-xs
+                                border border-gray-200
+                                rounded
+                                py-2
+                                px-4
+                                mb-2
+                                transition
+                                duration-150
+                                ease-out
+                                focus:outline-none focus:border-gray-500
+                                hover:border-gray-500
+                            "
                             id="maxTime"
                             type="number"
                             min="1"
@@ -166,7 +264,22 @@
                                         ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                         : 'bg-gray-100 text-gray-700'
                                 "
-                                class="block appearance-none w-full sm:w-32 border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                class="
+                                    block
+                                    appearance-none
+                                    w-full
+                                    sm:w-32
+                                    border border-gray-200
+                                    py-2
+                                    px-4
+                                    pr-8
+                                    rounded
+                                    transition
+                                    duration-150
+                                    ease-out
+                                    focus:outline-none focus:border-gray-500
+                                    hover:border-gray-500
+                                "
                                 id="selectorMaxTime"
                                 v-model="selectTempoMax"
                                 @change="fixMax(1)"
@@ -200,7 +313,22 @@
                                     ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                     : 'bg-gray-100 text-gray-700'
                             "
-                            class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="
+                                appearance-none
+                                block
+                                w-full
+                                sm:w-32
+                                border border-gray-200
+                                rounded
+                                py-2
+                                px-4
+                                mb-2
+                                transition
+                                duration-150
+                                ease-out
+                                focus:outline-none focus:border-gray-500
+                                hover:border-gray-500
+                            "
                             id="expiry"
                             type="number"
                             min="1"
@@ -218,7 +346,21 @@
                                         ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                         : 'bg-gray-100 text-gray-700'
                                 "
-                                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                class="
+                                    block
+                                    appearance-none
+                                    w-full
+                                    border border-gray-200
+                                    py-2
+                                    px-4
+                                    pr-8
+                                    rounded
+                                    transition
+                                    duration-150
+                                    ease-out
+                                    focus:outline-none focus:border-gray-500
+                                    hover:border-gray-500
+                                "
                                 id="selectorExpiry"
                                 v-model="selectExpiry"
                                 @change="fixMax(2)"
@@ -252,7 +394,22 @@
                                     ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                     : 'bg-gray-100 text-gray-700'
                             "
-                            class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="
+                                appearance-none
+                                block
+                                w-full
+                                sm:w-32
+                                border border-gray-200
+                                rounded
+                                py-2
+                                px-4
+                                mb-2
+                                transition
+                                duration-150
+                                ease-out
+                                focus:outline-none focus:border-gray-500
+                                hover:border-gray-500
+                            "
                             id="autoApproval"
                             type="number"
                             min="1"
@@ -270,7 +427,21 @@
                                         ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
                                         : 'bg-gray-100 text-gray-700'
                                 "
-                                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                                class="
+                                    block
+                                    appearance-none
+                                    w-full
+                                    border border-gray-200
+                                    py-2
+                                    px-4
+                                    pr-8
+                                    rounded
+                                    transition
+                                    duration-150
+                                    ease-out
+                                    focus:outline-none focus:border-gray-500
+                                    hover:border-gray-500
+                                "
                                 id="selectorApproval"
                                 v-model="selectAutoApprove"
                                 @change="fixMax(3)"
@@ -305,7 +476,23 @@
                         :class="
                             status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
-                        class="relative appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 pl-4 pr-10 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                        class="
+                            relative
+                            appearance-none
+                            block
+                            w-full
+                            sm:max-w-xs
+                            border border-gray-200
+                            rounded
+                            py-2
+                            pl-4
+                            pr-10
+                            transition
+                            duration-150
+                            ease-out
+                            focus:outline-none focus:border-gray-500
+                            hover:border-gray-500
+                        "
                         id="layoutId"
                         type="text"
                         placeholder="Layout ID"
@@ -343,7 +530,22 @@
                 </label>
                 <input
                     :class="status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="
+                        appearance-none
+                        block
+                        w-full
+                        sm:max-w-xs
+                        border border-gray-200
+                        rounded
+                        py-2
+                        px-4
+                        mb-2
+                        transition
+                        duration-150
+                        ease-out
+                        focus:outline-none focus:border-gray-500
+                        hover:border-gray-500
+                    "
                     id="params"
                     type="number"
                     min="1"
@@ -361,7 +563,22 @@
                 </label>
                 <input
                     :class="status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                    class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="
+                        appearance-none
+                        block
+                        w-full
+                        sm:max-w-xs
+                        border border-gray-200
+                        rounded
+                        py-2
+                        px-4
+                        mb-2
+                        transition
+                        duration-150
+                        ease-out
+                        focus:outline-none focus:border-gray-500
+                        hover:border-gray-500
+                    "
                     id="params_fields"
                     type="text"
                     :disabled="status > 0"
@@ -393,14 +610,14 @@
                     >
                         <li
                             v-for="i in tmp"
-                            :key="i.alpha2Code"
+                            :key="i.cca2"
                             class="bg-white cursor-pointer"
                             @click="add(i)"
                             :class="active == tmp.indexOf(i) ? 'bg-primary text-gray-100' : ''"
                             @mouseover="active = tmp.indexOf(i)"
                             :id="parseInt(tmp.indexOf(i))"
                         >
-                            <span class="mx-2"> {{ i.name }}</span>
+                            <span class="mx-2"> {{ i.name.common }}</span>
                         </li>
                     </ul>
                 </div>
@@ -415,7 +632,19 @@
                     autocomplete="off"
                     id="countries"
                     type="text"
-                    class="appearance-none w-full border border-gray-200 rounded py-2 px-4 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                    class="
+                        appearance-none
+                        w-full
+                        border border-gray-200
+                        rounded
+                        py-2
+                        px-4
+                        transition
+                        duration-150
+                        ease-out
+                        focus:outline-none focus:border-gray-500
+                        hover:border-gray-500
+                    "
                 />
                 <span class="text-gray-700 text-xs italic mt-2">
                     Your Workers will be picked from the countries you select.
@@ -424,11 +653,11 @@
                 <div v-else class="flex flex-wrap w-full mb-4 mt-2">
                     <div
                         v-for="country in selected"
-                        :key="country.alpha2Code"
+                        :key="country.cca2"
                         class="flex justify-center items-center py-1 rounded-full text-gray-700 bg-gray-300 chip mb-1"
                     >
                         <span class="text-sm font-semibold leading-none max-w-full flex-initial cursor-default">{{
-                            country.name
+                            country.name.common
                         }}</span>
                         <button
                             class="focus:outline-none"
@@ -462,7 +691,16 @@
                         :class="
                             status >= 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
-                        class="bg-white border-2 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                        class="
+                            bg-white
+                            border-2
+                            rounded
+                            border-gray-400
+                            w-5
+                            h-5
+                            flex flex-shrink-0
+                            focus-within:border-blue-500
+                        "
                     >
                         <input
                             id="master"
@@ -499,7 +737,16 @@
                             status >= 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                         "
                         :disabled="status >= 2"
-                        class="bg-white border-2 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                        class="
+                            bg-white
+                            border-2
+                            rounded
+                            border-gray-400
+                            w-5
+                            h-5
+                            flex flex-shrink-0
+                            focus-within:border-blue-500
+                        "
                     >
                         <input
                             id="adult"
@@ -527,7 +774,20 @@
         <div class="w-full flex justify-start md:justify-end flex-row">
             <button
                 type="submit"
-                class="ripple mr-1 hover:bg-primaryDark bg-primary py-2 px-4 rounded transition duration-100 ease-out text-white focus:outline-none"
+                class="
+                    ripple
+                    mr-1
+                    hover:bg-primaryDark
+                    bg-primary
+                    py-2
+                    px-4
+                    rounded
+                    transition
+                    duration-100
+                    ease-out
+                    text-white
+                    focus:outline-none
+                "
                 v-if="mode == 'edit'"
             >
                 <svg
@@ -562,7 +822,21 @@
             <button
                 @click="goBack"
                 type="button"
-                class="ripple bg-transparent hover:bg-gray-300 py-2 px-4 text-gray-900 transition border-2 border-solid border-gray-400 duration-100 ease-out rounded ml-1 focus:outline-none"
+                class="
+                    ripple
+                    bg-transparent
+                    hover:bg-gray-300
+                    py-2
+                    px-4
+                    text-gray-900
+                    transition
+                    border-2 border-solid border-gray-400
+                    duration-100
+                    ease-out
+                    rounded
+                    ml-1
+                    focus:outline-none
+                "
             >
                 Cancel
             </button>
@@ -721,7 +995,7 @@ export default {
             //console.log(country)
             if (this.tmp.length > 0) {
                 this.selected.push(country)
-                this.selectedCodes.push(country.alpha2Code)
+                this.selectedCodes.push(country.cca2)
                 var index = this.countries.indexOf(country)
                 this.countries.splice(index, 1)
                 this.tmp = []
@@ -732,7 +1006,7 @@ export default {
             console.log(country)
             var index = this.selected.indexOf(country)
             this.selected.splice(index, 1)
-            var index1 = this.selectedCodes.indexOf(country.alpha2Code)
+            var index1 = this.selectedCodes.indexOf(country.cca2)
             this.selectedCodes.splice(index1, 1)
             this.countries.push(country)
         },
@@ -767,10 +1041,10 @@ export default {
 
         getCountries() {
             axios({
-                url: 'https://restcountries.eu/rest/v2/all',
+                url: 'https://restcountries.com/v3.1/all',
                 method: 'get',
             })
-                .then((res) => {
+                .then(res => {
                     this.countries = res.data
                     this.loadingPage2 = false
                 })
@@ -779,13 +1053,13 @@ export default {
                         this.getDatiPrj()
                     }
                 })
-                .catch((err) => {
+                .catch(err => {
                     console.error(err)
                 })
         },
         downloadLayoutId() {
             this.downloadID = true
-            this.API.get('?action=testLayout&layout_id=' + this.layout_id).then((res) => {
+            this.API.get('?action=testLayout&layout_id=' + this.layout_id).then(res => {
                 this.downloadID = false
                 this.params_fields = res.data.params_fields
                 this.params = parseInt(res.data.examples_per_hit)
@@ -804,7 +1078,7 @@ export default {
                 url: '?action=getProjectInfo&id=' + this.$route.params.projectId,
                 method: 'get',
             })
-                .then((res) => {
+                .then(res => {
                     this.disableBtn = false
                     this.id = res.data.values.id
                     this.name = res.data.values.name
@@ -832,8 +1106,8 @@ export default {
                     this.elaboraTempoGET('auto_approve')
                     for (let i = 0; i < this.selectedCodes.length; i++) {
                         this.selected.push(
-                            this.countries.find((country) => {
-                                return country.alpha2Code == this.selectedCodes[i]
+                            this.countries.find(country => {
+                                return country.cca2 == this.selectedCodes[i]
                             })
                         )
                     }
@@ -844,7 +1118,7 @@ export default {
                     this.fixMax(2)
                     this.fixMax(3)
                 })
-                .catch((err) => {
+                .catch(err => {
                     var msg = 'Error. Project not found'
                     this.emitSnackbar(msg)
                     console.error(err)
@@ -885,7 +1159,7 @@ export default {
                     },
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
-                    .then((response) => {
+                    .then(response => {
                         this.loading = false
                         console.log(response.data)
                         if (response.data.result == 'OK') {
@@ -1034,17 +1308,16 @@ export default {
     // },
     watch: {
         input(newValue, oldValue) {
-            console.log(this.input)
             this.active = 0
             if (newValue.length == 0) {
                 this.tmp = []
             } else if (newValue.length > oldValue.length && this.tmp.length > 0) {
-                this.tmp = this.tmp.filter((country) => {
-                    return country.name.toLowerCase().startsWith(this.input)
+                this.tmp = this.tmp.filter(country => {
+                    return country.name.common.toLowerCase().startsWith(this.input)
                 })
             } else {
-                this.tmp = this.countries.filter((country) => {
-                    return country.name.toLowerCase().startsWith(this.input)
+                this.tmp = this.countries.filter(country => {
+                    return country.name.common.toLowerCase().startsWith(this.input)
                 })
             }
         },

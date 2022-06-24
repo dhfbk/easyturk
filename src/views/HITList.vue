@@ -23,7 +23,22 @@
                     <p class="text-md my-auto mr-1">View:</p>
                     <div class="relative">
                         <select
-                            class="appearance-none h-full rounded border block appearance-none bg-white border-gray-400 text-gray-700 py-1 pl-2 pr-12 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            class="
+                                appearance-none
+                                h-full
+                                rounded
+                                border
+                                block
+                                appearance-none
+                                bg-white
+                                border-gray-400
+                                text-gray-700
+                                py-1
+                                pl-2
+                                pr-12
+                                leading-tight
+                                focus:outline-none focus:bg-white focus:border-gray-500
+                            "
                             name="sortBy"
                             id="sortBy"
                             @change="view(viewType)"
@@ -91,8 +106,8 @@ export default {
                     .then(res => {
                         if (res.data.result == 'ERR') {
                             res.data.error.includes('User')
-                            ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
-                            : this.$emit('snackbar', 'Error. ' + res.data.error)
+                                ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
+                                : this.$emit('snackbar', 'Error. ' + res.data.error)
                         } else {
                             this.progressData = res.data.summary
                             //count to set defualt data view
@@ -126,7 +141,7 @@ export default {
                                 }
                             }
 
-                            arrComp = arrComp.sort(function (a, b) {
+                            arrComp = arrComp.sort(function(a, b) {
                                 return (
                                     a.assignments_rejected - b.assignments_rejected ||
                                     b.assignments_approved - a.assignments_approved ||
@@ -134,7 +149,7 @@ export default {
                                 )
                             })
 
-                            arrNotComp = arrNotComp.sort(function (a, b) {
+                            arrNotComp = arrNotComp.sort(function(a, b) {
                                 return (
                                     a.assignments_rejected - b.assignments_rejected ||
                                     b.assignments_approved - a.assignments_approved ||

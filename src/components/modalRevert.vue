@@ -1,7 +1,18 @@
 <template>
     <transition name="fade" mode="out-in" appear>
         <div
-            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
+            class="
+                flex
+                items-center
+                justify-center
+                fixed
+                left-0
+                bottom-0
+                w-full
+                h-full
+                bg-gray-800 bg-opacity-25
+                customZ
+            "
             @click="toggleModal('close')"
         >
             <div
@@ -30,7 +41,20 @@
 
                     <div class="ml-auto flex flex-col xs2:flex-row">
                         <button
-                            class="ripple flex flex-row transition duration-100 ease-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            class="
+                                ripple
+                                flex flex-row
+                                transition
+                                duration-100
+                                ease-out
+                                bg-primary
+                                hover:bg-blue-600
+                                text-gray-100
+                                py-2
+                                px-4
+                                rounded
+                                focus:outline-none
+                            "
                             @click="revertProject()"
                         >
                             <svg
@@ -42,7 +66,21 @@
                             >Proceed
                         </button>
                         <button
-                            class="ripple transition duration-100 ease-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="
+                                ripple
+                                transition
+                                duration-100
+                                ease-out
+                                hover:bg-gray-300
+                                focus:outline-none
+                                mt-2
+                                xs2:mt-0 xs2:ml-2
+                                bg-transparent
+                                text-gray-800
+                                py-2
+                                px-4
+                                rounded
+                            "
                             @click="toggleModal('close')"
                         >
                             Cancel

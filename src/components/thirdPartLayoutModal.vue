@@ -7,7 +7,17 @@
             <div class="relative w-full block md:mt-0">
                 <span class="flex flex-row items-center my-2">
                     <span
-                        class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                        class="
+                            bg-white
+                            border-2
+                            md:mt-0
+                            rounded
+                            border-gray-400
+                            w-5
+                            h-5
+                            flex flex-shrink-0
+                            focus-within:border-blue-500
+                        "
                         :class="isGold == 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : ''"
                     >
                         <input
@@ -36,7 +46,21 @@
                                     : 'bg-gray-100 text-gray-700'
                             "
                             :disabled="!reject || isGold == 0"
-                            class="inline-input appearance-none w-full border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="
+                                inline-input
+                                appearance-none
+                                w-full
+                                border border-gray-200
+                                rounded
+                                py-2
+                                pr-4
+                                pl-2
+                                transition
+                                duration-150
+                                ease-out
+                                focus:outline-none focus:border-gray-500
+                                hover:border-gray-500
+                            "
                             id="assNumber"
                             name="assNumber"
                             type="number"
@@ -47,7 +71,7 @@
                             required
                             v-model="assignNumber"
                         />
-                        assignments (min {{min}}). Reason of reject:
+                        assignments (min {{ min }}). Reason of reject:
                     </label>
                 </span>
                 <span class="flex md:flex-row flex-col my-2">
@@ -61,7 +85,21 @@
                                 v.thirdPartData.rejectReason.$error ? 'shadowRed' : '',
                             ]"
                             placeholder="Reason for rejection"
-                            class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 md:mt-0 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="
+                                appearance-none
+                                block
+                                w-full
+                                border border-gray-200
+                                rounded
+                                py-2
+                                px-4
+                                md:mt-0
+                                transition
+                                duration-150
+                                ease-out
+                                focus:outline-none focus:border-gray-500
+                                hover:border-gray-500
+                            "
                             :disabled="!reject || isGold == 0"
                             id="reject"
                             v-model.trim="v.thirdPartData.rejectReason.$model"
@@ -71,7 +109,17 @@
                 </span>
                 <span class="flex flex-row items-center my-2">
                     <span
-                        class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                        class="
+                            bg-white
+                            border-2
+                            md:mt-0
+                            rounded
+                            border-gray-400
+                            w-5
+                            h-5
+                            flex flex-shrink-0
+                            focus-within:border-blue-500
+                        "
                         :class="[isGold == 0 ? 'bg-gray-400 cursor-not-allowed' : '']"
                     >
                         <input
@@ -96,7 +144,17 @@
 
                 <span class="flex flex-row items-center my-2">
                     <span
-                        class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                        class="
+                            bg-white
+                            border-2
+                            md:mt-0
+                            rounded
+                            border-gray-400
+                            w-5
+                            h-5
+                            flex flex-shrink-0
+                            focus-within:border-blue-500
+                        "
                         :class="[isGold == 0 ? 'bg-gray-400 cursor-not-allowed' : '']"
                     >
                         <input
@@ -116,7 +174,8 @@
                             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                         </svg>
                     </span>
-                    <label class="ml-2 font-semibold tracking-wide" for="block_worker_fast">Block the worker if he/she spends less than
+                    <label class="ml-2 font-semibold tracking-wide" for="block_worker_fast"
+                        >Block the worker if he/she spends less than
                         <input
                             :class="
                                 !block_worker_fast || isGold == 0
@@ -124,7 +183,20 @@
                                     : 'bg-gray-100 text-gray-700'
                             "
                             :disabled="!block_worker_fast || isGold == 0"
-                            class="inline-input appearance-none border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="
+                                inline-input
+                                appearance-none
+                                border border-gray-200
+                                rounded
+                                py-2
+                                pr-4
+                                pl-2
+                                transition
+                                duration-150
+                                ease-out
+                                focus:outline-none focus:border-gray-500
+                                hover:border-gray-500
+                            "
                             id="rejectTime"
                             name="rejectTime"
                             type="number"
@@ -140,7 +212,17 @@
 
                 <span class="flex flex-row items-center my-2">
                     <span
-                        class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                        class="
+                            bg-white
+                            border-2
+                            md:mt-0
+                            rounded
+                            border-gray-400
+                            w-5
+                            h-5
+                            flex flex-shrink-0
+                            focus-within:border-blue-500
+                        "
                         :class="[isGold == 0 ? 'bg-gray-400 cursor-not-allowed' : '']"
                     >
                         <input
@@ -169,7 +251,20 @@
                                     : 'bg-gray-100 text-gray-700'
                             "
                             :disabled="!block_worker_bad || isGold == 0"
-                            class="inline-input appearance-none border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="
+                                inline-input
+                                appearance-none
+                                border border-gray-200
+                                rounded
+                                py-2
+                                pr-4
+                                pl-2
+                                transition
+                                duration-150
+                                ease-out
+                                focus:outline-none focus:border-gray-500
+                                hover:border-gray-500
+                            "
                             id="missNumber"
                             name="missNumber"
                             type="number"
@@ -187,7 +282,20 @@
                                     : 'bg-gray-100 text-gray-700'
                             "
                             :disabled="!block_worker_bad || isGold == 0"
-                            class="inline-input appearance-none border border-gray-200 rounded py-2 pr-4 pl-2 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500"
+                            class="
+                                inline-input
+                                appearance-none
+                                border border-gray-200
+                                rounded
+                                py-2
+                                pr-4
+                                pl-2
+                                transition
+                                duration-150
+                                ease-out
+                                focus:outline-none focus:border-gray-500
+                                hover:border-gray-500
+                            "
                             id="missNumberTotal"
                             name="missNumberTotal"
                             type="number"
@@ -203,7 +311,17 @@
 
                 <span class="flex flex-row items-center my-2">
                     <span
-                        class="bg-white border-2 md:mt-0 rounded border-gray-400 w-5 h-5 flex flex-shrink-0 focus-within:border-blue-500"
+                        class="
+                            bg-white
+                            border-2
+                            md:mt-0
+                            rounded
+                            border-gray-400
+                            w-5
+                            h-5
+                            flex flex-shrink-0
+                            focus-within:border-blue-500
+                        "
                         :class="[isGold == 0 ? 'bg-gray-400 cursor-not-allowed' : '']"
                     >
                         <input
@@ -223,7 +341,9 @@
                             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                         </svg>
                     </span>
-                    <label class="ml-2 font-semibold tracking-wide" for="reject_old">Reject pending assignments from blocked users</label>
+                    <label class="ml-2 font-semibold tracking-wide" for="reject_old"
+                        >Reject pending assignments from blocked users</label
+                    >
                 </span>
             </div>
         </div>
@@ -263,15 +383,15 @@ export default {
         this.assignNumber = this.thirdPartData.assignNumber
 
         // Leave here to update the values in modalLayout
-        this.update();
+        this.update()
     },
     methods: {
         boolToInt(i) {
-            return i == false ? 0 : 1;
+            return i == false ? 0 : 1
         },
         update() {
-            this.dataReturn['rejectIfGoldWrong'] = this.boolToInt(this.reject);
-            this.dataReturn['acceptIfGoldRight'] = this.boolToInt(this.accept);
+            this.dataReturn['rejectIfGoldWrong'] = this.boolToInt(this.reject)
+            this.dataReturn['acceptIfGoldRight'] = this.boolToInt(this.accept)
             this.dataReturn['rejectReason'] = this.v.thirdPartData.rejectReason.$model
             this.dataReturn['assignNumber'] = this.assignNumber
 
@@ -291,7 +411,6 @@ export default {
     },
 }
 </script>
-
 
 <style scoped>
 .check {

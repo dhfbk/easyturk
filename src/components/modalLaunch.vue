@@ -1,7 +1,18 @@
 <template>
     <transition name="fade" mode="out-in" appear>
         <div
-            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
+            class="
+                flex
+                items-center
+                justify-center
+                fixed
+                left-0
+                bottom-0
+                w-full
+                h-full
+                bg-gray-800 bg-opacity-25
+                customZ
+            "
             @click="toggleModal"
         >
             <div
@@ -36,7 +47,17 @@
                             <input
                                 @change="calculatePrice('basic')"
                                 :class="$v.hitNum.$invalid ? 'shadowRed' : ''"
-                                class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 pl-4 pr-16"
+                                class="
+                                    appearance-none
+                                    block
+                                    w-full
+                                    sm:max-w-xs
+                                    border border-gray-200
+                                    rounded
+                                    py-2
+                                    pl-4
+                                    pr-16
+                                "
                                 id="hitNum"
                                 type="number"
                                 min="1"
@@ -50,7 +71,18 @@
                                 <div class="relative">
                                     <p
                                         @click="calculatePrice('max')"
-                                        class="absolute top-0 h-full ripple right-0 py-2 px-2 rounded-r hover:bg-gray-200 cursor-pointer"
+                                        class="
+                                            absolute
+                                            top-0
+                                            h-full
+                                            ripple
+                                            right-0
+                                            py-2
+                                            px-2
+                                            rounded-r
+                                            hover:bg-gray-200
+                                            cursor-pointer
+                                        "
                                     >
                                         MAX
                                     </p>
@@ -74,7 +106,20 @@
 
                     <div class="ml-auto flex flex-col xs2:flex-row mt-2">
                         <button
-                            class="ripple flex flex-row transition duration-100 ease-out bg-primary hover:bg-blue-600 text-gray-100 py-2 px-4 rounded focus:outline-none"
+                            class="
+                                ripple
+                                flex flex-row
+                                transition
+                                duration-100
+                                ease-out
+                                bg-primary
+                                hover:bg-blue-600
+                                text-gray-100
+                                py-2
+                                px-4
+                                rounded
+                                focus:outline-none
+                            "
                             @click="submit()"
                         >
                             <svg
@@ -86,7 +131,21 @@
                             >Proceed
                         </button>
                         <button
-                            class="ripple transition duration-100 ease-out hover:bg-gray-300 focus:outline-none mt-2 xs2:mt-0 xs2:ml-2 bg-transparent text-gray-800 py-2 px-4 rounded"
+                            class="
+                                ripple
+                                transition
+                                duration-100
+                                ease-out
+                                hover:bg-gray-300
+                                focus:outline-none
+                                mt-2
+                                xs2:mt-0 xs2:ml-2
+                                bg-transparent
+                                text-gray-800
+                                py-2
+                                px-4
+                                rounded
+                            "
                             @click="toggleModal()"
                         >
                             Cancel
@@ -215,7 +274,7 @@ export default {
                     },
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 })
-                    .then((response) => {
+                    .then(response => {
                         console.log(response.data)
                         if (response.data.result == 'ERR') {
                             response.data.error.includes('User')

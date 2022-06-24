@@ -12,22 +12,22 @@ Vue.use(VueEllipseProgress)
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 
-import VueTippy, { TippyComponent } from "vue-tippy";
-import "tippy.js/themes/google.css";
-Vue.use(VueTippy);
-Vue.component("tippy", TippyComponent);
+import VueTippy, { TippyComponent } from 'vue-tippy'
+import 'tippy.js/themes/google.css'
+Vue.use(VueTippy)
+Vue.component('tippy', TippyComponent)
 
 import axios from 'axios'
 
 Vue.mixin({
-    data: function () {
+    data: function() {
         return {
             get API() {
                 return axios.create({
                     withCredentials: true,
-                    baseURL: "https://dh-server.fbk.eu/mturk_frontend/api/"
+                    baseURL: 'https://dh-server.fbk.eu/mturk_frontend/api/',
                 })
-            }
+            },
         }
     },
 })
@@ -39,7 +39,7 @@ const store = new Vuex.Store({
         defaults: [],
         isSandbox: true,
         userInfo: [],
-        currentRoute: ""
+        currentRoute: '',
     },
 })
 

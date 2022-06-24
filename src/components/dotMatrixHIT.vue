@@ -8,11 +8,20 @@
         <span class="flex flex-row flex-wrap justify-around border rounded p-2 bg-white">
             <span v-if="totalComp > 0" :class="classCreator(totalAvai, totalNotTou)">
                 <div class="text-center">Completed HITs</div>
-                <span class="flex flex-row mt-2 justify-around ">
+                <span class="flex flex-row mt-2 justify-around">
                     <span v-for="(i, e) in totalComp" :key="e" :style="{ width: (1 / totalComp) * 100 + '%' }">
                         <span class="tooltip relative">
                             <span
-                                class="h-5 w-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+                                class="
+                                    h-5
+                                    w-full
+                                    inline-block
+                                    transition
+                                    duration-200
+                                    ease-in-out
+                                    transform
+                                    hover:-translate-y-1 hover:shadow-lg
+                                "
                                 :style="{
                                     background: colors[e],
                                 }"
@@ -20,7 +29,18 @@
                                 @mouseleave="hoverGroup('')"
                             ></span>
                             <span
-                                class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
+                                class="
+                                    tooltip-text
+                                    regular
+                                    bg-gray-900
+                                    absolute
+                                    rounded
+                                    whitespace-no-wrap
+                                    max-w-48
+                                    text-gray-100 text-sm
+                                    font-light
+                                    topHalf
+                                "
                                 >{{ sortedData[i - 1].count }} HITs<br />Approved:
                                 {{ sortedData[i - 1].assignments_approved }}<br />Rejected:
                                 {{ sortedData[i - 1].assignments_rejected }}<br />Available:
@@ -41,7 +61,16 @@
                     <span v-for="(i, e) in totalAvai" :key="e" :style="{ width: (1 / totalAvai) * 100 + '%' }">
                         <span class="tooltip relative">
                             <span
-                                class="h-5 w-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+                                class="
+                                    h-5
+                                    w-full
+                                    inline-block
+                                    transition
+                                    duration-200
+                                    ease-in-out
+                                    transform
+                                    hover:-translate-y-1 hover:shadow-lg
+                                "
                                 :style="{
                                     background: colors[e + totalComp],
                                 }"
@@ -49,7 +78,18 @@
                                 @mouseleave="hoverGroup('')"
                             ></span>
                             <span
-                                class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
+                                class="
+                                    tooltip-text
+                                    regular
+                                    bg-gray-900
+                                    absolute
+                                    rounded
+                                    whitespace-no-wrap
+                                    max-w-48
+                                    text-gray-100 text-sm
+                                    font-light
+                                    topHalf
+                                "
                                 >{{ sortedData[e + totalComp].count }} HITs<br />Approved:
                                 {{ sortedData[e + totalComp].assignments_approved }}<br />Rejected:
                                 {{ sortedData[e + totalComp].assignments_rejected }}<br />Available:
@@ -69,7 +109,16 @@
                 <span class="flex flex-row mt-2 justify-around">
                     <span class="tooltip relative w-full">
                         <span
-                            class="h-5 w-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+                            class="
+                                h-5
+                                w-full
+                                inline-block
+                                transition
+                                duration-200
+                                ease-in-out
+                                transform
+                                hover:-translate-y-1 hover:shadow-lg
+                            "
                             :style="{
                                 background: colors[totalComp + totalAvai],
                             }"
@@ -77,7 +126,18 @@
                             @mouseleave="hoverGroup('')"
                         ></span>
                         <span
-                            class="tooltip-text regular bg-gray-900 absolute rounded whitespace-no-wrap max-w-48 text-gray-100 text-sm font-light topHalf"
+                            class="
+                                tooltip-text
+                                regular
+                                bg-gray-900
+                                absolute
+                                rounded
+                                whitespace-no-wrap
+                                max-w-48
+                                text-gray-100 text-sm
+                                font-light
+                                topHalf
+                            "
                             >{{ sortedData[totalComp + totalAvai].count }} HITs<br />Approved:
                             {{ sortedData[totalComp + totalAvai].assignments_approved }}<br />Rejected:
                             {{ sortedData[totalComp + totalAvai].assignments_rejected }}<br />Available:

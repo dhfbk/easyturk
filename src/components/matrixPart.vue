@@ -4,7 +4,20 @@
             <span v-for="(i, p) in num.count" :key="p">
                 <span
                     @click="$router.push({ name: 'viewHIT', params: { hitId: num.hits[p] } })"
-                    class="h-5 w-5 m-1 rounded-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-focus cursor-pointer focus:outline-none"
+                    class="
+                        h-5
+                        w-5
+                        m-1
+                        rounded-full
+                        inline-block
+                        transition
+                        duration-200
+                        ease-in-out
+                        transform
+                        hover:-translate-y-1 hover:shadow-focus
+                        cursor-pointer
+                        focus:outline-none
+                    "
                     :style="{ background: color }"
                     :class="hoveringFull ? 'shadow-focus' : ''"
                     :content="'ID: ' + num.hits[p]"

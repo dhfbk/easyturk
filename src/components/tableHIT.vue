@@ -24,7 +24,7 @@
         <div class="overflow-x-auto">
             <table class="w-full shadow-lg rounded border">
                 <thead>
-                    <tr class="text-center bg-primary border-b border-gray-300 uppercase ">
+                    <tr class="text-center bg-primary border-b border-gray-300 uppercase">
                         <th class="p-1 text-sm text-white">HIT ID</th>
                         <th class="p-1 text-sm text-white">Status</th>
                         <th class="p-1 table-cell text-sm text-white" @click="sort('assignments_approved', orderApp)">
@@ -97,7 +97,18 @@
                 <button
                     @click="page--"
                     v-if="totalData.length > numPerPage && page >= 1"
-                    class="bg-gray-400 md:w-48 w-24 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-start"
+                    class="
+                        bg-gray-400
+                        md:w-48
+                        w-24
+                        hover:bg-gray-300
+                        py-2
+                        px-4
+                        rounded
+                        m-2
+                        focus:outline-none
+                        place-self-start
+                    "
                 >
                     Previous
                 </button>
@@ -106,7 +117,18 @@
                 <button
                     @click="page++"
                     v-if="totalData.length > numPerPage && page < pageNum"
-                    class="bg-gray-400 md:w-48 w-24 hover:bg-gray-300 py-2 px-4 rounded m-2 focus:outline-none place-self-end"
+                    class="
+                        bg-gray-400
+                        md:w-48
+                        w-24
+                        hover:bg-gray-300
+                        py-2
+                        px-4
+                        rounded
+                        m-2
+                        focus:outline-none
+                        place-self-end
+                    "
                 >
                     Next
                 </button>

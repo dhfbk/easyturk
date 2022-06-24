@@ -1,7 +1,7 @@
 <template>
     <div class="bg-white rounded-md shadow-md p-4 mb-4">
         <div v-if="mode == 'csv'">
-            <span class="font-bold ">CSV status</span>
+            <span class="font-bold">CSV status</span>
             <div class="mb-1">
                 <span v-if="projectData.numData > 0">
                     <div class="flex flex-row flex-wrap justify-between content-center items-center csvData">
@@ -17,7 +17,18 @@
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-300 rounded focus:outline-none"
+                                class="
+                                    px-2
+                                    py-1
+                                    ripple
+                                    bg-gray-200
+                                    transition
+                                    duration-100
+                                    ease-out
+                                    hover:bg-gray-300
+                                    rounded
+                                    focus:outline-none
+                                "
                                 @click="
                                     $router.push({
                                         name: 'csv',
@@ -32,9 +43,22 @@
                                 @click="$emit('modal', 'deleteStd')"
                                 :content="'Delete standard csv'"
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                class="
+                                    ml-2
+                                    ripple
+                                    bg-gray-200
+                                    hover:bg-gray-300
+                                    text-gray-900
+                                    rounded
+                                    h-10
+                                    w-10
+                                    focus:outline-none
+                                    flex
+                                    items-center
+                                    justify-center
+                                "
                             >
-                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                                     <path
                                         fill="rgba(26, 32, 44, 1)"
                                         d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
@@ -49,9 +73,22 @@
                                 :content="projectData.numData > 0 ? 'Overwrite standard csv' : 'Upload standard csv'"
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                                 @click="$emit('modal', 'std')"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                class="
+                                    ml-2
+                                    ripple
+                                    bg-gray-200
+                                    hover:bg-gray-300
+                                    text-gray-900
+                                    rounded
+                                    h-10
+                                    w-10
+                                    focus:outline-none
+                                    flex
+                                    items-center
+                                    justify-center
+                                "
                             >
-                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                                     <path
                                         fill="rgba(26, 32, 44, 1)"
                                         d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M12,17V15H7V17H12M17,11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11M17,9V7H7V9H17Z"
@@ -74,9 +111,22 @@
                                 :content="'Upload standard csv'"
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                                 @click="$emit('modal', 'std')"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  focus:outline-none flex items-center justify-center"
+                                class="
+                                    ml-2
+                                    ripple
+                                    bg-gray-200
+                                    hover:bg-gray-300
+                                    text-gray-900
+                                    rounded
+                                    h-10
+                                    w-10
+                                    focus:outline-none
+                                    flex
+                                    items-center
+                                    justify-center
+                                "
                             >
-                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                                     <path
                                         fill="rgba(26, 32, 44, 1)"
                                         d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M12,17V15H7V17H12M17,11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11M17,9V7H7V9H17Z"
@@ -104,7 +154,18 @@
                         </span>
                         <span class="flex flex-row buttonsData justify-center">
                             <button
-                                class="px-2 py-1 ripple bg-gray-200 transition duration-100 ease-out hover:bg-gray-300 rounded focus:outline-none"
+                                class="
+                                    px-2
+                                    py-1
+                                    ripple
+                                    bg-gray-200
+                                    transition
+                                    duration-100
+                                    ease-out
+                                    hover:bg-gray-300
+                                    rounded
+                                    focus:outline-none
+                                "
                                 @click="
                                     $router.push({
                                         name: 'csv',
@@ -119,9 +180,22 @@
                                 @click="$emit('modal', 'deleteGld')"
                                 :content="'Delete gold csv'"
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                class="
+                                    ml-2
+                                    ripple
+                                    bg-gray-200
+                                    hover:bg-gray-300
+                                    text-gray-900
+                                    rounded
+                                    h-10
+                                    w-10
+                                    focus:outline-none
+                                    flex
+                                    items-center
+                                    justify-center
+                                "
                             >
-                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                                     <path
                                         fill="rgba(26, 32, 44, 1)"
                                         d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
@@ -135,12 +209,25 @@
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                                 @click="$emit('modal', 'gld')"
                                 :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                class="
+                                    ml-2
+                                    ripple
+                                    bg-gray-200
+                                    hover:bg-gray-300
+                                    text-gray-900
+                                    rounded
+                                    h-10
+                                    w-10
+                                    focus:outline-none
+                                    flex
+                                    items-center
+                                    justify-center
+                                "
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24"
-                                    style="width:24px; height:24px;"
+                                    style="width: 24px; height: 24px"
                                 >
                                     <path
                                         fill="rgba(26, 32, 44, 1)"
@@ -171,12 +258,25 @@
                                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                                 @click="$emit('modal', 'gld')"
                                 :class="{ 'cursor-not-allowed': projectData.numData == 0 }"
-                                class="ml-2 ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center"
+                                class="
+                                    ml-2
+                                    ripple
+                                    bg-gray-200
+                                    hover:bg-gray-300
+                                    text-gray-900
+                                    rounded
+                                    h-10
+                                    w-10
+                                    focus:outline-none
+                                    flex
+                                    items-center
+                                    justify-center
+                                "
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24"
-                                    style="width:24px; height:24px;"
+                                    style="width: 24px; height: 24px"
                                 >
                                     <path
                                         fill="rgba(26, 32, 44, 1)"
@@ -197,16 +297,12 @@
             </div>
         </div>
         <div v-else-if="mode == 'hitTable'">
-            <div v-if="projectData.assignments.length == 0">
-                No workers to display!
-            </div>
+            <div v-if="projectData.assignments.length == 0">No workers to display!</div>
             <div class="rounded-md border -mx-4 -my-4 overflow-x-auto" v-else>
                 <table class="w-full rounded-md">
                     <thead>
                         <tr class="">
-                            <th class="text-xs text-white px-1">
-                                Worker ID
-                            </th>
+                            <th class="text-xs text-white px-1">Worker ID</th>
                             <th class="text-xs text-white px-1">Status</th>
                             <th class="text-xs text-white px-1">Assignment ID</th>
                         </tr>
@@ -297,7 +393,7 @@
             </div>
         </div>
         <div v-else-if="mode == 'status'">
-            <span class="font-bold ">Status:</span>
+            <span class="font-bold">Status:</span>
             <span class="flex flex-col justify-between buttonsData items-start">
                 <span v-if="projectData.status == 0 && projectData.numData > 0">
                     <span class="text-green-500">data uploaded. </span>Ready to
@@ -326,7 +422,20 @@
                 </span>
                 <button
                     @click="$emit('modal', 'instructions')"
-                    class="ripple px-2 py-1 mt-1 bg-gray-200 hover:bg-gray-300 rounded focus:outline-none transition duration-100 ease-out self-end"
+                    class="
+                        ripple
+                        px-2
+                        py-1
+                        mt-1
+                        bg-gray-200
+                        hover:bg-gray-300
+                        rounded
+                        focus:outline-none
+                        transition
+                        duration-100
+                        ease-out
+                        self-end
+                    "
                 >
                     Need help?
                 </button>
@@ -349,23 +458,28 @@ export default {
     },
     computed: {
         totals: function() {
-            var ret = {};
-            ret.count = 0;
-            ret.assignments_approved = 0;
-            ret.assignments_rejected = 0;
-            ret.assignments_completed = 0;
-            ret.assignments_available = 0;
-            ret.assignments_pending = 0;
+            var ret = {}
+            ret.count = 0
+            ret.assignments_approved = 0
+            ret.assignments_rejected = 0
+            ret.assignments_completed = 0
+            ret.assignments_available = 0
+            ret.assignments_pending = 0
             for (var k in this.projectData.summary) {
-                ret.count += this.projectData.summary[k].count;
-                ret.assignments_approved += this.projectData.summary[k].count * this.projectData.summary[k].assignments_approved;
-                ret.assignments_available += this.projectData.summary[k].count * this.projectData.summary[k].assignments_available;
-                ret.assignments_rejected += this.projectData.summary[k].count * this.projectData.summary[k].assignments_rejected;
-                ret.assignments_completed += this.projectData.summary[k].count * this.projectData.summary[k].assignments_completed;
-                ret.assignments_pending += this.projectData.summary[k].count * this.projectData.summary[k].assignments_pending;
+                ret.count += this.projectData.summary[k].count
+                ret.assignments_approved +=
+                    this.projectData.summary[k].count * this.projectData.summary[k].assignments_approved
+                ret.assignments_available +=
+                    this.projectData.summary[k].count * this.projectData.summary[k].assignments_available
+                ret.assignments_rejected +=
+                    this.projectData.summary[k].count * this.projectData.summary[k].assignments_rejected
+                ret.assignments_completed +=
+                    this.projectData.summary[k].count * this.projectData.summary[k].assignments_completed
+                ret.assignments_pending +=
+                    this.projectData.summary[k].count * this.projectData.summary[k].assignments_pending
             }
-            return ret;
-        }
+            return ret
+        },
     },
     data() {
         return {
@@ -397,7 +511,7 @@ export default {
                         'Time allotted per assignment',
                         'Expiry',
                         'Auto-approve and pay Workers in',
-                        'HIT group'
+                        'HIT group',
                     ]
                     this.data = [
                         this.projectData.reward + '$',
@@ -409,7 +523,7 @@ export default {
                             "{ placement: 'bottom', arrow: false, theme: 'google' }" +
                             "' class='ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button>",
                         this.time(parseInt(this.projectData.auto_approve)),
-                        this.projectData.hit_group_id
+                        this.projectData.hit_group_id,
                     ]
                 } else {
                     this.titles = [

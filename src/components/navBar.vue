@@ -11,7 +11,22 @@
         <div class="block sm:hidden float-right ml-2" v-if="$route.name != 'login'">
             <button
                 @click="open = !open"
-                class="ripple items-center mx-0 px-3 py-2 border rounded transition-colors duration-100 ease-out text-white border-white hover:text-blue-300 hover:border-blue-300 focus:outline-none"
+                class="
+                    ripple
+                    items-center
+                    mx-0
+                    px-3
+                    py-2
+                    border
+                    rounded
+                    transition-colors
+                    duration-100
+                    ease-out
+                    text-white
+                    border-white
+                    hover:text-blue-300 hover:border-blue-300
+                    focus:outline-none
+                "
             >
                 <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <title>Menu</title>
@@ -23,12 +38,33 @@
         <div
             v-if="$route.name != 'login'"
             :class="open ? 'block' : 'hidden'"
-            class="w-full flex-grow sm:flex sm:items-center sm:w-auto justify-end text-right sm:text-justify pt-4 sm:pt-0"
+            class="
+                w-full
+                flex-grow
+                sm:flex sm:items-center sm:w-auto
+                justify-end
+                text-right
+                sm:text-justify
+                pt-4
+                sm:pt-0
+            "
         >
             <div class="sm:flex items-center content-center">
                 <router-link
                     :to="{ name: 'Home' }"
-                    class="flex gap-x-1 mt-4 sm:mt-0 transition-colors duration-100 ease-out text-white hover:text-blue-300 sm:mr-4 focus:outline-none"
+                    class="
+                        flex
+                        gap-x-1
+                        mt-4
+                        sm:mt-0
+                        transition-colors
+                        duration-100
+                        ease-out
+                        text-white
+                        hover:text-blue-300
+                        sm:mr-4
+                        focus:outline-none
+                    "
                 >
                     <svg class="fill-current" style="width: 24px; height: 24px" viewBox="0 0 24 24">
                         <path
@@ -47,7 +83,19 @@
                 -->
                 <router-link
                     :to="{ name: 'new' }"
-                    class="flex gap-x-1 mt-4 sm:mt-0 transition-colors duration-100 ease-out text-white hover:text-blue-300 sm:mr-4 focus:outline-none"
+                    class="
+                        flex
+                        gap-x-1
+                        mt-4
+                        sm:mt-0
+                        transition-colors
+                        duration-100
+                        ease-out
+                        text-white
+                        hover:text-blue-300
+                        sm:mr-4
+                        focus:outline-none
+                    "
                 >
                     <svg class="fill-current" style="width: 24px; height: 24px" viewBox="0 0 24 24">
                         <path
@@ -58,7 +106,20 @@
                 </router-link>
                 <a
                     @click="logout"
-                    class="mt-4 flex gap-x-1 sm:mt-0 transition-colors duration-100 ease-out text-white hover:text-blue-300 cursor-pointer focus:outline-none rounded"
+                    class="
+                        mt-4
+                        flex
+                        gap-x-1
+                        sm:mt-0
+                        transition-colors
+                        duration-100
+                        ease-out
+                        text-white
+                        hover:text-blue-300
+                        cursor-pointer
+                        focus:outline-none
+                        rounded
+                    "
                 >
                     <svg
                         :class="loadLogout ? 'hidden' : ''"
@@ -101,7 +162,7 @@ export default {
                     this.$router.replace({ path: '/login' })
                     this.loadLogout = false
                 })
-                .catch((err) => {
+                .catch(err => {
                     console.error(err)
                 })
         },

@@ -1,7 +1,18 @@
 <template>
     <transition name="fade" mode="out-in" appear>
         <div
-            class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-25 customZ"
+            class="
+                flex
+                items-center
+                justify-center
+                fixed
+                left-0
+                bottom-0
+                w-full
+                h-full
+                bg-gray-800 bg-opacity-25
+                customZ
+            "
             @click="modal"
         >
             <div class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto" @click.stop>
@@ -79,4 +90,5 @@ export default {
 }
 .customZ {
     z-index: 990;
-}</style>
+}
+</style>
