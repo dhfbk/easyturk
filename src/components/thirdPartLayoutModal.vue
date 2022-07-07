@@ -65,7 +65,7 @@
                             name="assNumber"
                             type="number"
                             :min="min"
-                            max="5"
+                            :max="$store.state.defaults.max_reject_if_gold_wrong"
                             step="1"
                             placeholder="1"
                             required
@@ -200,7 +200,7 @@
                             id="rejectTime"
                             name="rejectTime"
                             type="number"
-                            min="20"
+                            :min="$store.state.defaults.min_time_block"
                             step="10"
                             placeholder="1"
                             required
@@ -269,6 +269,7 @@
                             name="missNumber"
                             type="number"
                             min="1"
+                            :max="missNumberTotal"
                             step="1"
                             placeholder="1"
                             required
@@ -365,7 +366,7 @@ export default {
             assignNumber: 0,
 
             block_worker_fast: false,
-            rejectTime: 30,
+            rejectTime: 0,
 
             block_worker_bad: false,
             missNumberTotal: 10,
@@ -380,8 +381,8 @@ export default {
     },
     created() {
         this.min = this.thirdPartData.assignNumber
-        this.assignNumber = this.thirdPartData.assignNumber
-
+        this.assignNumber = this.thirdPartData.assignNumber + 2
+        this.rejectTime = this.$store.state.defaults.min_time_block
         // Leave here to update the values in modalLayout
         this.update()
     },

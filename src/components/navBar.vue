@@ -156,6 +156,7 @@ export default {
     },
     methods: {
         logout() {
+            localStorage.setItem('session_id', '')
             this.loadLogout = true
             this.API.get('?action=logout')
                 .then(() => {

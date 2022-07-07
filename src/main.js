@@ -20,12 +20,12 @@ Vue.component('tippy', TippyComponent)
 import axios from 'axios'
 
 Vue.mixin({
-    data: function() {
+    data: function () {
         return {
             get API() {
                 return axios.create({
-                    withCredentials: true,
                     baseURL: 'https://dh-server.fbk.eu/mturk_frontend/api/',
+                    headers: { 'Session-Id': (localStorage.getItem('session_id') ? localStorage.getItem('session_id') : '') }
                 })
             },
         }

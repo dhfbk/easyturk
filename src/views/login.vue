@@ -33,6 +33,7 @@
                     placeholder="Username"
                     required
                     v-model.trim="$v.username.$model"
+                    maxlength="100"
                 />
             </div>
             <div class="mb-2">
@@ -54,6 +55,7 @@
                     placeholder="Password"
                     required
                     v-model.trim="$v.password.$model"
+                    maxlength="100"
                 />
                 <p class="text-red-500 text-xs italic mt-2" v-if="$v.password.$error">Please enter your credentials</p>
             </div>
@@ -106,9 +108,11 @@ export default {
         return {
             username: {
                 required,
+                maxlength: 100
             },
             password: {
                 required,
+                maxlength: 100
             },
         }
     },
@@ -132,13 +136,14 @@ export default {
                             this.loading = false
                             this.$emit('snackbar', 'Error. ' + res.data.error)
                         } else {
+                            localStorage.setItem('session_id', res.data.session_id)
                             var path = ''
                             this.API.get('?action=getUserInfo')
-                                .then(res => {
-                                    if (res.data.result == 'ERR') {
-                                        this.$emit('snackbar', 'Error. ' + res.data.error)
+                                .then(res2 => {
+                                    if (res2.data.result == 'ERR') {
+                                        this.$emit('snackbar', 'Error. ' + res2.data.error)
                                     } else {
-                                        this.$store.state.userInfo = res.data.data
+                                        this.$store.state.userInfo = res2.data.data
                                         this.$store.state.currentRoute != ''
                                             ? (path = this.$store.state.currentRoute)
                                             : (path = '/')
@@ -146,7 +151,7 @@ export default {
                                         this.$router.replace({ path: path })
                                         this.$emit(
                                             'snackbar',
-                                            'You have logged in, welcome ' + res.data.data.common_name + '.'
+                                            'You have logged in, welcome ' + res2.data.data.common_name + '.'
                                         )
                                     }
                                     this.loading = false

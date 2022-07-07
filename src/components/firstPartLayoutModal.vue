@@ -41,7 +41,7 @@
                     name="sortBy"
                     type="text"
                     placeholder="Text"
-                    maxlength="255"
+                    maxlength="100"
                     disabled
                     v-model="first.field"
                 />
@@ -112,7 +112,7 @@
                     name="value"
                     type="text"
                     placeholder="Text"
-                    maxlength="255"
+                    maxlength="100"
                     v-model="first.customValue"
                 />
             </div>

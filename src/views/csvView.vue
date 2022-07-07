@@ -17,6 +17,8 @@
         <div class="flex flex-row justify-start mr-auto mb-1 ml-2">
             <p class="text-md my-auto mr-1">Results per page:</p>
             <input
+                @blur="changeNumPage"
+                @keydown.enter="changeNumPage"
                 class="
                     appearance-none
                     h-full
@@ -170,6 +172,16 @@ export default {
         window.addEventListener('keydown', this.keyboardEvent)
     },
     methods: {
+        changeNumPage() {
+            let newNum = Math.ceil(this.totalNum / this.numPerPage)
+            if (this.pageNum != newNum) {
+                this.pageNum = newNum
+                this.page = 1
+                this.current = []
+                this.cluster = []
+                this.update()
+            }
+        },
         keyboardEvent(event) {
             if (event.code == 'Escape') {
                 this.$router.push({
@@ -193,7 +205,7 @@ export default {
                 this.$router.replace({ name: 'Home' })
             } else {
                 this.API.get(url)
-                    .then(res => {
+                    .then((res) => {
                         if (res.data.result == 'ERR') {
                             res.data.error.includes('User')
                                 ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
@@ -208,22 +220,15 @@ export default {
                             this.loading = false
                         }
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.error(err)
                     })
             }
         },
     },
     watch: {
-        page: function() {
+        page: function () {
             this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
-            this.current = []
-            this.cluster = []
-            this.update()
-        },
-        numPerPage: function() {
-            this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
-            this.page = 1
             this.current = []
             this.cluster = []
             this.update()

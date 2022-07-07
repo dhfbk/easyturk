@@ -29,7 +29,7 @@
                     id="name"
                     type="text"
                     placeholder="Project name"
-                    maxlength="255"
+                    :maxlength="$store.state.defaults.max_length_name"
                     v-model.trim="$v.name.$model"
                     :disabled="status > 2"
                     required
@@ -58,7 +58,7 @@
                     id="title"
                     type="text"
                     placeholder="Title"
-                    maxlength="255"
+                    :maxlength="$store.state.defaults.max_length_title"
                     v-model.trim="$v.title.$model"
                     :disabled="status > 2"
                     required
@@ -169,7 +169,7 @@
                         "
                         id="reward"
                         type="number"
-                        min="0.01"
+                        :min="$store.state.defaults.min_reward"
                         step="0.01"
                         placeholder="0.01 $"
                         v-model.trim="$v.reward.$model"
@@ -496,7 +496,7 @@
                         id="layoutId"
                         type="text"
                         placeholder="Layout ID"
-                        maxlength="255"
+                        maxlength="100"
                         :disabled="status > 0"
                         v-model.trim="$v.layout_id.$model"
                         required
@@ -975,7 +975,7 @@ export default {
             this.max_time = parseInt(this.$store.state.defaults.time_per_worker)
             this.auto_approve = parseInt(this.$store.state.defaults.auto_approve)
             this.reward = parseFloat(this.$store.state.defaults.reward)
-            this.workers = parseInt(this.$store.state.defaults.assignments)
+            this.workers = parseInt(this.$store.state.defaults.respondents)
             this.params = parseInt(this.$store.state.defaults.examples_per_hit)
             this.elaboraTempoGET('expiry')
             this.elaboraTempoGET('max_time')

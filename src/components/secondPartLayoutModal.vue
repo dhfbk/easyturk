@@ -30,7 +30,7 @@
                         name="value"
                         type="text"
                         placeholder="Var name"
-                        maxlength="255"
+                        maxlength="100"
                         v-model="second.varName"
                     />
                 </div>
@@ -58,7 +58,7 @@
                         name="value"
                         type="text"
                         placeholder="Var value"
-                        maxlength="255"
+                        maxlength="100"
                         v-model="second.varValue"
                     />
                 </div>
@@ -89,7 +89,7 @@
                         name="value"
                         type="text"
                         placeholder="Var name"
-                        maxlength="255"
+                        maxlength="100"
                         v-model="second.varNameTo"
                     />
                 </div>
@@ -117,7 +117,7 @@
                         name="value"
                         type="text"
                         placeholder="Var value"
-                        maxlength="255"
+                        maxlength="100"
                         v-model="second.varValueTo"
                     />
                 </div>
