@@ -4,7 +4,7 @@
             <p class="text-md my-auto mr-1">Status:</p>
             <div class="relative">
                 <select
-                    class="appearance-none h-full rounded border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-1 pl-2 pr-12 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    class="h-full rounded border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-1 pl-2 pr-12 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     name="sortBy"
                     id="sortBy"
                     @change="sortBy(sortType)"

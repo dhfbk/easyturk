@@ -20,7 +20,6 @@
                 @blur="changeNumPage"
                 @keydown.enter="changeNumPage"
                 class="
-                    appearance-none
                     h-full
                     w-20
                     m-2
@@ -93,7 +92,6 @@
                 Page
                 <input
                     class="
-                        appearance-none
                         w-16
                         m-2
                         rounded
@@ -204,8 +202,9 @@ export default {
             if (isNaN(this.projectId)) {
                 this.$router.replace({ name: 'Home' })
             } else {
-                this.API.get(url)
-                    .then((res) => {
+                this.API()
+                    .get(url)
+                    .then(res => {
                         if (res.data.result == 'ERR') {
                             res.data.error.includes('User')
                                 ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
@@ -220,14 +219,14 @@ export default {
                             this.loading = false
                         }
                     })
-                    .catch((err) => {
+                    .catch(err => {
                         console.error(err)
                     })
             }
         },
     },
     watch: {
-        page: function () {
+        page: function() {
             this.pageNum = Math.ceil(this.totalNum / this.numPerPage)
             this.current = []
             this.cluster = []

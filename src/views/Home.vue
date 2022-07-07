@@ -219,7 +219,8 @@ export default {
     },
     methods: {
         getPrjData() {
-            this.API.get('?action=listProjects')
+            this.API()
+                .get('?action=listProjects')
                 .then(res => {
                     this.projects = res.data.values
                     this.loadingProjects = false
@@ -229,7 +230,8 @@ export default {
                 })
         },
         getData() {
-            this.API.get('?action=listProjects')
+            this.API()
+                .get('?action=listProjects')
                 .then(res => {
                     if (res.data.result == 'ERR') {
                         res.data.error.includes('User')

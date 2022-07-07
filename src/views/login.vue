@@ -108,11 +108,11 @@ export default {
         return {
             username: {
                 required,
-                maxlength: 100
+                maxlength: 100,
             },
             password: {
                 required,
-                maxlength: 100
+                maxlength: 100,
             },
         }
     },
@@ -130,7 +130,8 @@ export default {
             this.$v.$touch()
             if (!this.$v.$invalid) {
                 //this.loading = true
-                this.API.get('?action=login&username=' + this.username + '&password=' + this.password)
+                this.API()
+                    .get('?action=login&username=' + this.username + '&password=' + this.password)
                     .then(res => {
                         if (res.data.result == 'ERR') {
                             this.loading = false
@@ -138,7 +139,8 @@ export default {
                         } else {
                             localStorage.setItem('session_id', res.data.session_id)
                             var path = ''
-                            this.API.get('?action=getUserInfo')
+                            this.API()
+                                .get('?action=getUserInfo')
                                 .then(res2 => {
                                     if (res2.data.result == 'ERR') {
                                         this.$emit('snackbar', 'Error. ' + res2.data.error)

@@ -29,7 +29,6 @@
                                 rounded
                                 border
                                 block
-                                appearance-none
                                 bg-white
                                 border-gray-400
                                 text-gray-700
@@ -102,7 +101,8 @@ export default {
             if (isNaN(this.id)) {
                 this.$router.replace({ name: 'Home' })
             } else {
-                this.API.get('?action=getProjectInfo&id=' + this.id)
+                this.API()
+                    .get('?action=getProjectInfo&id=' + this.id)
                     .then(res => {
                         if (res.data.result == 'ERR') {
                             res.data.error.includes('User')

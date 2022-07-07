@@ -23,7 +23,7 @@
             >
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
-                        <h2 class="text-gray-900 font-bold text-lg text-primary">HIT settings</h2>
+                        <h2 class="font-bold text-lg text-primary">HIT settings</h2>
                         <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal('close')">
                             <svg
                                 class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
@@ -287,18 +287,18 @@ export default {
                 if (this.leftover == 'no_use') {
                     deleteExceedingValues = 1
                 }
-                this.API({
-                    method: 'post',
-                    url: url,
-                    data: {
-                        toStatus: 1,
-                        goldSize: this.goldPerHit,
-                        deleteExceedingValues: deleteExceedingValues,
-                        shuffleData: this.shuffleBase,
-                        shuffleGold: this.shuffleGold,
-                    },
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                })
+                this.API()
+                    .post(
+                        url,
+                        {
+                            toStatus: 1,
+                            goldSize: this.goldPerHit,
+                            deleteExceedingValues: deleteExceedingValues,
+                            shuffleData: this.shuffleBase,
+                            shuffleGold: this.shuffleGold,
+                        },
+                        { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    )
                     .then(response => {
                         console.log(response.data)
                         if (response.data.result == 'ERR') {

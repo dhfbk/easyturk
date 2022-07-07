@@ -23,7 +23,7 @@
             >
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
-                        <h2 class="text-gray-900 font-bold text-lg text-primary">Choose the file to upload</h2>
+                        <h2 class="font-bold text-lg text-primary">Choose the file to upload</h2>
                         <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal()">
                             <svg
                                 class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
@@ -378,16 +378,17 @@ export default {
                         formData.append('isGold', 0)
                     }
                     formData.append('fieldTitles', this.customTitles)
-                    this.API.post('?action=uploadFile', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                        onUploadProgress: function(progressEvent) {
-                            this.uploadPercentage = parseInt(
-                                Math.round((progressEvent.loaded / progressEvent.total) * 100)
-                            )
-                        }.bind(this),
-                    })
+                    this.API()
+                        .post('?action=uploadFile', formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                            onUploadProgress: function(progressEvent) {
+                                this.uploadPercentage = parseInt(
+                                    Math.round((progressEvent.loaded / progressEvent.total) * 100)
+                                )
+                            }.bind(this),
+                        })
                         .then(res => {
                             if (res.data.result != 'ERR') {
                                 if (this.type == 'std') {

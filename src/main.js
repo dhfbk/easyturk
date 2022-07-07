@@ -20,16 +20,28 @@ Vue.component('tippy', TippyComponent)
 import axios from 'axios'
 
 Vue.mixin({
-    data: function () {
-        return {
-            get API() {
-                return axios.create({
-                    baseURL: 'https://dh-server.fbk.eu/mturk_frontend/api/',
-                    headers: { 'Session-Id': (localStorage.getItem('session_id') ? localStorage.getItem('session_id') : '') }
-                })
-            },
-        }
+    methods: {
+        API() {
+            return axios.create({
+                baseURL: 'https://dh-server.fbk.eu/mturk_frontend/api/',
+                headers: {
+                    'Session-Id': localStorage.getItem('session_id'),
+                },
+            })
+        },
     },
+    // data: function() {
+    //     return {
+    //         set API(session_id) {
+    //             return axios.create({
+    //                 baseURL: 'https://dh-server.fbk.eu/mturk_frontend/api/',
+    //                 headers: {
+    //                     'Session-Id': session_id,
+    //                 },
+    //             })
+    //         },
+    //     }
+    // },
 })
 
 Vue.config.productionTip = false

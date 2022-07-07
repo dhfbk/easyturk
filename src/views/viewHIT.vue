@@ -224,7 +224,8 @@ export default {
             }
         },
         getData() {
-            this.API.get('?action=getHitInfo&hitID=' + this.$route.params.hitId)
+            this.API()
+                .get('?action=getHitInfo&hitID=' + this.$route.params.hitId)
                 .then(res => {
                     if (res.data.result == 'ERR') {
                         res.data.error.includes('User')

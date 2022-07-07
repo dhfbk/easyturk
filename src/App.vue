@@ -39,9 +39,9 @@ export default {
         }
     },
     created() {
-        localStorage.getItem('session_id') ? null : localStorage.setItem('session_id', '');
+        localStorage.getItem('session_id') ? null : localStorage.setItem('session_id', '')
         axios
-            .all([this.API.get('?action=getOptions'), this.API.get('?action=getUserInfo')])
+            .all([this.API().get('?action=getOptions'), this.API().get('?action=getUserInfo')])
             .then(
                 axios.spread((...res) => {
                     if (res[1].data.result == 'ERR') {

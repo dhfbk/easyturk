@@ -2,7 +2,7 @@
     <div v-if="loadingPage1 || loadingPage2"></div>
     <form
         v-else
-        class="lg:w-5/6 bg-white shadow-md rounded py-4 flex flex-col px-8 mt-4 mx-2 xs2:mx-4 lg:mx-auto lg:w-5/6 pt-2"
+        class="bg-white shadow-md rounded py-4 flex flex-col px-8 mt-4 mx-2 xs2:mx-4 lg:mx-auto lg:w-5/6 pt-2"
         @submit.prevent="caricaProgetto"
     >
         <p class="text-2xl mb-4 mt-0 text-primary">{{ pageTitle }}</p>
@@ -1059,11 +1059,13 @@ export default {
         },
         downloadLayoutId() {
             this.downloadID = true
-            this.API.get('?action=testLayout&layout_id=' + this.layout_id).then(res => {
-                this.downloadID = false
-                this.params_fields = res.data.params_fields
-                this.params = parseInt(res.data.examples_per_hit)
-            })
+            this.API()
+                .get('?action=testLayout&layout_id=' + this.layout_id)
+                .then(res => {
+                    this.downloadID = false
+                    this.params_fields = res.data.params_fields
+                    this.params = parseInt(res.data.examples_per_hit)
+                })
         },
         keyboardEvent(event) {
             if (event.code == 'Escape') {
@@ -1074,10 +1076,8 @@ export default {
             this.$emit('snackbar', msg)
         },
         getDatiPrj() {
-            this.API({
-                url: '?action=getProjectInfo&id=' + this.$route.params.projectId,
-                method: 'get',
-            })
+            this.API()
+                .get('?action=getProjectInfo&id=' + this.$route.params.projectId)
                 .then(res => {
                     this.disableBtn = false
                     this.id = res.data.values.id
@@ -1137,28 +1137,28 @@ export default {
                 if (this.mode == 'edit') {
                     url = url + '&id=' + this.id
                 }
-                this.API({
-                    method: 'post',
-                    url: url,
-                    data: {
-                        name: this.name,
-                        title: this.title,
-                        description: this.description,
-                        keywords: this.keywords,
-                        reward: this.reward,
-                        workers: this.workers,
-                        max_time: this.max_time_send,
-                        expiry: this.expiry_send,
-                        auto_approve: this.auto_approve_send,
-                        layout_id: this.layout_id,
-                        params: this.params,
-                        params_fields: this.params_fields,
-                        countries: this.selectedCodes,
-                        adult: this.qualificationAdult,
-                        master: this.qualificationMaster,
-                    },
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                })
+                this.API()
+                    .post(
+                        url,
+                        {
+                            name: this.name,
+                            title: this.title,
+                            description: this.description,
+                            keywords: this.keywords,
+                            reward: this.reward,
+                            workers: this.workers,
+                            max_time: this.max_time_send,
+                            expiry: this.expiry_send,
+                            auto_approve: this.auto_approve_send,
+                            layout_id: this.layout_id,
+                            params: this.params,
+                            params_fields: this.params_fields,
+                            countries: this.selectedCodes,
+                            adult: this.qualificationAdult,
+                            master: this.qualificationMaster,
+                        },
+                        { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    )
                     .then(response => {
                         this.loading = false
                         console.log(response.data)

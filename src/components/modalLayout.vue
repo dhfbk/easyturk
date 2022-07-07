@@ -23,7 +23,7 @@
             >
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
-                        <div class="text-gray-900 font-bold text-lg text-primary">Set layout for the project</div>
+                        <div class="font-bold text-lg text-primary">Set layout for the project</div>
                         <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal()">
                             <svg
                                 class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
@@ -234,12 +234,8 @@ export default {
                     answerData: this.secondPartData,
                 }
                 dataToSend = { ...dataToSend, ...this.thirdPartData }
-                this.API({
-                    method: 'post',
-                    url: url,
-                    data: dataToSend,
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                })
+                this.API()
+                    .post(url, dataToSend, { 'Content-Type': 'application/x-www-form-urlencoded' })
                     .then(response => {
                         this.loading = false
                         console.log(response.data)

@@ -69,7 +69,7 @@
                     type="submit"
                     :class="{ 'cursor-not-allowed': hitsSubmitted == hitsTotal }"
                     class="
-                        hidden
+                        
                         md:block md:mr-2
                         ripple
                         transition
@@ -103,7 +103,7 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        hidden
+                        
                         md:block md:mr-2
                         ripple
                         bg-primary
@@ -137,7 +137,7 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        hidden
+                        
                         md:block md:mr-2
                         ripple
                         bg-primary
@@ -172,7 +172,7 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        hidden
+                        
                         md:block md:mr-2
                         ripple
                         bg-primary
@@ -202,7 +202,7 @@
                 <button
                     v-if="
                         (project.status >= 1 && project.status != 3 && !loading) ||
-                        (project.status == 3 && $store.state.isSandbox == true && !loading)
+                            (project.status == 3 && $store.state.isSandbox == true && !loading)
                     "
                     @click="toggleModal('revert')"
                     :content="'Revert HIT settings'"
@@ -210,7 +210,7 @@
                     type="submit"
                     :class="project.status == 3 ? 'md:mr-0' : 'md:mr-2'"
                     class="
-                        hidden
+                        
                         md:block
                         ripple
                         transition
@@ -242,7 +242,7 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        hidden
+                        
                         md:block md:mr-2
                         ripple
                         transition
@@ -274,7 +274,7 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        hidden
+                        
                         md:block
                         ripple
                         transition
@@ -666,7 +666,8 @@ export default {
                 this.$router.replace({ name: 'Home' })
                 this.$emit('snackbar', "Error. Project doesn't exist.")
             } else {
-                this.API.get('?action=getProjectInfo&id=' + this.id)
+                this.API()
+                    .get('?action=getProjectInfo&id=' + this.id)
                     .then(res => {
                         console.log(res.data)
                         if (res.data.result == 'ERR') {

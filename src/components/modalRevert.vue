@@ -23,7 +23,7 @@
             >
                 <div class="flex flex-col p-4">
                     <div class="flex w-full">
-                        <div class="text-gray-900 font-bold text-lg text-primary">Confirm action</div>
+                        <div class="font-bold text-lg text-primary">Confirm action</div>
                         <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal('close')">
                             <svg
                                 class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
@@ -122,14 +122,14 @@ export default {
         },
         revertProject() {
             this.loading = true
-            this.API({
-                method: 'post',
-                url: '?action=updateProjectStatus&id=' + this.id,
-                data: {
-                    toStatus: this.toStatus,
-                },
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            })
+            this.API()
+                .post(
+                    '?action=updateProjectStatus&id=' + this.id,
+                    {
+                        toStatus: this.toStatus,
+                    },
+                    { 'Content-Type': 'application/x-www-form-urlencoded' }
+                )
                 .then(res => {
                     this.loading = false
                     if (res.data.result == 'ERR') {

@@ -25,7 +25,6 @@
                             rounded
                             border
                             block
-                            appearance-none
                             bg-white
                             border-gray-400
                             text-gray-700
@@ -48,7 +47,6 @@
                     <div class="relative">
                         <select
                             class="
-                                appearance-none
                                 h-full
                                 rounded
                                 border

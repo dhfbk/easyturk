@@ -164,7 +164,7 @@
                             label="From CSV"
                             v-if="
                                 (first.isFromCsv && loadingCsv) ||
-                                (!loadingCsv && csvValues.length > 0 && first.isFromCsv)
+                                    (!loadingCsv && csvValues.length > 0 && first.isFromCsv)
                             "
                         >
                             <option value="loading" v-if="loadingCsv">Loading...</option>

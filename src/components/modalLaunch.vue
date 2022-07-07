@@ -23,7 +23,7 @@
             >
                 <div class="flex flex-col p-4">
                     <div class="flex w-full mb-2">
-                        <div class="text-gray-900 font-bold text-lg text-primary">{{ title }}</div>
+                        <div class="font-bold text-lg text-primary">{{ title }}</div>
                         <span class="ml-auto rounded hover:bg-gray-300 p-1" @click="toggleModal()">
                             <svg
                                 class="m-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
@@ -265,15 +265,15 @@ export default {
             if (!this.$v.$invalid) {
                 this.loading = true
                 var url = '?action=updateProjectStatus&id=' + this.id
-                this.API({
-                    method: 'post',
-                    url: url,
-                    data: {
-                        toStatus: 3,
-                        num: this.hitNum,
-                    },
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                })
+                this.API()
+                    .post(
+                        url,
+                        {
+                            toStatus: 3,
+                            num: this.hitNum,
+                        },
+                        { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    )
                     .then(response => {
                         console.log(response.data)
                         if (response.data.result == 'ERR') {
