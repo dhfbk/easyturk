@@ -149,7 +149,8 @@ export default {
                             this.$emit('close', t + ' csv file successfully deleted.')
                             this.toggleModal()
                         } else if (this.goldUploaded && this.type == 'standard') {
-                            this.API.get('?action=deleteFile&id=' + this.id + '&isGold=1')
+                            this.API()
+                                .get('?action=deleteFile&id=' + this.id + '&isGold=1')
                                 .then(res => {
                                     console.log(res.data.result)
                                     this.loading = false

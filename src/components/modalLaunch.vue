@@ -184,7 +184,8 @@ export default {
         this.hitMax = parseInt(this.hitsTotal) - parseInt(this.hitsSubmitted)
         this.calculatePrice()
         if (this.$route.name == 'Home') {
-            this.API.get('?action=getProjectInfo&id=' + this.id)
+            this.API()
+                .get('?action=getProjectInfo&id=' + this.id)
                 .then(res => {
                     this.$emit('changeQualification', res.data.values.master)
                 })

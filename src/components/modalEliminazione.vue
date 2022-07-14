@@ -120,7 +120,8 @@ export default {
         deleteProject() {
             //var self = this
             this.loading = true
-            this.API.get('?action=deleteProject&id=' + this.id)
+            this.API()
+                .get('?action=deleteProject&id=' + this.id)
                 .then(res => {
                     console.log(res.data.result)
                     this.loading = false

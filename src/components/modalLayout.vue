@@ -258,7 +258,8 @@ export default {
         //check the url
         getCsvFields() {
             var url = '?action=getData&id=' + this.project.id + '&howMany=1&page=1&isGold=0'
-            this.API.get(url)
+            this.API()
+                .get(url)
                 .then(res => {
                     this.csvValues = res.data.fields
                     this.loadingCsv = false
