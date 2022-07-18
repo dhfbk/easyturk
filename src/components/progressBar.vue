@@ -12,7 +12,7 @@
                         duration-200
                         ease-in-out
                         transform
-                        hover:-translate-y-1 hover:shadow-lg
+                        hover:-translate-y-1 hover:shadow-md
                         rounded-l
                     "
                     :class="[notPublished == 0 && published == 0 ? 'rounded-r' : '']"
@@ -29,7 +29,7 @@
                         duration-200
                         ease-in-out
                         transform
-                        hover:-translate-y-1 hover:shadow-lg
+                        hover:-translate-y-1 hover:shadow-md
                     "
                     :class="[submitted == 0 ? 'rounded-l' : '', notPublished == 0 ? 'rounded-r' : '']"
                 ></div>
@@ -47,7 +47,7 @@
                         transform
                         hover:-translate-y-1
                         rounded-r
-                        hover:shadow-lg
+                        hover:shadow-md
                     "
                 ></div>
             </span>

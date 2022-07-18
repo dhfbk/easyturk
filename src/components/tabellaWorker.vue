@@ -25,7 +25,7 @@
                     bg-white
                     mt-4
                     rounded
-                    transition
+                    transition-colors
                     duration-100
                     ease-out
                     border-2 border-solid border-primary

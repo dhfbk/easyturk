@@ -33,7 +33,7 @@
                         border border-gray-200
                         rounded
                         px-4
-                        transition
+                        transition-colors
                         duration-150
                         ease-out
                         focus:outline-none
@@ -102,11 +102,11 @@
                         border border-gray-200
                         rounded
                         px-4
-                        transition
+                        transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-gray-500
-                        hover:border-gray-500
+                        focus:outline-none focus:border-blue-500
+                        hover:border-blue-500
                     "
                     id="value"
                     name="value"
@@ -143,11 +143,11 @@
                             py-2
                             pr-4
                             pl-2
-                            transition
+                            transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-gray-500
-                            hover:border-gray-500
+                            focus:outline-none focus:border-blue-500
+                            hover:border-blue-500
                         "
                         id="selectFrom"
                         name="selectFrom"

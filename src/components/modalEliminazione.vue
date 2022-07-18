@@ -44,7 +44,7 @@
                             class="
                                 ripple
                                 flex flex-row
-                                transition
+                                transition-colors
                                 duration-100
                                 ease-out
                                 bg-primary
@@ -69,7 +69,7 @@
                         <button
                             class="
                                 ripple
-                                transition
+                                transition-colors
                                 duration-100
                                 ease-out
                                 hover:bg-gray-300

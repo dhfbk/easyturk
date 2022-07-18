@@ -121,7 +121,6 @@
 </template>
 
 <script>
-import ClickOutside from 'vue-click-outside'
 import modalEliminazione from '../components/modalEliminazione.vue'
 import cardInfo from '../components/cardInfo.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
@@ -130,9 +129,6 @@ import cardTable from '../components/cardTable.vue'
 
 export default {
     name: 'viewHIT',
-    directives: {
-        ClickOutside,
-    },
     components: {
         modalEliminazione,
         cardInfo,

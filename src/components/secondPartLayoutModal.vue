@@ -21,11 +21,11 @@
                             py-2
                             px-4
                             md:mt-0
-                            transition
+                            transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-gray-500
-                            hover:border-gray-500
+                            focus:outline-none focus:border-blue-500
+                            hover:border-blue-500
                         "
                         name="value"
                         type="text"
@@ -49,11 +49,11 @@
                             py-2
                             px-4
                             md:mt-0
-                            transition
+                            transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-gray-500
-                            hover:border-gray-500
+                            focus:outline-none focus:border-blue-500
+                            hover:border-blue-500
                         "
                         name="value"
                         type="text"
@@ -80,11 +80,11 @@
                             py-2
                             px-4
                             md:mt-0
-                            transition
+                            transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-gray-500
-                            hover:border-gray-500
+                            focus:outline-none focus:border-blue-500
+                            hover:border-blue-500
                         "
                         name="value"
                         type="text"
@@ -108,11 +108,11 @@
                             py-2
                             px-4
                             md:mt-0
-                            transition
+                            transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-gray-500
-                            hover:border-gray-500
+                            focus:outline-none focus:border-blue-500
+                            hover:border-blue-500
                         "
                         name="value"
                         type="text"
@@ -129,7 +129,7 @@
                         p-2
                         ripple
                         rounded-full
-                        transition
+                        transition-colors
                         duration-100
                         ease-out
                         focus:outline-none
@@ -148,7 +148,7 @@
                         ripple
                         rounded-full
                         focus:outline-none
-                        transition
+                        transition-colors
                         duration-100
                         ease-out
                         hover:bg-gray-300

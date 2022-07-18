@@ -38,12 +38,49 @@
                         </svg>
                     </span>
                     <label class="ml-2 font-semibold tracking-wide" for="reject">
-                        Reject if gold is wrong and extend HIT to
+                        <div class="relative inline">
+                            <select
+                                :class="
+                                    !reject || isGold == 0
+                                        ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                        : 'bg-gray-100 text-gray-700'
+                                "
+                                :disabled="!reject || isGold == 0"
+                                class="
+                                    inline-input
+                                    appearance-none
+                                    w-xs
+                                    border border-gray-200
+                                    rounded
+                                    py-2
+                                    pr-4
+                                    pl-2
+                                    transition-colors
+                                    duration-150
+                                    ease-out
+                                    focus:outline-none focus:border-blue-500
+                                    hover:border-blue-500
+                                "
+                                id="selectorExpiry"
+                                v-model="rejectPay"
+                            >
+                                <option selected value="1">Reject</option>
+                                <option value="0">Accept anyway</option>
+                            </select>
+                            <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path
+                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                    />
+                                </svg>
+                            </div>
+                        </div>
+                        if gold is wrong and extend HIT to
                         <input
                             :class="
-                                !reject || isGold == 0
-                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-                                    : 'bg-gray-100 text-gray-700'
+                                (!reject || isGold == 0
+                                    ? 'text-gray-800 cursor-not-allowed ' + (v.thirdPartData.assignNumber.$invalid ? 'border-red-400 bg-red-400 hover:border-red-500': 'bg-gray-400')
+                                    : 'text-gray-700 ' + (v.thirdPartData.assignNumber.$invalid ? 'border-red-200 bg-red-100 hover:border-red-500': 'bg-gray-100'))
                             "
                             :disabled="!reject || isGold == 0"
                             class="
@@ -55,11 +92,11 @@
                                 py-2
                                 pr-4
                                 pl-2
-                                transition
+                                transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-gray-500
-                                hover:border-gray-500
+                                focus:outline-none focus:border-blue-500
+                                hover:border-blue-500
                             "
                             id="assNumber"
                             name="assNumber"
@@ -67,46 +104,45 @@
                             :min="min"
                             :max="$store.state.defaults.max_reject_if_gold_wrong"
                             step="1"
+                            @blur="v.thirdPartData.assignNumber.$touch()"
                             placeholder="1"
                             required
-                            v-model="assignNumber"
+                            v-model.number="assignNumber"
                         />
                         assignments (min {{ min }}). Reason of reject:
                     </label>
                 </span>
-                <span class="flex md:flex-row flex-col my-2">
-                    <div class="flex flex-col content-center items-center mt-1 md:mt-0 md:mr-2 w-full pl-10">
-                        <input
-                            type="text"
-                            :class="[
-                                !reject || isGold == 0
-                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-                                    : 'bg-gray-100 text-gray-700',
-                                v.thirdPartData.rejectReason.$error ? 'shadowRed' : '',
-                            ]"
-                            placeholder="Reason for rejection"
-                            class="
-                                appearance-none
-                                block
-                                w-full
-                                border border-gray-200
-                                rounded
-                                py-2
-                                px-4
-                                md:mt-0
-                                transition
-                                duration-150
-                                ease-out
-                                focus:outline-none focus:border-gray-500
-                                hover:border-gray-500
-                            "
-                            :disabled="!reject || isGold == 0"
-                            id="reject"
-                            v-model.trim="v.thirdPartData.rejectReason.$model"
-                            required
-                        />
-                    </div>
-                </span>
+                <div class="my-2">
+                    <input
+                        type="text"
+                        :class="[
+                            !reject || isGold == 0
+                                ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                : 'bg-gray-100 text-gray-700',
+                            v.thirdPartData.rejectReason.$error ? 'border-red-400' : '',
+                        ]"
+                        placeholder="Reason for rejection"
+                        class="
+                            appearance-none
+                            block
+                            w-full
+                            border border-gray-200
+                            rounded
+                            py-2
+                            px-4
+                            md:mt-0
+                            transition-colors
+                            duration-150
+                            ease-out
+                            focus:outline-none focus:border-blue-500
+                            hover:border-blue-500
+                        "
+                        :disabled="!reject || isGold == 0"
+                        id="reject"
+                        v-model.trim="v.thirdPartData.rejectReason.$model"
+                        required
+                    />
+                </div>
                 <span class="flex flex-row items-center my-2">
                     <span
                         class="
@@ -139,7 +175,9 @@
                             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                         </svg>
                     </span>
-                    <label class="ml-2 font-semibold tracking-wide" for="accept">Accept if gold is right</label>
+                    <label class="ml-2 font-semibold tracking-wide" for="accept"
+                        >Automatically accept if gold is right</label
+                    >
                 </span>
 
                 <span class="flex flex-row items-center my-2">
@@ -174,13 +212,50 @@
                             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                         </svg>
                     </span>
-                    <label class="ml-2 font-semibold tracking-wide" for="block_worker_fast"
-                        >Block the worker if he/she spends less than
+                    <label class="ml-2 font-semibold tracking-wide" for="block_worker_fast">
+                        <div class="relative inline">
+                            <select
+                                :class="
+                                    !block_worker_fast || isGold == 0
+                                        ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                        : 'bg-gray-100 text-gray-700'
+                                "
+                                :disabled="!block_worker_fast || isGold == 0"
+                                class="
+                                    inline-input
+                                    appearance-none
+                                    w-xs
+                                    border border-gray-200
+                                    rounded
+                                    py-2
+                                    pr-4
+                                    pl-2
+                                    transition-colors
+                                    duration-150
+                                    ease-out
+                                    focus:outline-none focus:border-blue-500
+                                    hover:border-blue-500
+                                "
+                                id="selectorExpiry"
+                                v-model="blockSeconds"
+                            >
+                                <option selected value="1">Block</option>
+                                <option value="0">Restrict</option>
+                            </select>
+                            <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path
+                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                    />
+                                </svg>
+                            </div>
+                        </div>
+                        the worker if he/she spends less than
                         <input
                             :class="
-                                !block_worker_fast || isGold == 0
-                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-                                    : 'bg-gray-100 text-gray-700'
+                                (!block_worker_fast || isGold == 0
+                                    ? 'text-gray-800 cursor-not-allowed ' + (v.thirdPartData.rejectTime.$invalid ? 'border-red-400 bg-red-400 hover:border-red-500': 'bg-gray-400')
+                                    : 'text-gray-700 ' + (v.thirdPartData.rejectTime.$invalid ? 'border-red-200 bg-red-100 hover:border-red-500': 'bg-gray-100'))
                             "
                             :disabled="!block_worker_fast || isGold == 0"
                             class="
@@ -191,20 +266,21 @@
                                 py-2
                                 pr-4
                                 pl-2
-                                transition
+                                transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-gray-500
-                                hover:border-gray-500
+                                focus:outline-none focus:border-blue-500
+                                hover:border-blue-500
                             "
                             id="rejectTime"
                             name="rejectTime"
                             type="number"
+                            @blur="v.thirdPartData.rejectTime.$touch()"
                             :min="$store.state.defaults.min_time_block"
                             step="10"
                             placeholder="1"
                             required
-                            v-model="rejectTime"
+                            v-model.number="rejectTime"
                         />
                         seconds on a HIT.
                     </label>
@@ -243,12 +319,49 @@
                         </svg>
                     </span>
                     <label class="ml-2 font-semibold tracking-wide" for="block_worker_bad">
-                        Block the worker if he/she misclassifies the gold
+                        <div class="relative inline">
+                            <select
+                                :class="
+                                    !block_worker_bad || isGold == 0
+                                        ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                        : 'bg-gray-100 text-gray-700'
+                                "
+                                :disabled="!block_worker_bad || isGold == 0"
+                                class="
+                                    inline-input
+                                    appearance-none
+                                    w-xs
+                                    border border-gray-200
+                                    rounded
+                                    py-2
+                                    pr-4
+                                    pl-2
+                                    transition-colors
+                                    duration-150
+                                    ease-out
+                                    focus:outline-none focus:border-blue-500
+                                    hover:border-blue-500
+                                "
+                                id="selectorExpiry"
+                                v-model="blockMisclass"
+                            >
+                                <option selected value="1">Block</option>
+                                <option value="0">Restrict</option>
+                            </select>
+                            <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-gray-900">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path
+                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                    />
+                                </svg>
+                            </div>
+                        </div>
+                        the worker if he/she misclassifies the gold
                         <input
                             :class="
-                                !block_worker_bad || isGold == 0
-                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-                                    : 'bg-gray-100 text-gray-700'
+                                (!block_worker_bad || isGold == 0
+                                    ? 'text-gray-800 cursor-not-allowed ' + (v.thirdPartData.missNumber.$invalid ? 'border-red-400 bg-red-400 hover:border-red-500': 'bg-gray-400')
+                                    : 'text-gray-700 ' + (v.thirdPartData.missNumber.$invalid ? 'border-red-200 bg-red-100 hover:border-red-500': 'bg-gray-100'))
                             "
                             :disabled="!block_worker_bad || isGold == 0"
                             class="
@@ -259,28 +372,29 @@
                                 py-2
                                 pr-4
                                 pl-2
-                                transition
+                                transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-gray-500
-                                hover:border-gray-500
+                                focus:outline-none focus:border-blue-500
+                                hover:border-blue-500
                             "
                             id="missNumber"
                             name="missNumber"
                             type="number"
+                            @blur="v.thirdPartData.missNumber.$touch()"
                             min="1"
                             :max="missNumberTotal"
                             step="1"
                             placeholder="1"
                             required
-                            v-model="missNumber"
+                            v-model.number="missNumber"
                         />
                         times on
                         <input
                             :class="
-                                !block_worker_bad || isGold == 0
-                                    ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-                                    : 'bg-gray-100 text-gray-700'
+                                (!block_worker_bad || isGold == 0
+                                    ? 'text-gray-800 cursor-not-allowed ' + (v.thirdPartData.missNumberTotal.$invalid ? 'border-red-400 bg-red-400 hover:border-red-500': 'bg-gray-400')
+                                    : 'text-gray-700 ' + (v.thirdPartData.missNumberTotal.$invalid ? 'border-red-200 bg-red-100 hover:border-red-500': 'bg-gray-100'))
                             "
                             :disabled="!block_worker_bad || isGold == 0"
                             class="
@@ -291,20 +405,21 @@
                                 py-2
                                 pr-4
                                 pl-2
-                                transition
+                                transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-gray-500
-                                hover:border-gray-500
+                                focus:outline-none focus:border-blue-500
+                                hover:border-blue-500
                             "
                             id="missNumberTotal"
                             name="missNumberTotal"
                             type="number"
+                            @blur="v.thirdPartData.missNumberTotal.$touch()"
                             min="1"
                             step="1"
                             placeholder="1"
                             required
-                            v-model="missNumberTotal"
+                            v-model.number="missNumberTotal"
                         />
                         consecutive HITs.
                     </label>
@@ -342,9 +457,9 @@
                             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                         </svg>
                     </span>
-                    <label class="ml-2 font-semibold tracking-wide" for="reject_old"
-                        >Reject pending assignments from blocked users</label
-                    >
+                    <label class="ml-2 font-semibold tracking-wide" for="reject_old">
+                        Reject pending assignments from blocked/retricted users
+                    </label>
                 </span>
             </div>
         </div>
@@ -363,32 +478,30 @@ export default {
         return {
             reject: false,
             accept: false,
-            assignNumber: 0,
-
+            assignNumber: this.thirdPartData.assignNumber + 2,
             block_worker_fast: false,
-            rejectTime: 0,
-
+            rejectTime: this.$store.state.defaults.min_time_block,
             block_worker_bad: false,
-            missNumberTotal: 10,
-            missNumber: 3,
-
+            missNumberTotal: this.thirdPartData.missNumberTotal,
+            missNumber: this.thirdPartData.missNumber,
             reject_old: false,
-
             dataReturn: {},
-
-            min: 0,
+            min: this.thirdPartData.assignNumber,
+            rejectPay: 1,
+            blockSeconds: 1,
+            blockMisclass: 1,
         }
     },
     created() {
-        this.min = this.thirdPartData.assignNumber
-        this.assignNumber = this.thirdPartData.assignNumber + 2
-        this.rejectTime = this.$store.state.defaults.min_time_block
         // Leave here to update the values in modalLayout
         this.update()
     },
     methods: {
         boolToInt(i) {
             return i == false ? 0 : 1
+        },
+        strToInt(i) {
+            return i == '1' || i == 1 ? 1 : 0
         },
         update() {
             this.dataReturn['rejectIfGoldWrong'] = this.boolToInt(this.reject)
@@ -405,11 +518,25 @@ export default {
 
             this.dataReturn['reject_old'] = this.boolToInt(this.reject_old)
 
-            var send = ['third', this.dataReturn]
+            this.dataReturn['rejectPay'] = this.strToInt(this.rejectPay)
+            this.dataReturn['blockSeconds'] = this.strToInt(this.blockSeconds)
+            this.dataReturn['blockMisclass'] = this.strToInt(this.blockMisclass)
 
-            this.$emit('updateArr', send)
+            this.$emit('updateArr', ['third', this.dataReturn])
         },
     },
+    /*
+    watch: {
+        assignNumber() {
+            if (parseInt(this.assignNumber) < this.min) {
+                this.assignNumber = this.min
+            }
+            if (parseInt(this.assignNumber) > this.$store.state.defaults.max_reject_if_gold_wrong) {
+                this.assignNumber = this.$store.state.defaults.max_reject_if_gold_wrong
+            }
+        },
+    },
+    */
 }
 </script>
 

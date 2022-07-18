@@ -34,7 +34,7 @@
                     pr-1
                     py-2
                     leading-tight
-                    focus:outline-none focus:bg-white focus:border-gray-500
+                    focus:outline-none focus:bg-white focus:border-blue-500
                 "
                 type="number"
                 id="quantity"
@@ -104,7 +104,7 @@
                         pr-1
                         py-2
                         leading-tight
-                        focus:outline-none focus:bg-white focus:border-gray-500
+                        focus:outline-none focus:bg-white focus:border-blue-500
                     "
                     type="number"
                     name="quantity"

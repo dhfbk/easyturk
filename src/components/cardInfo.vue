@@ -22,7 +22,7 @@
                                     py-1
                                     ripple
                                     bg-gray-200
-                                    transition
+                                    transition-colors
                                     duration-100
                                     ease-out
                                     hover:bg-gray-300
@@ -159,7 +159,7 @@
                                     py-1
                                     ripple
                                     bg-gray-200
-                                    transition
+                                    transition-colors
                                     duration-100
                                     ease-out
                                     hover:bg-gray-300
@@ -431,7 +431,7 @@
                         hover:bg-gray-300
                         rounded
                         focus:outline-none
-                        transition
+                        transition-colors
                         duration-100
                         ease-out
                         self-end
@@ -457,7 +457,7 @@ export default {
         mode: String,
     },
     computed: {
-        totals: function() {
+        totals: function () {
             var ret = {}
             ret.count = 0
             ret.assignments_approved = 0
@@ -582,6 +582,33 @@ export default {
                     this.projectData.master == 0 ? 'No' : 'Yes',
                     loc,
                 ]
+                break
+            case 'behavior':
+                this.titles = [
+                    'If gold is wrong',
+                    'Reject reason',
+                    'HIT extended assignments',
+                    'Automatically accept if gold is right',
+                    'Minimum seconds on a HIT',
+                    'If the worker is too quick',
+                    'If the worker misclassifies too much',
+                    'Maximum gold misclassifications',
+                    'Consecutive gold misclassifications',
+                    'Reject pending assignments from blocked/restricted users',
+                ]
+                this.data = [
+                    this.projectData.rejectIfGoldWrong ? 'Reject' : 'Accept anyway',
+                    this.projectData.rejectReason,
+                    this.projectData.assignNumber, //?
+                    this.projectData.acceptIfGoldRight,
+                    this.projectData.rejectTime, //?
+                    this.projectData.block_worker_fast ? 'Block' : 'Restrict',
+                    this.projectData.block_worker_bad ? 'Block' : 'Restrict',
+                    this.projectData.missNumber, //?
+                    this.projectData.missNumberTotal, //?
+                    this.projectData.reject_old ? 'True' : 'False',
+                ]
+                break
         }
     },
     methods: {

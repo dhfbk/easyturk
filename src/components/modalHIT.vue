@@ -79,8 +79,8 @@
                             :class="[
                                 goldDataStatus == 0 || baseDataStatus == 0
                                     ? 'cursor-not-allowed bg-gray-400 text-gray-800 '
-                                    : ' bg-gray-100 text-gray-700 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500',
-                                $v.goldPerHit.$error ? 'shadowRed' : '',
+                                    : ' bg-gray-100 text-gray-700 transition-colors duration-150 ease-out focus:outline-none focus:border-blue-500 hover:border-blue-500',
+                                $v.goldPerHit.$error ? 'border-red-400' : '',
                             ]"
                             class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4"
                             id="gold"
@@ -130,8 +130,8 @@
                                 :class="[
                                     goldDataStatus == 0 || baseDataStatus == 0
                                         ? 'cursor-not-allowed bg-gray-400 text-gray-800'
-                                        : 'bg-gray-100 text-gray-700 transition duration-150 ease-out focus:outline-none focus:border-gray-500 hover:border-gray-500',
-                                    $v.leftover.$error ? 'shadowRed' : '',
+                                        : 'bg-gray-100 text-gray-700 transition-colors duration-150 ease-out focus:outline-none focus:border-blue-500 hover:border-blue-500',
+                                    $v.leftover.$error ? 'border-red-400' : '',
                                 ]"
                                 class="block border border-gray-200 appearance-none w-full py-2 pl-2 pr-8 rounded"
                                 id="action"
@@ -164,7 +164,7 @@
                             class="
                                 ripple
                                 flex flex-row
-                                transition
+                                transition-colors
                                 duration-100
                                 ease-out
                                 bg-primary
@@ -189,7 +189,7 @@
                         <button
                             class="
                                 ripple
-                                transition
+                                transition-colors
                                 duration-100
                                 ease-out
                                 mt-2
@@ -214,7 +214,8 @@
 </template>
 
 <script>
-const { required } = require('vuelidate/lib/validators')
+import { required, minValue } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
 const notEmpty = value => value != ''
 
 export default {
@@ -225,6 +226,7 @@ export default {
         goldDataStatus: Number,
         params: Number,
     },
+    setup: () => ({ $v: useVuelidate() }),
     data() {
         return {
             leftover: '',
@@ -239,6 +241,7 @@ export default {
         return {
             goldPerHit: {
                 required,
+                minValue: minValue(1)
             },
             leftover: {
                 notEmpty,
@@ -315,6 +318,9 @@ export default {
                         this.$emit('hitCreated', 'Error: server unreachable')
                         this.loading = false
                     })
+            }
+            else{
+                this.$emit('snackbar', 'Error: check inserted values')
             }
         },
     },

@@ -67,7 +67,7 @@
                     hover:bg-gray-300
                     py-2
                     px-4
-                    transition
+                    transition-colors
                     duration-100
                     ease-out
                     text-gray-900
@@ -99,7 +99,7 @@
                     hover:bg-gray-300
                     py-2
                     px-4
-                    transition
+                    transition-colors
                     duration-100
                     ease-out
                     text-gray-900
@@ -143,7 +143,7 @@
                     hover:bg-gray-300
                     py-2
                     px-4
-                    transition
+                    transition-colors
                     duration-100
                     ease-out
                     text-gray-900
@@ -174,7 +174,7 @@
                     hover:bg-gray-300
                     py-2
                     px-4
-                    transition
+                    transition-colors
                     duration-100
                     ease-out
                     text-gray-900
@@ -205,7 +205,7 @@
                     hover:bg-blue-600
                     bg-primary
                     text-white
-                    transition
+                    transition-colors
                     duration-100
                     ease-out
                     py-2
@@ -234,7 +234,7 @@
                     hover:bg-blue-600
                     bg-primary
                     text-white
-                    transition
+                    transition-colors
                     duration-100
                     ease-out
                     py-2
@@ -263,7 +263,7 @@
                     hover:bg-blue-600
                     bg-primary
                     text-white
-                    transition
+                    transition-colors
                     duration-100
                     ease-out
                     py-2
@@ -294,7 +294,7 @@
                     bg-primary
                     text-white
                     py-2
-                    transition
+                    transition-colors
                     duration-100
                     ease-out
                     px-4
@@ -322,7 +322,7 @@
                         focus:outline-none
                         bg-white
                         rounded
-                        transition
+                        transition-colors
                         duration-100
                         ease-out
                         hover:bg-gray-300

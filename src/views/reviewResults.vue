@@ -32,7 +32,7 @@
                             pr-1
                             py-2
                             leading-tight
-                            focus:outline-none focus:bg-white focus:border-gray-500
+                            focus:outline-none focus:bg-white focus:border-blue-500
                             mr-3
                         "
                         type="number"
@@ -60,7 +60,7 @@
                                 pl-2
                                 pr-12
                                 leading-tight
-                                focus:outline-none focus:bg-white focus:border-gray-500
+                                focus:outline-none focus:bg-white focus:border-blue-500
                             "
                             name="choice"
                             id="choice"
@@ -86,7 +86,7 @@
                             px-4
                             ml-auto
                             rounded
-                            transition
+                            transition-colors
                             duration-100
                             ease-out
                             bg-gray-400

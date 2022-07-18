@@ -14,7 +14,7 @@
                         duration-200
                         ease-in-out
                         transform
-                        hover:-translate-y-1 hover:shadow-focus
+                        hover:-translate-y-0.5 hover:shadow-focus
                         cursor-pointer
                         focus:outline-none
                     "

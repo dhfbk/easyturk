@@ -70,7 +70,7 @@
                             class="
                                 ripple
                                 flex flex-row
-                                transition
+                                transition-colors
                                 duration-100
                                 ease-out
                                 bg-primary
@@ -94,7 +94,7 @@
                         <button
                             class="
                                 ripple
-                                transition
+                                transition-colors
                                 duration-100
                                 ease-out
                                 hover:bg-gray-300
@@ -122,8 +122,8 @@
 import firstPart from '../components/firstPartLayoutModal.vue'
 import secondPart from '../components/secondPartLayoutModal.vue'
 import thirdPart from '../components/thirdPartLayoutModal.vue'
-const { required, between } = require('vuelidate/lib/validators')
-const notEmpty = value => value != ''
+import { required, minValue, maxValue } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
 
 export default {
     name: 'modalLayout',
@@ -133,6 +133,7 @@ export default {
         secondPart,
         thirdPart,
     },
+    setup: () => ({ $v: useVuelidate() }),
     data() {
         return {
             loading: false,
@@ -148,10 +149,17 @@ export default {
                     varValueTo: '',
                 },
             ],
-            thirdPartData: {
-                assignNumber: this.project.workers,
-                rejectReason: this.$store.state.defaults.reject_reason,
+            min: {
+                assignNumber: parseInt(this.project.workers)
             },
+            thirdPartData: {
+                assignNumber: parseInt(this.project.workers),
+                rejectReason: this.$store.state.defaults.reject_reason,
+                rejectTime: this.$store.state.defaults.min_time_block,
+                missNumberTotal: 10,
+                missNumber: 3
+            },
+            splitFields: this.project.layout_fields.replace(/\s/g, '').split(','),
             // assignNumber: this.project.workers,
             // acceptIfGoldRight: 0,
             // rejectIfGoldWrong: 0,
@@ -162,33 +170,31 @@ export default {
             lastChar: /^[a-z|A-Z|0-9]+[^#]\s?#{1}$/,
         }
     },
-    computed: {
-        splitFields: function() {
-            return this.project.layout_fields.replace(/\s/g, '').split(',')
-        },
-        // thirdPartData() {
-        //     return {
-        //         assignNumber: this.assignNumber,
-        //         acceptIfGoldRight: this.acceptIfGoldRight,
-        //         rejectIfGoldWrong: this.rejectIfGoldWrong,
-        //         rejectReason: this.rejectReason,
-        //     }
-        // },
-    },
     validations() {
         return {
             thirdPartData: {
                 assignNumber: {
                     required,
-                    between: between(this.project.workers, 5),
+                    minValue: minValue(this.min.assignNumber),
+                    maxValue: maxValue(this.$store.state.defaults.max_reject_if_gold_wrong)
+                },
+                rejectTime: {
+                    required,
+                    minValue: minValue(this.$store.state.defaults.min_time_block)
+                },
+                missNumberTotal: {
+                    required,
+                    minValue: minValue(1),
+                },
+                missNumber: {
+                    required,
+                    minValue: minValue(1),
+                    maxValue: maxValue(this.thirdPartData.missNumberTotal)
                 },
                 rejectReason: {
                     required,
                 },
-            },
-            whatToDo: {
-                notEmpty,
-            },
+            }
         }
     },
     created() {
@@ -254,6 +260,9 @@ export default {
                         this.loading = false
                     })
             }
+            else{
+                this.$emit('snackbarErr', 'Error: check inserted values')
+            }
         },
         //check the url
         getCsvFields() {
@@ -295,10 +304,6 @@ export default {
                     this.secondPartData = arr[1]
                 } else if (arr[0] == 'third') {
                     this.thirdPartData = { ...arr[1] }
-                    // this.assignNumber = arr[1].assignNumber
-                    // this.acceptIfGoldRight = arr[1].acceptIfGoldRight
-                    // this.rejectIfGoldWrong = arr[1].rejectIfGoldWrong
-                    // this.rejectReason = arr[1].rejectReason
                 }
             }
         },

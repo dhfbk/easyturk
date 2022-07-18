@@ -63,16 +63,16 @@
                             px-4
                             mt-2
                             mb-3
-                            transition
+                            transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-gray-500
-                            hover:border-gray-500
+                            focus:outline-none focus:border-blue-500
+                            hover:border-blue-500
                         "
                         v-model.trim="$v.customTitles.$model"
                         :class="[
                             picked == 0 ? '' : 'cursor-not-allowed bg-gray-400',
-                            $v.customTitles.$error ? 'shadowRed' : '',
+                            $v.customTitles.$error ? 'border-red-400' : '',
                         ]"
                         :disabled="picked == 1"
                         placeholder="Titles"
@@ -95,11 +95,11 @@
                                         pl-2
                                         pr-12
                                         rounded
-                                        transition
+                                        transition-colors
                                         duration-150
                                         ease-out
-                                        focus:outline-none focus:border-gray-500
-                                        hover:border-gray-500
+                                        focus:outline-none focus:border-blue-500
+                                        hover:border-blue-500
                                     "
                                     id="separator"
                                     name="separator"
@@ -146,11 +146,11 @@
                                         pl-2
                                         pr-12
                                         rounded
-                                        transition
+                                        transition-colors
                                         duration-150
                                         ease-out
-                                        focus:outline-none focus:border-gray-500
-                                        hover:border-gray-500
+                                        focus:outline-none focus:border-blue-500
+                                        hover:border-blue-500
                                     "
                                     id="delimiter"
                                     name="delimiter"
@@ -224,7 +224,7 @@
                                             w-8
                                             h-8
                                             text-center text-xl
-                                            transition
+                                            transition-colors
                                             duration-100
                                             ease-out
                                             hover:bg-gray-300
@@ -247,7 +247,7 @@
                             class="
                                 ripple
                                 flex flex-row
-                                transition
+                                transition-colors
                                 duration-100
                                 ease-out
                                 bg-primary
@@ -271,7 +271,7 @@
                         <button
                             class="
                                 ripple
-                                transition
+                                transition-colors
                                 duration-100
                                 ease-out
                                 hover:bg-gray-300
@@ -296,8 +296,9 @@
 </template>
 
 <script>
-const { required } = require('vuelidate/lib/validators')
-const notEmpty = value => value != ''
+import { required } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
+const notEmpty = (value) => value != ''
 
 export default {
     name: 'modalUpload',
@@ -305,6 +306,7 @@ export default {
         type: String,
         id: String,
     },
+    setup: () => ({ $v: useVuelidate() }),
     data() {
         return {
             file: '',
@@ -319,12 +321,16 @@ export default {
         }
     },
     validations() {
-        return {
-            customTitles: {
+        const custom = {
+            customTitles: {}
+        }
+        if (this.picked == 0) {
+            custom.customTitles = {
                 required,
                 notEmpty,
-            },
+            }
         }
+        return custom
     },
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
@@ -356,13 +362,13 @@ export default {
             console.log(document.getElementById('file').files[0])
         },
         uploadFile() {
-            if ((this.picked == 0 && this.$v.customTitles.$invalid == false) || this.picked == 1) {
+            this.$v.$touch()
+            if (!this.$v.$invalid) {
                 if (this.file == '') {
-                    console.log('nessun file da caricare')
                     if (this.type == 'std') {
-                        this.$emit('uploaded', ['std', '', "Error. You haven't uploaded the CSV file."])
+                        this.$emit('snackbar', "Error: no CSV file to upload")
                     } else {
-                        this.$emit('uploaded', ['gld', '', "Error. You haven't uploaded the CSV file."])
+                        this.$emit('snackbar', "Error: no CSV file to upload")
                     }
                 } else {
                     this.loading = true
@@ -383,13 +389,13 @@ export default {
                             headers: {
                                 'Content-Type': 'multipart/form-data',
                             },
-                            onUploadProgress: function(progressEvent) {
+                            onUploadProgress: function (progressEvent) {
                                 this.uploadPercentage = parseInt(
                                     Math.round((progressEvent.loaded / progressEvent.total) * 100)
                                 )
                             }.bind(this),
                         })
-                        .then(res => {
+                        .then((res) => {
                             if (res.data.result != 'ERR') {
                                 if (this.type == 'std') {
                                     this.$emit('uploaded', ['std', '', 'Upload completed'])
@@ -419,7 +425,7 @@ export default {
                         })
                 }
             } else {
-                this.$v.$touch()
+                this.$emit('snackbar', 'Error: check inserted values')
             }
         },
     },

@@ -102,7 +102,7 @@
                         px-4
                         bg-transparent
                         rounded
-                        transition
+                        transition-colors
                         duration-100
                         ease-out
                         border-2 border-solid border-primary

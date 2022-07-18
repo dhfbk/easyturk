@@ -10,7 +10,13 @@
             <div class="w-full px-3 mb-4">
                 <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="name">Project Name</label>
                 <input
-                    :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    :class="
+                        status > 2
+                            ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                            : $v.name.$error
+                            ? 'border-red-400 bg-gray-100 text-gray-700'
+                            : 'bg-gray-100 text-gray-700'
+                    "
                     class="
                         appearance-none
                         block
@@ -20,11 +26,11 @@
                         py-2
                         px-4
                         mb-2
-                        transition
+                        transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-gray-500
-                        hover:border-gray-500
+                        focus:outline-none focus:border-blue-500
+                        hover:border-blue-500
                     "
                     id="name"
                     type="text"
@@ -39,7 +45,13 @@
             <div class="w-full px-3 mb-4">
                 <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="title">Title</label>
                 <input
-                    :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    :class="
+                        status > 2
+                            ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                            : $v.title.$error
+                            ? 'border-red-400 bg-gray-100 text-gray-700'
+                            : 'bg-gray-100 text-gray-700'
+                    "
                     class="
                         appearance-none
                         block
@@ -49,11 +61,11 @@
                         py-2
                         px-4
                         mb-2
-                        transition
+                        transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-gray-500
-                        hover:border-gray-500
+                        focus:outline-none focus:border-blue-500
+                        hover:border-blue-500
                     "
                     id="title"
                     type="text"
@@ -71,7 +83,13 @@
             <div class="md:w-full px-3 mb-4">
                 <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="keywords">Keywords</label>
                 <input
-                    :class="status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    :class="
+                        status > 2
+                            ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                            : $v.keywords.$error
+                            ? 'border-red-400 bg-gray-100 text-gray-700'
+                            : 'bg-gray-100 text-gray-700'
+                    "
                     class="
                         appearance-none
                         block
@@ -81,11 +99,11 @@
                         py-2
                         px-4
                         mb-2
-                        transition
+                        transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-gray-500
-                        hover:border-gray-500
+                        focus:outline-none focus:border-blue-500
+                        hover:border-blue-500
                     "
                     id="keywords"
                     type="text"
@@ -112,15 +130,15 @@
                         placeholder="Description"
                         :class="[
                             status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700',
-                            hoverDesc ? 'border-gray-500' : 'border-gray-200',
+                            hoverDesc ? 'border-blue-500' : 'border-gray-200',
                         ]"
                         class="
                             w-full
                             border
-                            transition
+                            transition-colors
                             duration-150
                             ease-out
-                            hover:border-gray-500
+                            hover:border-blue-500
                             rounded
                             py-2
                             px-4
@@ -149,7 +167,11 @@
                     </label>
                     <input
                         :class="
-                            status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
+                            status > 1
+                                ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                : $v.reward.$error
+                                ? 'border-red-400 bg-gray-100 text-gray-700'
+                                : 'bg-gray-100 text-gray-700'
                         "
                         class="
                             appearance-none
@@ -161,11 +183,11 @@
                             py-2
                             px-4
                             mb-2
-                            transition
+                            transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-gray-500
-                            hover:border-gray-500
+                            focus:outline-none focus:border-blue-500
+                            hover:border-blue-500
                         "
                         id="reward"
                         type="number"
@@ -187,7 +209,11 @@
                     </label>
                     <input
                         :class="
-                            status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
+                            status > 1
+                                ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                : $v.workers.$error
+                                ? 'border-red-400 bg-gray-100 text-gray-700'
+                                : 'bg-gray-100 text-gray-700'
                         "
                         class="
                             appearance-none
@@ -199,11 +225,11 @@
                             py-2
                             px-4
                             mb-2
-                            transition
+                            transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-gray-500
-                            hover:border-gray-500
+                            focus:outline-none focus:border-blue-500
+                            hover:border-blue-500
                         "
                         id="workers"
                         type="number"
@@ -229,23 +255,25 @@
                             :class="
                                 status > 1
                                     ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                    : $v.max_time.$error
+                                    ? 'border-red-400 bg-gray-100 text-gray-700'
                                     : 'bg-gray-100 text-gray-700'
                             "
                             class="
                                 appearance-none
                                 block
                                 w-full
-                                sm:max-w-xs
+                                sm:w-32
                                 border border-gray-200
                                 rounded
                                 py-2
                                 px-4
                                 mb-2
-                                transition
+                                transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-gray-500
-                                hover:border-gray-500
+                                focus:outline-none focus:border-blue-500
+                                hover:border-blue-500
                             "
                             id="maxTime"
                             type="number"
@@ -274,11 +302,11 @@
                                     px-4
                                     pr-8
                                     rounded
-                                    transition
+                                    transition-colors
                                     duration-150
                                     ease-out
-                                    focus:outline-none focus:border-gray-500
-                                    hover:border-gray-500
+                                    focus:outline-none focus:border-blue-500
+                                    hover:border-blue-500
                                 "
                                 id="selectorMaxTime"
                                 v-model="selectTempoMax"
@@ -311,6 +339,8 @@
                             :class="
                                 status > 1
                                     ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                    : $v.expiry.$error
+                                    ? 'border-red-400 bg-gray-100 text-gray-700'
                                     : 'bg-gray-100 text-gray-700'
                             "
                             class="
@@ -323,11 +353,11 @@
                                 py-2
                                 px-4
                                 mb-2
-                                transition
+                                transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-gray-500
-                                hover:border-gray-500
+                                focus:outline-none focus:border-blue-500
+                                hover:border-blue-500
                             "
                             id="expiry"
                             type="number"
@@ -355,11 +385,11 @@
                                     px-4
                                     pr-8
                                     rounded
-                                    transition
+                                    transition-colors
                                     duration-150
                                     ease-out
-                                    focus:outline-none focus:border-gray-500
-                                    hover:border-gray-500
+                                    focus:outline-none focus:border-blue-500
+                                    hover:border-blue-500
                                 "
                                 id="selectorExpiry"
                                 v-model="selectExpiry"
@@ -392,6 +422,8 @@
                             :class="
                                 status > 1
                                     ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                    : $v.auto_approve.$error
+                                    ? 'border-red-400 bg-gray-100 text-gray-700'
                                     : 'bg-gray-100 text-gray-700'
                             "
                             class="
@@ -404,11 +436,11 @@
                                 py-2
                                 px-4
                                 mb-2
-                                transition
+                                transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-gray-500
-                                hover:border-gray-500
+                                focus:outline-none focus:border-blue-500
+                                hover:border-blue-500
                             "
                             id="autoApproval"
                             type="number"
@@ -436,11 +468,11 @@
                                     px-4
                                     pr-8
                                     rounded
-                                    transition
+                                    transition-colors
                                     duration-150
                                     ease-out
-                                    focus:outline-none focus:border-gray-500
-                                    hover:border-gray-500
+                                    focus:outline-none focus:border-blue-500
+                                    hover:border-blue-500
                                 "
                                 id="selectorApproval"
                                 v-model="selectAutoApprove"
@@ -471,27 +503,30 @@
         <div class="-mx-3 md:flex md:flex-col lg:flex-row lg:justify-between lg:gap-2">
             <div class="w-full px-3 mb-4 mx-auto">
                 <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="layoutId">Layout ID</label>
-                <div class="flex content-center items-center flex-wrap relative sm:max-w-xs">
+                <div class="flex content-center items-center flex-wrap relative">
                     <input
                         :class="
-                            status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
+                            status > 0
+                                ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                                : $v.layout_id.$error
+                                ? 'border-red-400 bg-gray-100 text-gray-700'
+                                : 'bg-gray-100 text-gray-700'
                         "
                         class="
                             relative
                             appearance-none
                             block
                             w-full
-                            sm:max-w-xs
                             border border-gray-200
                             rounded
                             py-2
                             pl-4
                             pr-10
-                            transition
+                            transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-gray-500
-                            hover:border-gray-500
+                            focus:outline-none focus:border-blue-500
+                            hover:border-blue-500
                         "
                         id="layoutId"
                         type="text"
@@ -529,22 +564,27 @@
                     Examples per HIT
                 </label>
                 <input
-                    :class="status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    :class="
+                        status > 0
+                            ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                            : $v.params.$error
+                            ? 'border-red-400 bg-gray-100 text-gray-700'
+                            : 'bg-gray-100 text-gray-700'
+                    "
                     class="
                         appearance-none
                         block
                         w-full
-                        sm:max-w-xs
                         border border-gray-200
                         rounded
                         py-2
                         px-4
                         mb-2
-                        transition
+                        transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-gray-500
-                        hover:border-gray-500
+                        focus:outline-none focus:border-blue-500
+                        hover:border-blue-500
                     "
                     id="params"
                     type="number"
@@ -562,22 +602,27 @@
                     Parameter fields
                 </label>
                 <input
-                    :class="status > 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
+                    :class="
+                        status > 0
+                            ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
+                            : $v.params_fields.$error
+                            ? 'border-red-400 bg-gray-100 text-gray-700'
+                            : 'bg-gray-100 text-gray-700'
+                    "
                     class="
                         appearance-none
                         block
                         w-full
-                        sm:max-w-xs
                         border border-gray-200
                         rounded
                         py-2
                         px-4
                         mb-2
-                        transition
+                        transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-gray-500
-                        hover:border-gray-500
+                        focus:outline-none focus:border-blue-500
+                        hover:border-blue-500
                     "
                     id="params_fields"
                     type="text"
@@ -639,11 +684,11 @@
                         rounded
                         py-2
                         px-4
-                        transition
+                        transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-gray-500
-                        hover:border-gray-500
+                        focus:outline-none focus:border-blue-500
+                        hover:border-blue-500
                     "
                 />
                 <span class="text-gray-700 text-xs italic mt-2">
@@ -782,7 +827,7 @@
                     py-2
                     px-4
                     rounded
-                    transition
+                    transition-colors
                     duration-100
                     ease-out
                     text-white
@@ -807,7 +852,7 @@
                         ? 'cursor-not-allowed bg-gray-400 text-gray-800 hover:bg-gray-600'
                         : 'ripple hover:bg-primaryDark bg-primary text-white'
                 "
-                class="mr-1 py-2 px-4 rounded transition duration-100 ease-out focus:outline-none"
+                class="mr-1 py-2 px-4 rounded transition-colors duration-100 ease-out focus:outline-none"
                 v-else
             >
                 <svg
@@ -829,7 +874,7 @@
                     py-2
                     px-4
                     text-gray-900
-                    transition
+                    transition-colors
                     border-2 border-solid border-gray-400
                     duration-100
                     ease-out
@@ -846,7 +891,8 @@
 
 <script>
 import axios from 'axios'
-const { required } = require('vuelidate/lib/validators')
+import { required, maxLength, maxValue, minValue } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
 
 export default {
     name: 'creazioneProgetto',
@@ -909,6 +955,7 @@ export default {
             loadingPage2: true,
         }
     },
+    setup: () => ({ $v: useVuelidate() }),
     validations() {
         return {
             params_fields: {
@@ -916,9 +963,11 @@ export default {
             },
             name: {
                 required,
+                maxLength: maxLength(this.$store.state.defaults.max_length_name),
             },
             title: {
                 required,
+                maxLength: maxLength(this.$store.state.defaults.max_length_title),
             },
             description: {
                 required,
@@ -928,41 +977,36 @@ export default {
             },
             workers: {
                 required,
+                minValue: minValue(1),
             },
             max_time: {
                 required,
+                minValue: minValue(1),
+                maxValue: maxValue(this.max1),
             },
             expiry: {
                 required,
+                minValue: minValue(1),
+                maxValue: maxValue(this.max2),
             },
             auto_approve: {
                 required,
+                minValue: minValue(1),
+                maxValue: maxValue(this.max3),
             },
             params: {
                 required,
+                minValue: minValue(1),
             },
             reward: {
                 required,
+                minValue: minValue(this.$store.state.defaults.min_reward),
             },
             layout_id: {
                 required,
+                maxLength: maxLength(100),
             },
         }
-
-        /*
-        title: {
-            required,
-            minLength: minLength(2),
-        },
-        description: {
-            required,
-            minLength: minLength(2),
-        },
-        keywords: {
-            required,
-            minLength: minLength(2),
-        },
-        */
     },
     created() {
         this.mode = this.$route.name
@@ -1044,7 +1088,7 @@ export default {
                 url: 'https://restcountries.com/v3.1/all',
                 method: 'get',
             })
-                .then(res => {
+                .then((res) => {
                     this.countries = res.data
                     this.loadingPage2 = false
                 })
@@ -1053,7 +1097,7 @@ export default {
                         this.getDatiPrj()
                     }
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.error(err)
                 })
         },
@@ -1061,7 +1105,7 @@ export default {
             this.downloadID = true
             this.API()
                 .get('?action=testLayout&layout_id=' + this.layout_id)
-                .then(res => {
+                .then((res) => {
                     this.downloadID = false
                     this.params_fields = res.data.params_fields
                     this.params = parseInt(res.data.examples_per_hit)
@@ -1078,7 +1122,7 @@ export default {
         getDatiPrj() {
             this.API()
                 .get('?action=getProjectInfo&id=' + this.$route.params.projectId)
-                .then(res => {
+                .then((res) => {
                     this.disableBtn = false
                     this.id = res.data.values.id
                     this.name = res.data.values.name
@@ -1106,7 +1150,7 @@ export default {
                     this.elaboraTempoGET('auto_approve')
                     for (let i = 0; i < this.selectedCodes.length; i++) {
                         this.selected.push(
-                            this.countries.find(country => {
+                            this.countries.find((country) => {
                                 return country.cca2 == this.selectedCodes[i]
                             })
                         )
@@ -1118,7 +1162,7 @@ export default {
                     this.fixMax(2)
                     this.fixMax(3)
                 })
-                .catch(err => {
+                .catch((err) => {
                     var msg = 'Error. Project not found'
                     this.emitSnackbar(msg)
                     console.error(err)
@@ -1159,7 +1203,7 @@ export default {
                         },
                         { 'Content-Type': 'application/x-www-form-urlencoded' }
                     )
-                    .then(response => {
+                    .then((response) => {
                         this.loading = false
                         console.log(response.data)
                         if (response.data.result == 'OK') {
@@ -1183,7 +1227,7 @@ export default {
                         this.emitSnackbar(msg)
                     })
             } else {
-                console.log('error')
+                this.emitSnackbar('Error: check inserted values')
             }
         },
         goBack() {
@@ -1312,11 +1356,11 @@ export default {
             if (newValue.length == 0) {
                 this.tmp = []
             } else if (newValue.length > oldValue.length && this.tmp.length > 0) {
-                this.tmp = this.tmp.filter(country => {
+                this.tmp = this.tmp.filter((country) => {
                     return country.name.common.toLowerCase().startsWith(this.input)
                 })
             } else {
-                this.tmp = this.countries.filter(country => {
+                this.tmp = this.countries.filter((country) => {
                     return country.name.common.toLowerCase().startsWith(this.input)
                 })
             }

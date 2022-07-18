@@ -36,7 +36,7 @@
                                 pl-2
                                 pr-12
                                 leading-tight
-                                focus:outline-none focus:bg-white focus:border-gray-500
+                                focus:outline-none focus:bg-white focus:border-blue-500
                             "
                             name="sortBy"
                             id="sortBy"

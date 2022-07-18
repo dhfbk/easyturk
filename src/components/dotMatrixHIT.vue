@@ -20,7 +20,7 @@
                                     duration-200
                                     ease-in-out
                                     transform
-                                    hover:-translate-y-1 hover:shadow-lg
+                                    hover:-translate-y-1 hover:shadow-md
                                 "
                                 :style="{
                                     background: colors[e],
@@ -69,7 +69,7 @@
                                     duration-200
                                     ease-in-out
                                     transform
-                                    hover:-translate-y-1 hover:shadow-lg
+                                    hover:-translate-y-1 hover:shadow-md
                                 "
                                 :style="{
                                     background: colors[e + totalComp],
@@ -117,7 +117,7 @@
                                 duration-200
                                 ease-in-out
                                 transform
-                                hover:-translate-y-1 hover:shadow-lg
+                                hover:-translate-y-1 hover:shadow-md
                             "
                             :style="{
                                 background: colors[totalComp + totalAvai],

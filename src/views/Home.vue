@@ -1,19 +1,34 @@
 <template>
     <div class="home mt-4 mx-2 xs2:mx-4 lg:mx-auto lg:w-5/6 pt-2 pb-6">
         <modalEliminazione v-if="modalElim" @deleteModal="toggleModal" @deleted="deleted" :id="modalId" />
-        <modalUpload v-if="modalStd" @uploadModal="toggleModal" @uploaded="toggleModal" :type="'std'" :id="modalId" />
-        <modalUpload v-if="modalGld" @uploadModal="toggleModal" @uploaded="toggleModal" :type="'gld'" :id="modalId" />
+        <modalUpload
+            v-if="modalStd"
+            @uploadModal="toggleModal"
+            @uploaded="toggleModal"
+            :type="'std'"
+            :id="modalId"
+            @snackbar="snack"
+        />
+        <modalUpload
+            v-if="modalGld"
+            @uploadModal="toggleModal"
+            @uploaded="toggleModal"
+            :type="'gld'"
+            :id="modalId"
+            @snackbar="snack"
+        />
         <modalLaunch
             v-if="modalLaunch"
             @launchModal="toggleModal(['launch', ''])"
             :id="modalId"
             :hitsSubmitted="hitsSubmitted"
             :hitsTotal="hitsTotal"
-            @err="uploaded"
+            @err="snack"
             @launched="launched"
             :priceData="priceData"
             :qualifications="qualifications"
             @changeQualification="changeQualification"
+            @snackbar="snack"
         />
         <!--sistemare per i due valori del csv-->
         <modalHit
@@ -24,13 +39,15 @@
             :baseDataStatus="dataPresent"
             :goldDataStatus="gldPresent"
             :params="params"
+            @snackbar="snack"
         />
         <modalLayout
             v-if="modalLayout"
             :project="project[0]"
             @layoutModal="toggleModal"
             @layoutSet="launched"
-            @snackbar="uploaded"
+            @snackbar="snack"
+            @snackbarErr="snack"
         />
         <span class="text-3xl sm:text-4xl font-light">Welcome, {{ $store.state.userInfo.common_name }}</span>
         <!--<modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />-->
@@ -109,7 +126,7 @@
                             @createHit="toggleModal"
                             @layoutModal="toggleModal"
                             @launchModal="toggleModal"
-                            @snackbar="uploaded"
+                            @snackbar="snack"
                         />
                     </div>
                 </div>
@@ -221,18 +238,18 @@ export default {
         getPrjData() {
             this.API()
                 .get('?action=listProjects')
-                .then(res => {
+                .then((res) => {
                     this.projects = res.data.values
                     this.loadingProjects = false
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.error(err)
                 })
         },
         getData() {
             this.API()
                 .get('?action=listProjects')
-                .then(res => {
+                .then((res) => {
                     if (res.data.result == 'ERR') {
                         res.data.error.includes('User')
                             ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
@@ -243,12 +260,12 @@ export default {
                         this.loadingOther = false
                     }
                 })
-                .catch(errors => {
+                .catch((errors) => {
                     console.log(errors)
                 })
         },
         getProject(id) {
-            this.project = this.projects.filter(function(project) {
+            this.project = this.projects.filter(function (project) {
                 return project.id == id
             })
         },
@@ -268,7 +285,7 @@ export default {
         //metodi per aprire e chiudere il modal eliminazione ed eliminare l'elemento dalla lista
         deleted(msg) {
             var self = this
-            this.projects = this.projects.filter(function(el) {
+            this.projects = this.projects.filter(function (el) {
                 return el.id != self.modalId
             })
             this.$emit('snackbar', msg)
@@ -282,7 +299,7 @@ export default {
                         this.modalStd = false
                         this.reloadAfterHIT(arr[2])
                     } else {
-                        this.uploaded(arr[2])
+                        this.snack(arr[2])
                     }
                 }
             } else if (arr[0] == 'gld') {
@@ -292,7 +309,7 @@ export default {
                         this.modalGld = false
                         this.reloadAfterHIT(arr[2])
                     } else {
-                        this.uploaded(arr[2])
+                        this.snack(arr[2])
                     }
                 }
             } else if (arr[0] == 'delete') {
@@ -302,7 +319,7 @@ export default {
             } else if (arr[0] == 'launch') {
                 if (arr[1] != '') {
                     var self = this
-                    var launch = this.projects.find(function(el) {
+                    var launch = this.projects.find(function (el) {
                         return el.id == self.modalId
                     })
                     this.hitsSubmitted = parseInt(launch.hits_submitted)
@@ -335,16 +352,16 @@ export default {
             }
         },
         launched(msg) {
-            this.uploaded(msg)
+            this.snack(msg)
             this.loadingProjects = true
             this.getPrjData()
         },
         reloadAfterHIT(msg) {
-            this.uploaded(msg)
+            this.snack(msg)
             this.loadingProjects = true
             this.getPrjData()
         },
-        uploaded(msg) {
+        snack(msg) {
             this.$emit('snackbar', msg)
         },
         changeQualification(value) {

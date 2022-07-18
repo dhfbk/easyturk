@@ -1,8 +1,22 @@
 <template>
     <div class="relative lg:w-5/6 pt-2 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
         <modalEliminazione v-if="modalElim" @deleteModal="toggleModal('delete')" @deleted="deleted" :id="id" />
-        <modalUpload v-if="modalStd" :type="'std'" :id="id" @uploadModal="toggleModal('std')" @uploaded="uploaded" />
-        <modalUpload v-if="modalGld" :type="'gld'" :id="id" @uploadModal="toggleModal('gld')" @uploaded="uploaded" />
+        <modalUpload
+            v-if="modalStd"
+            :type="'std'"
+            :id="id"
+            @uploadModal="toggleModal('std')"
+            @uploaded="uploaded"
+            @snackbar="snack"
+        />
+        <modalUpload
+            v-if="modalGld"
+            :type="'gld'"
+            :id="id"
+            @uploadModal="toggleModal('gld')"
+            @uploaded="uploaded"
+            @snackbar="snack"
+        />
         <modalHIT
             v-if="modalHIT"
             :id="id"
@@ -11,6 +25,7 @@
             :params="project.params"
             @hitModal="toggleModal('hit')"
             @hitCreated="uploaded"
+            @snackbar="snack"
         />
         <modalRevert
             v-if="modalRevert"
@@ -25,6 +40,7 @@
             @layoutSet="uploaded"
             @layoutModal="toggleModal('layout')"
             @snackbar="uploaded"
+            @snackbarErr="snack"
         />
         <modalInstructions v-if="modalInstructions" :status="project.status" @modal="toggleModal('instructions')" />
         <modalLaunch
@@ -36,6 +52,7 @@
             @launched="uploaded"
             :priceData="priceData"
             :qualifications="qualifications"
+            @snackbar="snack"
         />
         <modalCsvEliminazione
             :isGold="isGold"
@@ -69,10 +86,9 @@
                     type="submit"
                     :class="{ 'cursor-not-allowed': hitsSubmitted == hitsTotal }"
                     class="
-                        
                         md:block md:mr-2
                         ripple
-                        transition
+                        transition-colors
                         ease-out
                         duration-100
                         bg-primary
@@ -103,11 +119,10 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        
                         md:block md:mr-2
                         ripple
                         bg-primary
-                        transition
+                        transition-colors
                         duration-100
                         ease-out
                         hover:bg-blue-600
@@ -137,11 +152,10 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        
                         md:block md:mr-2
                         ripple
                         bg-primary
-                        transition
+                        transition-colors
                         duration-100
                         ease-out
                         hover:bg-blue-600
@@ -172,11 +186,10 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        
                         md:block md:mr-2
                         ripple
                         bg-primary
-                        transition
+                        transition-colors
                         duration-100
                         ease-out
                         hover:bg-blue-600
@@ -202,7 +215,7 @@
                 <button
                     v-if="
                         (project.status >= 1 && project.status != 3 && !loading) ||
-                            (project.status == 3 && $store.state.isSandbox == true && !loading)
+                        (project.status == 3 && $store.state.isSandbox == true && !loading)
                     "
                     @click="toggleModal('revert')"
                     :content="'Revert HIT settings'"
@@ -210,10 +223,9 @@
                     type="submit"
                     :class="project.status == 3 ? 'md:mr-0' : 'md:mr-2'"
                     class="
-                        
                         md:block
                         ripple
-                        transition
+                        transition-colors
                         duration-100
                         ease-out
                         flex flex-row
@@ -242,10 +254,9 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        
                         md:block md:mr-2
                         ripple
-                        transition
+                        transition-colors
                         duration-100
                         ease-out
                         flex flex-row
@@ -274,10 +285,9 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        
                         md:block
                         ripple
-                        transition
+                        transition-colors
                         duration-100
                         ease-out
                         flex flex-row
@@ -311,7 +321,7 @@
                             px-2
                             bg-transparent
                             rounded
-                            transition
+                            transition-colors
                             duration-100
                             ease-out
                             border-2 border-solid border-primary
@@ -320,7 +330,7 @@
                         "
                     >
                         <svg
-                            class="transition duration-100 ease-out fill-current"
+                            class="transition-transform duration-100 ease-out fill-current"
                             :class="{ 'transform  rotate-180': dropdownOpen }"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -349,7 +359,7 @@
                                     px-4
                                     py-2
                                     text-sm text-gray-800
-                                    transition
+                                    transition-colors
                                     duration-100
                                     ease-out
                                     hover:bg-primary
@@ -368,7 +378,7 @@
                                     px-4
                                     py-2
                                     text-sm text-gray-800
-                                    transition
+                                    transition-colors
                                     duration-100
                                     ease-out
                                     hover:bg-primary
@@ -389,7 +399,7 @@
                                     text-sm
                                     capitalize
                                     text-gray-800
-                                    transition
+                                    transition-colors
                                     duration-100
                                     ease-out
                                     hover:bg-primary
@@ -408,7 +418,7 @@
                                     px-4
                                     py-2
                                     text-sm text-gray-800
-                                    transition
+                                    transition-colors
                                     duration-100
                                     ease-out
                                     hover:bg-primary
@@ -427,7 +437,7 @@
                                     px-4
                                     py-2
                                     text-sm text-gray-800
-                                    transition
+                                    transition-colors
                                     duration-100
                                     ease-out
                                     hover:bg-primary hover:text-gray-100
@@ -445,7 +455,7 @@
                                     text-sm
                                     capitalize
                                     text-gray-800
-                                    transition
+                                    transition-colors
                                     duration-100
                                     ease-out
                                     hover:bg-primary hover:text-gray-100
@@ -468,7 +478,7 @@
                                     text-sm
                                     capitalize
                                     text-gray-800
-                                    transition
+                                    transition-colors
                                     duration-100
                                     ease-out
                                     hover:bg-primary hover:text-gray-100
@@ -544,7 +554,7 @@
                     hover:bg-gray-300
                     rounded
                     focus:outline-none
-                    transition
+                    transition-colors
                     duration-100
                     ease-out
                     float-right
@@ -603,9 +613,6 @@ import progressBar from '../components/progressBar'
 
 export default {
     name: 'visualizzaProgetto',
-    directives: {
-        ClickOutside,
-    },
     components: {
         modalEliminazione,
         cardInfo,
@@ -619,6 +626,9 @@ export default {
         modalLaunch,
         loader,
         progressBar,
+    },
+    directives: {
+        ClickOutside,
     },
     data() {
         return {
@@ -640,6 +650,7 @@ export default {
             priceData: {},
             qualifications: {},
             progressData: {},
+            layoutData: undefined,
             approved: 0,
             rejected: 0,
             isGold: null,
@@ -668,8 +679,7 @@ export default {
             } else {
                 this.API()
                     .get('?action=getProjectInfo&id=' + this.id)
-                    .then(res => {
-                        console.log(res.data)
+                    .then((res) => {
                         if (res.data.result == 'ERR') {
                             res.data.error.includes('User')
                                 ? this.$emit('snackbar', 'Error. ' + res.data.error + '. Refresh to log in.')
@@ -724,11 +734,13 @@ export default {
                                 this.totalProjected =
                                     (this.project.hits_total - this.project.hits_inserted) * this.project.workers
                             }
-
+                            if (this.project.status > 1){
+                                this.layoutData = res.data.values.hit_details
+                            }
                             this.loading = false
                         }
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.error(err)
                     })
             }
@@ -783,6 +795,9 @@ export default {
             this.$emit('snackbar', msg)
         },
         //for when an action gets completed (success or error)
+        snack(msg) {
+            this.$emit('snackbar', msg)
+        },
         uploaded(msg) {
             if (Array.isArray(msg)) {
                 if (msg[2] == 'Upload completed') {
@@ -791,12 +806,12 @@ export default {
                     } else {
                         this.toggleModal('gld')
                     }
-                    this.$emit('snackbar', msg[2])
+                    this.snack(msg[2])
                 } else {
-                    this.$emit('snackbar', msg[2])
+                    this.snack(msg[2])
                 }
             } else {
-                this.$emit('snackbar', msg)
+                this.snack(msg)
             }
             this.loading = true
             this.getDatiPrj()

@@ -9,8 +9,8 @@ import './assets/styles/index.css'
 import VueEllipseProgress from 'vue-ellipse-progress'
 Vue.use(VueEllipseProgress)
 
-import Vuelidate from 'vuelidate'
-Vue.use(Vuelidate)
+/* import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate) */
 
 import VueTippy, { TippyComponent } from 'vue-tippy'
 import 'tippy.js/themes/google.css'

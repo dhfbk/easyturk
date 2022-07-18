@@ -46,9 +46,12 @@
                         <div class="relative">
                             <input
                                 @change="calculatePrice('basic')"
-                                :class="$v.hitNum.$invalid ? 'shadowRed' : ''"
+                                :class="$v.hitNum.$error ? 'border-red-400' : ''"
                                 class="
                                     appearance-none
+                                    focus:outline-none
+                                    focus:border-blue-500
+                                    hover:border-blue-500
                                     block
                                     w-full
                                     sm:max-w-xs
@@ -109,7 +112,7 @@
                             class="
                                 ripple
                                 flex flex-row
-                                transition
+                                transition-colors
                                 duration-100
                                 ease-out
                                 bg-primary
@@ -133,7 +136,7 @@
                         <button
                             class="
                                 ripple
-                                transition
+                                transition-colors
                                 duration-100
                                 ease-out
                                 hover:bg-gray-300
@@ -159,7 +162,8 @@
 
 <script>
 //aggiungere calcolo per le qualifications master e adult
-const { required, between } = require('vuelidate/lib/validators')
+import { required, between } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
 export default {
     name: 'modalLaunch',
     data() {
@@ -180,16 +184,17 @@ export default {
         id: String,
         qualifications: Object,
     },
+    setup: () => ({ $v: useVuelidate() }),
     created() {
         this.hitMax = parseInt(this.hitsTotal) - parseInt(this.hitsSubmitted)
         this.calculatePrice()
         if (this.$route.name == 'Home') {
             this.API()
                 .get('?action=getProjectInfo&id=' + this.id)
-                .then(res => {
+                .then((res) => {
                     this.$emit('changeQualification', res.data.values.master)
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.error(err)
                 })
         }
@@ -275,7 +280,7 @@ export default {
                         },
                         { 'Content-Type': 'application/x-www-form-urlencoded' }
                     )
-                    .then(response => {
+                    .then((response) => {
                         console.log(response.data)
                         if (response.data.result == 'ERR') {
                             response.data.error.includes('User')
@@ -291,6 +296,8 @@ export default {
                         this.$emit('err', 'Error: server unreacheable')
                         this.loading = false
                     })
+            } else {
+                this.$emit('snackbar', 'Error: check inserted values')
             }
         },
     },

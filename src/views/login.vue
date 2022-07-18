@@ -15,46 +15,58 @@
             "
         >
             <div class="mb-2">
-                <label class="block text-gray-700 text-sm mb-2" for="username"> Username </label>
+                <label class="block text-gray-700 text-sm mb-2" for="username">Username</label>
                 <input
+                    :class="$v.username.$error ? 'border-red-400' : ''"
                     class="
                         appearance-none
                         border
+                        border-gray-200
                         rounded
                         w-full
                         py-2
                         px-3
                         text-gray-700
                         leading-tight
-                        focus:outline-none focus:shadow-outline
+                        transition-colors
+                        duration-150
+                        ease-out
+                        focus:outline-none focus:border-blue-500
+                        hover:border-blue-500
                     "
                     id="username"
                     type="text"
                     placeholder="Username"
                     required
-                    v-model.trim="$v.username.$model"
+                    v-model.trim="username"
                     maxlength="100"
                 />
             </div>
             <div class="mb-2">
-                <label class="block text-gray-700 text-sm mb-2" for="password"> Password </label>
+                <label class="block text-gray-700 text-sm mb-2" for="password">Password</label>
                 <input
+                    :class="$v.password.$error ? 'border-red-400' : ''"
                     class="
                         appearance-none
                         border
+                        border-gray-200
                         rounded
                         w-full
                         py-2
                         px-3
                         text-gray-700
                         leading-tight
-                        focus:outline-none focus:shadow-outline
+                        transition-colors
+                        duration-150
+                        ease-out
+                        focus:outline-none focus:border-blue-500
+                        hover:border-blue-500
                     "
                     id="password"
                     type="password"
                     placeholder="Password"
                     required
-                    v-model.trim="$v.password.$model"
+                    v-model.trim="password"
                     maxlength="100"
                 />
                 <p class="text-red-500 text-xs italic mt-2" v-if="$v.password.$error">Please enter your credentials</p>
@@ -62,7 +74,7 @@
             <button
                 class="
                     ripple
-                    transition
+                    transition-colors
                     ease-out
                     duration-100
                     bg-primary
@@ -95,7 +107,8 @@
 </template>
 
 <script>
-const { required } = require('vuelidate/lib/validators')
+import { required, maxLength } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
 export default {
     data() {
         return {
@@ -104,15 +117,16 @@ export default {
             loading: false,
         }
     },
+    setup: () => ({ $v: useVuelidate() }),
     validations() {
         return {
             username: {
                 required,
-                maxlength: 100,
+                maxLength: maxLength(100),
             },
             password: {
                 required,
-                maxlength: 100,
+                maxLength: maxLength(100),
             },
         }
     },
@@ -132,7 +146,7 @@ export default {
                 //this.loading = true
                 this.API()
                     .get('?action=login&username=' + this.username + '&password=' + this.password)
-                    .then(res => {
+                    .then((res) => {
                         if (res.data.result == 'ERR') {
                             this.loading = false
                             this.$emit('snackbar', 'Error. ' + res.data.error)
@@ -141,7 +155,7 @@ export default {
                             var path = ''
                             this.API()
                                 .get('?action=getUserInfo')
-                                .then(res2 => {
+                                .then((res2) => {
                                     if (res2.data.result == 'ERR') {
                                         this.$emit('snackbar', 'Error. ' + res2.data.error)
                                     } else {
@@ -158,18 +172,19 @@ export default {
                                     }
                                     this.loading = false
                                 })
-                                .catch(err => {
+                                .catch((err) => {
                                     console.error(err)
                                 })
                         }
                         this.loading = false
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.error(err)
                         this.loading = false
                     })
             } else {
                 this.loading = false
+                this.$emit('snackbar', 'Error: check your credentials')
             }
         },
     },
