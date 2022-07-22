@@ -167,7 +167,7 @@ export default {
                                         this.$router.replace({ path: path })
                                         this.$emit(
                                             'snackbar',
-                                            'You have logged in, welcome ' + res2.data.data.common_name + '.'
+                                            'Login successful'
                                         )
                                     }
                                     this.loading = false

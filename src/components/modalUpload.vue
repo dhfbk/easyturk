@@ -359,7 +359,6 @@ export default {
             document.getElementById('file').value = ''
             this.file = ''
             this.inputLocked = false
-            console.log(document.getElementById('file').files[0])
         },
         uploadFile() {
             this.$v.$touch()

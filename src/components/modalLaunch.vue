@@ -281,7 +281,6 @@ export default {
                         { 'Content-Type': 'application/x-www-form-urlencoded' }
                     )
                     .then((response) => {
-                        console.log(response.data)
                         if (response.data.result == 'ERR') {
                             response.data.error.includes('User')
                                 ? this.$emit('err', 'Error: ' + response.data.error + '.')

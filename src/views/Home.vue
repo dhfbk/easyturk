@@ -117,8 +117,8 @@
                         </div>
                     </div>
                 </div>
-                <div v-else>
-                    <div v-for="i in projects" :key="i.id" class="w-full relative">
+                <div v-else class="flex flex-col">
+                    <div v-for="i in projectsShow" :key="i.id" class="w-full relative">
                         <projectListItem
                             :projectData="i"
                             @deleteThis="toggleModal"
@@ -129,6 +129,27 @@
                             @snackbar="snack"
                         />
                     </div>
+                    <button
+                        v-if="projectsShow.length != projects.length"
+                        @click="addProjects"
+                        class="
+                            ripple
+                            hover:bg-blue-600
+                            bg-primary
+                            text-white
+                            transition-colors
+                            duration-100
+                            ease-out
+                            py-2
+                            px-4
+                            rounded
+                            mt-1
+                            focus:outline-none
+                            mx-auto
+                        "
+                    >
+                        Load more projects
+                    </button>
                 </div>
             </div>
         </div>
@@ -209,6 +230,11 @@ export default {
     data() {
         return {
             projects: [],
+            projectsShow: [],
+            startIndex: 0,
+            nextIndex: 5,
+            stop: false,
+            last: false,
             modalId: '',
             modalElim: false,
             modalStd: false,
@@ -235,17 +261,20 @@ export default {
         this.getData()
     },
     methods: {
-        getPrjData() {
+        /* getPrjData() {
             this.API()
                 .get('?action=listProjects')
                 .then((res) => {
                     this.projects = res.data.values
+                    this.projectsShow.push(...this.projects.slice(this.startIndex, this.nextIndex))
+                    this.startIndex = this.nextIndex
+                    this.nextIndex += 5
                     this.loadingProjects = false
                 })
                 .catch((err) => {
                     console.error(err)
                 })
-        },
+        }, */
         getData() {
             this.API()
                 .get('?action=listProjects')
@@ -256,13 +285,30 @@ export default {
                             : this.$emit('snackbar', 'Error. ' + res.data.error)
                     } else {
                         this.projects = res.data.values
+                        this.projectsShow.push(...this.projects.slice(this.startIndex, this.nextIndex))
+                        this.startIndex = this.nextIndex
+                        this.nextIndex += 5
                         this.loadingProjects = false
                         this.loadingOther = false
                     }
                 })
                 .catch((errors) => {
-                    console.log(errors)
+                    console.error(errors)
                 })
+        },
+        addProjects() {
+            this.projectsShow.push(...this.projects.slice(this.startIndex, this.nextIndex))
+            if (this.last) {
+                this.stop = true
+            } else {
+                this.startIndex = this.nextIndex
+                if (this.nextIndex + 5 >= this.projects.length) {
+                    this.nextIndex = this.projects.length
+                    this.last = true
+                } else {
+                    this.nextIndex += 5
+                }
+            }
         },
         getProject(id) {
             this.project = this.projects.filter(function (project) {
@@ -329,7 +375,6 @@ export default {
                         this.priceData.reward = parseFloat(launch.reward)
                         this.priceData.assignment = parseInt(launch.workers)
                     }
-                    console.log(launch)
                     if (this.hitsTotal == this.hitsSubmitted) {
                         this.$emit('snackbar', 'All HITs have already been submitted', '')
                     } else {
@@ -353,13 +398,16 @@ export default {
         },
         launched(msg) {
             this.snack(msg)
+            this.projectsShow = []
+            this.startIndex -= 5
+            this.nextIndex -= 5
             this.loadingProjects = true
-            this.getPrjData()
+            this.getData() //getPrjData()
         },
         reloadAfterHIT(msg) {
             this.snack(msg)
             this.loadingProjects = true
-            this.getPrjData()
+            this.getData() //getPrjData()
         },
         snack(msg) {
             this.$emit('snackbar', msg)

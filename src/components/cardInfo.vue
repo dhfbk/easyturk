@@ -441,10 +441,38 @@
                 </button>
             </span>
         </div>
-        <div v-for="(n, i) in titles.length" :key="n" v-else class="">
-            <span class="font-bold">{{ titles[i] }}:&nbsp;</span>
-            <p class="overflow-ellipsis" v-html="data[i]"></p>
-            <hr v-if="n != titles.length" />
+        <div v-else>
+            <button
+                v-if="mode == 'behavior'"
+                :content="'Edit all'"
+                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
+                class="
+                    px-2
+                    py-1
+                    ripple
+                    bg-gray-200
+                    transition-colors
+                    duration-100
+                    ease-out
+                    hover:bg-gray-300
+                    rounded
+                    focus:outline-none
+                    float-right
+                "
+                @click="$emit('modal', 'behavior')"
+            >
+                <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
+                    <path
+                        d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+                    />
+                </svg>
+                <span class="sr-only">Edit behavior data</span>
+            </button>
+            <div v-for="(n, i) in titles.length" :key="n">
+                <span class="font-bold">{{ titles[i] }}:&nbsp;</span>
+                <p class="overflow-ellipsis" v-html="data[i]"></p>
+                <hr v-if="n != titles.length" />
+            </div>
         </div>
     </div>
 </template>
@@ -598,14 +626,18 @@ export default {
                 ]
                 this.data = [
                     this.projectData.rejectIfGoldWrong ? 'Reject' : 'Accept anyway',
-                    this.projectData.rejectReason,
-                    this.projectData.assignNumber, //?
-                    this.projectData.acceptIfGoldRight,
-                    this.projectData.rejectTime, //?
+                    this.projectData.rejectReason ? this.projectData.rejectReason : 'NULL',
+                    this.projectData.assignNumber ? this.projectData.assignNumber : 'NULL', //?
+                    this.projectData.acceptIfGoldRight
+                        ? 'True'
+                        : this.projectData.acceptIfGoldRight == false
+                        ? 'False'
+                        : 'NULL',
+                    this.projectData.rejectTime ? this.projectData.rejectTime : 'NULL', //?
                     this.projectData.block_worker_fast ? 'Block' : 'Restrict',
                     this.projectData.block_worker_bad ? 'Block' : 'Restrict',
-                    this.projectData.missNumber, //?
-                    this.projectData.missNumberTotal, //?
+                    this.projectData.missNumber ? this.projectData.missNumber : 'NULL', //?
+                    this.projectData.missNumberTotal ? this.projectData.missNumberTotal : 'NULL', //?
                     this.projectData.reject_old ? 'True' : 'False',
                 ]
                 break

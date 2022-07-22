@@ -256,9 +256,6 @@ export default {
             .concat(grad)
 
         this.colors.push(notCompCol)
-        console.log(this.colors)
-
-        //
     },
 }
 </script>

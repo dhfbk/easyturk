@@ -123,7 +123,6 @@ export default {
             this.API()
                 .get('?action=deleteProject&id=' + this.id)
                 .then(res => {
-                    console.log(res.data.result)
                     this.loading = false
                     if (res.data.result == 'ERR') {
                         res.data.error.includes('User')
@@ -140,19 +139,6 @@ export default {
                     this.$emit('deleted', 'Error: server unreachable')
                     this.loading = false
                 })
-            /*
-            $.ajax({
-                url: 'https://web.apnetwork.it/mturk/?action=deleteProject',
-                dataType: 'json',
-                data: {
-                    id: self.id,
-                },
-                method: 'post',
-                success: function(data) {
-                    console.log(data)
-                },
-            })
-            */
         },
     },
     beforeDestroy() {

@@ -137,7 +137,6 @@ export default {
             this.API()
                 .get('?action=deleteFile&id=' + this.id + '&isGold=' + this.isGold)
                 .then(res => {
-                    console.log(res.data.result)
                     this.loading = false
                     if (res.data.result == 'ERR') {
                         res.data.error.includes('User')
@@ -152,7 +151,6 @@ export default {
                             this.API()
                                 .get('?action=deleteFile&id=' + this.id + '&isGold=1')
                                 .then(res => {
-                                    console.log(res.data.result)
                                     this.loading = false
                                     if (res.data.result == 'ERR') {
                                         this.$emit('close', 'Error: ' + res.data.error)
@@ -177,21 +175,6 @@ export default {
                     this.$emit('close', 'Error: server unreachable')
                     this.loading = false
                 })
-
-            /*
-
-            $.ajax({
-                url: 'https://web.apnetwork.it/mturk/?action=deleteProject',
-                dataType: 'json',
-                data: {
-                    id: self.id,
-                },
-                method: 'post',
-                success: function(data) {
-                    console.log(data)
-                },
-            })
-            */
         },
     },
     beforeDestroy() {

@@ -1036,7 +1036,6 @@ export default {
     },
     methods: {
         add(country) {
-            //console.log(country)
             if (this.tmp.length > 0) {
                 this.selected.push(country)
                 this.selectedCodes.push(country.cca2)
@@ -1047,7 +1046,6 @@ export default {
             }
         },
         deleteSelected(country) {
-            console.log(country)
             var index = this.selected.indexOf(country)
             this.selected.splice(index, 1)
             var index1 = this.selectedCodes.indexOf(country.cca2)
@@ -1171,7 +1169,6 @@ export default {
         caricaProgetto() {
             this.$v.$touch()
             if (!this.$v.$invalid) {
-                console.log('ok')
                 this.loading = true
                 this.parseNumbers()
                 this.elaboraTempo('max_time')
@@ -1205,7 +1202,6 @@ export default {
                     )
                     .then((response) => {
                         this.loading = false
-                        console.log(response.data)
                         if (response.data.result == 'OK') {
                             console.log('Inserimento avvenuto')
                             var msg
@@ -1216,7 +1212,7 @@ export default {
                             }
                             this.$router.push({ path: '/', name: 'Home' })
                         } else {
-                            console.log('Errore')
+                            console.error('Errore')
                             msg = 'Error. Try Again: ' + response.data.error
                         }
                         this.emitSnackbar(msg)

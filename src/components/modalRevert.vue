@@ -140,7 +140,6 @@ export default {
                         this.$emit('reverted', 'Project succesfully reverted.')
                         this.toggleModal('close')
                     }
-                    console.log(res.data.result)
                 })
                 .catch(() => {
                     this.$emit('error', 'Error: server unreacheable')

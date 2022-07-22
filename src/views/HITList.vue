@@ -159,10 +159,6 @@ export default {
 
                             this.sortedData = arrComp.concat(arrNotComp).concat(arrNotTou)
 
-                            console.log(this.sortedData)
-
-                            //
-
                             this.loading = false
                         }
                     })

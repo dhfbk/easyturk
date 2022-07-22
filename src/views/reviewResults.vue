@@ -170,7 +170,6 @@ export default {
             } else {
                 this.data = this.results
             }
-            // console.log(x)
 
             this.page = 0
             this.current = []

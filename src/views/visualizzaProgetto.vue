@@ -1,8 +1,8 @@
 <template>
     <div class="relative lg:w-5/6 pt-2 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
-        <modalEliminazione v-if="modalElim" @deleteModal="toggleModal('delete')" @deleted="deleted" :id="id" />
+        <modalEliminazione v-if="modal.elim" @deleteModal="toggleModal('delete')" @deleted="deleted" :id="id" />
         <modalUpload
-            v-if="modalStd"
+            v-if="modal.std"
             :type="'std'"
             :id="id"
             @uploadModal="toggleModal('std')"
@@ -10,41 +10,48 @@
             @snackbar="snack"
         />
         <modalUpload
-            v-if="modalGld"
+            v-if="modal.gld"
             :type="'gld'"
             :id="id"
             @uploadModal="toggleModal('gld')"
             @uploaded="uploaded"
             @snackbar="snack"
         />
+        <modalEditBehavior
+            v-if="modal.behavior"
+            :project="project"
+            @close="toggleModal('behavior')"
+            @snackbar="uploaded"
+            @snackbarErr="snack"
+        />
         <modalHIT
-            v-if="modalHIT"
+            v-if="modal.HIT"
             :id="id"
             :baseDataStatus="project.numData"
             :goldDataStatus="project.numGold"
             :params="project.params"
-            @hitModal="toggleModal('hit')"
+            @hitModal="toggleModal('HIT')"
             @hitCreated="uploaded"
             @snackbar="snack"
         />
         <modalRevert
-            v-if="modalRevert"
+            v-if="modal.revert"
             :id="id"
             :toStatus="project.status - 1"
             @revertModal="toggleModal('revert')"
             @reverted="uploaded"
         />
         <modalLayout
-            v-if="modalLayout"
+            v-if="modal.layout"
             :project="project"
             @layoutSet="uploaded"
             @layoutModal="toggleModal('layout')"
             @snackbar="uploaded"
             @snackbarErr="snack"
         />
-        <modalInstructions v-if="modalInstructions" :status="project.status" @modal="toggleModal('instructions')" />
+        <modalInstructions v-if="modal.instructions" :status="project.status" @modal="toggleModal('instructions')" />
         <modalLaunch
-            v-if="modalLaunch"
+            v-if="modal.launch"
             :id="id"
             :hitsSubmitted="hitsSubmitted"
             :hitsTotal="hitsTotal"
@@ -58,7 +65,7 @@
             :isGold="isGold"
             :id="id"
             @close="uploaded"
-            v-if="modalCsvElim"
+            v-if="modal.csvElim"
             @deleteModal="toggleModal"
             :goldUploaded="goldUploaded"
         />
@@ -77,7 +84,7 @@
             <p v-if="!loading" class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">
                 {{ project.name }}
             </p>
-            <div class="xs2:w-auto w-full flex relative justify-end content-center items-center float-right">
+            <div class="xs2:w-auto w-full flex relative justify-end content-center items-center float-right gap-x-1">
                 <button
                     v-if="project.status == 3 && !loading"
                     @click="toggleModal('launch')"
@@ -86,7 +93,7 @@
                     type="submit"
                     :class="{ 'cursor-not-allowed': hitsSubmitted == hitsTotal }"
                     class="
-                        md:block md:mr-2
+                        md:block
                         ripple
                         transition-colors
                         ease-out
@@ -119,7 +126,7 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        md:block md:mr-2
+                        md:block
                         ripple
                         bg-primary
                         transition-colors
@@ -152,7 +159,7 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        md:block md:mr-2
+                        md:block
                         ripple
                         bg-primary
                         transition-colors
@@ -186,7 +193,7 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        md:block md:mr-2
+                        md:block
                         ripple
                         bg-primary
                         transition-colors
@@ -221,7 +228,6 @@
                     :content="'Revert HIT settings'"
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
-                    :class="project.status == 3 ? 'md:mr-0' : 'md:mr-2'"
                     class="
                         md:block
                         ripple
@@ -254,7 +260,7 @@
                     v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                     type="submit"
                     class="
-                        md:block md:mr-2
+                        md:block
                         ripple
                         transition-colors
                         duration-100
@@ -573,7 +579,8 @@
                     <cardInfo :projectData="project" :mode="'general'" />
                     <cardInfo :projectData="project" :mode="'projectTable'" v-if="project.status == 3" />
                     <cardInfo :projectData="project" :mode="'csv'" @modal="toggleModal" />
-                    <cardInfo v-if="project.status > 0" :projectData="project" :mode="'hits'" />
+                    <cardInfo :projectData="project" :mode="'layout'" />
+                    <cardInfo :projectData="project" :mode="'behavior'" @modal="toggleModal" />
                 </div>
             </div>
             <div class="ml-0 xs2:ml-1">
@@ -582,7 +589,7 @@
                 </div>
                 <div v-else>
                     <cardInfo :projectData="project" :mode="'status'" @modal="toggleModal" />
-                    <cardInfo :projectData="project" :mode="'layout'" />
+                    <cardInfo v-if="project.status > 0" :projectData="project" :mode="'hits'" />
                     <cardInfo :projectData="project" :mode="'payment'" />
                     <cardInfo :projectData="project" :mode="'qualifications'" />
                     <!--
@@ -606,6 +613,7 @@ import modalHIT from '../components/modalHIT.vue'
 import modalRevert from '../components/modalRevert.vue'
 import modalLayout from '../components/modalLayout.vue'
 import modalLaunch from '../components/modalLaunch.vue'
+import modalEditBehavior from '../components/modalEditBehavior.vue'
 import loader from '../components/loader.vue'
 import modalInstructions from '../components/modalInstructions.vue'
 import modalCsvEliminazione from '../components/modalCsvEliminazione.vue'
@@ -615,6 +623,7 @@ export default {
     name: 'visualizzaProgetto',
     components: {
         modalEliminazione,
+        modalEditBehavior,
         cardInfo,
         //cardAnalytics,
         modalUpload,
@@ -634,15 +643,18 @@ export default {
         return {
             id: '',
             dropdownOpen: false,
-            modalElim: false,
-            modalStd: false,
-            modalGld: false,
-            modalRevert: false,
-            modalHIT: false,
-            modalLayout: false,
-            modalInstructions: false,
-            modalLaunch: false,
-            modalCsvElim: false,
+            modal: {
+                elim: false,
+                std: false,
+                gld: false,
+                revert: false,
+                HIT: false,
+                layout: false,
+                behavior: false,
+                instructions: false,
+                launch: false,
+                csvElim: false,
+            },
             loading: true,
             project: [],
             hitsSubmitted: 0,
@@ -659,8 +671,6 @@ export default {
     },
     created() {
         this.getDatiPrj()
-
-        //console.log(this.priceData)
     },
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
@@ -734,7 +744,7 @@ export default {
                                 this.totalProjected =
                                     (this.project.hits_total - this.project.hits_inserted) * this.project.workers
                             }
-                            if (this.project.status > 1){
+                            if (this.project.status > 1) {
                                 this.layoutData = res.data.values.hit_details
                             }
                             this.loading = false
@@ -752,41 +762,32 @@ export default {
             })
         },
         toggleModal(mode) {
-            if (mode == 'delete') {
-                this.modalElim = !this.modalElim
-            } else if (mode == 'std') {
-                this.modalStd = !this.modalStd
-            } else if (mode == 'gld') {
+            if (mode == 'gld') {
                 if (this.project.numData == 0) {
                     this.$emit('snackbar', 'Warning. To upload the gold CSV, you first have to uplaod the standard.')
-                } else {
-                    this.modalGld = !this.modalGld
+                    return
                 }
-            } else if (mode == 'revert') {
-                this.modalRevert = !this.modalRevert
             } else if (mode == 'hit') {
                 if (this.project.numData == 0) {
                     this.$emit('snackbar', 'Warning. To create the HITs, you first have to upload CSV data.')
-                } else {
-                    this.modalHIT = !this.modalHIT
+                    return
                 }
-            } else if (mode == 'layout') {
-                this.modalLayout = !this.modalLayout
-            } else if (mode == 'instructions') {
-                this.modalInstructions = !this.modalInstructions
             } else if (mode == 'deleteGld') {
                 this.isGold = 1
-                this.modalCsvElim = !this.modalCsvElim
+                mode = 'csvElim'
             } else if (mode == 'deleteStd') {
                 this.isGold = 0
-                this.modalCsvElim = !this.modalCsvElim
+                mode = 'csvElim'
             } else if (mode == 'launch') {
                 if (this.hitsSubmitted == this.hitsTotal) {
                     this.$emit('snackbar', 'All HITs have already been submitted', '')
-                } else {
-                    this.modalLaunch = !this.modalLaunch
+                    return
                 }
             }
+            this.modal[mode] = !this.modal[mode]
+            this.modal[mode]
+                ? window.removeEventListener('keydown', this.keyboardEvent)
+                : window.addEventListener('keydown', this.keyboardEvent)
             this.hide()
         },
         //for when an action gets completed (success or error)
@@ -821,71 +822,6 @@ export default {
         hide() {
             if (this.dropdownOpen) {
                 this.dropdownOpen = false
-            }
-        },
-    },
-    watch: {
-        modalElim() {
-            if (this.modalElim) {
-                window.removeEventListener('keydown', this.keyboardEvent)
-            } else {
-                window.addEventListener('keydown', this.keyboardEvent)
-            }
-        },
-        modalStd() {
-            if (this.modalStd) {
-                window.removeEventListener('keydown', this.keyboardEvent)
-            } else {
-                window.addEventListener('keydown', this.keyboardEvent)
-            }
-        },
-        modalGld() {
-            if (this.modalGld) {
-                window.removeEventListener('keydown', this.keyboardEvent)
-            } else {
-                window.addEventListener('keydown', this.keyboardEvent)
-            }
-        },
-        modalRevert() {
-            if (this.modalRevert) {
-                window.removeEventListener('keydown', this.keyboardEvent)
-            } else {
-                window.addEventListener('keydown', this.keyboardEvent)
-            }
-        },
-        modalHIT() {
-            if (this.modalHIT) {
-                window.removeEventListener('keydown', this.keyboardEvent)
-            } else {
-                window.addEventListener('keydown', this.keyboardEvent)
-            }
-        },
-        modalLayout() {
-            if (this.modalLayout) {
-                window.removeEventListener('keydown', this.keyboardEvent)
-            } else {
-                window.addEventListener('keydown', this.keyboardEvent)
-            }
-        },
-        modalInstructions() {
-            if (this.modalInstructions) {
-                window.removeEventListener('keydown', this.keyboardEvent)
-            } else {
-                window.addEventListener('keydown', this.keyboardEvent)
-            }
-        },
-        modalLaunch() {
-            if (this.modalLaunch) {
-                window.removeEventListener('keydown', this.keyboardEvent)
-            } else {
-                window.addEventListener('keydown', this.keyboardEvent)
-            }
-        },
-        modalCsvElim() {
-            if (this.modalCsvElim) {
-                window.removeEventListener('keydown', this.keyboardEvent)
-            } else {
-                window.addEventListener('keydown', this.keyboardEvent)
             }
         },
     },
