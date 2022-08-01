@@ -39,6 +39,8 @@
                     </div>
                     <thirdPart
                         :thirdPartData="thirdPartData"
+                        :min="min.assignNumber"
+                        :started="true"
                         @updateArr="updateArr"
                         :isGold="parseInt(project.count_gold)"
                         :v="$v"
@@ -59,6 +61,7 @@
                                 rounded
                                 focus:outline-none
                             "
+                            @click="submit()"
                         >
                             <svg
                                 :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
@@ -111,19 +114,35 @@ export default {
             loading: false,
             thirdPartData: {
                 //prendere dati dal project
-                assignNumber: parseInt(this.project.workers),
-                rejectReason: this.$store.state.defaults.reject_reason,
-                rejectTime: this.$store.state.defaults.min_time_block,
-                missNumberTotal: 10,
-                missNumber: 3,
-                acceptIfGoldRight: 0,
-                blockMisclass: 1,
-                blockSeconds: 1,
-                block_worker_bad: 0,
-                block_worker_fast: 0,
-                rejectIfGoldWrong: 0,
-                rejectPay: 1,
-                reject_old: 0,
+                assignNumber: this.project.hit_details.assignNumber
+                    ? this.project.hit_details.assignNumber
+                    : parseInt(this.project.workers),
+                rejectReason: this.project.hit_details.rejectReason
+                    ? this.project.hit_details.rejectReason
+                    : this.$store.state.defaults.reject_reason,
+                rejectTime: this.project.hit_details.rejectTime
+                    ? this.project.hit_details.rejectTime
+                    : this.$store.state.defaults.min_time_block,
+                missNumberTotal: this.project.hit_details.missNumberTotal
+                    ? this.project.hit_details.missNumberTotal
+                    : 10,
+                missNumber: this.project.hit_details.missNumber ? this.project.hit_details.missNumber : 3,
+                acceptIfGoldRight: this.project.hit_details.acceptIfGoldRight
+                    ? this.project.hit_details.acceptIfGoldRight
+                    : 0,
+                blockMisclass: this.project.hit_details.blockMisclass ? this.project.hit_details.blockMisclass : 1,
+                blockSeconds: this.project.hit_details.blockSeconds ? this.project.hit_details.blockSeconds : 1,
+                block_worker_bad: this.project.hit_details.block_worker_bad
+                    ? this.project.hit_details.block_worker_bad
+                    : 0,
+                block_worker_fast: this.project.hit_details.block_worker_fast
+                    ? this.project.hit_details.block_worker_fast
+                    : 0,
+                rejectIfGoldWrong: this.project.hit_details.rejectIfGoldWrong
+                    ? this.project.hit_details.rejectIfGoldWrong
+                    : 0,
+                rejectPay: this.project.hit_details.rejectPay ? this.project.hit_details.rejectPay : 1,
+                reject_old: this.project.hit_details.reject_old ? this.project.hit_details.reject_old : 0,
             },
             min: {
                 assignNumber: parseInt(this.project.workers),
@@ -158,10 +177,6 @@ export default {
         }
     },
     setup: () => ({ $v: useVuelidate() }),
-    created() {
-        console.log(this.project)
-        //assegna dati dal project a thirdpart oppure fare in data direttamente
-    },
     mounted() {
         window.addEventListener('keydown', this.keyboardEvent)
         document.getElementById('modal').focus()
@@ -184,23 +199,22 @@ export default {
                 var url = '?action=updateBehavior'
                 var dataToSend = {
                     id: this.project.id,
-                    behaviorData: this.thirdPartData,
                 }
-                dataToSend = { ...dataToSend }
+                dataToSend = { ...dataToSend, ...this.thirdPartData }
                 this.API()
                     .post(url, dataToSend, { 'Content-Type': 'application/x-www-form-urlencoded' })
-                    .then((response) => {
+                    .then(response => {
                         this.loading = false
                         if (response.data.result == 'ERR') {
                             response.data.error.includes('User')
                                 ? this.$emit('snackbar', 'Error: ' + response.data.error + '.')
                                 : this.$emit('snackbar', 'Error: ' + response.data.error)
                         } else {
-                            this.toggleModal()
-                            this.$emit('layoutSet', 'Layout successfully set.')
+                            this.close()
+                            this.$emit('snackbar', 'Layout edit succesful.')
                         }
                     })
-                    .catch((err) => {
+                    .catch(err => {
                         this.$emit('snackbar', 'Error: server unreacheable')
                         console.error(err)
                         this.loading = false

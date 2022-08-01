@@ -61,6 +61,7 @@
                     <thirdPart
                         :thirdPartData="thirdPartData"
                         @updateArr="updateArr"
+                        :min="min.assignNumber"
                         :isGold="parseInt(project.count_gold)"
                         :v="$v"
                     />
@@ -248,6 +249,7 @@ export default {
                             response.data.error.includes('User')
                                 ? this.$emit('snackbar', 'Error: ' + response.data.error + '.')
                                 : this.$emit('snackbar', 'Error: ' + response.data.error)
+                            console.error(response.data.error)
                         } else {
                             this.toggleModal()
                             this.$emit('layoutSet', 'Layout successfully set.')

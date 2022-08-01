@@ -62,7 +62,7 @@
                                     hover:border-blue-500
                                 "
                                 id="selectorExpiry"
-                                v-model="rejectPay"
+                                v-model.number="rejectPay"
                             >
                                 <option selected value="1">Reject</option>
                                 <option value="0">Accept anyway</option>
@@ -78,9 +78,15 @@
                         if gold is wrong and extend HIT to
                         <input
                             :class="
-                                (!reject || isGold == 0
-                                    ? 'text-gray-800 cursor-not-allowed ' + (v.thirdPartData.assignNumber.$invalid ? 'border-red-400 bg-red-400 hover:border-red-500': 'bg-gray-400')
-                                    : 'text-gray-700 ' + (v.thirdPartData.assignNumber.$invalid ? 'border-red-200 bg-red-100 hover:border-red-500': 'bg-gray-100'))
+                                !reject || isGold == 0
+                                    ? 'text-gray-800 cursor-not-allowed ' +
+                                      (v.thirdPartData.assignNumber.$invalid
+                                          ? 'border-red-400 bg-red-400 hover:border-red-500'
+                                          : 'bg-gray-400')
+                                    : 'text-gray-700 ' +
+                                      (v.thirdPartData.assignNumber.$invalid
+                                          ? 'border-red-200 bg-red-100 hover:border-red-500'
+                                          : 'bg-gray-100')
                             "
                             :disabled="!reject || isGold == 0"
                             class="
@@ -237,7 +243,7 @@
                                     hover:border-blue-500
                                 "
                                 id="selectorExpiry"
-                                v-model="blockSeconds"
+                                v-model.number="blockSeconds"
                             >
                                 <option selected value="1">Block</option>
                                 <option value="0">Restrict</option>
@@ -253,9 +259,15 @@
                         the worker if he/she spends less than
                         <input
                             :class="
-                                (!block_worker_fast || isGold == 0
-                                    ? 'text-gray-800 cursor-not-allowed ' + (v.thirdPartData.rejectTime.$invalid ? 'border-red-400 bg-red-400 hover:border-red-500': 'bg-gray-400')
-                                    : 'text-gray-700 ' + (v.thirdPartData.rejectTime.$invalid ? 'border-red-200 bg-red-100 hover:border-red-500': 'bg-gray-100'))
+                                !block_worker_fast || isGold == 0
+                                    ? 'text-gray-800 cursor-not-allowed ' +
+                                      (v.thirdPartData.rejectTime.$invalid
+                                          ? 'border-red-400 bg-red-400 hover:border-red-500'
+                                          : 'bg-gray-400')
+                                    : 'text-gray-700 ' +
+                                      (v.thirdPartData.rejectTime.$invalid
+                                          ? 'border-red-200 bg-red-100 hover:border-red-500'
+                                          : 'bg-gray-100')
                             "
                             :disabled="!block_worker_fast || isGold == 0"
                             class="
@@ -282,7 +294,7 @@
                             required
                             v-model.number="rejectTime"
                         />
-                        seconds on a HIT.
+                        seconds on a HIT
                     </label>
                 </span>
 
@@ -343,7 +355,7 @@
                                     hover:border-blue-500
                                 "
                                 id="selectorExpiry"
-                                v-model="blockMisclass"
+                                v-model.number="blockMisclass"
                             >
                                 <option selected value="1">Block</option>
                                 <option value="0">Restrict</option>
@@ -359,9 +371,15 @@
                         the worker if he/she misclassifies the gold
                         <input
                             :class="
-                                (!block_worker_bad || isGold == 0
-                                    ? 'text-gray-800 cursor-not-allowed ' + (v.thirdPartData.missNumber.$invalid ? 'border-red-400 bg-red-400 hover:border-red-500': 'bg-gray-400')
-                                    : 'text-gray-700 ' + (v.thirdPartData.missNumber.$invalid ? 'border-red-200 bg-red-100 hover:border-red-500': 'bg-gray-100'))
+                                !block_worker_bad || isGold == 0
+                                    ? 'text-gray-800 cursor-not-allowed ' +
+                                      (v.thirdPartData.missNumber.$invalid
+                                          ? 'border-red-400 bg-red-400 hover:border-red-500'
+                                          : 'bg-gray-400')
+                                    : 'text-gray-700 ' +
+                                      (v.thirdPartData.missNumber.$invalid
+                                          ? 'border-red-200 bg-red-100 hover:border-red-500'
+                                          : 'bg-gray-100')
                             "
                             :disabled="!block_worker_bad || isGold == 0"
                             class="
@@ -392,9 +410,15 @@
                         times on
                         <input
                             :class="
-                                (!block_worker_bad || isGold == 0
-                                    ? 'text-gray-800 cursor-not-allowed ' + (v.thirdPartData.missNumberTotal.$invalid ? 'border-red-400 bg-red-400 hover:border-red-500': 'bg-gray-400')
-                                    : 'text-gray-700 ' + (v.thirdPartData.missNumberTotal.$invalid ? 'border-red-200 bg-red-100 hover:border-red-500': 'bg-gray-100'))
+                                !block_worker_bad || isGold == 0
+                                    ? 'text-gray-800 cursor-not-allowed ' +
+                                      (v.thirdPartData.missNumberTotal.$invalid
+                                          ? 'border-red-400 bg-red-400 hover:border-red-500'
+                                          : 'bg-gray-400')
+                                    : 'text-gray-700 ' +
+                                      (v.thirdPartData.missNumberTotal.$invalid
+                                          ? 'border-red-200 bg-red-100 hover:border-red-500'
+                                          : 'bg-gray-100')
                             "
                             :disabled="!block_worker_bad || isGold == 0"
                             class="
@@ -421,7 +445,7 @@
                             required
                             v-model.number="missNumberTotal"
                         />
-                        consecutive HITs.
+                        consecutive HITs
                     </label>
                 </span>
 
@@ -472,6 +496,8 @@ export default {
     props: {
         thirdPartData: Object,
         isGold: Number,
+        started: Boolean,
+        min: Number,
         v: Object,
     },
     data() {
@@ -486,22 +512,35 @@ export default {
             missNumber: this.thirdPartData.missNumber,
             reject_old: false,
             dataReturn: {},
-            min: this.thirdPartData.assignNumber,
             rejectPay: 1,
             blockSeconds: 1,
             blockMisclass: 1,
         }
     },
     created() {
-        // Leave here to update the values in modalLayout
+        if (this.started) {
+            this.reject = this.boolToInt(this.thirdPartData.rejectIfGoldWrong)
+            this.accept = this.boolToInt(this.thirdPartData.acceptIfGoldRight)
+            this.v.thirdPartData.rejectReason.$model = this.thirdPartData.rejectReason
+            this.assignNumber = this.thirdPartData.assignNumber
+
+            this.block_worker_fast = this.boolToInt(this.thirdPartData.block_worker_fast)
+            this.rejectTime = this.thirdPartData.rejectTime
+            this.block_worker_bad = this.boolToInt(this.thirdPartData.block_worker_bad)
+            this.missNumberTotal = this.thirdPartData.missNumberTotal
+            this.missNumber = this.thirdPartData.missNumber
+
+            this.reject_old = this.boolToInt(this.thirdPartData.reject_old)
+
+            this.rejectPay = this.boolToInt(this.thirdPartData.rejectPay)
+            this.blockSeconds = this.boolToInt(this.thirdPartData.blockSeconds)
+            this.blockMisclass = this.boolToInt(this.thirdPartData.blockMisclass)
+        }
         this.update()
     },
     methods: {
         boolToInt(i) {
             return i == false ? 0 : 1
-        },
-        strToInt(i) {
-            return i == '1' || i == 1 ? 1 : 0
         },
         update() {
             this.dataReturn['rejectIfGoldWrong'] = this.boolToInt(this.reject)
@@ -518,9 +557,9 @@ export default {
 
             this.dataReturn['reject_old'] = this.boolToInt(this.reject_old)
 
-            this.dataReturn['rejectPay'] = this.strToInt(this.rejectPay)
-            this.dataReturn['blockSeconds'] = this.strToInt(this.blockSeconds)
-            this.dataReturn['blockMisclass'] = this.strToInt(this.blockMisclass)
+            this.dataReturn['rejectPay'] = this.rejectPay
+            this.dataReturn['blockSeconds'] = this.blockSeconds
+            this.dataReturn['blockMisclass'] = this.blockMisclass
 
             this.$emit('updateArr', ['third', this.dataReturn])
         },

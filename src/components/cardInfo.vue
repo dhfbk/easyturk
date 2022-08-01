@@ -441,11 +441,12 @@
                 </button>
             </span>
         </div>
-        <div v-else>
+        <div v-else-if="mode == 'behavior'">
+            <div v-for="(n, i) in data.length" :key="i">
+                <p v-if="data[i]" class="overflow-ellipsis" v-html="data[i]"></p>
+                <hr v-if="n != data.length && data[n]" />
+            </div>
             <button
-                v-if="mode == 'behavior'"
-                :content="'Edit all'"
-                v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                 class="
                     px-2
                     py-1
@@ -461,13 +462,11 @@
                 "
                 @click="$emit('modal', 'behavior')"
             >
-                <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
-                    <path
-                        d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
-                    />
-                </svg>
-                <span class="sr-only">Edit behavior data</span>
+                Edit behavior
             </button>
+            <div class="clear-both"></div>
+        </div>
+        <div v-else>
             <div v-for="(n, i) in titles.length" :key="n">
                 <span class="font-bold">{{ titles[i] }}:&nbsp;</span>
                 <p class="overflow-ellipsis" v-html="data[i]"></p>
@@ -612,33 +611,41 @@ export default {
                 ]
                 break
             case 'behavior':
-                this.titles = [
-                    'If gold is wrong',
-                    'Reject reason',
-                    'HIT extended assignments',
-                    'Automatically accept if gold is right',
-                    'Minimum seconds on a HIT',
-                    'If the worker is too quick',
-                    'If the worker misclassifies too much',
-                    'Maximum gold misclassifications',
-                    'Consecutive gold misclassifications',
-                    'Reject pending assignments from blocked/restricted users',
-                ]
                 this.data = [
-                    this.projectData.rejectIfGoldWrong ? 'Reject' : 'Accept anyway',
-                    this.projectData.rejectReason ? this.projectData.rejectReason : 'NULL',
-                    this.projectData.assignNumber ? this.projectData.assignNumber : 'NULL', //?
-                    this.projectData.acceptIfGoldRight
-                        ? 'True'
-                        : this.projectData.acceptIfGoldRight == false
-                        ? 'False'
-                        : 'NULL',
-                    this.projectData.rejectTime ? this.projectData.rejectTime : 'NULL', //?
-                    this.projectData.block_worker_fast ? 'Block' : 'Restrict',
-                    this.projectData.block_worker_bad ? 'Block' : 'Restrict',
-                    this.projectData.missNumber ? this.projectData.missNumber : 'NULL', //?
-                    this.projectData.missNumberTotal ? this.projectData.missNumberTotal : 'NULL', //?
-                    this.projectData.reject_old ? 'True' : 'False',
+                    this.projectData.hit_details.rejectIfGoldWrong
+                        ? '<span class="font-bold">' +
+                          (this.projectData.hit_details.rejectIfGoldWrong ? 'Reject' : 'Accept anyway') +
+                          '</span>' +
+                          ' if gold is wrong and extend HIT to <span class="font-bold">' +
+                          this.projectData.hit_details.assignNumber +
+                          '</span> assignments (min ' +
+                          this.projectData.workers +
+                          '). Reason of reject: <span class="font-bold">' +
+                          this.projectData.hit_details.rejectReason +
+                          '</span>'
+                        : null,
+                    this.projectData.hit_details.acceptIfGoldRight ? 'Automatically accept if gold is right' : null,
+                    this.projectData.hit_details.block_worker_fast
+                        ? '<span class="font-bold">' +
+                          (this.projectData.hit_details.block_worker_fast ? 'Block' : 'Reject') +
+                          '</span>' +
+                          ' the worker if he/she spends less than <span class="font-bold">' +
+                          this.projectData.hit_details.rejectTime +
+                          '</span> seconds on a HIT'
+                        : null,
+                    this.projectData.hit_details.block_worker_bad
+                        ? '<span class="font-bold">' +
+                          (this.projectData.hit_details.block_worker_bad ? 'Block' : 'Reject') +
+                          '</span>' +
+                          ' the worker if he/she misclassifies the gold <span class="font-bold">' +
+                          this.projectData.hit_details.missNumber +
+                          '</span> times on <span class="font-bold">' +
+                          this.projectData.hit_details.missNumberTotal +
+                          '</span> consecutive HITs'
+                        : null,
+                    this.projectData.hit_details.reject_old
+                        ? 'Reject pending assignments from blocked/restricted users'
+                        : null,
                 ]
                 break
         }
