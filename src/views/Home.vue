@@ -144,7 +144,7 @@
                             px-4
                             rounded
                             mt-1
-                            focus:outline-none
+                            
                             mx-auto
                         "
                     >

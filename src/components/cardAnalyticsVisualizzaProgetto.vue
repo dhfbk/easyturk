@@ -48,7 +48,7 @@
                             rounded
                             h-10
                             w-10
-                            focus:outline-none
+                            
                             flex
                             items-center
                             justify-center
@@ -107,7 +107,7 @@
                         ease-out
                         border-2 border-solid border-primary
                         hover:text-white
-                        focus:outline-none
+                        
                         h-full
                     "
                 >

@@ -27,7 +27,7 @@
                                     ease-out
                                     hover:bg-gray-300
                                     rounded
-                                    focus:outline-none
+                                    
                                 "
                                 @click="
                                     $router.push({
@@ -52,7 +52,7 @@
                                     rounded
                                     h-10
                                     w-10
-                                    focus:outline-none
+                                    
                                     flex
                                     items-center
                                     justify-center
@@ -82,7 +82,7 @@
                                     rounded
                                     h-10
                                     w-10
-                                    focus:outline-none
+                                    
                                     flex
                                     items-center
                                     justify-center
@@ -120,7 +120,7 @@
                                     rounded
                                     h-10
                                     w-10
-                                    focus:outline-none
+                                    
                                     flex
                                     items-center
                                     justify-center
@@ -164,7 +164,7 @@
                                     ease-out
                                     hover:bg-gray-300
                                     rounded
-                                    focus:outline-none
+                                    
                                 "
                                 @click="
                                     $router.push({
@@ -189,7 +189,7 @@
                                     rounded
                                     h-10
                                     w-10
-                                    focus:outline-none
+                                    
                                     flex
                                     items-center
                                     justify-center
@@ -218,7 +218,7 @@
                                     rounded
                                     h-10
                                     w-10
-                                    focus:outline-none
+                                    
                                     flex
                                     items-center
                                     justify-center
@@ -267,7 +267,7 @@
                                     rounded
                                     h-10
                                     w-10
-                                    focus:outline-none
+                                    
                                     flex
                                     items-center
                                     justify-center
@@ -430,7 +430,7 @@
                         bg-gray-200
                         hover:bg-gray-300
                         rounded
-                        focus:outline-none
+                        
                         transition-colors
                         duration-100
                         ease-out
@@ -457,7 +457,7 @@
                     ease-out
                     hover:bg-gray-300
                     rounded
-                    focus:outline-none
+                    
                     float-right
                 "
                 @click="$emit('modal', 'behavior')"
@@ -548,7 +548,7 @@ export default {
                             this.projectData.expiry +
                             "<button :content='Edit expiry' v-tippy='" +
                             "{ placement: 'bottom', arrow: false, theme: 'google' }" +
-                            "' class='ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10 focus:outline-none flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button>",
+                            "' class='ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button>",
                         this.time(parseInt(this.projectData.auto_approve)),
                         this.projectData.hit_group_id,
                     ]

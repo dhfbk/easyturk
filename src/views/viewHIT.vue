@@ -6,7 +6,7 @@
                 @click="$router.push({ name: 'HITlist', params: { projectId: $route.params.projectId } })"
                 :content="'Back'"
                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                class="rounded ripple bg-transparent hover:bg-gray-300 p-2 focus:outline-none"
+                class="rounded ripple bg-transparent hover:bg-gray-300 p-2 "
             >
                 <svg class="inline" style="width: 24px; height: 24px" viewBox="0 0 24 24">
                     <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
@@ -21,7 +21,7 @@
                 <span class="tooltip hidden md:block relative md:mr-2">
                     <button
                         type="submit"
-                        class="ripple bg-primary transition duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white focus:outline-none"
+                        class="ripple bg-primary transition duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded-md text-white "
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -40,7 +40,7 @@
                     <button
                         @click="$router.push({ name: 'edit', params: { projectId: id } })"
                         type="submit"
-                        class="ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white focus:outline-none"
+                        class="ripple transition duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded-md border-2 border-solid border-primary hover:text-white "
                     >
                         <svg style="width:24px;" class="fill-current" viewBox="0 0 24 24">
                             <path
@@ -58,7 +58,7 @@
                 <button
                     @click="dropdownOpen = !dropdownOpen"
                     v-click-outside="hide"
-                    class="md:hidden ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-100 ease-out border-2 border-solid border-primary hover:text-white focus:outline-none"
+                    class="md:hidden ripple hover:bg-primary flex flex-row items-center py-2 px-2 bg-transparent rounded-md transition duration-100 ease-out border-2 border-solid border-primary hover:text-white "
                 >
                     <svg
                         class="transition duration-100 ease-out fill-current"

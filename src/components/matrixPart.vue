@@ -16,7 +16,7 @@
                         transform
                         hover:-translate-y-0.5 hover:shadow-focus
                         cursor-pointer
-                        focus:outline-none
+                        
                     "
                     :style="{ background: color }"
                     :class="hoveringFull ? 'shadow-focus' : ''"

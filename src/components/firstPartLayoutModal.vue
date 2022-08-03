@@ -36,7 +36,7 @@
                         transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none
+                        
                     "
                     name="sortBy"
                     type="text"
@@ -105,7 +105,7 @@
                         transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-blue-500
+                         focus:border-blue-500
                         hover:border-blue-500
                     "
                     id="value"
@@ -146,7 +146,7 @@
                             transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-blue-500
+                             focus:border-blue-500
                             hover:border-blue-500
                         "
                         id="selectFrom"

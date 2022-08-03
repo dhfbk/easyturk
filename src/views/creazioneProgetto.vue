@@ -29,7 +29,7 @@
                         transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-blue-500
+                         focus:border-blue-500
                         hover:border-blue-500
                     "
                     id="name"
@@ -64,7 +64,7 @@
                         transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-blue-500
+                         focus:border-blue-500
                         hover:border-blue-500
                     "
                     id="title"
@@ -102,7 +102,7 @@
                         transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-blue-500
+                         focus:border-blue-500
                         hover:border-blue-500
                     "
                     id="keywords"
@@ -142,7 +142,7 @@
                             rounded
                             py-2
                             px-4
-                            focus:outline-none
+                            
                         "
                         id="description"
                         @focus="hoverDesc = true"
@@ -186,7 +186,7 @@
                             transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-blue-500
+                             focus:border-blue-500
                             hover:border-blue-500
                         "
                         id="reward"
@@ -228,7 +228,7 @@
                             transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-blue-500
+                             focus:border-blue-500
                             hover:border-blue-500
                         "
                         id="workers"
@@ -272,7 +272,7 @@
                                 transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-blue-500
+                                 focus:border-blue-500
                                 hover:border-blue-500
                             "
                             id="maxTime"
@@ -305,7 +305,7 @@
                                     transition-colors
                                     duration-150
                                     ease-out
-                                    focus:outline-none focus:border-blue-500
+                                     focus:border-blue-500
                                     hover:border-blue-500
                                 "
                                 id="selectorMaxTime"
@@ -356,7 +356,7 @@
                                 transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-blue-500
+                                 focus:border-blue-500
                                 hover:border-blue-500
                             "
                             id="expiry"
@@ -388,7 +388,7 @@
                                     transition-colors
                                     duration-150
                                     ease-out
-                                    focus:outline-none focus:border-blue-500
+                                     focus:border-blue-500
                                     hover:border-blue-500
                                 "
                                 id="selectorExpiry"
@@ -439,7 +439,7 @@
                                 transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-blue-500
+                                 focus:border-blue-500
                                 hover:border-blue-500
                             "
                             id="autoApproval"
@@ -471,7 +471,7 @@
                                     transition-colors
                                     duration-150
                                     ease-out
-                                    focus:outline-none focus:border-blue-500
+                                     focus:border-blue-500
                                     hover:border-blue-500
                                 "
                                 id="selectorApproval"
@@ -525,7 +525,7 @@
                             transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-blue-500
+                             focus:border-blue-500
                             hover:border-blue-500
                         "
                         id="layoutId"
@@ -542,7 +542,7 @@
                             :content="'Load examples per hit\nand params fields\nfor this layout'"
                             v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
                             type="button"
-                            class="bg-transparent py-2 px-2 rounded focus:outline-none"
+                            class="bg-transparent py-2 px-2 rounded "
                             style="width: 40px; height: 40px"
                             :class="downloadID ? 'animate__heartBeat' : ''"
                         >
@@ -583,7 +583,7 @@
                         transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-blue-500
+                         focus:border-blue-500
                         hover:border-blue-500
                     "
                     id="params"
@@ -621,7 +621,7 @@
                         transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-blue-500
+                         focus:border-blue-500
                         hover:border-blue-500
                     "
                     id="params_fields"
@@ -687,7 +687,7 @@
                         transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-blue-500
+                         focus:border-blue-500
                         hover:border-blue-500
                     "
                 />
@@ -705,7 +705,7 @@
                             country.name.common
                         }}</span>
                         <button
-                            class="focus:outline-none"
+                            class=""
                             :disabled="status >= 2"
                             :class="status >= 2 ? 'cursor-not-allowed' : ''"
                             @click="deleteSelected(country)"
@@ -831,7 +831,7 @@
                     duration-100
                     ease-out
                     text-white
-                    focus:outline-none
+                    
                 "
                 v-if="mode == 'edit'"
             >
@@ -852,7 +852,7 @@
                         ? 'cursor-not-allowed bg-gray-400 text-gray-800 hover:bg-gray-600'
                         : 'ripple hover:bg-primaryDark bg-primary text-white'
                 "
-                class="mr-1 py-2 px-4 rounded transition-colors duration-100 ease-out focus:outline-none"
+                class="mr-1 py-2 px-4 rounded transition-colors duration-100 ease-out "
                 v-else
             >
                 <svg
@@ -880,7 +880,7 @@
                     ease-out
                     rounded
                     ml-1
-                    focus:outline-none
+                    
                 "
             >
                 Cancel

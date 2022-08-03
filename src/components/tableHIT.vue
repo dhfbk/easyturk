@@ -4,7 +4,7 @@
             <p class="text-md my-auto mr-1">Status:</p>
             <div class="relative">
                 <select
-                    class="h-full rounded border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-1 pl-2 pr-12 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
+                    class="h-full rounded border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-1 pl-2 pr-12 leading-tight  focus:bg-white focus:border-blue-500"
                     name="sortBy"
                     id="sortBy"
                     @change="sortBy(sortType)"
@@ -106,7 +106,7 @@
                         px-4
                         rounded
                         m-2
-                        focus:outline-none
+                        
                         place-self-start
                     "
                 >
@@ -126,7 +126,7 @@
                         px-4
                         rounded
                         m-2
-                        focus:outline-none
+                        
                         place-self-end
                     "
                 >

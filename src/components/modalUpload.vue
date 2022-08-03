@@ -18,7 +18,7 @@
             <div
                 tabindex="-1"
                 id="modal"
-                class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto focus:outline-none"
+                class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto "
                 @click.stop
             >
                 <div class="flex flex-col p-4">
@@ -66,7 +66,7 @@
                             transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-blue-500
+                             focus:border-blue-500
                             hover:border-blue-500
                         "
                         v-model.trim="$v.customTitles.$model"
@@ -98,7 +98,7 @@
                                         transition-colors
                                         duration-150
                                         ease-out
-                                        focus:outline-none focus:border-blue-500
+                                         focus:border-blue-500
                                         hover:border-blue-500
                                     "
                                     id="separator"
@@ -149,7 +149,7 @@
                                         transition-colors
                                         duration-150
                                         ease-out
-                                        focus:outline-none focus:border-blue-500
+                                         focus:border-blue-500
                                         hover:border-blue-500
                                     "
                                     id="delimiter"
@@ -230,7 +230,7 @@
                                             hover:bg-gray-300
                                             focus:bg-gray-400
                                             rounded-full
-                                            focus:outline-none
+                                            
                                         "
                                     >
                                         &times;
@@ -256,7 +256,7 @@
                                 py-2
                                 px-4
                                 rounded
-                                focus:outline-none
+                                
                             "
                             @click="uploadFile()"
                         >
@@ -275,7 +275,7 @@
                                 duration-100
                                 ease-out
                                 hover:bg-gray-300
-                                focus:outline-none
+                                
                                 mt-2
                                 xs2:mt-0 xs2:ml-2
                                 bg-transparent

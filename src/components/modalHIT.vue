@@ -18,7 +18,7 @@
             <div
                 tabindex="-1"
                 id="modal"
-                class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto focus:outline-none"
+                class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto "
                 @click.stop
             >
                 <div class="flex flex-col p-4">
@@ -79,7 +79,7 @@
                             :class="[
                                 goldDataStatus == 0 || baseDataStatus == 0
                                     ? 'cursor-not-allowed bg-gray-400 text-gray-800 '
-                                    : ' bg-gray-100 text-gray-700 transition-colors duration-150 ease-out focus:outline-none focus:border-blue-500 hover:border-blue-500',
+                                    : ' bg-gray-100 text-gray-700 transition-colors duration-150 ease-out  focus:border-blue-500 hover:border-blue-500',
                                 $v.goldPerHit.$error ? 'border-red-400' : '',
                             ]"
                             class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4"
@@ -130,7 +130,7 @@
                                 :class="[
                                     goldDataStatus == 0 || baseDataStatus == 0
                                         ? 'cursor-not-allowed bg-gray-400 text-gray-800'
-                                        : 'bg-gray-100 text-gray-700 transition-colors duration-150 ease-out focus:outline-none focus:border-blue-500 hover:border-blue-500',
+                                        : 'bg-gray-100 text-gray-700 transition-colors duration-150 ease-out  focus:border-blue-500 hover:border-blue-500',
                                     $v.leftover.$error ? 'border-red-400' : '',
                                 ]"
                                 class="block border border-gray-200 appearance-none w-full py-2 pl-2 pr-8 rounded"
@@ -173,7 +173,7 @@
                                 py-2
                                 px-4
                                 rounded
-                                focus:outline-none
+                                
                             "
                             @click="confirm()"
                             :disabled="baseDataStatus == 0"
@@ -195,7 +195,7 @@
                                 mt-2
                                 xs2:mt-0 xs2:ml-2
                                 hover:bg-gray-300
-                                focus:outline-none
+                                
                                 bg-transparent
                                 text-gray-800
                                 py-2

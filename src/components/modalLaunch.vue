@@ -18,7 +18,7 @@
             <div
                 tabindex="-1"
                 id="modal"
-                class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto focus:outline-none"
+                class="bg-white rounded-lg w-5/6 max-w-3xl max-h-80 overflow-y-auto "
                 @click.stop
             >
                 <div class="flex flex-col p-4">
@@ -49,7 +49,7 @@
                                 :class="$v.hitNum.$error ? 'border-red-400' : ''"
                                 class="
                                     appearance-none
-                                    focus:outline-none
+                                    
                                     focus:border-blue-500
                                     hover:border-blue-500
                                     block
@@ -121,7 +121,7 @@
                                 py-2
                                 px-4
                                 rounded
-                                focus:outline-none
+                                
                             "
                             @click="submit()"
                         >
@@ -140,7 +140,7 @@
                                 duration-100
                                 ease-out
                                 hover:bg-gray-300
-                                focus:outline-none
+                                
                                 mt-2
                                 xs2:mt-0 xs2:ml-2
                                 bg-transparent

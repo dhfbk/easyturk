@@ -25,7 +25,7 @@
                     text-white
                     border-white
                     hover:text-blue-300 hover:border-blue-300
-                    focus:outline-none
+                    
                 "
             >
                 <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -63,7 +63,7 @@
                         text-white
                         hover:text-blue-300
                         sm:mr-4
-                        focus:outline-none
+                        
                     "
                 >
                     <svg class="fill-current" style="width: 24px; height: 24px" viewBox="0 0 24 24">
@@ -76,7 +76,7 @@
                 <!--
                 <router-link
                     :to="{ name: 'workerList' }"
-                    class="block mt-4 sm:inline-block sm:mt-0 transition-colors duration-100 ease-out text-white hover:text-blue-300 sm:mr-4 focus:outline-none"
+                    class="block mt-4 sm:inline-block sm:mt-0 transition-colors duration-100 ease-out text-white hover:text-blue-300 sm:mr-4 "
                 >
                     Workers
                 </router-link>
@@ -94,7 +94,7 @@
                         text-white
                         hover:text-blue-300
                         sm:mr-4
-                        focus:outline-none
+                        
                     "
                 >
                     <svg class="fill-current" style="width: 24px; height: 24px" viewBox="0 0 24 24">
@@ -117,7 +117,7 @@
                         text-white
                         hover:text-blue-300
                         cursor-pointer
-                        focus:outline-none
+                        
                         rounded
                     "
                 >

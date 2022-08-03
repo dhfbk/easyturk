@@ -35,7 +35,7 @@
                 xs2:w-1/2
                 lg:w-3/5
                 xl:w-2/3
-                focus:outline-none
+                
             "
         >
             <div class="flex flex-col w-1/2 lg:w-1/4 justify-center text-center flex-wrap my-1 sm:my-0">
@@ -73,7 +73,7 @@
                     text-gray-900
                     rounded
                     m-1
-                    focus:outline-none
+                    
                     hidden
                     sm:flex
                     flex-row
@@ -105,7 +105,7 @@
                     text-gray-900
                     rounded
                     m-1
-                    focus:outline-none
+                    
                     hidden
                     sm:flex
                     flex-row
@@ -149,7 +149,7 @@
                     text-gray-900
                     rounded
                     m-1
-                    focus:outline-none
+                    
                     hidden
                     md:flex
                     flex-row
@@ -180,7 +180,7 @@
                     text-gray-900
                     rounded
                     m-1
-                    focus:outline-none
+                    
                     hidden
                     md:flex
                     flex-row
@@ -212,7 +212,7 @@
                     px-4
                     rounded
                     m-1
-                    focus:outline-none
+                    
                     hidden
                     xs:flex
                 "
@@ -241,7 +241,7 @@
                     px-4
                     rounded
                     m-1
-                    focus:outline-none
+                    
                     hidden
                     xs:flex
                 "
@@ -270,7 +270,7 @@
                     px-4
                     rounded
                     m-1
-                    focus:outline-none
+                    
                     hidden
                     xs:flex
                 "
@@ -300,7 +300,7 @@
                     px-4
                     rounded
                     m-1
-                    focus:outline-none
+                    
                     hidden
                     xs:flex
                 "
@@ -319,7 +319,7 @@
                         py-2
                         px-2
                         m-1
-                        focus:outline-none
+                        
                         bg-white
                         rounded
                         transition-colors
@@ -489,7 +489,7 @@
                 </transition>
             </span>
             <!-- <button
-                class="bg-white ripple-light py-2 px-2 m-1 rounded focus:outline-none"
+                class="bg-white ripple-light py-2 px-2 m-1 rounded "
                 @click.stop="isOpen = !isOpen"
                 v-if="projectData.status == 3"
             >
@@ -580,7 +580,7 @@
                     <p slot="legend-caption">Completed</p>
                 </vue-ellipse-progress>
                 <button
-                    class="absolute ripple-light bg-white hover:bg-gray-300 py-2 px-2 m-1 rounded focus:outline-none bottom-0 right-0"
+                    class="absolute ripple-light bg-white hover:bg-gray-300 py-2 px-2 m-1 rounded  bottom-0 right-0"
                     @click.stop="refresh()"
                 >
                     <svg

@@ -58,7 +58,7 @@
                                     transition-colors
                                     duration-150
                                     ease-out
-                                    focus:outline-none focus:border-blue-500
+                                     focus:border-blue-500
                                     hover:border-blue-500
                                 "
                                 id="selectorExpiry"
@@ -101,7 +101,7 @@
                                 transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-blue-500
+                                 focus:border-blue-500
                                 hover:border-blue-500
                             "
                             id="assNumber"
@@ -140,7 +140,7 @@
                             transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-blue-500
+                             focus:border-blue-500
                             hover:border-blue-500
                         "
                         :disabled="!reject || isGold == 0"
@@ -239,7 +239,7 @@
                                     transition-colors
                                     duration-150
                                     ease-out
-                                    focus:outline-none focus:border-blue-500
+                                     focus:border-blue-500
                                     hover:border-blue-500
                                 "
                                 id="selectorExpiry"
@@ -281,7 +281,7 @@
                                 transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-blue-500
+                                 focus:border-blue-500
                                 hover:border-blue-500
                             "
                             id="rejectTime"
@@ -351,7 +351,7 @@
                                     transition-colors
                                     duration-150
                                     ease-out
-                                    focus:outline-none focus:border-blue-500
+                                     focus:border-blue-500
                                     hover:border-blue-500
                                 "
                                 id="selectorExpiry"
@@ -393,7 +393,7 @@
                                 transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-blue-500
+                                 focus:border-blue-500
                                 hover:border-blue-500
                             "
                             id="missNumber"
@@ -432,7 +432,7 @@
                                 transition-colors
                                 duration-150
                                 ease-out
-                                focus:outline-none focus:border-blue-500
+                                 focus:border-blue-500
                                 hover:border-blue-500
                             "
                             id="missNumberTotal"

@@ -31,7 +31,7 @@
                         transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-blue-500
+                         focus:border-blue-500
                         hover:border-blue-500
                     "
                     id="username"
@@ -59,7 +59,7 @@
                         transition-colors
                         duration-150
                         ease-out
-                        focus:outline-none focus:border-blue-500
+                         focus:border-blue-500
                         hover:border-blue-500
                     "
                     id="password"
@@ -88,7 +88,7 @@
                     bg-transparent
                     rounded
                     text-white
-                    focus:outline-none
+                    
                 "
                 type="button"
                 @click="login"

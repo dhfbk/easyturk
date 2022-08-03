@@ -31,7 +31,7 @@
                     border-2 border-solid border-primary
                     text-gray-800
                     hover:text-gray-100 hover:bg-primary
-                    focus:outline-none
+                    
                 "
             >
                 View all

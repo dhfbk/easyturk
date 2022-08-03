@@ -24,7 +24,7 @@
                             transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-blue-500
+                             focus:border-blue-500
                             hover:border-blue-500
                         "
                         name="value"
@@ -52,7 +52,7 @@
                             transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-blue-500
+                             focus:border-blue-500
                             hover:border-blue-500
                         "
                         name="value"
@@ -83,7 +83,7 @@
                             transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-blue-500
+                             focus:border-blue-500
                             hover:border-blue-500
                         "
                         name="value"
@@ -111,7 +111,7 @@
                             transition-colors
                             duration-150
                             ease-out
-                            focus:outline-none focus:border-blue-500
+                             focus:border-blue-500
                             hover:border-blue-500
                         "
                         name="value"
@@ -132,7 +132,7 @@
                         transition-colors
                         duration-100
                         ease-out
-                        focus:outline-none
+                        
                         hover:bg-gray-300
                     "
                     @click="newElement('second')"
@@ -147,7 +147,7 @@
                         p-2
                         ripple
                         rounded-full
-                        focus:outline-none
+                        
                         transition-colors
                         duration-100
                         ease-out

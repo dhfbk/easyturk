@@ -74,7 +74,7 @@
                 @click="$router.push({ name: 'Home' })"
                 :content="'Back'"
                 v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-                class="rounded ripple bg-transparent hover:bg-gray-300 p-2 focus:outline-none"
+                class="rounded ripple bg-transparent hover:bg-gray-300 p-2 "
             >
                 <svg class="inline" style="width: 24px; height: 24px" viewBox="0 0 24 24">
                     <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
@@ -109,7 +109,7 @@
                         bg-transparent
                         rounded
                         text-white
-                        focus:outline-none
+                        
                     "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
@@ -142,7 +142,7 @@
                         bg-transparent
                         rounded
                         text-white
-                        focus:outline-none
+                        
                     "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
@@ -175,7 +175,7 @@
                         bg-transparent
                         rounded
                         text-white
-                        focus:outline-none
+                        
                     "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
@@ -209,7 +209,7 @@
                         bg-transparent
                         rounded
                         text-white
-                        focus:outline-none
+                        
                     "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
@@ -243,7 +243,7 @@
                         rounded
                         border-2 border-solid border-primary
                         hover:text-white
-                        focus:outline-none
+                        
                     "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
@@ -274,7 +274,7 @@
                         rounded
                         border-2 border-solid border-primary
                         hover:text-white
-                        focus:outline-none
+                        
                     "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
@@ -305,7 +305,7 @@
                         rounded
                         border-2 border-solid border-primary
                         hover:text-white
-                        focus:outline-none
+                        
                     "
                 >
                     <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
@@ -332,7 +332,7 @@
                             ease-out
                             border-2 border-solid border-primary
                             hover:text-white
-                            focus:outline-none
+                            
                         "
                     >
                         <svg
@@ -559,7 +559,7 @@
                     bg-gray-200
                     hover:bg-gray-300
                     rounded
-                    focus:outline-none
+                    
                     transition-colors
                     duration-100
                     ease-out
