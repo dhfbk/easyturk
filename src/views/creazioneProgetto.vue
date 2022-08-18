@@ -17,7 +17,7 @@
               ? 'border-red-400 bg-gray-100 text-gray-700'
               : 'bg-gray-100 text-gray-700'
           "
-          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
           id="name"
           type="text"
           placeholder="Project name"
@@ -38,7 +38,7 @@
               ? 'border-red-400 bg-gray-100 text-gray-700'
               : 'bg-gray-100 text-gray-700'
           "
-          class="appearance-none block w-full border rounded py-2 px-4 mb-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+          class="appearance-none block w-full border rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
           id="title"
           type="text"
           placeholder="Title"
@@ -62,7 +62,7 @@
               ? 'border-red-400 bg-gray-100 text-gray-700'
               : 'bg-gray-100 text-gray-700'
           "
-          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
           id="keywords"
           type="text"
           placeholder="Keywords"
@@ -88,7 +88,7 @@
               status > 2 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700',
               hoverDesc ? 'border-blue-500' : 'border-gray-200',
             ]"
-            class="w-full border transition-colors duration-150 ease-out hover:border-blue-500 rounded py-2 px-4"
+            class="w-full border transition-colors duration-100 ease-out hover:border-blue-500 rounded py-2 px-4"
             id="description"
             @focus="hoverDesc = true"
             @blur="hoverDesc = false"
@@ -118,7 +118,7 @@
                 ? 'border-red-400 bg-gray-100 text-gray-700'
                 : 'bg-gray-100 text-gray-700'
             "
-            class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+            class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
             id="reward"
             type="number"
             :min="$store.state.defaults.min_reward"
@@ -145,7 +145,7 @@
                 ? 'border-red-400 bg-gray-100 text-gray-700'
                 : 'bg-gray-100 text-gray-700'
             "
-            class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+            class="appearance-none block w-full sm:max-w-xs border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
             id="workers"
             type="number"
             min="1"
@@ -172,7 +172,7 @@
                   ? 'border-red-400 bg-gray-100 text-gray-700'
                   : 'bg-gray-100 text-gray-700'
               "
-              class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+              class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
               id="maxTime"
               type="number"
               min="1"
@@ -186,7 +186,7 @@
             <div class="relative mt-1 sm:mt-0 sm:ml-2">
               <select
                 :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                class="block appearance-none w-full sm:w-32 border border-gray-200 py-2 px-4 pr-8 rounded transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+                class="block appearance-none w-full sm:w-32 border border-gray-200 py-2 px-4 pr-8 rounded transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
                 id="selectorMaxTime"
                 v-model="selectTempoMax"
                 @change="fixMax(1)"
@@ -220,7 +220,7 @@
                   ? 'border-red-400 bg-gray-100 text-gray-700'
                   : 'bg-gray-100 text-gray-700'
               "
-              class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+              class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
               id="expiry"
               type="number"
               min="1"
@@ -234,7 +234,7 @@
             <div class="relative mt-1 sm:mt-0 sm:ml-2">
               <select
                 :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
                 id="selectorExpiry"
                 v-model="selectExpiry"
                 @change="fixMax(2)"
@@ -268,7 +268,7 @@
                   ? 'border-red-400 bg-gray-100 text-gray-700'
                   : 'bg-gray-100 text-gray-700'
               "
-              class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+              class="appearance-none block w-full sm:w-32 border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
               id="autoApproval"
               type="number"
               min="1"
@@ -282,7 +282,7 @@
             <div class="relative mt-1 sm:mt-0 sm:ml-2">
               <select
                 :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
-                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+                class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
                 id="selectorApproval"
                 v-model="selectAutoApprove"
                 @change="fixMax(3)"
@@ -318,7 +318,7 @@
                 ? 'border-red-400 bg-gray-100 text-gray-700'
                 : 'bg-gray-100 text-gray-700'
             "
-            class="relative appearance-none block w-full border border-gray-200 rounded py-2 pl-4 pr-10 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+            class="relative appearance-none block w-full border border-gray-200 rounded py-2 pl-4 pr-10 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
             id="layoutId"
             type="text"
             placeholder="Layout ID"
@@ -358,7 +358,7 @@
               ? 'border-red-400 bg-gray-100 text-gray-700'
               : 'bg-gray-100 text-gray-700'
           "
-          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
           id="params"
           type="number"
           min="1"
@@ -382,7 +382,7 @@
               ? 'border-red-400 bg-gray-100 text-gray-700'
               : 'bg-gray-100 text-gray-700'
           "
-          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
           id="params_fields"
           type="text"
           :disabled="status > 0"
@@ -393,15 +393,6 @@
     </div>
     <hr class="solid mb-4" />
 
-    <!-- <autocomplete
-            :search="search"
-            placeholder="Search for a country"
-            aria-label="Search for a country"
-            :get-result-value="getResultValue"
-            :debounce-time="250"
-            @submit="handleSubmit"
-            class="mb-4"
-        ></autocomplete> -->
     <div class="flex flex-col md:grid md:grid-cols-2">
       <div class="mr-4" @keydown.enter.prevent.self>
         <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="countries">
@@ -436,7 +427,7 @@
           autocomplete="off"
           id="countries"
           type="text"
-          class="appearance-none w-full border border-gray-200 rounded py-2 px-4 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+          class="appearance-none w-full border border-gray-200 rounded py-2 px-4 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
         />
         <span class="text-gray-700 text-xs italic mt-2">
           Your Workers will be picked from the countries you select.
@@ -607,23 +598,6 @@ export default {
       layout_id: '',
       params: 0,
       params_fields: '',
-      /*
-            pageTitle: '',
-            name: '',
-            title: '',
-            description: '',
-            keywords: '',
-            reward: 0.05,
-            workers: 5,
-            max_time: 0,
-            max_time_send: 0,
-            expiry: 0,
-            expiry_send: 0,
-            auto_approve: 0,
-            auto_approve_send: 0,
-            layout_id: '',
-            params: 1,
-            */
       selectTempoMax: 'hours',
       selectExpiry: 'days',
       selectAutoApprove: 'days',
@@ -751,27 +725,6 @@ export default {
       }
       document.getElementById(this.active).scrollIntoView()
     },
-    // filter() {
-    //     console.log(this.input)
-    //     if (this.input.length > this.input.length && this.tmp.length > 0) {
-    //     } else {
-    //         this.tmp = this.countries.filter(country => {
-    //             return country.name.toLowerCase().startsWith(this.input)
-    //         })
-    //     }
-    // },
-    // search(input) {
-    //     if (input.length < 1) {
-    //         return []
-    //     }
-    //     return this.countries.filter(country => {
-    //         return country.name.toLowerCase().startsWith(input.toLowerCase())
-    //     })
-    // },
-    // getResultValue(result) {
-    //     return result.name
-    // },
-
     getCountries() {
       axios({
         url: 'https://restcountries.com/v3.1/all',
@@ -920,14 +873,6 @@ export default {
     goBack() {
       this.$router.go(-1)
     },
-    // goHome() {
-    //     var msg
-    //     if (this.mode == 'edit') {
-    //         msg = 'Edit successful'
-    //     } else {
-    //         msg = 'Project created'
-    //     }
-    // },
     elaboraTempoGET(nomeVar) {
       if (nomeVar == 'max_time') {
         if (this.max_time < 60) {
@@ -1032,11 +977,6 @@ export default {
   beforeUnmount() {
     window.removeEventListener('keydown', this.keyboardEvent)
   },
-  // computed: {
-  //     selectedIndex: function() {
-  //         return this.tmp.length - 1
-  //     },
-  // },
   watch: {
     input(newValue, oldValue) {
       this.active = 0

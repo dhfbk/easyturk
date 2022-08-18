@@ -34,7 +34,7 @@
                   !reject || isGold == 0 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'
                 "
                 :disabled="!reject || isGold == 0"
-                class="inline-input appearance-none w-xs border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+                class="inline-input appearance-none w-xs border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
                 id="selectorExpiry"
                 v-model.number="rejectPay"
               >
@@ -61,7 +61,7 @@
                       : 'bg-gray-100')
               "
               :disabled="!reject || isGold == 0"
-              class="inline-input appearance-none w-full border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+              class="inline-input appearance-none w-full border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
               id="assNumber"
               name="assNumber"
               type="number"
@@ -84,7 +84,7 @@
               v.thirdPartData.rejectReason.$error ? 'border-red-400' : '',
             ]"
             placeholder="Reason for rejection"
-            class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 md:mt-0 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+            class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 md:mt-0 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
             :disabled="!reject || isGold == 0"
             id="reject"
             v-model.trim="rejectReason"
@@ -147,7 +147,7 @@
                     : 'bg-gray-100 text-gray-700'
                 "
                 :disabled="!block_worker_fast || isGold == 0"
-                class="inline-input appearance-none w-xs border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+                class="inline-input appearance-none w-xs border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
                 id="selectorExpiry"
                 v-model.number="blockSeconds"
               >
@@ -174,7 +174,7 @@
                       : 'bg-gray-100')
               "
               :disabled="!block_worker_fast || isGold == 0"
-              class="inline-input appearance-none border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+              class="inline-input appearance-none border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
               id="rejectTime"
               name="rejectTime"
               type="number"
@@ -220,7 +220,7 @@
                     : 'bg-gray-100 text-gray-700'
                 "
                 :disabled="!block_worker_bad || isGold == 0"
-                class="inline-input appearance-none w-xs border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+                class="inline-input appearance-none w-xs border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
                 id="selectorExpiry"
                 v-model.number="blockMisclass"
               >
@@ -247,7 +247,7 @@
                       : 'bg-gray-100')
               "
               :disabled="!block_worker_bad || isGold == 0"
-              class="inline-input appearance-none border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+              class="inline-input appearance-none border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
               id="missNumber"
               name="missNumber"
               type="number"
@@ -273,7 +273,7 @@
                       : 'bg-gray-100')
               "
               :disabled="!block_worker_bad || isGold == 0"
-              class="inline-input appearance-none border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+              class="inline-input appearance-none border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
               id="missNumberTotal"
               name="missNumberTotal"
               type="number"

@@ -1,54 +1,66 @@
 <template>
   <div class="home mt-4 mx-2 xs2:mx-4 lg:mx-auto lg:w-5/6 pt-2 pb-6">
-    <modalEliminazione v-if="modalElim" @deleteModal="toggleModal" @deleted="deleted" :id="modalId" />
-    <modalUpload
-      v-if="modalStd"
-      @uploadModal="toggleModal"
-      @uploaded="toggleModal"
-      :type="'std'"
-      :id="modalId"
-      @snackbar="snack"
-    />
-    <modalUpload
-      v-if="modalGld"
-      @uploadModal="toggleModal"
-      @uploaded="toggleModal"
-      :type="'gld'"
-      :id="modalId"
-      @snackbar="snack"
-    />
-    <modalLaunch
-      v-if="modalLaunch"
-      @launchModal="toggleModal(['launch', ''])"
-      :id="modalId"
-      :hitsSubmitted="hitsSubmitted"
-      :hitsTotal="hitsTotal"
-      @err="snack"
-      @launched="launched"
-      :priceData="priceData"
-      :qualifications="qualifications"
-      @changeQualification="changeQualification"
-      @snackbar="snack"
-    />
+    <transition name="fade" mode="out-in">
+      <modalEliminazione v-if="modalElim" @deleteModal="toggleModal" @deleted="deleted" :id="modalId" />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalUpload
+        v-if="modalStd"
+        @uploadModal="toggleModal"
+        @uploaded="toggleModal"
+        :type="'std'"
+        :id="modalId"
+        @snackbar="snack"
+      />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalUpload
+        v-if="modalGld"
+        @uploadModal="toggleModal"
+        @uploaded="toggleModal"
+        :type="'gld'"
+        :id="modalId"
+        @snackbar="snack"
+      />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalLaunch
+        v-if="modalLaunch"
+        @launchModal="toggleModal(['launch', ''])"
+        :id="modalId"
+        :hitsSubmitted="hitsSubmitted"
+        :hitsTotal="hitsTotal"
+        @err="snack"
+        @launched="launched"
+        :priceData="priceData"
+        :qualifications="qualifications"
+        @changeQualification="changeQualification"
+        @snackbar="snack"
+      />
+    </transition>
     <!--sistemare per i due valori del csv-->
-    <modalHit
-      v-if="modalHIT"
-      :id="modalId"
-      @hitModal="toggleModal"
-      @hitCreated="reloadAfterHIT"
-      :baseDataStatus="dataPresent"
-      :goldDataStatus="gldPresent"
-      :params="params"
-      @snackbar="snack"
-    />
-    <modalLayout
-      v-if="modalLayout"
-      :project="project[0]"
-      @layoutModal="toggleModal"
-      @layoutSet="launched"
-      @snackbar="snack"
-      @snackbarErr="snack"
-    />
+    <transition name="fade" mode="out-in">
+      <modalHit
+        v-if="modalHIT"
+        :id="modalId"
+        @hitModal="toggleModal"
+        @hitCreated="reloadAfterHIT"
+        :baseDataStatus="dataPresent"
+        :goldDataStatus="gldPresent"
+        :params="params"
+        @snackbar="snack"
+      />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalLayout
+        v-if="modalLayout"
+        :project="project[0]"
+        @layoutModal="toggleModal"
+        @layoutSet="launched"
+        @snackbar="snack"
+        @snackbarErr="snack"
+      />
+    </transition>
     <span class="text-3xl sm:text-4xl font-light">Welcome, {{ $store.state.userInfo.common_name }}</span>
     <!--<modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />-->
     <div class="mb-6 mt-4">
@@ -279,19 +291,6 @@ export default {
         return project.id == id
       })
     },
-    // getUserInfo() {
-    //     axios({
-    //         url: this.APIURL + '?action=getUserInfo',
-    //         method: 'get',
-    //     }).then(res => {
-    //         this.userInfo = res.data.data
-    //         this.$emit('sandbox', this.userInfo.use_sandbox)
-    //     })
-    // },
-    // emitSnackbar(arr) {
-    //     this.$emit('snackbar', arr[0])
-    //     this.toggleModal(['elim', arr[1]])
-    // },
     //metodi per aprire e chiudere il modal eliminazione ed eliminare l'elemento dalla lista
     deleted(msg) {
       var self = this
@@ -386,5 +385,15 @@ export default {
 <style scoped>
 path {
   fill: rgba(45, 55, 72, 1);
+}
+.fade-enter-active {
+  transition: opacity 0.25s ease-out !important;
+}
+.fade-leave-active {
+  transition: opacity 0.2s ease-out !important;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

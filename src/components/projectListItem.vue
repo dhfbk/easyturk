@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded shadow-md transition duration-200 ease-out mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer grow"
+    class="rounded shadow-md transition duration-100 ease-out mb-4 py-2 px-4 flex items-center flex-wrap bg-white relative hover:shadow-lg cursor-pointer grow"
     :class="zIndex ? 'customZ' : ''"
     @click="openProject"
     @mouseenter="zIndex = true"
@@ -170,7 +170,7 @@
           </svg>
           <span class="sr-only">Open dropdown</span>
         </button>
-        <transition name="slide-toggle" mode="out-in" appear>
+        <transition name="slidedown" mode="out-in">
           <div v-show="dropdown" class="absolute right-0 w-40 sm:w-56 bg-white rounded-md shadow-xl z-20 mr-4 mt-12">
             <a
               @click.stop="launch()"
@@ -243,115 +243,7 @@
           </div>
         </transition>
       </span>
-      <!-- <button
-                class="bg-white ripple-light py-2 px-2 m-1 rounded "
-                @click.stop="isOpen = !isOpen"
-                v-if="projectData.status == 3"
-            >
-                <svg
-                    class="transition duration-300 ease-out"
-                    :class="{ 'transform  rotate-180': isOpen }"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="black"
-                    width="24px"
-                    height="24px"
-                >
-                    <path d="M0 0h24v24H0V0z" fill="none" />
-                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
-                </svg>
-            </button> -->
-      <!-- <span
-                class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1"
-                v-if="projectData.status == 0 && baseCsvStatus == 1 && goldCsvStatus == 0"
-            >
-                <span
-                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
-                ></span>
-                <span
-                    class="relative inline-flex justify-center items-center rounded-full h-3 w-3 bg-blue-500 text-xs text-white"
-                >
-                </span>
-            </span>
-            <span
-                class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1"
-                v-if="projectData.status == 0 && baseCsvStatus == 1 && goldCsvStatus == 1"
-            >
-                <span
-                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
-                ></span>
-                <span
-                    class="relative inline-flex justify-center items-center rounded-full h-3 w-3 bg-green-500 text-xs text-white"
-                >
-                </span>
-            </span>
-            <span
-                class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1"
-                v-if="projectData.status == 0 && baseCsvStatus == 0 && goldCsvStatus == 0"
-            >
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span
-                    class="relative inline-flex justify-center items-center rounded-full h-3 w-3 bg-red-500 text-xs text-white"
-                >
-                </span>
-            </span> -->
     </span>
-    <!-- <transition name="slide-toggle">
-            <div v-if="isOpen" class="content w-full flex flex-wrap justify-center relative">
-                <vue-ellipse-progress
-                    :progress="(40 * 100) / 200"
-                    :legend-value="40"
-                    :color="'#0091FF'"
-                    :size="pieSize"
-                    :half="true"
-                    :angle="0"
-                    class="mt-8 mx-8"
-                >
-                    <span slot="legend-value">/{{ 200 }}</span>
-                    <p slot="legend-caption">Pending Review</p>
-                </vue-ellipse-progress>
-                <vue-ellipse-progress
-                    :progress="(60 * 100) / 200"
-                    :legend-value="60"
-                    :color="'#0091FF'"
-                    :size="pieSize"
-                    :half="true"
-                    :angle="0"
-                    class="mt-8 mx-8"
-                >
-                    <span slot="legend-value">/{{ 200 }}</span>
-                    <p slot="legend-caption">In Progress</p>
-                </vue-ellipse-progress>
-                <vue-ellipse-progress
-                    :progress="(100 * 100) / 200"
-                    :legend-value="100"
-                    :color="'#0091FF'"
-                    :size="pieSize"
-                    :half="true"
-                    :angle="0"
-                    class="mt-8 mx-8"
-                >
-                    <span slot="legend-value">/{{ 200 }}</span>
-                    <p slot="legend-caption">Completed</p>
-                </vue-ellipse-progress>
-                <button
-                    class="absolute ripple-light bg-white hover:bg-gray-300 py-2 px-2 m-1 rounded  bottom-0 right-0"
-                    @click.stop="refresh()"
-                >
-                    <svg
-                        style="width:24px;height:24px"
-                        viewBox="0 0 24 24"
-                        class="transition ease-out"
-                        :class="refreshIcon ? 'animate-spin ' : 'animate-none'"
-                    >
-                        <path
-                            fill="currentColor"
-                            d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"
-                        />
-                    </svg>
-                </button>
-            </div>
-        </transition> -->
   </div>
 </template>
 
@@ -492,6 +384,22 @@ export default {
   .contenutoPrj {
     flex-direction: row;
   }
+}
+.slidedown-enter-active,
+.slidedown-leave-active {
+  transition: max-height 0.12s ease-out;
+}
+
+.slidedown-enter-to,
+.slidedown-leave-from {
+  overflow: hidden;
+  max-height: 160px;
+}
+
+.slidedown-enter-from,
+.slidedown-leave-to {
+  overflow: hidden;
+  max-height: 0;
 }
 .grow:hover {
   -webkit-transform: scale(1.01);

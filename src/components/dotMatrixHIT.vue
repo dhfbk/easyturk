@@ -12,7 +12,7 @@
           <span v-for="(i, e) in totalComp" :key="e" :style="{ width: (1 / totalComp) * 100 + '%' }">
             <span class="tooltip relative">
               <span
-                class="h-5 w-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-md"
+                class="h-5 w-full inline-block transition duration-100 ease-in-out transform hover:-translate-y-1 hover:shadow-md"
                 :style="{
                   background: colors[e],
                 }"
@@ -40,7 +40,7 @@
           <span v-for="(i, e) in totalAvai" :key="e" :style="{ width: (1 / totalAvai) * 100 + '%' }">
             <span class="tooltip relative">
               <span
-                class="h-5 w-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-md"
+                class="h-5 w-full inline-block transition duration-100 ease-in-out transform hover:-translate-y-1 hover:shadow-md"
                 :style="{
                   background: colors[e + totalComp],
                 }"
@@ -68,7 +68,7 @@
         <span class="flex flex-row mt-2 justify-around">
           <span class="tooltip relative w-full">
             <span
-              class="h-5 w-full inline-block transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-md"
+              class="h-5 w-full inline-block transition duration-100 ease-in-out transform hover:-translate-y-1 hover:shadow-md"
               :style="{
                 background: colors[totalComp + totalAvai],
               }"

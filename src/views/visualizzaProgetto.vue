@@ -1,74 +1,94 @@
 <template>
   <div class="relative lg:w-5/6 pt-2 flex flex-col mt-4 mx-2 xs2:mx-4 lg:mx-auto">
-    <modalEliminazione v-if="modal.elim" @deleteModal="toggleModal('delete')" @deleted="deleted" :id="id" />
-    <modalUpload
-      v-if="modal.std"
-      :type="'std'"
-      :id="id"
-      @uploadModal="toggleModal('std')"
-      @uploaded="uploaded"
-      @snackbar="snack"
-    />
-    <modalUpload
-      v-if="modal.gld"
-      :type="'gld'"
-      :id="id"
-      @uploadModal="toggleModal('gld')"
-      @uploaded="uploaded"
-      @snackbar="snack"
-    />
-    <modalEditBehavior
-      v-if="modal.behavior"
-      :project="project"
-      @close="toggleModal('behavior')"
-      @snackbar="uploaded"
-      @snackbarErr="snack"
-    />
-    <modalHIT
-      v-if="modal.HIT"
-      :id="id"
-      :baseDataStatus="project.numData"
-      :goldDataStatus="project.numGold"
-      :params="project.params"
-      @hitModal="toggleModal('HIT')"
-      @hitCreated="uploaded"
-      @snackbar="snack"
-    />
-    <modalRevert
-      v-if="modal.revert"
-      :id="id"
-      :toStatus="project.status - 1"
-      @revertModal="toggleModal('revert')"
-      @reverted="uploaded"
-    />
-    <modalLayout
-      v-if="modal.layout"
-      :project="project"
-      @layoutSet="uploaded"
-      @layoutModal="toggleModal('layout')"
-      @snackbar="uploaded"
-      @snackbarErr="snack"
-    />
-    <modalInstructions v-if="modal.instructions" :status="project.status" @modal="toggleModal('instructions')" />
-    <modalLaunch
-      v-if="modal.launch"
-      :id="id"
-      :hitsSubmitted="hitsSubmitted"
-      :hitsTotal="hitsTotal"
-      @launchModal="toggleModal('launch')"
-      @launched="uploaded"
-      :priceData="priceData"
-      :qualifications="qualifications"
-      @snackbar="snack"
-    />
-    <modalCsvEliminazione
-      :isGold="isGold"
-      :id="id"
-      @close="uploaded"
-      v-if="modal.csvElim"
-      @deleteModal="toggleModal"
-      :goldUploaded="goldUploaded"
-    />
+    <transition name="fade" mode="out-in">
+      <modalEliminazione v-if="modal.elim" @deleteModal="toggleModal('delete')" @deleted="deleted" :id="id" />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalUpload
+        v-if="modal.std"
+        :type="'std'"
+        :id="id"
+        @uploadModal="toggleModal('std')"
+        @uploaded="uploaded"
+        @snackbar="snack"
+      />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalUpload
+        v-if="modal.gld"
+        :type="'gld'"
+        :id="id"
+        @uploadModal="toggleModal('gld')"
+        @uploaded="uploaded"
+        @snackbar="snack"
+      />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalEditBehavior
+        v-if="modal.behavior"
+        :project="project"
+        @close="toggleModal('behavior')"
+        @snackbar="uploaded"
+        @snackbarErr="snack"
+      />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalHIT
+        v-if="modal.HIT"
+        :id="id"
+        :baseDataStatus="project.numData"
+        :goldDataStatus="project.numGold"
+        :params="project.params"
+        @hitModal="toggleModal('HIT')"
+        @hitCreated="uploaded"
+        @snackbar="snack"
+      />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalRevert
+        v-if="modal.revert"
+        :id="id"
+        :toStatus="project.status - 1"
+        @revertModal="toggleModal('revert')"
+        @reverted="uploaded"
+      />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalLayout
+        v-if="modal.layout"
+        :project="project"
+        @layoutSet="uploaded"
+        @layoutModal="toggleModal('layout')"
+        @snackbar="uploaded"
+        @snackbarErr="snack"
+      />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalInstructions v-if="modal.instructions" :status="project.status" @modal="toggleModal('instructions')" />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalLaunch
+        v-if="modal.launch"
+        :id="id"
+        :hitsSubmitted="hitsSubmitted"
+        :hitsTotal="hitsTotal"
+        @launchModal="toggleModal('launch')"
+        @launched="uploaded"
+        :priceData="priceData"
+        :qualifications="qualifications"
+        @snackbar="snack"
+      />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <modalCsvEliminazione
+        :isGold="isGold"
+        :id="id"
+        @close="uploaded"
+        v-if="modal.csvElim"
+        @deleteModal="toggleModal"
+        :goldUploaded="goldUploaded"
+      />
+    </transition>
     <div class="flex justify-between flex-wrap items-center">
       <button
         @click="$router.push({ name: 'Home' })"
@@ -261,24 +281,6 @@
                 class="block md:hidden cursor-pointer px-4 py-2 text-sm capitalize text-gray-800 transition-colors duration-100 ease-out hover:bg-primary hover:text-gray-100"
                 >Edit</router-link
               >
-              <!-- <a
-                                v-if="project.status == 0"
-                                @click="toggleModal('std')"
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-out hover:bg-primary md:rounded-t-md hover:text-gray-100"
-                                >Base CSV upload</a
-                            >
-                            <a
-                                v-if="project.status == 0"
-                                @click="toggleModal('gld')"
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-out hover:bg-primary rounded-b-md hover:text-gray-100"
-                                >Gold CSV upload</a
-                            > -->
-              <!-- <a
-                                v-if="project.status == 0 && projectbaseCsvStatus == 1"
-                                @click="uploadModal(['hit', ''])"
-                                class="cursor-pointer block px-4 py-2 text-sm capitalize text-gray-800 transition duration-150 ease-out hover:bg-primary rounded-b-md hover:text-gray-100"
-                                >Load HITs</a
-                            >-->
             </div>
           </transition>
         </div>
@@ -325,7 +327,7 @@
       >
         View details
       </button>
-      <div class="clearfix"></div>
+      <div class="clear-both"></div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2" :class="!loading && project.status == 3 ? '' : 'mt-2'">
       <div class="mr-0 xs2:mr-1">
@@ -583,11 +585,13 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.25s;
+.fade-enter-active {
+  transition: opacity 0.25s ease-out !important;
 }
-.fade-enter,
+.fade-leave-active {
+  transition: opacity 0.2s ease-out !important;
+}
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }

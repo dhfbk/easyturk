@@ -10,7 +10,7 @@
       <div class="flex flex-col xs2:flex-row content-center items-center">
         <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center">
           <input
-            class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+            class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
             name="value"
             type="text"
             placeholder="Var name"
@@ -22,7 +22,7 @@
 
         <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center">
           <input
-            class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+            class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
             name="value"
             type="text"
             placeholder="Var value"
@@ -37,7 +37,7 @@
       <div class="flex flex-col xs2:flex-row content-center items-center">
         <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center">
           <input
-            class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+            class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
             name="value"
             type="text"
             placeholder="Var name"
@@ -49,7 +49,7 @@
 
         <div class="flex flex-col xs2:flex-row md:flex-col w-full content-center mx-2 items-center">
           <input
-            class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+            class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 md:mt-0 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
             name="value"
             type="text"
             placeholder="Var value"

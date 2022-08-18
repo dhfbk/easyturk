@@ -12,7 +12,7 @@
       >
         <label for="sortBy" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Field:</label>
         <input
-          class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition-colors duration-150 ease-out"
+          class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition-colors duration-100 ease-out"
           name="sortBy"
           type="text"
           placeholder="Text"
@@ -44,7 +44,7 @@
       >
         <label for="value" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Value:</label>
         <input
-          class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+          class="xs2:col-span-7 md:col-auto appearance-none py-2 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded px-4 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
           id="value"
           name="value"
           type="text"
@@ -60,7 +60,7 @@
         <label for="selectFrom" class="md:hidden font-semibold text-sm w-auto mr-2 md:mr-0">Value:</label>
         <div class="xs2:col-span-7 md:col-auto relative w-full block md:mt-0">
           <select
-            class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+            class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 pr-4 pl-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
             id="selectFrom"
             name="selectFrom"
             v-model="first.valueFrom"

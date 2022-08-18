@@ -5,7 +5,7 @@
         <div
           :content="progressData.hits_submitted + '/' + progressData.hits_total"
           v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-          class="h-8 bg-green-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-md rounded-l"
+          class="h-8 bg-green-500 transition duration-100 ease-in-out transform hover:-translate-y-1 hover:shadow-md rounded-l"
           :class="[notPublished == 0 && published == 0 ? 'rounded-r' : '']"
         ></div>
       </span>
@@ -13,7 +13,7 @@
         <div
           :content="progressData.hits_inserted - progressData.hits_submitted + '/' + progressData.hits_total"
           v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-          class="h-8 bg-blue-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-md"
+          class="h-8 bg-blue-500 transition duration-100 ease-in-out transform hover:-translate-y-1 hover:shadow-md"
           :class="[submitted == 0 ? 'rounded-l' : '', notPublished == 0 ? 'rounded-r' : '']"
         ></div>
       </span>
@@ -21,7 +21,7 @@
         <div
           :content="progressData.hits_total - progressData.hits_inserted + '/' + progressData.hits_total"
           v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
-          class="h-8 bg-gray-400 transition duration-200 ease-in-out transform hover:-translate-y-1 rounded-r hover:shadow-md"
+          class="h-8 bg-gray-400 transition duration-100 ease-in-out transform hover:-translate-y-1 rounded-r hover:shadow-md"
         ></div>
       </span>
     </div>

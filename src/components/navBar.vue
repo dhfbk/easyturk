@@ -19,7 +19,7 @@
         </svg>
       </button>
     </div>
-    <div class="clearfix sm:hidden"></div>
+    <div class="clear-both sm:hidden"></div>
     <div
       v-if="$route.name != 'login'"
       :class="open ? 'block' : 'hidden'"

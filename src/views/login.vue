@@ -7,7 +7,7 @@
         <label class="block text-gray-700 text-sm mb-2" for="username">Username</label>
         <input
           :class="v$.username.$error ? 'border-red-400' : ''"
-          class="appearance-none border border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+          class="appearance-none border border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
           id="username"
           type="text"
           placeholder="Username"
@@ -20,7 +20,7 @@
         <label class="block text-gray-700 text-sm mb-2" for="password">Password</label>
         <input
           :class="v$.password.$error ? 'border-red-400' : ''"
-          class="appearance-none border border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight transition-colors duration-150 ease-out focus:border-blue-500 hover:border-blue-500"
+          class="appearance-none border border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
           id="password"
           type="password"
           placeholder="Password"
