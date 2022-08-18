@@ -1,62 +1,28 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import Vuex from 'vuex'
-Vue.use(Vuex)
+import store from './store'
+// import globalMixin from './globalMixin.js'
 
 import './assets/styles/index.css'
+import veProgress from 'vue-ellipse-progress'
 
-import VueEllipseProgress from 'vue-ellipse-progress'
-Vue.use(VueEllipseProgress)
+import VueTippy from 'vue-tippy'
+import 'tippy.js/dist/tippy.css'
 
-/* import Vuelidate from 'vuelidate'
-Vue.use(Vuelidate) */
+import VueClickAway from 'vue3-click-away'
 
-import VueTippy, { TippyComponent } from 'vue-tippy'
-import 'tippy.js/themes/google.css'
-Vue.use(VueTippy)
-Vue.component('tippy', TippyComponent)
+// const globalMixin = {
+//   methods: {
+//     API() {
+//       return axios.create({
+//         baseURL: 'https://dh-server.fbk.eu/mturk_frontend/api/',
+//         headers: {
+//           'Session-Id': localStorage.getItem('session_id'),
+//         },
+//       })
+//     },
+//   },
+// }
 
-import axios from 'axios'
-
-Vue.mixin({
-    methods: {
-        API() {
-            return axios.create({
-                baseURL: 'https://dh-server.fbk.eu/mturk_frontend/api/',
-                headers: {
-                    'Session-Id': localStorage.getItem('session_id'),
-                },
-            })
-        },
-    },
-    // data: function() {
-    //     return {
-    //         set API(session_id) {
-    //             return axios.create({
-    //                 baseURL: 'https://dh-server.fbk.eu/mturk_frontend/api/',
-    //                 headers: {
-    //                     'Session-Id': session_id,
-    //                 },
-    //             })
-    //         },
-    //     }
-    // },
-})
-
-Vue.config.productionTip = false
-
-const store = new Vuex.Store({
-    state: {
-        defaults: [],
-        isSandbox: true,
-        userInfo: [],
-        currentRoute: '',
-    },
-})
-
-new Vue({
-    router,
-    store: store,
-    render: h => h(App),
-}).$mount('#app')
+createApp(App).use(veProgress).use(VueTippy).use(VueClickAway).use(store).use(router).mount('#app')
