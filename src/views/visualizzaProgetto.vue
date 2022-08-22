@@ -307,12 +307,12 @@
         </div>
         <span class="w-full lg:ml-1">
           <div>
-            <span class="font-bold">Assignments approved:</span>
+            <span class="font-bold">Assignments approved: </span>
             <span> {{ approved }}</span>
           </div>
           <hr />
           <div>
-            <span class="font-bold">Assignments rejected:</span><span> {{ rejected }}</span>
+            <span class="font-bold">Assignments rejected: </span><span> {{ rejected }}</span>
           </div>
         </span>
       </div>

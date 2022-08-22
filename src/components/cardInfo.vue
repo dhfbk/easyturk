@@ -452,7 +452,7 @@ export default {
       case 'qualifications':
         this.titles = ['Adult content', 'Master Workers only', 'Location of Workers']
         var loc = ''
-        if (this.projectData.countries) {
+        if (this.projectData.countries && this.projectData.countries.length > 0) {
           for (let i = 0; i < this.projectData.countries.length; i++) {
             loc += this.projectData.countries[i]
             if (i != this.projectData.countries.length - 1) {
@@ -460,14 +460,14 @@ export default {
             }
           }
         } else {
-          loc = 'No location specified.'
+          loc = 'All countries accepted'
         }
 
         this.data = [this.projectData.adult == 0 ? 'No' : 'Yes', this.projectData.master == 0 ? 'No' : 'Yes', loc]
         break
       case 'behavior':
         this.data = [
-          this.projectData.hit_details.rejectIfGoldWrong
+          this.projectData.hit_details && this.projectData.hit_details.rejectIfGoldWrong
             ? '<span class="font-bold">' +
               (this.projectData.hit_details.rejectIfGoldWrong ? 'Reject' : 'Accept anyway') +
               '</span>' +
@@ -479,8 +479,10 @@ export default {
               this.projectData.hit_details.rejectReason +
               '</span>'
             : null,
-          this.projectData.hit_details.acceptIfGoldRight ? 'Automatically accept if gold is right' : null,
-          this.projectData.hit_details.block_worker_fast
+          this.projectData.hit_details && this.projectData.hit_details.acceptIfGoldRight
+            ? 'Automatically accept if gold is right'
+            : null,
+          this.projectData.hit_details && this.projectData.hit_details.block_worker_fast
             ? '<span class="font-bold">' +
               (this.projectData.hit_details.block_worker_fast ? 'Block' : 'Reject') +
               '</span>' +
@@ -488,7 +490,7 @@ export default {
               this.projectData.hit_details.rejectTime +
               '</span> seconds on a HIT'
             : null,
-          this.projectData.hit_details.block_worker_bad
+          this.projectData.hit_details && this.projectData.hit_details.block_worker_bad
             ? '<span class="font-bold">' +
               (this.projectData.hit_details.block_worker_bad ? 'Block' : 'Reject') +
               '</span>' +
@@ -498,7 +500,9 @@ export default {
               this.projectData.hit_details.missNumberTotal +
               '</span> consecutive HITs'
             : null,
-          this.projectData.hit_details.reject_old ? 'Reject pending assignments from blocked/restricted users' : null,
+          this.projectData.hit_details && this.projectData.hit_details.reject_old
+            ? 'Reject pending assignments from blocked/restricted users'
+            : null,
         ]
         this.data = this.data.filter(Boolean)
         if (this.data.every((element) => element === null)) {

@@ -179,7 +179,7 @@
                 projectData.hits_submitted == projectData.hits_total ? 'cursor-not-allowed' : '',
                 projectData.status == 3 ? 'rounded-t-md' : '',
               ]"
-              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
+              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primaryDark transition-colors duration-20 hover:text-white xs:hidden"
             >
               Launch HITs
             </a>
@@ -187,7 +187,7 @@
               @click.stop="launch()"
               v-if="projectData.status == 2"
               :class="projectData.status == 2 ? 'rounded-t-md' : ''"
-              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
+              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primaryDark transition-colors duration-20 hover:text-white xs:hidden"
             >
               Publish project
             </a>
@@ -195,7 +195,7 @@
               @click.stop="layout()"
               v-if="projectData.status == 1"
               :class="projectData.status == 1 ? 'rounded-t-md' : ''"
-              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
+              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primaryDark transition-colors duration-20 hover:text-white xs:hidden"
             >
               Set layout
             </a>
@@ -203,21 +203,21 @@
               @click.stop="createHIT()"
               v-if="projectData.status == 0"
               :class="projectData.status == 0 ? 'rounded-t-md' : ''"
-              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:hidden"
+              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primaryDark transition-colors duration-20 hover:text-white xs:hidden"
             >
               Create HITs
             </a>
             <a
               @click.stop="upload('std')"
               v-if="projectData.status < 1"
-              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white xs:rounded-t-md sm:hidden"
+              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primaryDark transition-colors duration-20 hover:text-white xs:rounded-t-md sm:hidden"
             >
               Upload data
             </a>
             <a
               @click.stop="upload('gld')"
               v-if="projectData.status < 1"
-              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white sm:hidden"
+              class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primaryDark transition-colors duration-20 hover:text-white sm:hidden"
             >
               Upload Gold
             </a>
@@ -230,13 +230,13 @@
                   },
                 })
               "
-              class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white sm:rounded-t-md"
+              class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primaryDark transition-colors duration-20 hover:text-white sm:rounded-t-md"
             >
               Edit
             </a>
             <a
               @click.stop="deleteItem()"
-              class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primary hover:text-white rounded-b-md"
+              class="block md:hidden px-4 py-2 text-sm capitalize text-gray-700 hover:bg-primaryDark transition-colors duration-20 hover:text-white rounded-b-md"
             >
               Delete
             </a>

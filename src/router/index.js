@@ -20,6 +20,11 @@ const routes = [
     component: lazyLoad('Home'),
   },
   {
+    path: '/settings',
+    name: 'settings',
+    component: lazyLoad('settings'),
+  },
+  {
     path: '/create',
     name: 'new',
     component: lazyLoad('creazioneProgetto'),
