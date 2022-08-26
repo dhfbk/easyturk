@@ -280,6 +280,39 @@
         </table>
       </div>
     </div>
+    <div v-else-if="mode == 'workersTable'">
+      <div class="rounded-md -mx-4 -my-4">
+        <table class="w-full">
+          <thead>
+            <tr class="sm-rotated tracking-widest sm:tracking-normal">
+              <th class="text-xs text-white px-1">
+                <div><span>WORKER ID</span></div>
+              </th>
+              <th class="text-xs text-white px-1"><span>TOTAL HITs</span></th>
+              <th class="text-xs text-white px-1"><span>WRONG HITs</span></th>
+              <th class="text-xs text-white px-1"><span>BLOCKED</span></th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            <tr v-for="(i, k) in workersInfoArr" :key="k" class="hover:bg-gray-100">
+              <td class="border-r text-sm text-gray-700 font-medium border-b">
+                {{ i.worker_id }}
+              </td>
+              <td class="border-r text-sm text-gray-700 font-medium border-b">
+                {{ i.total_hits }}
+              </td>
+              <td class="border-r text-sm text-gray-700 font-medium border-b">
+                {{ i.wrong_hits }}
+              </td>
+              <td class="border-r text-sm text-gray-700 font-medium border-b">
+                <span class="text-green-600" v-if="i.blocked == 0">No</span>
+                <span class="text-red-600" v-else>Yes</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div v-else-if="mode == 'status'">
       <span class="font-bold">Status:</span>
       <span class="flex flex-col justify-between buttonsData items-start">
@@ -346,6 +379,9 @@ export default {
     mode: String,
   },
   computed: {
+    workersInfoArr() {
+      return Object.values(this.projectData.workersInfo)
+    },
     totals: function () {
       var ret = {}
       ret.count = 0
@@ -374,6 +410,7 @@ export default {
       statusText: [],
     }
   },
+
   created() {
     switch (this.mode) {
       case 'general':

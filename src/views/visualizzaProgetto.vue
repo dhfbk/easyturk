@@ -349,6 +349,7 @@
         <div v-else>
           <cardInfo :projectData="project" :mode="'status'" @modal="toggleModal" />
           <cardInfo v-if="project.status > 0" :projectData="project" :mode="'hits'" />
+          <cardInfo :projectData="project" :mode="'workersTable'" v-if="project.status == 3" />
           <cardInfo :projectData="project" :mode="'payment'" />
           <cardInfo :projectData="project" :mode="'qualifications'" />
           <!--
@@ -462,6 +463,8 @@ export default {
               this.hitsSubmitted = res.data.hits_submitted
               this.hitsTotal = res.data.hits_total
               this.project.hits_submitted = res.data.hits_submitted
+              this.project.workersInfo = res.data.workersInfo
+
               this.project.hits_total = res.data.hits_total
               this.project.numGold = res.data.numGold
               this.project.numData = res.data.numData
