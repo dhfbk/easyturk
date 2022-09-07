@@ -216,7 +216,7 @@ export default {
             }
           })
           .catch((err) => {
-            this.$emit('snackbar', 'Error: server unreacheable')
+            this.$emit('snackbar', 'Error: response is not valid JSON')
             console.error(err)
             this.loading = false
           })

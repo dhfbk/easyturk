@@ -8,6 +8,10 @@ const globalMixin = {
         headers: {
           'Session-Id': localStorage.getItem('session_id'),
         },
+        responseType: 'json',
+        transitional: {
+          silentJSONParsing: false,
+        },
       })
     },
   },

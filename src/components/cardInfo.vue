@@ -291,22 +291,48 @@
               <th class="text-xs text-white px-1"><span>TOTAL HITs</span></th>
               <th class="text-xs text-white px-1"><span>WRONG HITs</span></th>
               <th class="text-xs text-white px-1"><span>BLOCKED</span></th>
+              <th class="text-xs text-white px-1"><span>RESTRICTED</span></th>
+              <th class="text-xs text-white px-1"><span>BLOCK</span></th>
+              <th class="text-xs text-white px-1"><span>RESTRICT</span></th>
             </tr>
           </thead>
           <tbody class="text-center">
-            <tr v-for="(i, k) in workersInfoArr" :key="k" class="hover:bg-gray-100">
-              <td class="border-r text-sm text-gray-700 font-medium border-b">
+            <tr
+              v-for="(i, k) in workersInfoArr"
+              :key="k"
+              class="hover:bg-gray-100"
+              :class="k == workersInfoArr.length - 1 ? '' : 'border-b'"
+            >
+              <td class="border-r text-sm text-gray-700 font-medium">
                 {{ i.worker_id }}
               </td>
-              <td class="border-r text-sm text-gray-700 font-medium border-b">
+              <td class="border-r text-sm text-gray-700 font-medium">
                 {{ i.total_hits }}
               </td>
-              <td class="border-r text-sm text-gray-700 font-medium border-b">
+              <td class="border-r text-sm text-gray-700 font-medium">
                 {{ i.wrong_hits }}
               </td>
-              <td class="border-r text-sm text-gray-700 font-medium border-b">
+              <td class="border-r text-sm text-gray-700 font-medium">
                 <span class="text-green-600" v-if="i.blocked == 0">No</span>
                 <span class="text-red-600" v-else>Yes</span>
+              </td>
+              <td class="border-r text-sm text-gray-700 font-medium">
+                <span class="text-green-600" v-if="i.blocked == 0">No</span>
+                <span class="text-red-600" v-else>Yes</span>
+              </td>
+              <td class="border-r text-sm text-gray-700 font-medium">
+                <button
+                  class="ripple hover:bg-blue-600 bg-primary text-white transition-colors duration-100 ease-out py-0.5 px-1 rounded m-0.5 hidden xs:flex"
+                >
+                  Block
+                </button>
+              </td>
+              <td class="border-r text-sm text-gray-700 font-medium">
+                <button
+                  class="ripple hover:bg-blue-600 bg-primary text-white transition-colors duration-100 ease-out py-0.5 px-1 rounded m-0.5 hidden xs:flex"
+                >
+                  Restrict
+                </button>
               </td>
             </tr>
           </tbody>

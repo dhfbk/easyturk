@@ -104,10 +104,15 @@ export default {
                   if (res2.data.result == 'ERR') {
                     this.$emit('snackbar', 'Error. ' + res2.data.error)
                   } else {
+                    if (this.$store.state.userInfo && this.$store.state.userInfo.username == this.username) {
+                      path = this.$store.state.currentRoute
+                    } else {
+                      path = '/'
+                    }
                     this.$store.state.userInfo = res2.data.data
-                    this.$store.state.currentRoute != '' ? (path = this.$store.state.currentRoute) : (path = '/')
+
                     this.$emit('sandbox', this.$store.state.userInfo.use_sandbox)
-                    this.$router.replace({ path: path })
+                    this.$router.push({ path: path, replace: true })
                     this.$emit('snackbar', 'Login successful')
                   }
                   this.loading = false
