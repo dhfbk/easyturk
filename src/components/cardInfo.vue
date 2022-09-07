@@ -288,9 +288,11 @@
               <th class="text-xs text-white px-1">
                 <div><span>WORKER ID</span></div>
               </th>
-              <th class="text-xs text-white px-1"><span>TOTAL HITs</span></th>
+              <th class="text-xs text-white px-1" @click="sortedArr('total_hits', hitsSort)">
+                <span>TOTAL HITs</span>
+              </th>
               <th class="text-xs text-white px-1"><span>WRONG HITs</span></th>
-              <th class="text-xs text-white px-1"><span>BLOCKED</span></th>
+              <th class="text-xs text-white px-1" @click="sortedArr('blocked', blockSort)"><span>BLOCKED</span></th>
               <th class="text-xs text-white px-1"><span>RESTRICTED</span></th>
               <th class="text-xs text-white px-1"><span>BLOCK</span></th>
               <th class="text-xs text-white px-1"><span>RESTRICT</span></th>
@@ -298,10 +300,10 @@
           </thead>
           <tbody class="text-center">
             <tr
-              v-for="(i, k) in workersInfoArr"
+              v-for="(i, k) in currPage"
               :key="k"
               class="hover:bg-gray-100"
-              :class="k == workersInfoArr.length - 1 ? '' : 'border-b'"
+              :class="k == currPage.length + 1 ? '' : 'border-b'"
             >
               <td class="border-r text-sm text-gray-700 font-medium">
                 {{ i.worker_id }}
@@ -322,14 +324,14 @@
               </td>
               <td class="border-r text-sm text-gray-700 font-medium">
                 <button
-                  class="ripple hover:bg-blue-600 bg-primary text-white transition-colors duration-100 ease-out py-0.5 px-1 rounded m-0.5 hidden xs:flex"
+                  class="ripple hover:bg-blue-600 bg-primary text-white transition-colors duration-100 ease-out py-0.5 px-1 rounded mx-auto m-0.5 hidden xs:flex"
                 >
                   Block
                 </button>
               </td>
               <td class="border-r text-sm text-gray-700 font-medium">
                 <button
-                  class="ripple hover:bg-blue-600 bg-primary text-white transition-colors duration-100 ease-out py-0.5 px-1 rounded m-0.5 hidden xs:flex"
+                  class="ripple hover:bg-blue-600 bg-primary text-white transition-colors duration-100 ease-out py-0.5 px-1 rounded mx-auto m-0.5 hidden xs:flex"
                 >
                   Restrict
                 </button>
@@ -337,6 +339,23 @@
             </tr>
           </tbody>
         </table>
+        <div class="flex justify-between items-center">
+          <button
+            @click="page--"
+            :disabled="page == 0"
+            class="ripple px-1 py-0.5 m-0.5 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-100 ease-out"
+          >
+            Previous
+          </button>
+          <span>{{ page + 1 }}/{{ numPages }}</span>
+          <button
+            @click="page++"
+            :disabled="page == numPages - 1"
+            class="ripple px-1 py-0.5 m-0.5 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-100 ease-out"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
     <div v-else-if="mode == 'status'">
@@ -405,6 +424,13 @@ export default {
     mode: String,
   },
   computed: {
+    workersNum() {
+      return this.workersInfoArr.length
+    },
+
+    numPages() {
+      return Math.ceil(this.workersNum / 10)
+    },
     workersInfoArr() {
       return Object.values(this.projectData.workersInfo)
     },
@@ -434,6 +460,12 @@ export default {
       titles: [],
       data: [],
       statusText: [],
+      page: 0,
+      currPage: [],
+      currSort: [],
+      hitsSort: true,
+      blockSort: true,
+      restrSort: true,
     }
   },
 
@@ -572,6 +604,10 @@ export default {
           this.data = ['Behavior not set for the project']
         }
         break
+      case 'workersTable':
+        this.currSort = this.workersInfoArr
+        this.currPage = this.currSort.slice(0, 10)
+        break
     }
   },
   methods: {
@@ -584,6 +620,37 @@ export default {
         num = num / 1440 + ' days'
       }
       return num
+    },
+    sortedArr(by, asc) {
+      console.log(this.currSort.length)
+      if (asc) {
+        this.currSort.sort((a, b) => a[by] - b[by])
+      } else {
+        this.currSort.sort((a, b) => b[by] - a[by])
+      }
+      if (by == 'total_hits') {
+        this.hitsSort = !this.hitsSort
+        this.blockSort = true
+        this.restrSort = true
+      } else if (by == 'blocked') {
+        this.blockSort = !this.blockSort
+        this.hitsSort = true
+        this.restrSort = true
+      } else if (by == 'restricted') {
+        this.restrSort = !this.restrSort
+        this.hitsSort = true
+        this.blockSort = true
+      }
+      if (this.page == 0) {
+        this.currPage = this.currSort.slice(this.page * 10, this.page * 10 + 10)
+      }
+      this.page = 0
+    },
+  },
+  watch: {
+    page() {
+      this.currPage = this.currSort.slice(this.page * 10, this.page * 10 + 10)
+      console.log(this.page)
     },
   },
 }

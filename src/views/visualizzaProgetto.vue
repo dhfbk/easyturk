@@ -336,10 +336,11 @@
         </div>
         <div v-else>
           <cardInfo :projectData="project" :mode="'general'" />
+          <cardInfo :projectData="project" :mode="'behavior'" v-if="project.status > 1" @modal="toggleModal" />
+
           <cardInfo :projectData="project" :mode="'projectTable'" v-if="project.status == 3" />
           <cardInfo :projectData="project" :mode="'csv'" @modal="toggleModal" />
           <cardInfo :projectData="project" :mode="'layout'" />
-          <cardInfo :projectData="project" :mode="'behavior'" v-if="project.status > 1" @modal="toggleModal" />
         </div>
       </div>
       <div class="ml-0 xs2:ml-1">
