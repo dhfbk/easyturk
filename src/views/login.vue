@@ -6,6 +6,7 @@
       <div class="mb-2">
         <label class="block text-gray-700 text-sm mb-2" for="username">Username</label>
         <input
+          tabindex="1"
           :class="v$.username.$error ? 'border-red-400' : ''"
           class="appearance-none border border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
           id="username"
@@ -19,6 +20,7 @@
       <div class="mb-2">
         <label class="block text-gray-700 text-sm mb-2" for="password">Password</label>
         <input
+          tabindex="2"
           :class="v$.password.$error ? 'border-red-400' : ''"
           class="appearance-none border border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
           id="password"
@@ -34,6 +36,7 @@
         class="ripple transition-colors ease-out duration-100 bg-primary hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded text-white"
         type="button"
         @click="login"
+        tabindex="3"
       >
         <svg
           :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"

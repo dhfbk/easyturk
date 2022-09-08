@@ -362,11 +362,11 @@
       <span class="font-bold">Status:</span>
       <span class="flex flex-col justify-between buttonsData items-start">
         <span v-if="projectData.status == 0 && projectData.numData > 0">
-          <span class="text-green-500">data uploaded. </span>Ready to
+          <span class="text-green-500">Data uploaded. </span>Ready to
           <span class="font-bold text-primary"> create HITs.</span>
         </span>
         <span v-else-if="projectData.status == 0 && projectData.numData == 0">
-          <span class="text-green-500">project created. </span
+          <span class="text-green-500">Project created. </span
           ><span class="font-bold text-primary">Upload csv data </span>and<span class="font-bold text-primary">
             csv gold</span
           >

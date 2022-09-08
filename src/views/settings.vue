@@ -6,14 +6,14 @@
         <h2 class="text-lg my-4 text-primary">Account details</h2>
         <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="username">Username</label>
         <input
-          :class="v$.username.$error ? 'border-red-400 bg-gray-100 text-gray-700' : 'bg-gray-100 text-gray-700'"
-          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
+          class="appearance-none block w-full cursor-not-allowed bg-gray-400 border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
           id="username"
           type="text"
           placeholder="Username"
           maxlength="255"
-          v-model.trim="v$.username.$model"
+          v-model="this.$store.state.userInfo.username"
           required
+          disabled
         />
         <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="common">Common name</label>
         <input
@@ -67,6 +67,20 @@
           required
         />
         <p class="text-gray-700 text-xs italic pb-2">The new password must contain at least 8 characters.</p>
+        <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="new_pass_2">
+          Repeat new password
+        </label>
+        <input
+          @blur="v$.new_pass_2.$touch()"
+          :class="v$.new_pass_2.$error ? 'border-red-400 bg-gray-100 text-gray-700' : 'bg-gray-100 text-gray-700'"
+          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
+          id="new_pass_2"
+          type="password"
+          placeholder="Repeat new password"
+          maxlength="255"
+          v-model.trim="v$.new_pass_2.$model"
+          required
+        />
         <button
           type="submit"
           @click="handlePass"
@@ -90,7 +104,7 @@
 
 <script>
 //import axios from 'axios'
-import { required, maxLength, minLength } from '@vuelidate/validators'
+import { required, maxLength, minLength, sameAs } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 
 import globalMixin from '../globalMixin.js'
@@ -100,10 +114,10 @@ export default {
   name: 'settings',
   data() {
     return {
-      username: this.$store.state.userInfo.username,
       common: this.$store.state.userInfo.common_name,
       old_pass: '',
       new_pass: '',
+      new_pass_2: '',
       loading_pass: false,
       loading_account: false,
     }
@@ -116,10 +130,6 @@ export default {
   setup: () => ({ v$: useVuelidate() }),
   validations() {
     return {
-      username: {
-        required,
-        maxLength: maxLength(255),
-      },
       common: {
         required,
         maxLength: maxLength(255),
@@ -133,6 +143,12 @@ export default {
         maxLength: maxLength(255),
         minLength: minLength(8),
       },
+      new_pass_2: {
+        required,
+        maxLength: maxLength(255),
+        minLength: minLength(8),
+        sameAsNewPass: sameAs(this.new_pass),
+      },
     }
   },
   mounted() {
@@ -141,9 +157,9 @@ export default {
   methods: {
     handleAccount() {
       this.v$.common.$touch()
-      this.v$.username.$touch()
-      if (!this.v$.common.$invalid && !this.v$.username.$invalid) {
+      if (!this.v$.common.$invalid) {
         this.loading_pass = true
+        // API CALL
         this.loading_pass = false
       } else {
         this.$emit('snackbar', 'Error: check the inserted values')
@@ -152,8 +168,10 @@ export default {
     handlePass() {
       this.v$.old_pass.$touch()
       this.v$.new_pass.$touch()
-      if (!this.v$.old_pass.$invalid && !this.v$.new_pass.$invalid) {
+      this.v$.new_pass_2.$touch()
+      if (!this.v$.old_pass.$invalid && !this.v$.new_pass.$invalid && !this.v$.new_pass_2.$invalid) {
         this.loading_pass = true
+        // API CALL
         this.loading_pass = false
       } else {
         this.$emit('snackbar', 'Error: check the inserted passwords')

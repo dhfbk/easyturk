@@ -64,7 +64,7 @@
     <span class="text-3xl sm:text-4xl font-light">Welcome, {{ $store.state.userInfo.common_name }}</span>
     <!--<modalRevert v-if="modalRevert" :id="modalId" @uploadModal="uploadModal" />-->
     <div class="mb-6 mt-4">
-      <div class="flex content-center flex-col sm:flex-row px-2">
+      <div class="flex content-center px-2">
         <svg style="width: 24px" viewBox="0 0 24 24">
           <path
             d="M17,17H15V13H17M13,17H11V7H13M9,17H7V10H9M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z"
@@ -126,7 +126,7 @@
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center">
       <!--
             <div class="rounded shadow-md m-2 p-4 col-span-3 row-span-3 bg-white">
                 <div class="flex content-center flex-col sm:flex-row">
@@ -141,7 +141,7 @@
             </div>
             -->
       <div class="rounded shadow-md p-2 flex flex-col justify-around bg-white">
-        <div class="flex content-center flex-col sm:flex-row">
+        <div class="flex content-center">
           <svg style="width: 24px" viewBox="0 0 24 24">
             <path
               d="M21,18V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V6H12C10.89,6 10,6.9 10,8V16A2,2 0 0,0 12,18M12,16H22V8H12M16,13.5A1.5,1.5 0 0,1 14.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,12A1.5,1.5 0 0,1 16,13.5Z"
