@@ -281,69 +281,71 @@
       </div>
     </div>
     <div v-else-if="mode == 'workersTable'">
-      <div class="rounded-md -mx-4 -my-4">
-        <table class="w-full">
-          <thead>
-            <tr class="sm-rotated tracking-widest sm:tracking-normal">
-              <th class="text-xs text-white px-1">
-                <div><span>WORKER ID</span></div>
-              </th>
-              <th class="text-xs text-white px-1" @click="sortedArr('total_hits', hitsSort)">
-                <span>TOTAL HITs</span>
-              </th>
-              <th class="text-xs text-white px-1"><span>WRONG HITs</span></th>
-              <th class="text-xs text-white px-1" @click="sortedArr('blocked', blockSort)"><span>BLOCKED</span></th>
-              <th class="text-xs text-white px-1"><span>RESTRICTED</span></th>
-              <th class="text-xs text-white px-1"><span>BLOCK</span></th>
-              <th class="text-xs text-white px-1"><span>RESTRICT</span></th>
-            </tr>
-          </thead>
-          <tbody class="text-center">
-            <tr
-              v-for="(i, k) in currPage"
-              :key="k"
-              class="hover:bg-gray-100"
-              :class="k == currPage.length + 1 ? '' : 'border-b'"
-            >
-              <td class="border-r text-sm text-gray-700 font-medium">
-                {{ i.worker_id }}
-              </td>
-              <td class="border-r text-sm text-gray-700 font-medium">
-                {{ i.total_hits }}
-              </td>
-              <td class="border-r text-sm text-gray-700 font-medium">
-                {{ i.wrong_hits }}
-              </td>
-              <td class="border-r text-sm text-gray-700 font-medium">
-                <span class="text-green-600" v-if="i.blocked == 0">No</span>
-                <span class="text-red-600" v-else>Yes</span>
-              </td>
-              <td class="border-r text-sm text-gray-700 font-medium">
-                <span class="text-green-600" v-if="i.blocked == 0">No</span>
-                <span class="text-red-600" v-else>Yes</span>
-              </td>
-              <td class="border-r text-sm text-gray-700 font-medium">
-                <button
-                  class="ripple hover:bg-blue-600 bg-primary text-white transition-colors duration-100 ease-out py-0.5 px-1 rounded mx-auto m-0.5 hidden xs:flex"
-                >
-                  Block
-                </button>
-              </td>
-              <td class="border-r text-sm text-gray-700 font-medium">
-                <button
-                  class="ripple hover:bg-blue-600 bg-primary text-white transition-colors duration-100 ease-out py-0.5 px-1 rounded mx-auto m-0.5 hidden xs:flex"
-                >
-                  Restrict
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="rounded-md -mx-4 -my-4" v-if="currPage.length > 0">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="sm-rotated tracking-widest sm:tracking-normal">
+                <th class="text-xs text-white px-1">
+                  <div><span>WORKER ID</span></div>
+                </th>
+                <th class="text-xs text-white px-1" @click="sortedArr('total_hits', hitsSort)">
+                  <span>TOTAL HITs</span>
+                </th>
+                <th class="text-xs text-white px-1"><span>WRONG HITs</span></th>
+                <th class="text-xs text-white px-1" @click="sortedArr('blocked', blockSort)"><span>BLOCKED</span></th>
+                <th class="text-xs text-white px-1"><span>RESTRICTED</span></th>
+                <th class="text-xs text-white px-1"><span>BLOCK</span></th>
+                <th class="text-xs text-white px-1"><span>RESTRICT</span></th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              <tr
+                v-for="(i, k) in currPage"
+                :key="k"
+                class="hover:bg-gray-100"
+                :class="k == currPage.length + 1 ? '' : 'border-b'"
+              >
+                <td class="border-r text-sm text-gray-700 font-medium">
+                  {{ i.worker_id }}
+                </td>
+                <td class="border-r text-sm text-gray-700 font-medium">
+                  {{ i.total_hits }}
+                </td>
+                <td class="border-r text-sm text-gray-700 font-medium">
+                  {{ i.wrong_hits }}
+                </td>
+                <td class="border-r text-sm text-gray-700 font-medium">
+                  <span class="text-green-600" v-if="i.blocked == 0">No</span>
+                  <span class="text-red-600" v-else>Yes</span>
+                </td>
+                <td class="border-r text-sm text-gray-700 font-medium">
+                  <span class="text-green-600" v-if="i.blocked == 0">No</span>
+                  <span class="text-red-600" v-else>Yes</span>
+                </td>
+                <td class="border-r text-sm text-gray-700 font-medium">
+                  <button
+                    class="ripple hover:bg-blue-600 bg-primary text-white transition-colors duration-100 ease-out py-0.5 px-1 rounded mx-auto m-0.5 hidden xs:flex"
+                  >
+                    Block
+                  </button>
+                </td>
+                <td class="border-r text-sm text-gray-700 font-medium">
+                  <button
+                    class="ripple hover:bg-blue-600 bg-primary text-white transition-colors duration-100 ease-out py-0.5 px-1 rounded mx-auto m-0.5 hidden xs:flex"
+                  >
+                    Restrict
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div class="flex justify-between items-center">
           <button
             @click="page--"
             :disabled="page == 0"
-            class="ripple px-1 py-0.5 m-0.5 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-100 ease-out"
+            class="ripple px-2 py-1 mb-4 ml-4 mt-2 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-100 ease-out"
           >
             Previous
           </button>
@@ -351,12 +353,13 @@
           <button
             @click="page++"
             :disabled="page == numPages - 1"
-            class="ripple px-1 py-0.5 m-0.5 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-100 ease-out"
+            class="ripple px-2 py-1 mb-4 mr-4 mt-2 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-100 ease-out"
           >
             Next
           </button>
         </div>
       </div>
+      <div v-else>No workers to display.</div>
     </div>
     <div v-else-if="mode == 'status'">
       <span class="font-bold">Status:</span>
@@ -601,7 +604,7 @@ export default {
         ]
         this.data = this.data.filter(Boolean)
         if (this.data.every((element) => element === null)) {
-          this.data = ['Behavior not set for the project']
+          this.data = ['Behavior not set for the project.']
         }
         break
       case 'workersTable':
