@@ -1,33 +1,38 @@
 <?php
 
-/*
+// ini_set("session.use_cookies", 0);
+// ini_set("display_errors", 1);
 
-# nginx config
-location / {
-    if ($request_method = 'OPTIONS') {
-        add_header 'Access-Control-Allow-Origin' '*';
-        add_header 'Access-Control-Allow-Methods' "POST,GET,DELETE,PUT,OPTIONS";
-        add_header 'Access-Control-Allow-Headers' 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
-        add_header 'Access-Control-Max-Age' 1728000;
-        return 204;
-    }
+header("Content-Type: application/json; charset=UTF-8");
+
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Headers: Session-ID, Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+// CORS stuff
+// https://stackoverflow.com/questions/53298478/has-been-blocked-by-cors-policy-response-to-preflight-request-doesn-t-pass-acce
+$method = $_SERVER['REQUEST_METHOD'];
+if ($method == "OPTIONS") {
+    http_response_code(200);
+    exit();
 }
 
-*/
-
-// header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-// header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE");
-// header("Access-Control-Max-Age: 3600");
-// header("Access-Control-Allow-Headers: Accept, Referer, User-Agent, Content-Type, Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
-// ini_set("display_errors", "On");
+ini_set("display_errors", "On");
 
 // require_once 'vendor/autoload.php';
 // print_r($_REQUEST);
 
 $script_uri = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://{$_SERVER['HTTP_HOST']}{$_SERVER['SCRIPT_NAME']}";
 
+$Headers = apache_request_headers();
+if (isset($_REQUEST['session_id']) && $_REQUEST['session_id']) {
+    session_id($_REQUEST['session_id']);
+}
+if (isset($Headers['Session-Id']) && $Headers['Session-Id']) {
+    session_id($Headers['Session-Id']);
+}
 session_start();
 
 require_once("../inc/include.php");
@@ -45,6 +50,7 @@ $Options = $_SESSION['Options'];
 
 $ret = array();
 $ret['debug'] = array();
+// $ret['sess_id'] = $Headers['Session-Id'];
 
 $json_params = file_get_contents("php://input");
 if (strlen($json_params) > 0 && isValidJSON($json_params)) {
@@ -66,72 +72,110 @@ $Enclosures = array("single" => "'", "double" => "\"", "none" => "none");
 
 switch ($Action) {
 
+    // case "avgTime":
+    //     $total = 0;
+    //     $count = 0;
+
+    //     // $query = "SELECT * FROM assignments a LEFT JOIN cluster_to_hit c ON a.hit_id = c.id_hit LEFT JOIN projects p ON p.id = c.id_project WHERE p.id IN (87, 85, 83) AND a.status = 'Approved'";
+    //     $query = "SELECT * FROM assignments a LEFT JOIN cluster_to_hit c ON a.hit_id = c.id_hit LEFT JOIN projects p ON p.id = c.id_project WHERE p.id IN (90) AND a.status = 'Approved'";
+    //     $DB->query($query);
+    //     while ($row = $DB->fetch()) {
+    //         $data = unserialize($row['assignment_info']);
+    //         $SubmitTime = strtotime($data['SubmitTime']->date);
+    //         $AcceptTime = strtotime($data['AcceptTime']->date);
+    //         $diff = $SubmitTime - $AcceptTime;
+    //         if ($diff > 150) {
+    //             continue;
+    //         }
+    //         // print("$diff\n");
+
+    //         $total += $diff;
+    //         $count++;
+    //     }
+
+    //     $avg = $total / $count;
+    //     $ret['avg'] = $avg;
+    //     break;
+
     case "emptyTrash":
         $success = true;
         $db_error = "";
 
         $DB->startTransaction();
-        $query = "DELETE FROM clusters WHERE deleted = '1'";
-        if (!$DB->query($query)) {
-            $success = false;
-            $db_error = $DB->get_error();
-        }
-        $query = "DELETE FROM cluster_to_hit WHERE deleted = '1'";
-        if (!$DB->query($query)) {
-            $success = false;
-            $db_error = $DB->get_error();
-        }
-        $query = "DELETE a
-            FROM assignments a
-            LEFT JOIN cluster_to_hit h ON h.id_hit = a.hit_id
-            WHERE h.id IS NULL";
-        if (!$DB->query($query)) {
-            $success = false;
-            $db_error = $DB->get_error();
-        }
-        $query = "DELETE w FROM answers w
-            LEFT JOIN assignments a ON w.assignment_id = a.assignment_id
-            WHERE a.id IS NULL";
-        if (!$DB->query($query)) {
-            $success = false;
-            $db_error = $DB->get_error();
-        }
-        $query = "DELETE l FROM `file_lines` l
-            LEFT JOIN project_files f ON f.id = l.file_id
-            WHERE f.deleted = '1'";
-        if (!$DB->query($query)) {
-            $success = false;
-            $db_error = $DB->get_error();
-        }
-        $query = "DELETE FROM projects WHERE deleted = '1'";
-        if (!$DB->query($query)) {
-            $success = false;
-            $db_error = $DB->get_error();
-        }
-        $query = "DELETE FROM project_files WHERE deleted = '1'";
-        if (!$DB->query($query)) {
-            $success = false;
-            $db_error = $DB->get_error();
-        }
-
-        if ($success) {
-            $DB->commitTransaction();
-            $ret['result'] = "OK";
-        }
-        else {
-            $DB->rollBackTransaction();
+        try {
+            $query = "DELETE FROM clusters WHERE deleted = '1'";
+            if (!$DB->query($query)) {
+                $success = false;
+                $db_error = $DB->get_error();
+            }
+            $query = "DELETE FROM cluster_to_hit WHERE deleted = '1'";
+            if (!$DB->query($query)) {
+                $success = false;
+                $db_error = $DB->get_error();
+            }
+            $query = "DELETE a
+                FROM assignments a
+                LEFT JOIN cluster_to_hit h ON h.id_hit = a.hit_id
+                WHERE h.id IS NULL";
+            if (!$DB->query($query)) {
+                $success = false;
+                $db_error = $DB->get_error();
+            }
+            $query = "DELETE w FROM answers w
+                LEFT JOIN assignments a ON w.assignment_id = a.assignment_id
+                WHERE a.id IS NULL";
+            if (!$DB->query($query)) {
+                $success = false;
+                $db_error = $DB->get_error();
+            }
+            $query = "DELETE l FROM `file_lines` l
+                LEFT JOIN project_files f ON f.id = l.file_id
+                WHERE f.deleted = '1'";
+            if (!$DB->query($query)) {
+                $success = false;
+                $db_error = $DB->get_error();
+            }
+            $query = "DELETE FROM projects WHERE deleted = '1'";
+            if (!$DB->query($query)) {
+                $success = false;
+                $db_error = $DB->get_error();
+            }
+            $query = "DELETE FROM project_files WHERE deleted = '1'";
+            if (!$DB->query($query)) {
+                $success = false;
+                $db_error = $DB->get_error();
+            }
+            if ($success) {
+                $DB->commitTransaction();
+                $ret['result'] = "OK";
+            }
+            else {
+                $DB->rollbackTransaction();
+                $ret['result'] = "ERR";
+                $ret['error'] = $db_error;
+            }
+        } catch (Exception $exception) {
+            $DB->rollbackTransaction();
             $ret['result'] = "ERR";
-            $ret['error'] = $db_error;
+            $ret['error'] = $exception->getMessage();
         }
 
         break;
 
     case "getOptions":
         $ret['defaults'] = array();
+
+        $ret['defaults']['max_length_name'] = 100;
+        $ret['defaults']['max_length_title'] = 100;
+        $ret['defaults']['max_reject_if_gold_wrong'] = 15;
+        $ret['defaults']['min_time_block'] = 20;
+        $ret['defaults']['min_reward'] = "0.01";
+        $ret['defaults']['respondents'] = 1;
+
         $ret['defaults']['reward'] = "0.05";
         $ret['defaults']['assignments'] = 3;
         $ret['defaults']['time_per_worker'] = 60;
-        $ret['defaults']['survey_expiration'] = 60 * 24;
+        $ret['defaults']['survey_expiration'] = 60 * 24 * 10;
         $ret['defaults']['auto_approve'] = 10;
         $ret['defaults']['examples_per_hit'] = 5;
         $ret['defaults']['gold_data_per_hit'] = 1;
@@ -160,7 +204,7 @@ switch ($Action) {
         if ($DB->querynum($query)) {
             $row = $DB->fetch();
             $ret['result'] = "OK";
-            // $ret['sess_id'] = session_id();
+            $ret['session_id'] = session_id();
             $_SESSION['User'] = $row['id'];
         }
         else {
@@ -172,6 +216,7 @@ switch ($Action) {
     case "listProjects":
     case "addProject":
     case "deleteProject":
+    case "updateBehavior":
     case "editProject":
     case "uploadFile":
     case "deleteFile":
@@ -207,7 +252,7 @@ switch ($Action) {
             ]
         ];
         if ($UseSandbox) {
-            $mTurkOptions['endpoint'] = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com';
+            $mTurkOptions['endpoint'] = SANDBOX_URL;
         }
         $mTurk = new Aws\MTurk\MTurkClient($mTurkOptions);
 
@@ -286,9 +331,7 @@ switch ($Action) {
                         break;
                     }
 
-                    $DB->startTransaction();
                     updateHIT($row['hit_id'], 1);
-                    $DB->commitTransaction();
                 }
 
                 $accepted = [];
@@ -573,50 +616,54 @@ switch ($Action) {
                     }
                 }
 
-                $DB->startTransaction();
                 $success = true;
                 $db_error = "";
-
-                if ($stmt = $mysqli->prepare("UPDATE project_files
-                        SET deleted = 1
-                        WHERE project_id = ? AND is_gold = ?")) {
-                    $stmt->bind_param("si", $_REQUEST['id'], $isGold);
-                    if (!$stmt->execute()) {
-                        $success = false;
+                $DB->startTransaction();
+                try {
+                    if ($stmt = $mysqli->prepare("UPDATE project_files
+                            SET deleted = 1
+                            WHERE project_id = ? AND is_gold = ?")) {
+                        $stmt->bind_param("si", $_REQUEST['id'], $isGold);
+                        if (!$stmt->execute()) {
+                            $success = false;
+                        }
+                        $stmt->close();
                     }
-                    $stmt->close();
-                }
 
-                $data = array();
-                $data['project_id'] = $project['id'];
-                $data['filename'] = $fileName;
-                $data['is_gold'] = $isGold;
-                $data['fields'] = serialize($fields);
-                if (!$DB->queryinsert("project_files", $data)) {
-                    $success = false;
-                    $db_error = $DB->get_error();
-                }
-                $file_id = $DB->last_id;
-
-                foreach ($okData as $row) {
                     $data = array();
-                    $data['file_id'] = $file_id;
-                    $data['line_text'] = serialize($row);
-                    if (!$DB->queryinsert("file_lines", $data)) {
+                    $data['project_id'] = $project['id'];
+                    $data['filename'] = $fileName;
+                    $data['is_gold'] = $isGold;
+                    $data['fields'] = serialize($fields);
+                    if (!$DB->queryinsert("project_files", $data)) {
                         $success = false;
                         $db_error = $DB->get_error();
                     }
-                }
+                    $file_id = $DB->last_id;
+                    // $ret['debug']['okData'] = $okData;
 
-                if (!$success) {
+                    foreach ($okData as $row) {
+                        $data = array();
+                        $data['file_id'] = $file_id;
+                        $data['line_text'] = serialize($row);
+                        if (!$DB->queryinsert("file_lines", $data)) {
+                            $success = false;
+                            $db_error = $DB->get_error();
+                        }
+                    }
+
+                    if (!$success) {
+                        throw new Exception($db_error);
+                    }
+
+                    $DB->commitTransaction();
+                    $ret['result'] = "OK";
+                }
+                catch (Exception $e) {
                     $DB->rollbackTransaction();
                     $ret['result'] = "ERR";
                     $ret['error'] = $db_error;
-                    break;
                 }
-
-                $DB->commitTransaction();
-                $ret['result'] = "OK";
                 break;
 
             case "listProjects":
@@ -662,6 +709,35 @@ switch ($Action) {
                     $stmt->close();
                 }
                 $ret['result'] = "OK";
+                break;
+
+            case "updateBehavior":
+                $DB->startTransaction();
+                $r = find("projects", $_REQUEST['id'], "Project not found");
+                $hit_details = unserialize($r['hit_details']);
+
+                try {
+                    if ($r['status'] < 2) {
+                        throw new Exception("Cannot update layout for a project with status {$r['status']}");
+                    }
+
+                    $toSaveTmp = checkBehaviorData($_REQUEST, $r);
+
+                    // TODO: replace this set of options using a single option, such as "behavior"
+                    $hit_details = array_merge($hit_details, $toSaveTmp);
+
+                    $DB->queryupdate("projects", array("hit_details" => serialize($hit_details)), array("id" => $r['id']));
+                    $DB->commitTransaction();
+
+                    $ret['result'] = "OK";
+                }
+                catch (Exception $e) {
+                    $DB->rollbackTransaction();
+                    $ret['result'] = "ERR";
+                    $ret['error'] = $e->getMessage();
+                    break;
+                }
+
                 break;
 
             case "updateProjectStatus":
@@ -778,55 +854,61 @@ switch ($Action) {
                         // $ret['trainDataSize'] = count($trainData);
                         // $ret['goldDataSize'] = count($goldData);
 
-                        $DB->startTransaction();
                         $success = true;
+                        $DB->startTransaction();
+                        try {
 
-                        $goldIndex = 0;
-                        for ($i = 0; $i < count($trainData); $i += $dataBunch) {
-                            $clusterIndex = floor($i / $dataBunch) + 1;
-                            for ($j = 0; $j < $dataBunch; $j++) {
-                                $index = $i + $j;
-                                $data = array();
-                                $data['cluster_index'] = $clusterIndex;
-                                $data['line_id'] = $trainData[$index]['id'];
-                                $data['alea'] = mt_rand() / mt_getrandmax();
-                                if (!$DB->queryinsert("clusters", $data)) {
-                                    $success = false;
+                            $goldIndex = 0;
+                            for ($i = 0; $i < count($trainData); $i += $dataBunch) {
+                                $clusterIndex = floor($i / $dataBunch) + 1;
+                                for ($j = 0; $j < $dataBunch; $j++) {
+                                    $index = $i + $j;
+                                    $data = array();
+                                    $data['cluster_index'] = $clusterIndex;
+                                    $data['line_id'] = $trainData[$index]['id'];
+                                    $data['alea'] = mt_rand() / mt_getrandmax();
+                                    if (!$DB->queryinsert("clusters", $data)) {
+                                        $success = false;
+                                    }
+
+                                    // print("T{$trainData[$index]['id']}\n");
                                 }
+                                for ($j = 0; $j < $goldSize; $j++) {
+                                    $index = $goldIndex++ % count($goldData);
+                                    $data = array();
+                                    $data['cluster_index'] = $clusterIndex;
+                                    $data['line_id'] = $goldData[$index]['id'];
+                                    $data['alea'] = mt_rand() / mt_getrandmax();
+                                    if (!$DB->queryinsert("clusters", $data)) {
+                                        $success = false;
+                                    }
 
-                                // print("T{$trainData[$index]['id']}\n");
-                            }
-                            for ($j = 0; $j < $goldSize; $j++) {
-                                $index = $goldIndex++ % count($goldData);
-                                $data = array();
-                                $data['cluster_index'] = $clusterIndex;
-                                $data['line_id'] = $goldData[$index]['id'];
-                                $data['alea'] = mt_rand() / mt_getrandmax();
-                                if (!$DB->queryinsert("clusters", $data)) {
-                                    $success = false;
+                                    // print("G{$goldData[$index]['id']}\n");
                                 }
-
-                                // print("G{$goldData[$index]['id']}\n");
                             }
-                        }
 
-                        if (!$DB->queryupdate("projects", array("status" => 1), array("id" => $r['id']))) {
-                            $success = false;
+                            if (!$DB->queryupdate("projects", array("status" => 1), array("id" => $r['id']))) {
+                                $success = false;
+                            }
+
+                            if (!$success) {
+                                throw new Exception($DB->get_error());
+                            }
+
+                            $DB->commitTransaction();
+                            $ret['result'] = "OK";
                         }
-                        if (!$success) {
+                        catch (Exception $e) {
                             $DB->rollbackTransaction();
                             $ret['result'] = "ERR";
                             $ret['error'] = $DB->get_error();
-                            break;
                         }
-
-                        $DB->commitTransaction();
-                        $ret['result'] = "OK";
 
                         break;
 
                     case "2":
-                        if ($UseSandbox && $r['status'] == 3) {
+                        // if ($UseSandbox && $r['status'] == 3) {
+                        if ($r['status'] == 3) {
                             $query = "UPDATE cluster_to_hit SET deleted = '1' WHERE id_project = '{$r['id']}'";
                             $DB->query($query);
 
@@ -849,11 +931,11 @@ switch ($Action) {
                             break;
                         }
 
-                        if (!count($_REQUEST['layoutData'])) {
-                            $ret['result'] = "ERR";
-                            $ret['error'] = "No layoutData found";
-                            break;
-                        }
+                        // if (!count($_REQUEST['layoutData'])) {
+                        //     $ret['result'] = "ERR";
+                        //     $ret['error'] = "No layoutData found";
+                        //     break;
+                        // }
 
                         $goldInfo = false;
                         $trainingInfo = false;
@@ -875,6 +957,12 @@ switch ($Action) {
                         $projectFields[] = "_keywords";
                         $allowedFields = array_merge($projectFields, unserialize($trainingInfo['fields']));
 
+                        $trainingFields = unserialize($trainingInfo['fields']);
+                        $goldFields = unserialize($goldInfo['fields']);
+                        $goldFields = array_diff($goldFields, $trainingFields);
+
+                        // BEGIN Layout stuff
+
                         $layout_fields = explode(",", $r['layout_fields']);
                         $layout_fields = array_map('trim', $layout_fields);
 
@@ -884,144 +972,89 @@ switch ($Action) {
                             break;
                         }
 
-                        $outFields = array();
-                        foreach ($_REQUEST['layoutData'] as $layoutData) {
-                            if (!$layoutData['field']) {
-                                $ret['result'] = "ERR";
-                                $ret['error'] = "Field in layoutData is missing";
-                                break 2;
-                            }
-                            if (!in_array($layoutData['field'], $layout_fields)) {
-                                $ret['result'] = "ERR";
-                                $ret['error'] = "Unable to find {$layoutData['field']} in layout fields";
-                                break 2;
-                            }
-
-                            if (in_array($layoutData['field'], $outFields)) {
-                                $ret['result'] = "ERR";
-                                $ret['error'] = "Duplicate entry {$layoutData['field']}";
-                                break 2;
-                            }
-                            $outFields[] = $layoutData['field'];
-
-                            if ($layoutData['isHandWritten']) {
-                                if (!$layoutData['customValue']) {
-                                    $ret['result'] = "ERR";
-                                    $ret['error'] = "Custom value is mandatory for handwritten fields";
-                                    break 2;
+                        try {
+                            $outFields = array();
+                            foreach ($_REQUEST['layoutData'] as $layoutData) {
+                                if (!$layoutData['field']) {
+                                    throw new Exception("Field in layoutData is missing");
                                 }
-                                if (substr($layoutData['field'], -1) === "#") {
-                                    $ret['result'] = "ERR";
-                                    $ret['error'] = "Fields ending with # cannot be user in handwritten mode";
-                                    break 2;
+                                if (!in_array($layoutData['field'], $layout_fields)) {
+                                    throw new Exception("Unable to find {$layoutData['field']} in layout fields");
                                 }
-                            }
-                            else {
-                                if (substr($layoutData['field'], -1) === "#" && in_array($layoutData['valueFrom'], $projectFields)) {
-                                    $ret['result'] = "ERR";
-                                    $ret['error'] = "Fields ending with # can be used only with CSV fields";
-                                    break 2;
+
+                                if (in_array($layoutData['field'], $outFields)) {
+                                    throw new Exception("Duplicate entry {$layoutData['field']}");
                                 }
-                                if (substr($layoutData['field'], -1) !== "#" && !in_array($layoutData['valueFrom'], $projectFields)) {
-                                    $ret['result'] = "ERR";
-                                    $ret['error'] = "Fields not ending with # can be used only with project fields";
-                                    break 2;
-                                }
-                                if (!in_array($layoutData['valueFrom'], $allowedFields)) {
-                                    $ret['result'] = "ERR";
-                                    $ret['error'] = "Invalid field name {$layoutData['valueFrom']}";
-                                    break 2;
-                                }
-                            }
-                        }
+                                $outFields[] = $layoutData['field'];
 
-                        $difference = array_diff($layout_fields, $outFields);
-                        if (count($difference)) {
-                            $ret['result'] = "ERR";
-                            $ret['error'] = "Missing template fields: " . implode(', ', $difference);
-                            break 2;
-                        }
-
-                        $trainingFields = unserialize($trainingInfo['fields']);
-                        $goldFields = unserialize($goldInfo['fields']);
-                        $goldFields = array_diff($goldFields, $trainingFields);
-
-                        $answerDataAll = isset($_REQUEST['answerData']) ? $_REQUEST['answerData'] : [];
-
-                        if (count($answerDataAll)) {
-                            foreach ($answerDataAll as $answerData) {
-                                $containSomething = false;
-                                $pars = ["varName", "varValue", "varNameTo", "varValueTo"];
-                                foreach ($pars as $key) {
-                                    if (isset($answerData[$key]) && trim($answerData[$key])) {
-                                        $containSomething = true;
+                                if ($layoutData['isHandWritten']) {
+                                    if (!$layoutData['customValue']) {
+                                        throw new Exception("Custom value is mandatory for handwritten fields");
+                                    }
+                                    if (substr($layoutData['field'], -1) === "#") {
+                                        throw new Exception("Fields ending with # cannot be user in handwritten mode");
                                     }
                                 }
-                                if ($containSomething) {
-                                    if (strpos($answerData['varName'], "#") === false) {
-                                        $ret['result'] = "ERR";
-                                        $ret['error'] = "Field varName must contain #";
-                                        break 2;
+                                else {
+                                    if (substr($layoutData['field'], -1) === "#" && in_array($layoutData['valueFrom'], $projectFields)) {
+                                        throw new Exception("Fields ending with # can be used only with CSV fields");
                                     }
+                                    if (substr($layoutData['field'], -1) !== "#" && !in_array($layoutData['valueFrom'], $projectFields)) {
+                                        throw new Exception("Fields not ending with # can be used only with project fields");
+                                    }
+                                    if (!in_array($layoutData['valueFrom'], $allowedFields)) {
+                                        throw new Exception("Invalid field name {$layoutData['valueFrom']}");
+                                    }
+                                }
+                            }
+
+                            $difference = array_diff($layout_fields, $outFields);
+                            if (count($difference)) {
+                                throw new Exception("Missing template fields: " . implode(', ', $difference));
+                            }
+
+                            // END Layout stuff
+
+                            // BEGIN Answer conversion stuff
+
+                            $answerDataAll = isset($_REQUEST['answerData']) ? $_REQUEST['answerData'] : [];
+
+                            if (count($answerDataAll)) {
+                                foreach ($answerDataAll as $answerData) {
+                                    $containSomething = false;
+                                    $pars = ["varName", "varValue", "varNameTo", "varValueTo"];
                                     foreach ($pars as $key) {
-                                        if (!isset($answerData[$key]) || strlen($answerData[$key]) == 0) {
-                                            $ret['result'] = "ERR";
-                                            $ret['error'] = "Field $key is not defined";
-                                            break 3;
+                                        if (isset($answerData[$key]) && trim($answerData[$key])) {
+                                            $containSomething = true;
+                                        }
+                                    }
+                                    if ($containSomething) {
+                                        if (strpos($answerData['varName'], "#") === false) {
+                                            throw new Exception("Field varName must contain #");
+                                        }
+                                        foreach ($pars as $key) {
+                                            if (!isset($answerData[$key]) || strlen($answerData[$key]) == 0) {
+                                                throw new Exception("Field $key is not defined");
+                                            }
                                         }
                                     }
                                 }
                             }
+
+                            // END Answer conversion stuff
+
+                            $toSave = array();
+                            $toSave['layoutData'] = $_REQUEST['layoutData'];
+                            $toSave['answerData'] = $answerDataAll;
+
+                            $toSaveTmp = checkBehaviorData($_REQUEST, $r);
+                            $toSave = array_merge($toSave, $toSaveTmp);
                         }
-
-                        $toSave = array();
-                        $toSave['layoutData'] = $_REQUEST['layoutData'];
-                        $toSave['answerData'] = $answerDataAll;
-
-                        $toSave['rejectIfGoldWrong'] = boolval($_REQUEST['rejectIfGoldWrong'] ?: false);
-                        $toSave['acceptIfGoldRight'] = boolval($_REQUEST['acceptIfGoldRight'] ?: false);
-
-                        if ($toSave['rejectIfGoldWrong']) {
-                            if (!preg_match("/[0-9]+/", $_REQUEST['assignNumber'])) {
-                                throw new Exception("Invalid value {$_REQUEST['assignNumber']} for assignNumber");
-                            }
-                            if ($_REQUEST['assignNumber'] < $r['workers']) {
-                                throw new Exception("assignNumber must be at least {$r['workers']} in this project");
-                            }
-
-                            $toSave['assignNumber'] = $_REQUEST['assignNumber'];
-                            $toSave['rejectReason'] = $_REQUEST['rejectReason'];
+                        catch (Exception $e) {
+                            $ret['result'] = "ERR";
+                            $ret['error'] = $e->getMessage();
+                            break;
                         }
-
-                        $toSave['reject_old'] = boolval($_REQUEST['reject_old'] ?: false);
-
-                        $toSave['block_worker_fast'] = boolval($_REQUEST['block_worker_fast'] ?: false);
-                        if ($toSave['block_worker_fast']) {
-                            if (!preg_match("/[0-9]+/", $_REQUEST['rejectTime'])) {
-                                throw new Exception("Invalid value {$_REQUEST['rejectTime']} for rejectTime");
-                            }
-                            if ($_REQUEST['rejectTime'] < 10) {
-                                throw new Exception("Value {$_REQUEST['rejectTime']} for rejectTime must be greater than 10");
-                            }
-                            $toSave['rejectTime'] = $_REQUEST['rejectTime'];
-                        }
-
-                        $toSave['block_worker_bad'] = boolval($_REQUEST['block_worker_bad'] ?: false);
-                        if ($toSave['block_worker_bad']) {
-                            if (!preg_match("/[0-9]+/", $_REQUEST['missNumberTotal'])) {
-                                throw new Exception("Invalid value {$_REQUEST['missNumberTotal']} for missNumberTotal");
-                            }
-                            if (!preg_match("/[0-9]+/", $_REQUEST['missNumber'])) {
-                                throw new Exception("Invalid value {$_REQUEST['missNumber']} for missNumber");
-                            }
-                            if ($_REQUEST['missNumber'] > $_REQUEST['missNumberTotal']) {
-                                throw new Exception("missNumber should be less than missNumberTotal");
-                            }
-                            $toSave['missNumberTotal'] = $_REQUEST['missNumberTotal'];
-                            $toSave['missNumber'] = $_REQUEST['missNumber'];
-                        }
-
-                        $toSave['skip_check'] = $toSave['block_worker_bad'] || $toSave['block_worker_fast'] || $toSave['reject_old'];
 
                         $toSave['hitData'] = [
                             "AssignmentDurationInSeconds" => $r['max_time'] * 60,
@@ -1044,15 +1077,15 @@ switch ($Action) {
                             break;
                         }
 
-                        $masterQualification = "2F1QJWKUDD8XADTFD2Q0G6UTO95ALH";
+                        $masterQualification = MASTER_QUALIFICATION_ID;
                         if ($UseSandbox) {
-                            $masterQualification = "2ARFPLSP75KLA8M8DH1HTEQVJT3SY6";
+                            $masterQualification = SB_MASTER_QUALIFICATION_ID;
                         }
                         $qualificationRequirements = [];
                         $qualifications = unserialize($r['qualifications']);
                         if ($qualifications['adult'] ?: 0) {
                             $a = array();
-                            $a['QualificationTypeId'] = "00000000000000000060";
+                            $a['QualificationTypeId'] = ADULT_QUALIFICATION_ID;
                             $a['Comparator'] = "EqualTo";
                             $a['IntegerValues'] = [1];
                             $a['ActionsGuarded'] = "DiscoverPreviewAndAccept";
@@ -1072,7 +1105,7 @@ switch ($Action) {
                             }
                             if (count($countries)) {
                                 $a = array();
-                                $a['QualificationTypeId'] = "00000000000000000071";
+                                $a['QualificationTypeId'] = LOCATION_QUALIFICATION_ID;
                                 $a['Comparator'] = "In";
                                 $a['LocaleValues'] = $countries;
                                 $a['ActionsGuarded'] = "DiscoverPreviewAndAccept";
@@ -1091,7 +1124,7 @@ switch ($Action) {
                             $ret['hitData'] = $toSave['hitData'];
                             $ret['error_message'] = $e->getMessage();
                             l(1, "create_preview_hit", $e->getMessage(), $r['id']);
-                            break;
+                            break; // exit switch
                         }
 
                         $response = $response->toArray();
@@ -1139,29 +1172,35 @@ switch ($Action) {
                         $DB->queryupdate("projects", array("status" => 3), array("id" => $r['id']));
 
                         $DB->startTransaction();
-                        $query = "SELECT DISTINCT c.cluster_index
-                            FROM `clusters` c
-                            LEFT JOIN file_lines l ON c.line_id = l.id
-                            LEFT JOIN project_files f ON f.id = l.file_id
-                            LEFT JOIN cluster_to_hit h ON h.id_cluster = c.cluster_index AND h.id_project = '{$r['id']}' AND h.deleted = '0'
-                            WHERE f.project_id = '{$r['id']}' AND c.deleted = 0 AND h.id IS NULL
-                            FOR UPDATE";
-                        $DB->query($query, 2);
-                        $index = 0;
-                        while ($row = $DB->fetch(2)) {
-                            if ($index++ >= $num) {
-                                break;
+                        try {
+                            $query = "SELECT DISTINCT c.cluster_index
+                                FROM `clusters` c
+                                LEFT JOIN file_lines l ON c.line_id = l.id
+                                LEFT JOIN project_files f ON f.id = l.file_id
+                                LEFT JOIN cluster_to_hit h ON h.id_cluster = c.cluster_index AND h.id_project = '{$r['id']}' AND h.deleted = '0'
+                                WHERE f.project_id = '{$r['id']}' AND c.deleted = 0 AND h.id IS NULL
+                                FOR UPDATE";
+                            $DB->query($query, 2);
+                            $index = 0;
+                            while ($row = $DB->fetch(2)) {
+                                if ($index++ >= $num) {
+                                    break;
+                                }
+                                $cluster_index = $row['cluster_index'];
+
+                                $data = array();
+                                $data['id_cluster'] = $cluster_index;
+                                $data['id_project'] = $r['id'];
+                                $DB->queryinsert("cluster_to_hit", $data);
                             }
-                            $cluster_index = $row['cluster_index'];
-
-                            $data = array();
-                            $data['id_cluster'] = $cluster_index;
-                            $data['id_project'] = $r['id'];
-                            $DB->queryinsert("cluster_to_hit", $data);
+                            $DB->commitTransaction();
+                            $ret['result'] = "OK";
                         }
-                        $DB->commitTransaction();
-
-                        $ret['result'] = "OK";
+                        catch (Exception $e) {
+                            $DB->rollbackTransaction();
+                            $ret['result'] = "ERR";
+                            $ret['error'] = $e->getMessage();
+                        }
 
                         break;
 
@@ -1174,8 +1213,12 @@ switch ($Action) {
 
             case "getResults":
                 $r = find("projects", $_REQUEST['id'], "Project not found");
+                $hitID = "";
+                if ($_REQUEST['hitID']) {
+                    $hitID = $_REQUEST['hitID'];
+                }
 
-                $hit_to_line = getResults($r['id']);
+                $hit_to_line = getResults($r['id'], $hitID);
 
                 $output = [];
                 foreach ($hit_to_line as $hit) {
@@ -1247,6 +1290,19 @@ switch ($Action) {
                     if ($row['id']) {
                         $ret['hits_inserted']++;
                     }
+                }
+
+                $ret['workersInfo'] = [];
+                $query = "SELECT *
+                    FROM tmp_workers_stats
+                    WHERE project_id = '{$r['id']}'
+                    ORDER BY total_hits DESC";
+                $DB->query($query);
+                while ($row = $DB->fetch_a()) {
+                    unset($row['user_id']);
+                    unset($row['project_id']);
+                    unset($row['created_at']);
+                    $ret['workersInfo'][$row['worker_id']] = $row;
                 }
 
                 // $ret['hits'] = [];
@@ -1435,7 +1491,10 @@ switch ($Action) {
                     AND f.project_id = '{$row['id_project']}' AND cluster_index = '{$row['id_cluster']}'";
                 $DB->query($query);
                 $allFields = [];
+                // $ret['debug']['rowL'] = [];
                 while ($rowL = $DB->fetch_a()) {
+                    // $rowL['line_text'] = utf8_decode($rowL['line_text']);
+                    // $ret['debug']['rowL'][] = $rowL;
                     $fields = unserialize($rowL['fields']);
                     $values = unserialize($rowL['line_text']);
 

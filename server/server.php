@@ -3,12 +3,6 @@
 $parent_folder = dirname(dirname(__FILE__));
 require_once($parent_folder . "/inc/include.php");
 
-$query = "SELECT * FROM options";
-$DB->query($query);
-while ($row = $DB->fetch()) {
-    ${$row['id']} = $row['value']; // really bad
-}
-
 // $createHITs = true;
 // $updateHITs = true;
 // $updateBlockedWorkers = true;
@@ -20,9 +14,22 @@ while ($row = $DB->fetch()) {
 // $IntervalForBlockedWorkers = 300;
 // $IntervalForApprovalRejection = 60;
 // $IntervalInDaysForBlockingBadWorkers = 10;
-$IntervalForApprovalRejectionOnExpiration = 2 * ($IntervalForUpdateHits + $IntervalForApprovalRejection);
 
-while (true) {
+$avoidBlockingBadWorkers = true;
+
+$iterations = 0;
+$goForever = true;
+
+while ($iterations < 50 || $goForever) {
+    $iterations++;
+//    echo "--- Iteration $iterations\n";
+
+    $query = "SELECT * FROM options";
+    $DB->query($query);
+    while ($row = $DB->fetch()) {
+        ${$row['id']} = $row['value']; // really really bad
+    }
+    $IntervalForApprovalRejectionOnExpiration = 2 * ($IntervalForUpdateHits + $IntervalForApprovalRejection);
 
     $query = "SELECT * FROM users WHERE deleted = '0'";
     $DB->query($query, "users");
@@ -52,12 +59,12 @@ while (true) {
 
             $DoIt = true;
 
-            if (isset($UserMoreInfo['last_approval_rejection_update'])) {
-                $last_approval_rejection_update = strtotime($UserMoreInfo['last_approval_rejection_update']);
-                if (time() < $last_approval_rejection_update + $IntervalForApprovalRejection) {
-                    $DoIt = false;
-                }
-            }
+            // if (isset($UserMoreInfo['last_approval_rejection_update'])) {
+            //     $last_approval_rejection_update = strtotime($UserMoreInfo['last_approval_rejection_update']);
+            //     if (time() < $last_approval_rejection_update + $IntervalForApprovalRejection) {
+            //         $DoIt = false;
+            //     }
+            // }
 
             if ($DoIt) {
                 $UserMoreInfo['last_approval_rejection_update'] = date("c");
@@ -113,22 +120,66 @@ while (true) {
                     }
                 }
 
+                // Manage this project by project
+                // IntervalInDaysForBlockingBadWorkers should be the time after hits are accepted/rejected
+                
                 $query = "SELECT a.worker_id, h.id_project, p.hit_details, COUNT(*) num,
                         bl.updated_at blocked,
                         GROUP_CONCAT(h.id_hit ORDER BY a.created_at DESC SEPARATOR '|') hits,
                         GROUP_CONCAT(a.assignment_id ORDER BY a.created_at DESC SEPARATOR '|') assignments,
-                        GROUP_CONCAT(a.status ORDER BY a.created_at DESC SEPARATOR '|') statuses
+                        GROUP_CONCAT(a.status ORDER BY a.created_at DESC SEPARATOR '|') statuses,
+                        GROUP_CONCAT(a.created_at ORDER BY a.created_at DESC SEPARATOR '|') date_to_check
                     FROM assignments a
                     LEFT JOIN cluster_to_hit h ON h.id_hit = a.hit_id
                     LEFT JOIN projects p ON p.id = h.id_project
                     LEFT JOIN blocked_workers bl ON bl.worker_id = a.worker_id AND bl.user_id = '$UserID'
                     WHERE h.deleted = '0' AND p.deleted = '0' AND p.user_id = '$UserID'
-                    AND DATE_ADD(a.created_at, INTERVAL $IntervalInDaysForBlockingBadWorkers DAY) > NOW()
                     GROUP BY worker_id, h.id_project
                     ORDER BY num DESC";
+                // $query = "SELECT a.worker_id, h.id_project, p.hit_details, COUNT(*) num,
+                //         bl.updated_at blocked,
+                //         GROUP_CONCAT(h.id_hit ORDER BY a.created_at DESC SEPARATOR '|') hits,
+                //         GROUP_CONCAT(a.assignment_id ORDER BY a.created_at DESC SEPARATOR '|') assignments,
+                //         GROUP_CONCAT(a.status ORDER BY a.created_at DESC SEPARATOR '|') statuses
+                //     FROM assignments a
+                //     LEFT JOIN cluster_to_hit h ON h.id_hit = a.hit_id
+                //     LEFT JOIN projects p ON p.id = h.id_project
+                //     LEFT JOIN blocked_workers bl ON bl.worker_id = a.worker_id AND bl.user_id = '$UserID'
+                //     WHERE h.deleted = '0' AND p.deleted = '0' AND p.user_id = '$UserID'
+                //     AND DATE_ADD(a.created_at, INTERVAL $IntervalInDaysForBlockingBadWorkers DAY) > NOW()
+                //     GROUP BY worker_id, h.id_project
+                //     ORDER BY num DESC";
+                // echo "$query\n";
+
+                $projects_to_do = [];
+                $hit_to_line = [];
+
                 $DB->query($query, 2);
                 while ($row = $DB->fetch_a(2)) {
-                    $hit_details = unserialize($row['hit_details']);
+                    $projects_to_do[$row['id_project']] = [];
+                }
+                // print_r($projects_to_do);
+                foreach ($projects_to_do as $index => $value) {
+                    $hit_to_line_tmp = getResults($index);
+                    $hit_to_line = array_merge($hit_to_line, $hit_to_line_tmp);
+                }
+                // print_r(array_keys($hit_to_line));
+                $DB->data_seek(2);
+
+                $toBeAdded = [];
+
+                while ($row = $DB->fetch_a(2)) {
+                    // print("{$row['worker_id']}\n");
+                    // continue;
+                    $hit_details = @unserialize($row['hit_details']);
+                    if (!$hit_details) {
+                        continue;
+                    }
+
+                    if (!isset($hit_details['missNumber'])) {
+                        continue;
+                    }
+
                     $missNumber = $hit_details['missNumber'];
                     $missNumberTotal = $hit_details['missNumberTotal'];
 
@@ -142,10 +193,14 @@ while (true) {
                     $remainingAssignments = array_slice($allAssignments, $missNumberTotal);
                     $remainingStatuses = array_slice($allStatuses, $missNumberTotal);
 
+                    // This part is duplicated in include.inc.php
                     $correct = 0;
                     foreach ($hits as $hit) {
-                        $hit_to_line = getResults($row['id_project'], $hit);
+                        // $hit_to_line = getResults($row['id_project'], $hit);
                         foreach ($hit_to_line[$hit] as $hit_info) {
+                            if (!isset($hit_info['isGold'])) {
+                                continue;
+                            }
                             if ($hit_info['isGold']) {
                                 $thisCorrect = true;
                                 foreach (array_keys($hit_info['inputData']) as $key) {
@@ -166,13 +221,22 @@ while (true) {
                     $wrong = min($row['num'], $missNumberTotal) - $correct;
 
                     if ($hit_details['block_worker_bad']) {
-                        // if ($row['num'] > 2) {
-                            echo "{$row['worker_id']}\t{$row['id_project']}\t{$row['num']}\t($wrong)";
-                            if ($row['blocked']) {
-                                echo "\tBLOCKED!";
-                            }
-                            echo "\n";
+                        $tmpData = [];
+                        $tmpData['user_id'] = $UserID;
+                        $tmpData['worker_id'] = $row['worker_id'];
+                        $tmpData['project_id'] = $row['id_project'];
+                        $tmpData['total_hits'] = $row['num'];
+                        $tmpData['wrong_hits'] = $wrong;
+                        $tmpData['blocked'] = $row['blocked'] ? 1 : 0;
+
+                        $toBeAdded[] = $tmpData;
+
+                        // echo "{$row['worker_id']}\t{$row['id_project']}\t{$row['num']}\t($wrong)";
+                        // if ($row['blocked']) {
+                        //     echo "\tBLOCKED!";
                         // }
+                        // echo "\n";
+                        
                         if ($row['blocked']) {
                             continue;
                         }
@@ -182,23 +246,25 @@ while (true) {
                         }
 
                         if ($wrong >= $missNumber) {
-                            $worker_id = $row['worker_id'];
-                            $Reason = "You missed $missNumber out of $missNumberTotal gold records.";
-                            print("Blocking worker {$worker_id}\n");
-                            
-                            $data = [];
-                            $data['worker_id'] = $worker_id;
-                            $data['user_id'] = $UserID;
-                            $DB->queryinsert("blocked_workers", $data);
+                            if (!$avoidBlockingBadWorkers) {
+                                $worker_id = $row['worker_id'];
+                                $Reason = "You missed $missNumber out of $missNumberTotal gold records.";
+                                print("Blocking worker {$worker_id}\n");
+                                
+                                $data = [];
+                                $data['worker_id'] = $worker_id;
+                                $data['user_id'] = $UserID;
+                                $DB->queryinsert("blocked_workers", $data);
 
-                            try {
-                                $hitResponse = $mTurk->createWorkerBlock(["Reason" => $Reason, "WorkerId" => $worker_id]);
+                                try {
+                                    $hitResponse = $mTurk->createWorkerBlock(["Reason" => $Reason, "WorkerId" => $worker_id]);
+                                }
+                                catch (Exception $e) {
+                                    l(0, "block_worker_bad", $e->getMessage(), $worker_id);
+                                }
+                                $hitResponse = $hitResponse->toArray();
+                                l(0, "block_worker_bad", $hitResponse, $worker_id);
                             }
-                            catch (Exception $e) {
-                                l(0, "block_worker_bad", $e->getMessage(), $worker_id);
-                            }
-                            $hitResponse = $hitResponse->toArray();
-                            l(0, "block_worker_bad", $hitResponse, $worker_id);
                         }
                         else {
 
@@ -215,6 +281,14 @@ while (true) {
                             }
                         }
                     }
+                }
+
+                // $query = "DELETE FROM tmp_workers_stats WHERE user_id = '$UserID'";
+                // $DB->query($query, md5("empty_tmp_workers_stats"));
+                foreach ($toBeAdded as $tmpData) {
+                    // print_r($tmpData);
+                    $DB->queryinsertodku("tmp_workers_stats", $tmpData, array(), md5("insert_tmp_workers_stats"));
+                    // print_r($DB->W_last_query);
                 }
             }
         }
@@ -257,12 +331,16 @@ while (true) {
                 }
 
                 $DB->startTransaction();
-                $query = "DELETE FROM blocked_workers WHERE user_id = '$UserID'";
-                $DB->query($query);
-                foreach ($BlockedList as $worker_id) {
-                    $DB->queryinsert("blocked_workers", ["user_id" => $UserID, "worker_id" => $worker_id]);
+                try {
+                    $query = "DELETE FROM blocked_workers WHERE user_id = '$UserID'";
+                    $DB->query($query);
+                    foreach ($BlockedList as $worker_id) {
+                        $DB->queryinsert("blocked_workers", ["user_id" => $UserID, "worker_id" => $worker_id]);
+                    }
+                    $DB->commitTransaction();
+                } catch (Exception $exception) {
+                    $DB->rollBackTransaction();
                 }
-                $DB->commitTransaction();
             }
         }
 
@@ -340,9 +418,9 @@ while (true) {
                     l(0, "update_notification_hit", $e->getMessage(), $response['HIT']['HITTypeId']);
                 }
 
-                print("Added {$response['HIT']['HITId']}\n");
+                print("Added {$response['HIT']['HITId']} {$UserID}\n");
             }
-            $DB->commitTransaction();
+            // $DB->commitTransaction();
         }
 
         if ($updateHITs) {
@@ -365,10 +443,11 @@ while (true) {
                 print("Updating {$row['id_hit']}\n");
                 updateHIT($row['id_hit'], 0);
             }
-            $DB->commitTransaction();
+            // $DB->commitTransaction();
         }
     }
 
+    // print("Tick\n");
     sleep(1);
     // break;
 }

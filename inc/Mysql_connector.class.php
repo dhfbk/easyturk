@@ -18,7 +18,8 @@ class Mysql_connector {
 	}
 
 	function startTransaction() {
-		return mysqli_autocommit($this->connection, FALSE);
+		// return mysqli_autocommit($this->connection, FALSE);
+		return mysqli_begin_transaction($this->connection);
 	}
 	
 	function rollbackTransaction() {
@@ -40,6 +41,10 @@ class Mysql_connector {
 	
 	function select_db($database) {
 		return mysqli_select_db($this->connection, $database);
+	}
+
+	function data_seek($buff = 0, $row_num = 0) {
+		return mysqli_data_seek($this->query_result[$buff], $row_num);
 	}
 	
 	function queryupdate($tabella, $arrayvalori, $where, $buff = 0) {
@@ -113,6 +118,7 @@ class Mysql_connector {
 			echo "<div " . ($medium) . "><strong>" . $buff . "</strong>\t-> <em>query</em>\t-> " . $query;
 			echo "</div>";
 		}
+		$this->W_last_query = $query;
 		$this->query_result[$buff] = mysqli_query($this->connection, $query);
 		$this->last_id = mysqli_insert_id($this->connection);
 		$temp = $this->query_result[$buff];
@@ -132,11 +138,19 @@ class Mysql_connector {
 	}
 	
 	function fetch($buff = 0) {
-		return mysqli_fetch_array($this->query_result[$buff]);
+		if (!$this->query_result[$buff]) {
+			echo "{$this->W_last_query}\n";
+		}
+		$ret = mysqli_fetch_array($this->query_result[$buff]);
+		return $ret;
 	}
 	
 	function fetch_a($buff = 0) {
-		return mysqli_fetch_assoc($this->query_result[$buff]);
+		if (!$this->query_result[$buff]) {
+			echo "{$this->W_last_query}\n";
+		}
+		$ret = mysqli_fetch_assoc($this->query_result[$buff]);
+		return $ret;
 	}
 	
 	function querynum($query, $buff = 0) {
