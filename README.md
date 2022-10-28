@@ -9,21 +9,34 @@ In particular, EasyTurk adds two features that are not included out-of-the-box i
 * Possibility to block (or disable) a worker when an answer is given too quickly.
 * Possibility to block (or disable) a worker when their long-term performance is below a certain threshold.
 
-## Configuration
+## AWS configuration
+
+* Login to the [AWS console](https://aws.amazon.com/it/console/).
+* Go to Simple Notification Service.
+* Create new subscription pointing to the `sns.php` file on your server (see below).
+* In the [Mturk Requester developer console](https://requester.mturk.com/developer), link your Amazon account and create the access keys.
+
+## Database configuration
+
+* Create a MySQL user and database accessible to the user.
+* In the `inc` folder, copy `config-sample.php` into `config.php` and fill the variables with the database information.
+* Open `mturk.sql` file, and replace `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `ARN_CODE` with the corresponding values, taken from the AWS website.
+* In `mturk.sql` one can also replace:
+  - `username` (default `user`)
+  - `password` (default `password`, saved in the database using MD5)
+  - `region_name` (default `us-east-1`)
+  - `use_sandbox`, a boolean value to set whether the user will use the Mturk sandbox (default `1`, meaning "yes").
+* Load `mturk.sql` into MySQL, using the above-created user.
 
 ## Running the php server
 
-## Project setup
-```
-npm install
-```
+Folders `api`, `server`, and `inc` must be copied to a server where php is installed and the database is reachable. The folder `api` must be accessible from the web (e.g. using Apache or Ngnix web servers). All the API commands are managed by the `api/index.php` file.
+The `server/server.php` file has to be executed as a deamon. It is used to submit the HITs and update the database when the workers answer
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Web interface setup
+
+From the root of the project, run `npm install` and `npm run serve`. Then go to `http://localhost:8080` and login with credentials `user` and `password` (if not changed in the previous steps).
 
 ### Compiles and minifies for production
-```
-npm run build
-```
+
+Run `npm run build` to compiles the project for production.

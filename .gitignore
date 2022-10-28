@@ -30,3 +30,5 @@ server/server.log
 TODO.md
 info.php
 temp
+
+package-lock.json

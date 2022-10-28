@@ -144,6 +144,22 @@ CREATE TABLE `options` (
   `value` mediumtext COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Dump dei dati per la tabella `options`
+--
+
+INSERT INTO `options` (`id`, `value`) VALUES
+('createHITs', '1'),
+('updateHITs', '1'),
+('updateBlockedWorkers', '1'),
+('updateApprovalRejection', '1'),
+('ManageAllSubmitted', '1'),
+('IntervalForUpdateHits', '60'),
+('IntervalForBlockedWorkers', '300'),
+('IntervalForApprovalRejection', '60'),
+('IntervalInDaysForBlockingBadWorkers', '10'),
+('arn', 'ARN_CODE');
+
 -- --------------------------------------------------------
 
 --
