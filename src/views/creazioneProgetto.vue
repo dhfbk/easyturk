@@ -7,71 +7,40 @@
   >
     <p class="text-2xl mb-4 mt-0 text-primary">{{ pageTitle }}</p>
     <div class="-mx-3 md:flex md:flex-col">
-      <div class="w-full px-3 mb-4">
-        <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="name">Project Name</label>
-        <input
-          :class="
-            status > 2
-              ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-              : v$.name.$error
-              ? 'border-red-400 bg-gray-100 text-gray-700'
-              : 'bg-gray-100 text-gray-700'
-          "
-          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
-          id="name"
-          type="text"
-          placeholder="Project name"
-          :maxlength="$store.state.defaults.max_length_name"
-          v-model.trim="v$.name.$model"
-          :disabled="status > 2"
-          required
-        />
-        <p class="text-gray-700 text-xs italic">This name is not displayed to Workers.</p>
-      </div>
-      <div class="w-full px-3 mb-4">
-        <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="title">Title</label>
-        <input
-          :class="
-            status > 2
-              ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-              : v$.title.$error
-              ? 'border-red-400 bg-gray-100 text-gray-700'
-              : 'bg-gray-100 text-gray-700'
-          "
-          class="appearance-none block w-full border rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
-          id="title"
-          type="text"
-          placeholder="Title"
-          :maxlength="$store.state.defaults.max_length_title"
-          v-model.trim="v$.title.$model"
-          :disabled="status > 2"
-          required
-        />
-        <p class="text-gray-700 text-xs italic">
-          Describe the survey to Workers. Be as specific as possible, e.g. "answer a survey about movies", instead of
-          "short survey", so Workers know what to expect.
-        </p>
-      </div>
-      <div class="md:w-full px-3 mb-4">
-        <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="keywords">Keywords</label>
-        <input
-          :class="
-            status > 2
-              ? 'bg-gray-400 text-gray-800 cursor-not-allowed'
-              : v$.keywords.$error
-              ? 'border-red-400 bg-gray-100 text-gray-700'
-              : 'bg-gray-100 text-gray-700'
-          "
-          class="appearance-none block w-full border border-gray-200 rounded py-2 px-4 mb-2 transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
-          id="keywords"
-          type="text"
-          placeholder="Keywords"
-          v-model.trim="v$.keywords.$model"
-          :disabled="status > 2"
-          required
-        />
-        <p class="text-gray-700 text-xs italic">Provide keywords that will help Workers search for your tasks.</p>
-      </div>
+      <textBarLarge
+        :v="v$"
+        :status="status"
+        :componentText="{
+          id: 'name',
+          label: 'Project Name',
+          useLabel: false,
+          description: 'This name is not displayed to Workers.',
+          statusClass: 2,
+        }"
+      />
+      <textBarLarge
+        :v="v$"
+        :status="status"
+        :componentText="{
+          id: 'title',
+          label: 'Title',
+          useLabel: false,
+          description:
+            'Describe the survey to Workers. Be as specific as possible, e.g. “answer a survey about movies”, instead of “short survey”, so Workers know what to expect.',
+          statusClass: 2,
+        }"
+      />
+      <textBarLarge
+        :v="v$"
+        :status="status"
+        :componentText="{
+          id: 'keywords',
+          label: 'Keywords',
+          useLabel: false,
+          description: 'Provide keywords that will help Workers search for your tasks.',
+          statusClass: 2,
+        }"
+      />
       <div class="w-full px-3 mb-4">
         <label
           class="block tracking-wide text-gray-900 text-md font-bold pb-2"
@@ -570,6 +539,7 @@
 
 <script>
 import axios from 'axios'
+import textBarLarge from '../components/textBarLarge'
 import { required, maxLength, maxValue, minValue } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 
@@ -578,6 +548,7 @@ import globalMixin from '../globalMixin.js'
 export default {
   mixins: [globalMixin],
   name: 'creazioneProgetto',
+  components: { textBarLarge },
   data() {
     return {
       downloadID: false,
@@ -847,7 +818,6 @@ export default {
           .then((response) => {
             this.loading = false
             if (response.data.result == 'OK') {
-              console.log('Inserimento avvenuto')
               var msg
               if (this.mode == 'edit') {
                 msg = 'Edit successful'

@@ -360,7 +360,6 @@ export default {
       this.$emit('launchModal', ['launch', this.projectData.id])
     },
     refresh() {
-      console.log('refreshing...')
       this.refreshIcon = true
       setTimeout(() => {
         this.refreshIcon = false

@@ -30,7 +30,7 @@
       </div>
     </div>
   </div>
-  <div v-else-if="type == 'hitList'" class="my-2 p-4 w-full container mx-auto">
+  <div v-else-if="type == 'hitList'" class="my-2 p-4 w-full">
     <div class="animate-pulse">
       <div class="flex flex-wrap">
         <div v-for="n in 100" :key="n" class="h-5 w-5 m-1 bg-gray-500 rounded-full"></div>

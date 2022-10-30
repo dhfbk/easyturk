@@ -4,7 +4,7 @@ const globalMixin = {
   methods: {
     API() {
       return axios.create({
-        baseURL: 'https://dh-server.fbk.eu/mturk_frontend/api/',
+        baseURL: process.env.VUE_APP_SERVER_INSTANCE,
         headers: {
           'Session-Id': localStorage.getItem('session_id'),
         },

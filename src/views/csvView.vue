@@ -171,7 +171,7 @@ export default {
             }
           })
           .catch((err) => {
-            console.log(err)
+            console.error(err)
             this.$emit('snackbar', 'Error. ' + err)
           })
       }

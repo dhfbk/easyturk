@@ -3,8 +3,8 @@
     <div v-if="loading">
       <loader :type="'hitList'" />
     </div>
-    <div class="flex justify-between flex-wrap items-center" v-else>
-      <div class="flex flex-row place-content-center w-full mb-4">
+    <div v-else>
+      <div class="flex justify-between flex-wrap items-center mb-2">
         <button
           @click="
             $router.push({
@@ -21,10 +21,10 @@
           </svg>
           <span class="sr-only">Back to project</span>
         </button>
-        <span class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis mt-2">
+        <span class="text-lg sm:text-xl text-primary mr-auto ml-2 overflow-ellipsis">
           HITs results (project ID: {{ $route.params.projectId }})
         </span>
-        <div class="flex flex-col xs:flex-row justify-end">
+        <div class="w-auto flex relative justify-end content-center items-center">
           <p class="text-md my-auto mr-1">View:</p>
           <div class="relative">
             <select
@@ -45,16 +45,33 @@
           </div>
         </div>
       </div>
+      <textBarLarge
+        :v="v$"
+        :status="1"
+        :componentText="{
+          id: 'searchText',
+          label: 'Search HIT',
+          useLabel: false,
+          statusClass: 2,
+          searchComponent: true,
+          bg: 'white',
+        }"
+        :searchError="searchError"
+        @search="searchHIT"
+      />
       <tableHIT :sortedData="sortedData" v-if="viewType == 'table'" />
-      <dotMatrixHIT :sortedData="sortedData" v-else />
+      <dotMatrixHIT :sortedData="sortedData" :key="sortedData.length" v-else />
     </div>
   </div>
 </template>
 <script>
+import textBarLarge from '../components/textBarLarge'
 import tableHIT from '../components/tableHIT.vue'
 import dotMatrixHIT from '../components/dotMatrixHIT.vue'
 import loader from '../components/loader.vue'
 import globalMixin from '../globalMixin.js'
+import { maxLength } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
 
 export default {
   mixins: [globalMixin],
@@ -63,7 +80,9 @@ export default {
     tableHIT,
     dotMatrixHIT,
     loader,
+    textBarLarge,
   },
+  setup: () => ({ v$: useVuelidate() }),
   data() {
     return {
       id: '',
@@ -71,6 +90,16 @@ export default {
       progressData: [],
       viewType: 'dots',
       sortedData: [],
+      sortedDataBackup: [],
+      searchText: '',
+      searchError: false,
+    }
+  },
+  validations() {
+    return {
+      searchText: {
+        maxLength: maxLength(this.$store.state.defaults.max_length_title),
+      },
     }
   },
   created() {
@@ -80,6 +109,71 @@ export default {
     window.addEventListener('keydown', this.keyboardEvent)
   },
   methods: {
+    searchHIT() {
+      this.v$.$touch()
+      if (!this.v$.$invalid) {
+        this.loading = true
+        let found = false
+        if (this.searchText.length == 0 && this.sortedData.length == 1) {
+          this.sortedData = this.sortedDataBackup
+        } else if (this.searchText.length > 0) {
+          for (let i = 0; i < this.sortedData.length; i++) {
+            for (let j = 0; j < this.sortedData[i].hits.length; j++) {
+              if (this.sortedData[i].hits[j] == this.searchText) {
+                this.sortedData = [this.sortedData[i]]
+                this.sortedData.hits = ['3YGYP13654XDWV2DQNA7ION0ET1RN3']
+                found = true
+                this.searchError = false
+                break
+              }
+            }
+            if (found) {
+              break
+            }
+          }
+          if (!found) {
+            this.searchError = true
+          }
+        }
+        this.loading = false
+      }
+    },
+    sortReceivedData() {
+      //data sorting: first completed hits, then incomplete hits (each category ordered by most approved hits  to least approved)
+
+      var arrComp = []
+      var arrNotComp = []
+      var arrNotTou = []
+
+      for (let i = 0; i < this.progressData.length; i++) {
+        if (this.progressData[i].assignments_completed == 0) {
+          arrNotTou.push(this.progressData[i])
+        } else if (this.progressData[i].assignments_available > 0) {
+          arrNotComp.push(this.progressData[i])
+        } else {
+          arrComp.push(this.progressData[i])
+        }
+      }
+
+      arrComp = arrComp.sort(function (a, b) {
+        return (
+          a.assignments_rejected - b.assignments_rejected ||
+          b.assignments_approved - a.assignments_approved ||
+          b.assignments_available - a.assignments_available
+        )
+      })
+
+      arrNotComp = arrNotComp.sort(function (a, b) {
+        return (
+          a.assignments_rejected - b.assignments_rejected ||
+          b.assignments_approved - a.assignments_approved ||
+          b.assignments_available - a.assignments_available
+        )
+      })
+
+      this.sortedData = arrComp.concat(arrNotComp).concat(arrNotTou)
+      this.sortedDataBackup = this.sortedData
+    },
     keyboardEvent(event) {
       if (event.code == 'Escape') {
         this.$router.push({
@@ -117,40 +211,7 @@ export default {
 
               //
 
-              //data sorting: first completed hits, then incomplete hits (each category ordered by most approved hits  to least approved)
-
-              var arrComp = []
-              var arrNotComp = []
-              var arrNotTou = []
-
-              for (let i = 0; i < this.progressData.length; i++) {
-                if (this.progressData[i].assignments_completed == 0) {
-                  arrNotTou.push(this.progressData[i])
-                } else if (this.progressData[i].assignments_available > 0) {
-                  arrNotComp.push(this.progressData[i])
-                } else {
-                  arrComp.push(this.progressData[i])
-                }
-              }
-
-              arrComp = arrComp.sort(function (a, b) {
-                return (
-                  a.assignments_rejected - b.assignments_rejected ||
-                  b.assignments_approved - a.assignments_approved ||
-                  b.assignments_available - a.assignments_available
-                )
-              })
-
-              arrNotComp = arrNotComp.sort(function (a, b) {
-                return (
-                  a.assignments_rejected - b.assignments_rejected ||
-                  b.assignments_approved - a.assignments_approved ||
-                  b.assignments_available - a.assignments_available
-                )
-              })
-
-              this.sortedData = arrComp.concat(arrNotComp).concat(arrNotTou)
-
+              this.sortReceivedData()
               this.loading = false
             }
           })

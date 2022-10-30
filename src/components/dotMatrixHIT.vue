@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="w-full">
     <span v-for="(x, y) in sortedData.length" :key="y">
       <matrixPart :num="sortedData[x - 1]" :color="colors[y]" :total="totalHITs" :hoverColor="hoverArr" />
       <br v-if="y == totalComp - 1 || y == totalComp + totalAvai - 1" />
@@ -149,52 +149,55 @@ export default {
       }
       return 'rgb(' + result[0] + ',' + result[1] + ',' + result[2] + ')'
     },
+    initializeContent() {
+      for (let i = 0; i < this.sortedData.length; i++) {
+        this.totalHITs += this.sortedData[i].count
+      }
+
+      //colors and gradients creation
+
+      var pos = 0
+      var neg = 0
+      var avaPos = 0
+      var avaNeg = 0
+      var notTou = 0
+      var grad = []
+
+      for (let x = 0; x < this.sortedData.length; x++) {
+        if (this.sortedData[x].assignments_completed == 0) {
+          notTou++
+        } else if (this.sortedData[x].assignments_available > 0) {
+          this.sortedData[x].assignments_rejected == 0 ? avaPos++ : avaNeg++
+        } else if (this.sortedData[x].assignments_rejected == 0) {
+          pos++
+        } else {
+          neg++
+        }
+      }
+
+      this.totalComp = pos + neg
+      this.totalAvai = avaPos + avaNeg
+      this.totalNotTou = notTou
+
+      var avaPosArr = this.interpolateColors('rgb(14, 173, 105)', 'rgb(4, 240, 106)', avaPos)
+      var avaNegArr = this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', avaNeg)
+      var notCompCol = 'rgb(163, 206, 241)'
+
+      grad = avaPosArr.concat(avaNegArr)
+
+      for (let i = 0; i < grad.length; i++) {
+        grad[i] = 'linear-gradient(rgb(163, 206, 241), ' + grad[i] + ')'
+      }
+
+      this.colors = this.interpolateColors('rgb(14, 173, 105)', 'rgb(49, 203, 0)', pos)
+        .concat(this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', neg))
+        .concat(grad)
+
+      this.colors.push(notCompCol)
+    },
   },
   created() {
-    for (let i = 0; i < this.sortedData.length; i++) {
-      this.totalHITs += this.sortedData[i].count
-    }
-
-    //colors and gradients creation
-
-    var pos = 0
-    var neg = 0
-    var avaPos = 0
-    var avaNeg = 0
-    var notTou = 0
-    var grad = []
-
-    for (let x = 0; x < this.sortedData.length; x++) {
-      if (this.sortedData[x].assignments_completed == 0) {
-        notTou++
-      } else if (this.sortedData[x].assignments_available > 0) {
-        this.sortedData[x].assignments_rejected == 0 ? avaPos++ : avaNeg++
-      } else if (this.sortedData[x].assignments_rejected == 0) {
-        pos++
-      } else {
-        neg++
-      }
-    }
-
-    this.totalComp = pos + neg
-    this.totalAvai = avaPos + avaNeg
-    this.totalNotTou = notTou
-
-    var avaPosArr = this.interpolateColors('rgb(14, 173, 105)', 'rgb(4, 240, 106)', avaPos)
-    var avaNegArr = this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', avaNeg)
-    var notCompCol = 'rgb(163, 206, 241)'
-
-    grad = avaPosArr.concat(avaNegArr)
-
-    for (let i = 0; i < grad.length; i++) {
-      grad[i] = 'linear-gradient(rgb(163, 206, 241), ' + grad[i] + ')'
-    }
-
-    this.colors = this.interpolateColors('rgb(14, 173, 105)', 'rgb(49, 203, 0)', pos)
-      .concat(this.interpolateColors('rgb(255, 209, 0)', 'rgb(255,90,0)', neg))
-      .concat(grad)
-
-    this.colors.push(notCompCol)
+    this.initializeContent()
   },
 }
 </script>

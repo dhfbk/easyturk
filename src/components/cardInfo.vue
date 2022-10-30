@@ -625,7 +625,6 @@ export default {
       return num
     },
     sortedArr(by, asc) {
-      console.log(this.currSort.length)
       if (asc) {
         this.currSort.sort((a, b) => a[by] - b[by])
       } else {
@@ -653,7 +652,6 @@ export default {
   watch: {
     page() {
       this.currPage = this.currSort.slice(this.page * 10, this.page * 10 + 10)
-      console.log(this.page)
     },
   },
 }

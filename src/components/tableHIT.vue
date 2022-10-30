@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="w-full">
     <!-- <div class="flex flex-col xs:flex-row justify-end mb-2">
             <p class="text-md my-auto mr-1">Status:</p>
             <div class="relative">
