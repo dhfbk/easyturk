@@ -35,7 +35,7 @@ The `server/server.php` file has to be executed as a deamon. It is used to submi
 
 ## Web interface setup
 
-From the root of the project, run `npm install` and `npm run serve`. Then go to `http://localhost:8080` and login with credentials `user` and `password` (if not changed in the previous steps).
+Before running the interface, add the environment variable VUE_APP_SERVER_INSTANCE with a value such as `https://myserveraddress.com/easyturk/api/`. It can be easily done by creating a .env.local file in the root folder. Then, from the root of the project, run `npm install` and `npm run serve`. Finally, go to `http://localhost:8080` and login with credentials `user` and `password` (if not changed in the previous steps).
 
 ### Compiles and minifies for production
 

@@ -28,8 +28,10 @@
           <loader :type="'cardInfoVisualizza'" v-for="n in 2" :key="n" />
         </div>
         <div v-else>
-          <cardInfo :projectData="project" :mode="'general'" />
-          <!-- <cardInfo :projectData="prjData" :mode="'hitTable'" /> -->
+          <cardPlain
+            :projectData="[project.title, project.description, project.keywords, project.created_at]"
+            :titles="['Title', 'Description', 'Keywords', 'Creation date']"
+          />
           <cardTable :tableData="assignmentData" :emptyText="'No data to display'" />
           <cardTable :tableData="tableData" :emptyText="'No data to display'" />
         </div>
@@ -40,7 +42,17 @@
           <loader :type="'cardAnalyticsVisualizza'" :num="3" />
         </div>
         <div v-else>
-          <cardInfo :projectData="project" :mode="'payment'" />
+          <cardPlain
+            :projectData="arrayCardPayment"
+            :titles="[
+              'Reward per assignment',
+              'Number of assignments per task',
+              'Time allotted per assignment',
+              'Expiry',
+              'Auto-approve and pay Workers in',
+              $route.name == 'viewHit' ? 'HIT group' : null,
+            ]"
+          />
           <cardAnalytics :dati="analytics.cardHIT" />
         </div>
       </div>
@@ -50,7 +62,7 @@
 
 <script>
 import modalEliminazione from '../components/modalEliminazione.vue'
-import cardInfo from '../components/cardInfo.vue'
+import cardPlain from '../components/cardPlain.vue'
 import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import loader from '../components/loader.vue'
 import cardTable from '../components/cardTable.vue'
@@ -62,7 +74,7 @@ export default {
   name: 'viewHIT',
   components: {
     modalEliminazione,
-    cardInfo,
+    cardPlain,
     cardAnalytics,
     cardTable,
     loader,
@@ -77,6 +89,7 @@ export default {
         pending: 0,
       },
       analytics: {},
+      arrayCardPayment: [],
       dropdownOpen: false,
       modal: false,
       loading: true,
@@ -181,6 +194,9 @@ export default {
             this.loading = false
           }
         })
+        .then(() => {
+          this.createCardArrays()
+        })
         .catch((err) => {
           console.error(err.message)
           this.$emit('snackbar', 'Error. ' + err.message)
@@ -189,6 +205,41 @@ export default {
             params: { projectId: this.$route.params.projectId },
           })
         })
+    },
+    createCardArrays() {
+      //payments card, once again the content is slightly different based on the current route
+      if (this.$route.name == 'viewHIT') {
+        this.arrayCardPayment = [
+          this.project.reward + '$',
+          this.project.workers,
+          this.time(parseInt(this.project.max_time)),
+          "<span class='flex flex-col xs:flex-row justify-between content-center items-center mb-1'>" +
+            this.project.expiry +
+            "<button :content='Edit expiry' v-tippy='" +
+            "{ placement: 'bottom', arrow: false, theme: 'google' }" +
+            "' class='ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button>",
+          this.time(parseInt(this.project.auto_approve)),
+          this.project.hit_group_id,
+        ]
+      } else {
+        this.arrayCardPayment = [
+          this.project.reward + '$',
+          this.project.workers,
+          this.time(parseInt(this.project.max_time)),
+          this.time(parseInt(this.project.expiry)),
+          this.time(parseInt(this.project.auto_approve)),
+        ]
+      }
+    },
+    time(num) {
+      if (num < 60) {
+        num += ' minutes'
+      } else if (this.project.tempoMax < 1440) {
+        num = num / 60 + ' hours'
+      } else {
+        num = num / 1440 + ' days'
+      }
+      return num
     },
     timeConverter(tmp) {
       var a = new Date(tmp * 1000)

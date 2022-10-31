@@ -335,12 +335,17 @@
           <loader :type="'cardInfoVisualizza'" v-for="n in 4" :key="n" />
         </div>
         <div v-else>
-          <cardInfo :projectData="project" :mode="'general'" />
-          <cardInfo :projectData="project" :mode="'behavior'" v-if="project.status > 1" @modal="toggleModal" />
-
-          <cardInfo :projectData="project" :mode="'projectTable'" v-if="project.status == 3" />
-          <cardInfo :projectData="project" :mode="'csv'" @modal="toggleModal" />
-          <cardInfo :projectData="project" :mode="'layout'" />
+          <cardPlain
+            :projectData="[project.title, project.description, project.keywords, project.created_at]"
+            :titles="['Title', 'Description', 'Keywords', 'Creation date']"
+          />
+          <cardBehavior :projectData="project" v-if="project.status > 1" @modal="toggleModal" />
+          <cardProjectTable :projectData="project" :totals="totals" v-if="project.status == 3" />
+          <cardCsv :projectData="project" @modal="toggleModal" />
+          <cardPlain
+            :projectData="[project.layout_id, project.params]"
+            :titles="['Layout ID', 'Number of records per HIT']"
+          />
         </div>
       </div>
       <div class="ml-0 xs2:ml-1">
@@ -348,11 +353,25 @@
           <loader :type="'cardInfoVisualizza'" v-for="n in 4" :key="n" />
         </div>
         <div v-else>
-          <cardInfo :projectData="project" :mode="'status'" @modal="toggleModal" />
-          <cardInfo v-if="project.status > 0" :projectData="project" :mode="'hits'" />
-          <cardInfo :projectData="project" :mode="'workersTable'" v-if="project.status == 3" />
-          <cardInfo :projectData="project" :mode="'payment'" />
-          <cardInfo :projectData="project" :mode="'qualifications'" />
+          <cardStatus :projectData="project" @modal="toggleModal" />
+          <!--spostare il seguente calcolo per l'array giù nel created?-->
+          <cardPlain v-if="project.status > 0" :projectData="arrayCardHits" :titles="['HITs status']" />
+          <cardWorkers :projectData="project" :totals="totals" v-if="project.status == 3" />
+          <cardPlain
+            :projectData="arrayCardPayment"
+            :titles="[
+              'Reward per assignment',
+              'Number of assignments per task',
+              'Time allotted per assignment',
+              'Expiry',
+              'Auto-approve and pay Workers in',
+              $route.name == 'viewHit' ? 'HIT group' : null,
+            ]"
+          />
+          <cardPlain
+            :projectData="arrayCardQualifications"
+            :titles="['Adult content', 'Master Workers only', 'Location of Workers']"
+          />
           <!--
                         <cardAnalytics
                         :dati="datiCardAnalytics.cardHIT"
@@ -367,7 +386,12 @@
 <script>
 import { directive } from 'vue3-click-away'
 import modalEliminazione from '../components/modalEliminazione.vue'
-import cardInfo from '../components/cardInfo.vue'
+import cardPlain from '../components/cardPlain.vue'
+import cardBehavior from '../components/cardBehavior.vue'
+import cardWorkers from '../components/cardWorkers.vue'
+import cardProjectTable from '../components/cardProjectTable.vue'
+import cardCsv from '../components/cardCsv.vue'
+import cardStatus from '../components/cardStatus.vue'
 //import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
 import modalUpload from '../components/modalUpload.vue'
 import modalHIT from '../components/modalHIT.vue'
@@ -388,7 +412,12 @@ export default {
   components: {
     modalEliminazione,
     modalEditBehavior,
-    cardInfo,
+    cardPlain,
+    cardBehavior,
+    cardWorkers,
+    cardProjectTable,
+    cardCsv,
+    cardStatus,
     //cardAnalytics,
     modalUpload,
     modalHIT,
@@ -420,6 +449,9 @@ export default {
         csvElim: false,
       },
       loading: true,
+      arrayCardHits: [],
+      arrayCardQualifications: [],
+      arrayCardPayment: [],
       project: [],
       hitsSubmitted: 0,
       hitsTotal: 0,
@@ -433,6 +465,26 @@ export default {
       goldUploaded: false,
     }
   },
+  computed: {
+    totals: function () {
+      var ret = {}
+      ret.count = 0
+      ret.assignments_approved = 0
+      ret.assignments_rejected = 0
+      ret.assignments_completed = 0
+      ret.assignments_available = 0
+      ret.assignments_pending = 0
+      for (var k in this.project.summary) {
+        ret.count += this.project.summary[k].count
+        ret.assignments_approved += this.project.summary[k].count * this.project.summary[k].assignments_approved
+        ret.assignments_available += this.project.summary[k].count * this.project.summary[k].assignments_available
+        ret.assignments_rejected += this.project.summary[k].count * this.project.summary[k].assignments_rejected
+        ret.assignments_completed += this.project.summary[k].count * this.project.summary[k].assignments_completed
+        ret.assignments_pending += this.project.summary[k].count * this.project.summary[k].assignments_pending
+      }
+      return ret
+    },
+  },
   created() {
     this.getDatiPrj()
   },
@@ -444,6 +496,16 @@ export default {
       if (event.code == 'Escape') {
         this.$router.push({ name: 'Home' })
       }
+    },
+    time(num) {
+      if (num < 60) {
+        num += ' minutes'
+      } else if (this.project.tempoMax < 1440) {
+        num = num / 60 + ' hours'
+      } else {
+        num = num / 1440 + ' days'
+      }
+      return num
     },
     getDatiPrj() {
       this.id = parseInt(this.$route.params.projectId)
@@ -507,9 +569,67 @@ export default {
               this.loading = false
             }
           })
+          .then(() => {
+            this.createCardArrays()
+          })
           .catch((err) => {
             console.error(err)
           })
+      }
+    },
+    createCardArrays() {
+      //hits card, the text varies based on the hits' status
+      if (this.project.hits_inserted == 0) {
+        this.arrayCardHits = [this.project.hits_total + ' HITs created.']
+      } else if (this.project.hits_inserted > 0 && this.project.hits_inserted != this.project.hits_total) {
+        this.arrayCardHits = [
+          this.project.hits_inserted +
+            ' out of ' +
+            this.project.hits_total +
+            ' HITs published. ' +
+            (parseInt(this.project.hits_total) - parseInt(this.project.hits_inserted)) +
+            ' HITs still available.',
+        ]
+      } else if (this.project.hits_inserted == this.project.hits_total) {
+        this.arrayCardHits = ['All ' + this.project.hits_inserted + ' HITs have been published!']
+      }
+
+      //qualifications card, the text of the locations is different
+      //if some location is selected or not
+      let locations = ''
+      if (this.project.countries && this.project.countries.length > 0) {
+        locations = this.project.countries.join(', ')
+      } else {
+        locations = 'All countries accepted'
+      }
+      this.arrayCardQualifications = [
+        this.project.adult == 0 ? 'No' : 'Yes',
+        this.project.master == 0 ? 'No' : 'Yes',
+        locations,
+      ]
+
+      //payments card, once again the content is slightly different based on the current route
+      if (this.$route.name == 'viewHIT') {
+        this.arrayCardPayment = [
+          this.project.reward + '$',
+          this.project.workers,
+          this.time(parseInt(this.project.max_time)),
+          "<span class='flex flex-col xs:flex-row justify-between content-center items-center mb-1'>" +
+            this.project.expiry +
+            "<button :content='Edit expiry' v-tippy='" +
+            "{ placement: 'bottom', arrow: false, theme: 'google' }" +
+            "' class='ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button>",
+          this.time(parseInt(this.project.auto_approve)),
+          this.project.hit_group_id,
+        ]
+      } else {
+        this.arrayCardPayment = [
+          this.project.reward + '$',
+          this.project.workers,
+          this.time(parseInt(this.project.max_time)),
+          this.time(parseInt(this.project.expiry)),
+          this.time(parseInt(this.project.auto_approve)),
+        ]
       }
     },
     open(mode) {
