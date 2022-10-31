@@ -157,8 +157,8 @@
                 :class="status > 1 ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-gray-100 text-gray-700'"
                 class="block appearance-none w-full sm:w-32 border border-gray-200 py-2 px-4 pr-8 rounded transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
                 id="selectorMaxTime"
-                v-model="selectTempoMax"
-                @change="fixMax(1)"
+                v-model="selectTimeMax"
+                @change="max1 = fixMax(selectTimeMax)"
                 :disabled="status > 1"
               >
                 <option selected value="days">Days</option>
@@ -206,7 +206,7 @@
                 class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
                 id="selectorExpiry"
                 v-model="selectExpiry"
-                @change="fixMax(2)"
+                @change="max2 = fixMax(selectExpiry)"
                 :disabled="status > 1"
               >
                 <option selected value="days">Days</option>
@@ -254,7 +254,7 @@
                 class="block appearance-none w-full border border-gray-200 py-2 px-4 pr-8 rounded transition-colors duration-100 ease-out focus:border-blue-500 hover:border-blue-500"
                 id="selectorApproval"
                 v-model="selectAutoApprove"
-                @change="fixMax(3)"
+                @change="max3 = fixMax(selectAutoApprove)"
                 :disabled="status > 1"
               >
                 <option selected value="days">Days</option>
@@ -569,7 +569,7 @@ export default {
       layout_id: '',
       params: 0,
       params_fields: '',
-      selectTempoMax: 'hours',
+      selectTimeMax: 'hours',
       selectExpiry: 'days',
       selectAutoApprove: 'days',
       max1: 23,
@@ -657,9 +657,9 @@ export default {
       this.reward = parseFloat(this.$store.state.defaults.reward)
       this.workers = parseInt(this.$store.state.defaults.respondents)
       this.params = parseInt(this.$store.state.defaults.examples_per_hit)
-      this.elaboraTempoGET('expiry')
-      this.elaboraTempoGET('max_time')
-      this.elaboraTempoGET('auto_approve')
+      ;[this.max_time, this.selectTimeMax] = this.getTime(this.max_time)
+      ;[this.expiry, this.selectExpiry] = this.getTime(this.expiry)
+      ;[this.auto_approve, this.selectAutoApprove] = this.getTime(this.auto_approve)
       this.loadingPage1 = false
       this.loadingPage2 = false
     } else {
@@ -671,6 +671,10 @@ export default {
     window.addEventListener('keydown', this.keyboardEvent)
   },
   methods: {
+    /**
+     * Adds the user selected country to the list of countries to pick workers from.
+     * @param  {String} country name of a country
+     */
     add(country) {
       if (this.tmp.length > 0) {
         this.selected.push(country)
@@ -681,6 +685,10 @@ export default {
         this.input = ''
       }
     },
+    /**
+     * Deletes the selected country from the list of countries to pick workers from.
+     * @param  {String} country name of a country
+     */
     deleteSelected(country) {
       var index = this.selected.indexOf(country)
       this.selected.splice(index, 1)
@@ -688,6 +696,10 @@ export default {
       this.selectedCodes.splice(index1, 1)
       this.countries.push(country)
     },
+    /**
+     * Scrolls countries dropdown with up and down keys.
+     * @param  {String} where up or down
+     */
     scroll(where) {
       if (where == 'up' && this.active > 0) {
         this.active--
@@ -696,6 +708,9 @@ export default {
       }
       document.getElementById(this.active).scrollIntoView()
     },
+    /**
+     * Calls API for getting countries data.
+     */
     getCountries() {
       axios({
         url: 'https://restcountries.com/v3.1/all',
@@ -714,6 +729,9 @@ export default {
           console.error(err)
         })
     },
+    /**
+     * Calls API for getting the layout fields to auto fill form.
+     */
     downloadLayoutId() {
       this.downloadID = true
       this.API()
@@ -732,6 +750,9 @@ export default {
     emitSnackbar(msg) {
       this.$emit('snackbar', msg)
     },
+    /**
+     * Calls API for getting the project info and parses the response
+     */
     getDatiPrj() {
       this.API()
         .get('?action=getProjectInfo&id=' + this.$route.params.projectId)
@@ -758,9 +779,10 @@ export default {
           }
           this.qualificationMaster = res.data.values.master
           this.qualificationAdult = res.data.values.adult
-          this.elaboraTempoGET('max_time')
-          this.elaboraTempoGET('expiry')
-          this.elaboraTempoGET('auto_approve')
+          ;[this.max_time, this.selectTimeMax] = this.getTime(this.max_time)
+          ;[this.expiry, this.selectExpiry] = this.getTime(this.expiry)
+          ;[this.auto_approve, this.selectAutoApprove] = this.getTime(this.auto_approve)
+
           for (let i = 0; i < this.selectedCodes.length; i++) {
             this.selected.push(
               this.countries.find((country) => {
@@ -771,9 +793,9 @@ export default {
           this.loadingPage1 = false
         })
         .then(() => {
-          this.fixMax(1)
-          this.fixMax(2)
-          this.fixMax(3)
+          this.max1 = this.fixMax(this.selectTimeMax)
+          this.max2 = this.fixMax(this.selectExpiry)
+          this.max3 = this.fixMax(this.selectAutoApprove)
         })
         .catch((err) => {
           var msg = 'Error. Project not found'
@@ -781,14 +803,17 @@ export default {
           console.error(err)
         })
     },
+    /**
+     * validates user input, calls API for uploading project and triggers snackbar displaying outcome of the action.
+     */
     caricaProgetto() {
       this.v$.$touch()
       if (!this.v$.$invalid) {
         this.loading = true
         this.parseNumbers()
-        this.elaboraTempo('max_time')
-        this.elaboraTempo('expiry')
-        this.elaboraTempo('auto_approve')
+        this.max_time_send = this.getTimeRev(this.max_time, this.selectTimeMax)
+        this.expiry_send = this.getTimeRev(this.expiry, this.selectExpiry)
+        this.auto_approve_send = this.getTimeRev(this.auto_approve, this.selectAutoApprove)
         var url = '?action=addProject'
         if (this.mode == 'edit') {
           url = url + '&id=' + this.id
@@ -843,98 +868,52 @@ export default {
     goBack() {
       this.$router.go(-1)
     },
-    elaboraTempoGET(nomeVar) {
-      if (nomeVar == 'max_time') {
-        if (this.max_time < 60) {
-          this.selectTempoMax = 'minutes'
-        } else if (this.max_time < 1440) {
-          this.max_time = this.max_time / 60
-          this.selectTempoMax = 'hours'
-        } else {
-          this.max_time = this.max_time / 1440
-          this.selectTempoMax = 'days'
-        }
-      } else if (nomeVar == 'expiry') {
-        if (this.expiry < 60) {
-          this.selectExpiry = 'minutes'
-        } else if (this.expiry < 1440) {
-          this.expiry = this.expiry / 60
-          this.selectExpiry = 'hours'
-        } else {
-          this.expiry = this.expiry / 1440
-          this.selectExpiry = 'days'
-        }
-      } else {
-        if (this.auto_approve < 60) {
-          this.selectAutoApprove = 'minutes'
-        } else if (this.auto_approve < 1440) {
-          this.auto_approve = this.auto_approve / 60
-          this.selectAutoApprove = 'hours'
-        } else {
-          this.auto_approve = this.auto_approve / 1440
-          this.selectAutoApprove = 'days'
-        }
+    /**
+     * Converts minutes into hours/days.
+     * @param  {Integer} time time in minutes
+     * @return {Array}        time unit and adjusted time value
+     */
+    getTime(time) {
+      if (time < 60) {
+        return [time, 'minutes']
       }
-    },
-    //modifica il tempo da minuti a minuti/ore/giorni
-    elaboraTempo(nomeVar) {
-      if (nomeVar == 'max_time') {
-        if (this.selectTempoMax == 'ore') {
-          this.max_time_send = this.max_time * 60
-        } else if (this.selectTempoMax == 'days') {
-          this.max_time_send = this.max_time * 1440
-        } else {
-          this.max_time_send = this.max_time
-        }
-      } else if (nomeVar == 'expiry') {
-        if (this.selectExpiry == 'hours') {
-          this.expiry_send = this.expiry * 60
-        } else if (this.selectExpiry == 'days') {
-          this.expiry_send = this.expiry * 1440
-        } else {
-          this.expiry_send = this.expiry
-        }
-      } else {
-        if (this.selectAutoApprove == 'hours') {
-          this.auto_approve_send = this.auto_approve * 60
-        } else if (this.selectAutoApprove == 'days') {
-          this.auto_approve_send = this.auto_approve * 1440
-        } else {
-          this.auto_approve_send = this.auto_approve
-        }
+      if (time < 1440) {
+        return [time / 60, 'hours']
       }
+      return [time / 1440, 'days']
     },
-    fixMax(num) {
-      switch (num) {
-        case 1:
-          if (this.selectTempoMax == 'minutes') {
-            this.max1 = 59
-          } else if (this.selectTempoMax == 'hours') {
-            this.max1 = 23
-          } else if (this.selectTempoMax == 'days') {
-            this.max1 = 364
-          }
-          break
-        case 2:
-          if (this.selectExpiry == 'minutes') {
-            this.max2 = 59
-          } else if (this.selectExpiry == 'hours') {
-            this.max2 = 23
-          } else if (this.selectExpiry == 'days') {
-            this.max2 = 364
-          }
-          break
-        case 3:
-          if (this.selectAutoApprove == 'minutes') {
-            this.max3 = 59
-          } else if (this.selectAutoApprove == 'hours') {
-            this.max3 = 23
-          } else if (this.selectAutoApprove == 'days') {
-            this.max3 = 364
-          }
-          break
+    /**
+     * Converts minutes/hours/days back into minutes to send to back end.
+     * @param  {Integer} time adjusted time in minutes, hours or days
+     * @param  {String}  unit unit to convert from
+     * @return {Integer}      time in minutes
+     */
+    getTimeRev(time, unit) {
+      if (unit == 'hours') {
+        return time * 60
       }
+      if (unit == 'days') {
+        return time * 1440
+      }
+      return time
     },
+    /**
+     * Returns max number-1 for one unit of the speficic time span
+     * @param  {String} unit time unit
+     * @return {Integer}     max number-1
+     */
+    fixMax(unit) {
+      if (unit == 'minutes') {
+        return 59
+      }
+      if (unit == 'hours') {
+        return 23
+      }
+      return 364
+    },
+    /**
+     * Parses numeric values
+     */
     parseNumbers() {
       this.reward = parseFloat(this.reward)
       this.workers = parseInt(this.workers)

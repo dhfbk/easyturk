@@ -113,6 +113,12 @@ export default {
     }
   },
   methods: {
+    /**
+     * Creates the Tailwind class for the compartments in the legend.
+     * @param  {Integer} x
+     * @param  {Integer} y
+     * @return {String}      Tailwind class for that part of the legend
+     */
     classCreator(x, y) {
       if (x == 0 && y == 0) {
         return 'w-full'
@@ -125,6 +131,13 @@ export default {
     hoverGroup(arr) {
       this.hoverArr = arr
     },
+    /**
+     * Creates a list of length step of colors ranging from color1 to color2
+     * @param  {String} color1 rgb values in the form rbg(1, 1, 1)
+     * @param  {String} color2 rgb values in the form rbg(1, 1, 1)
+     * @param  {Integer} step number of colors in the returned array
+     * @return {Array}        list of length step rgb colors
+     */
     interpolateColors(color1, color2, step) {
       if (step == 1) return [color2]
       var stepFactor = 1 / (step - 1)
@@ -139,6 +152,13 @@ export default {
       }
       return arr
     },
+    /**
+     * Creates an rgb color string interpolating two colors by a factor
+     * @param  {String} color1 rgb values in the form rbg(1, 1, 1)
+     * @param  {String} color2 rgb values in the form rbg(1, 1, 1)
+     * @param  {Float} factor  factor by which the colors should be interpolated
+     * @return {String}        resulting rgb color
+     */
     interpolateColor(color1, color2, factor) {
       if (arguments.length < 3) {
         factor = 0.5
@@ -149,13 +169,10 @@ export default {
       }
       return 'rgb(' + result[0] + ',' + result[1] + ',' + result[2] + ')'
     },
+    /**
+     *  Calculates and creates colors depending on status of hits
+     */
     initializeContent() {
-      for (let i = 0; i < this.sortedData.length; i++) {
-        this.totalHITs += this.sortedData[i].count
-      }
-
-      //colors and gradients creation
-
       var pos = 0
       var neg = 0
       var avaPos = 0
@@ -163,12 +180,14 @@ export default {
       var notTou = 0
       var grad = []
 
-      for (let x = 0; x < this.sortedData.length; x++) {
-        if (this.sortedData[x].assignments_completed == 0) {
+      for (let i = 0; i < this.sortedData.length; i++) {
+        this.totalHITs += this.sortedData[i].count
+
+        if (this.sortedData[i].assignments_completed == 0) {
           notTou++
-        } else if (this.sortedData[x].assignments_available > 0) {
-          this.sortedData[x].assignments_rejected == 0 ? avaPos++ : avaNeg++
-        } else if (this.sortedData[x].assignments_rejected == 0) {
+        } else if (this.sortedData[i].assignments_available > 0) {
+          this.sortedData[i].assignments_rejected == 0 ? avaPos++ : avaNeg++
+        } else if (this.sortedData[i].assignments_rejected == 0) {
           pos++
         } else {
           neg++

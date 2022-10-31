@@ -148,6 +148,12 @@ export default {
     },
   },
   methods: {
+    /**
+     * Truncates string in order to fit it in a card with 3 dots at the end
+     * @param  {String} str  starting string
+     * @param  {Integer} num index where to truncate
+     * @return {String}      truncated string with three dots at the end
+     */
     truncateString(str, num) {
       if (str.length > num) {
         return str.slice(0, num) + '...'
@@ -155,6 +161,10 @@ export default {
         return str
       }
     },
+    /**
+     * Goes to the HITlist route if user hits Esc button.
+     * @param  {Object} event  keyboard event
+     */
     keyboardEvent(event) {
       if (event.code == 'Escape') {
         this.$router.push({
@@ -163,6 +173,9 @@ export default {
         })
       }
     },
+    /**
+     * Calls API for getting HIT info and parses response.
+     */
     getData() {
       this.API()
         .get('?action=getHitInfo&hitID=' + this.$route.params.hitId)
@@ -206,6 +219,9 @@ export default {
           })
         })
     },
+    /**
+     * Creates texts and tailwind classes for the cards depending on the status and settings of the project
+     */
     createCardArrays() {
       //payments card, once again the content is slightly different based on the current route
       if (this.$route.name == 'viewHIT') {
@@ -231,6 +247,11 @@ export default {
         ]
       }
     },
+    /**
+     * Calculates number of hours or days from minues
+     * @param  {Integer} num number of minutes
+     * @return {String}      number of minutes, hours or days calculated rounding the num parameter
+     */
     time(num) {
       if (num < 60) {
         num += ' minutes'
@@ -241,6 +262,11 @@ export default {
       }
       return num
     },
+    /**
+     * Parses integer to date type.
+     * @param  {Integer} tmp
+     * @return {String}      date
+     */
     timeConverter(tmp) {
       var a = new Date(tmp * 1000)
       var year = a.getFullYear()
@@ -250,7 +276,9 @@ export default {
         year + '-' + month + '-' + date + ' ' + (a.getHours() - a.getTimezoneOffset() / 60) + ':' + a.getMinutes()
       return time
     },
-    //metodo che imposta i titoli e i dati da inserire nelle card della pagina
+    /**
+     * Sets titles and data to use in the cards
+     */
     setAnalyticsCard() {
       this.analytics = {
         cardHIT: {
@@ -286,16 +314,22 @@ export default {
         },
       }
     },
-    //metodo che mostra o nasconde il dialog
+    /**
+     * Hides or shows modal
+     */
     toggleModal() {
       this.modal = !this.modal
       this.hide()
     },
-    //nasconde il dropdown
+    /**
+     * Hides dropdown
+     */
     hide() {
       this.dropdownOpen = false
     },
-    //calcola il numero da utilizzare nei grafici delle analytics
+    /**
+     * Calculates number to show in the analytics card.
+     */
     convertProgress() {
       this.progressData.completed =
         (100 * parseInt(this.prjData.values.hit_info.NumberOfAssignmentsCompleted)) /

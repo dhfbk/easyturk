@@ -466,6 +466,10 @@ export default {
     }
   },
   computed: {
+    /**
+     * Calculates total assignments subdivided by status
+     * @return {Object}      object containing total number of assignments subdivided by status
+     */
     totals: function () {
       var ret = {}
       ret.count = 0
@@ -497,6 +501,11 @@ export default {
         this.$router.push({ name: 'Home' })
       }
     },
+    /**
+     * Calculates number of hours or days from minues
+     * @param  {Integer} num number of minutes
+     * @return {String}      number of minutes, hours or days calculated rounding the num parameter
+     */
     time(num) {
       if (num < 60) {
         num += ' minutes'
@@ -507,6 +516,9 @@ export default {
       }
       return num
     },
+    /**
+     * Checks whether project ID exists and calls API endpoint get the info about the project and parses the response
+     */
     getDatiPrj() {
       this.id = parseInt(this.$route.params.projectId)
       if (isNaN(this.id)) {
@@ -577,6 +589,9 @@ export default {
           })
       }
     },
+    /**
+     * Creates texts and tailwind classes for the cards depending on the status and settings of the project
+     */
     createCardArrays() {
       //hits card, the text varies based on the hits' status
       if (this.project.hits_inserted == 0) {
@@ -638,6 +653,10 @@ export default {
         params: { projectId: this.projectid },
       })
     },
+    /**
+     * Triggers snackbar if error realted to modal occurs, opens modal of type *mode* otherwise.
+     * @param  {String} mode type of modal to open
+     */
     toggleModal(mode) {
       if (mode == 'gld') {
         if (this.project.numData == 0) {
@@ -667,15 +686,25 @@ export default {
         : window.addEventListener('keydown', this.keyboardEvent)
       this.hide()
     },
-    //for when an action gets completed (success or error)
+    /**
+     * Brings to homepage when deleting project and triggers snackbar
+     * @param  {String} msg message to display
+     */
     deleted(msg) {
       this.$router.push('/')
       this.$emit('snackbar', msg)
     },
-    //for when an action gets completed (success or error)
+    /**
+     * Triggers snackbar
+     * @param  {String} msg message to display
+     */
     snack(msg) {
       this.$emit('snackbar', msg)
     },
+    /**
+     * Triggers snackbar and opens modal upon uploading project
+     * @param  {String | Array} msg message to display
+     */
     uploaded(msg) {
       if (Array.isArray(msg)) {
         if (msg[2] == 'Upload completed') {
@@ -695,7 +724,9 @@ export default {
       this.getDatiPrj()
     },
 
-    //nasconde il dropdown
+    /**
+     * Hides dropdown
+     */
     hide() {
       if (this.dropdownOpen) {
         this.dropdownOpen = false
