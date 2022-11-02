@@ -701,12 +701,14 @@ export default {
      * @param  {String} where up or down
      */
     scroll(where) {
-      if (where == 'up' && this.active > 0) {
-        this.active--
-      } else if (where == 'down' && this.active < this.tmp.length - 1) {
-        this.active++
+      if (document.getElementById(this.active)) {
+        if (where == 'up' && this.active > 0) {
+          this.active--
+        } else if (where == 'down' && this.active < this.tmp.length - 1) {
+          this.active++
+        }
+        document.getElementById(this.active).scrollIntoView()
       }
-      document.getElementById(this.active).scrollIntoView()
     },
     /**
      * Calls API for getting countries data.

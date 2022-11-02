@@ -237,20 +237,9 @@ export default {
     this.getData()
   },
   methods: {
-    /* getPrjData() {
-            this.API()
-                .get('?action=listProjects')
-                .then((res) => {
-                    this.projects = res.data.values
-                    this.projectsShow.push(...this.projects.slice(this.startIndex, this.nextIndex))
-                    this.startIndex = this.nextIndex
-                    this.nextIndex += 5
-                    this.loadingProjects = false
-                })
-                .catch((err) => {
-                    console.error(err)
-                })
-        }, */
+    /**
+     * Calls the list of projects API and parses the response in order to display them in block of 5s.
+     */
     getData() {
       this.API()
         .get('?action=listProjects')
@@ -272,6 +261,9 @@ export default {
           console.error(errors)
         })
     },
+    /**
+     * Updates projects array and the indexes when user pushes the "load more" button.
+     */
     addProjects() {
       this.projectsShow.push(...this.projects.slice(this.startIndex, this.nextIndex))
       if (this.last) {
@@ -286,12 +278,10 @@ export default {
         }
       }
     },
-    getProject(id) {
-      this.project = this.projects.filter(function (project) {
-        return project.id == id
-      })
-    },
-    //metodi per aprire e chiudere il modal eliminazione ed eliminare l'elemento dalla lista
+    /**
+     * Updates projects array upon deletion of a project.
+     * @param  {String} msg  message to display in the snackbar
+     */
     deleted(msg) {
       var self = this
       this.projects = this.projects.filter(function (el) {
@@ -299,6 +289,10 @@ export default {
       })
       this.$emit('snackbar', msg)
     },
+    /**
+     * Toggles modals depending on which button the user pushed.
+     * @param  {Array} arr  contains info on which modal to open, id of the project and whether to trigger a snackbar
+     */
     toggleModal(arr) {
       this.modalId = arr[1]
       if (arr[0] == 'std') {
@@ -356,9 +350,16 @@ export default {
         }
       }
       if (this.modalLayout) {
-        this.getProject(arr[1])
+        // this.getProject(arr[1])
+        this.project = this.projects.filter(function (project) {
+          return project.id == arr[1]
+        })
       }
     },
+    /**
+     * Triggers snackbar and updates data upon launching project.
+     * @param  {String} msg  message to display in the snackbar
+     */
     launched(msg) {
       this.snack(msg)
       this.projectsShow = []
@@ -367,6 +368,10 @@ export default {
       this.loadingProjects = true
       this.getData() //getPrjData()
     },
+    /**
+     * Triggers snackbar and updates data upon creating HIT.
+     * @param  {String} msg  message to display in the snackbar
+     */
     reloadAfterHIT(msg) {
       this.snack(msg)
       this.loadingProjects = true

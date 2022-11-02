@@ -121,6 +121,9 @@ export default {
     window.addEventListener('keydown', this.keyboardEvent)
   },
   methods: {
+    /**
+     * Updates page number when user changes it, triggering simultaneously content update
+     */
     changeNumPage() {
       let newNum = Math.ceil(this.totalNum / this.numPerPage)
       if (this.pageNum != newNum) {
@@ -131,6 +134,10 @@ export default {
         this.update()
       }
     },
+    /**
+     * Goes back to project view when user pushes the escape button.
+     * @param  {Object} event keyboard event
+     */
     keyboardEvent(event) {
       if (event.code == 'Escape') {
         this.$router.push({
@@ -139,6 +146,9 @@ export default {
         })
       }
     },
+    /**
+     * Updates page content when initializing page or page changes via API call.
+     */
     update() {
       this.loading = true
       var url =

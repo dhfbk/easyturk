@@ -90,7 +90,6 @@
 </template>
 
 <script>
-//aggiungere i mouseover e sistemare per il tooltip
 import matrixPart from '../components/matrixPart'
 export default {
   name: 'dotMatrixHIT',
@@ -182,7 +181,6 @@ export default {
 
       for (let i = 0; i < this.sortedData.length; i++) {
         this.totalHITs += this.sortedData[i].count
-
         if (this.sortedData[i].assignments_completed == 0) {
           notTou++
         } else if (this.sortedData[i].assignments_available > 0) {
