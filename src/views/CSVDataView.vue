@@ -3,7 +3,7 @@
     <button
       @click="
         $router.push({
-          name: 'projectView',
+          name: 'ProjectView',
           params: { projectId: $route.params.projectId },
         })
       "
@@ -141,7 +141,7 @@ export default {
     keyboardEvent(event) {
       if (event.code == 'Escape') {
         this.$router.push({
-          name: 'projectView',
+          name: 'ProjectView',
           params: { projectId: this.$route.params.projectId },
         })
       }
@@ -161,7 +161,7 @@ export default {
         '&isGold=' +
         this.isGold
       if (isNaN(this.projectId)) {
-        this.$router.replace({ name: 'Home' })
+        this.$router.replace({ name: 'HomeView' })
       } else {
         this.API()
           .get(url)

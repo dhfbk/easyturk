@@ -3,7 +3,7 @@
     <span>
       <span v-for="(i, p) in num.count" :key="p">
         <span
-          @click="$router.push({ name: 'viewHIT', params: { hitId: num.hits[p] } })"
+          @click="$router.push({ name: 'SingleHITView', params: { hitId: num.hits[p] } })"
           class="h-5 w-5 m-1 rounded-full inline-block transition duration-100 ease-in-out transform hover:-translate-y-0.5 hover:shadow-focus cursor-pointer"
           :style="{ background: color }"
           :class="hoveringFull ? 'shadow-focus' : ''"

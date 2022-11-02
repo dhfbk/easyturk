@@ -71,7 +71,7 @@
         <tbody class="bg-white text-center">
           <tr class="border-b border-gray-300 hover:bg-gray-100" v-for="(hit, id) in current" :key="id">
             <td class="table-cell py-1 border-r border-gray-300">
-              <router-link :to="{ name: 'viewHIT', params: { hitId: hit.id } }">
+              <router-link :to="{ name: 'SingleHITView', params: { hitId: hit.id } }">
                 <p class="text-sm text-gray-700 font-medium">{{ hit.id }}</p>
               </router-link>
             </td>

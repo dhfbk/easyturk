@@ -2,13 +2,13 @@
   <nav class="bg-primary p-6 pb-8 sm:pb-6 sm:flex content-center items-center">
     <router-link
       to="/"
-      :disabled="$route.name == 'login'"
+      :disabled="$route.name == 'LoginView'"
       class="flex items-center content-center text-white mr-6 w-auto absolute"
     >
       <img src="../assets/easyTurk.png" alt="EasyTurk logo" class="w-10" />
       <span class="text-md ml-1">EasyTurk</span>
     </router-link>
-    <div class="block sm:hidden float-right ml-2" v-if="$route.name != 'login'">
+    <div class="block sm:hidden float-right ml-2" v-if="$route.name != 'LoginView'">
       <button
         @click="open = !open"
         class="ripple items-center mx-0 px-3 py-2 border rounded transition-colors duration-100 ease-out text-white border-white hover:text-blue-300 hover:border-blue-300"
@@ -21,13 +21,13 @@
     </div>
     <div class="clear-both sm:hidden"></div>
     <div
-      v-if="$route.name != 'login'"
+      v-if="$route.name != 'LoginView'"
       :class="open ? 'block' : 'hidden'"
       class="w-full flex-grow sm:flex sm:items-center sm:w-auto justify-end text-right sm:text-justify pt-4 sm:pt-0 relative"
     >
       <div class="sm:flex items-center content-center">
         <router-link
-          :to="{ name: 'Home' }"
+          :to="{ name: 'HomeView' }"
           class="flex gap-x-1 mt-4 sm:mt-0 transition-colors duration-100 ease-out text-white hover:text-blue-300 sm:mr-4"
         >
           <svg class="fill-current" style="width: 24px; height: 24px" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@
                 </router-link>
                 -->
         <router-link
-          :to="{ name: 'new' }"
+          :to="{ name: 'NewProjectView' }"
           class="flex gap-x-1 mt-4 sm:mt-0 transition-colors duration-100 ease-out text-white hover:text-blue-300 sm:mr-4"
         >
           <svg class="fill-current" style="width: 24px; height: 24px" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@
         <transition name="slidedown" mode="out-in">
           <div v-if="profile" class="px-4 sm:hidden">
             <router-link
-              :to="{ name: 'settings' }"
+              :to="{ name: 'UserSettingsView' }"
               class="flex gap-x-1 mt-4 sm:mt-0 transition-colors duration-100 ease-out text-white hover:text-blue-300 sm:mr-4"
             >
               <!-- <svg class="fill-current" style="width: 24px; height: 24px" viewBox="0 0 24 24">
@@ -110,7 +110,7 @@
             v-click-outside="handleOutside"
           >
             <router-link
-              :to="{ name: 'settings' }"
+              :to="{ name: 'UserSettingsView' }"
               @click="profile = false"
               class="px-4 py-2 capitalize text-gray-700 hover:bg-primaryDark transition-colors duration-20 hover:text-white xs:rounded-t-md"
             >

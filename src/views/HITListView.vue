@@ -8,7 +8,7 @@
         <button
           @click="
             $router.push({
-              name: 'projectView',
+              name: 'ProjectView',
               params: { projectId: $route.params.projectId },
             })
           "
@@ -45,8 +45,8 @@
           </div>
         </div>
       </div>
-      <div class="mr-4" @keydown.enter.prevent.self>
-        <label class="block tracking-wide text-gray-900 text-md font-bold pb-2" for="countries"> Search HIT </label>
+      <div class="mb-6" @keydown.enter.prevent.self>
+        <label class="block tracking-wide text-gray-900 text-xl font-bold pb-2" for="hit"> Search by HIT ID </label>
         <input
           @keyup.up.prevent="scroll('up')"
           @keyup.down.prevent="scroll('down')"
@@ -77,6 +77,7 @@
           </ul>
         </div>
       </div>
+      <div class="block tracking-wide text-gray-900 text-xl font-bold pb-4">Navigate all HITs</div>
       <tableHIT :sortedData="sortedData" v-if="viewType == 'table'" />
       <dotMatrixHIT :sortedData="sortedData" :key="sortedData.length" v-else />
     </div>
@@ -92,7 +93,7 @@ import { useVuelidate } from '@vuelidate/core'
 
 export default {
   mixins: [globalMixin],
-  name: 'HITList',
+  name: 'HITListView',
   components: {
     tableHIT,
     dotMatrixHIT,
@@ -135,7 +136,7 @@ export default {
      */
     search(id) {
       if (this.tmp.length > 0) {
-        this.$router.push({ name: 'viewHIT', params: { hitId: id } })
+        this.$router.push({ name: 'SingleHITView', params: { hitId: id } })
       }
     },
     /**
@@ -230,7 +231,7 @@ export default {
     keyboardEvent(event) {
       if (event.code == 'Escape') {
         this.$router.push({
-          name: 'projectView',
+          name: 'ProjectView',
           params: { projectId: this.$route.params.projectId },
         })
       }
@@ -241,7 +242,7 @@ export default {
     getData() {
       this.id = parseInt(this.$route.params.projectId)
       if (isNaN(this.id)) {
-        this.$router.replace({ name: 'Home' })
+        this.$router.replace({ name: 'HomeView' })
       } else {
         this.API()
           .get('?action=getProjectInfo&id=' + this.id)

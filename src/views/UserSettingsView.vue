@@ -111,7 +111,7 @@ import globalMixin from '../globalMixin.js'
 
 export default {
   mixins: [globalMixin],
-  name: 'settings',
+  name: 'UserSettingsView',
   data() {
     return {
       common: this.$store.state.userInfo.common_name,

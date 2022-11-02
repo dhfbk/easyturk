@@ -66,7 +66,7 @@
         v-if="projectData.status < 3"
         @click.stop="
           $router.push({
-            name: 'edit',
+            name: 'EditProjectView',
             params: {
               projectId: projectData.id,
             },
@@ -224,7 +224,7 @@
             <a
               @click.stop="
                 $router.push({
-                  name: 'edit',
+                  name: 'EditProjectView',
                   params: {
                     projectId: projectData.id,
                   },
@@ -297,7 +297,7 @@ export default {
     },
     openProject() {
       this.$router.push({
-        name: 'projectView',
+        name: 'ProjectView',
         params: { projectId: this.projectData.id },
       })
     },

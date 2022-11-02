@@ -91,7 +91,7 @@
     </transition>
     <div class="flex justify-between flex-wrap items-center">
       <button
-        @click="$router.push({ name: 'Home' })"
+        @click="$router.push({ name: 'HomeView' })"
         :content="'Back'"
         v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
         class="rounded ripple bg-transparent hover:bg-gray-300 p-2"
@@ -187,7 +187,7 @@
         </button>
         <button
           v-if="project.status != 3 && !loading"
-          @click="$router.push({ name: 'edit', params: { projectId: id } })"
+          @click="$router.push({ name: 'EditProjectView', params: { projectId: id } })"
           :content="'Edit'"
           v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
           type="submit"
@@ -274,7 +274,7 @@
               >
               <router-link
                 :to="{
-                  name: 'edit',
+                  name: 'EditProjectView',
                   params: { projectId: id },
                 }"
                 :class="project.status >= 0 && project.status != 3 ? '' : 'rounded-b-md'"
@@ -319,7 +319,7 @@
       <button
         @click="
           $router.push({
-            name: 'HITlist',
+            name: 'HITListView',
             params: { projectId: id },
           })
         "
@@ -392,7 +392,7 @@ import cardWorkers from '../components/cardWorkers.vue'
 import cardProjectTable from '../components/cardProjectTable.vue'
 import cardCsv from '../components/cardCsv.vue'
 import cardStatus from '../components/cardStatus.vue'
-//import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
+//import cardAnalytics from '../components/cardAnalyticsProjectView.vue'
 import modalUpload from '../components/modalUpload.vue'
 import modalHIT from '../components/modalHIT.vue'
 import modalRevert from '../components/modalRevert.vue'
@@ -407,8 +407,9 @@ import progressBar from '../components/progressBar'
 import globalMixin from '../globalMixin.js'
 
 export default {
+  name: 'ProjectView',
+
   mixins: [globalMixin],
-  name: 'visualizzaProgetto',
   components: {
     modalEliminazione,
     modalEditBehavior,
@@ -498,7 +499,7 @@ export default {
   methods: {
     keyboardEvent(event) {
       if (event.code == 'Escape') {
-        this.$router.push({ name: 'Home' })
+        this.$router.push({ name: 'HomeView' })
       }
     },
     /**
@@ -522,7 +523,7 @@ export default {
     getDatiPrj() {
       this.id = parseInt(this.$route.params.projectId)
       if (isNaN(this.id)) {
-        this.$router.replace({ name: 'Home' })
+        this.$router.replace({ name: 'HomeView' })
         this.$emit('snackbar', "Error. Project doesn't exist.")
       } else {
         this.API()
@@ -624,7 +625,7 @@ export default {
       ]
 
       //payments card, once again the content is slightly different based on the current route
-      if (this.$route.name == 'viewHIT') {
+      if (this.$route.name == 'SingleHITView') {
         this.arrayCardPayment = [
           this.project.reward + '$',
           this.project.workers,

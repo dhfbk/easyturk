@@ -49,14 +49,14 @@ export default {
       .then(
         axios.spread((...res) => {
           if (res[1].data.result == 'ERR') {
-            if (this.$route.name != 'login') {
+            if (this.$route.name != 'LoginView') {
               this.$router.replace({ path: '/login' })
             }
             setTimeout(() => {
               this.wait = false
             }, 500)
           } else {
-            if (this.$route.name == 'login') {
+            if (this.$route.name == 'LoginView') {
               this.$router.replace({ path: '/' })
             }
             this.$store.state.userInfo = res[1].data.data

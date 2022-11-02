@@ -192,7 +192,7 @@ import globalMixin from '../globalMixin.js'
 
 export default {
   mixins: [globalMixin],
-  name: 'Home',
+  name: 'HomeView',
   components: {
     projectListItem,
     //tabellaWorker,

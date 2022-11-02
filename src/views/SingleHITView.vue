@@ -5,7 +5,7 @@
       <button
         @click="
           $router.push({
-            name: 'HITlist',
+            name: 'HITListView',
             params: { projectId: $route.params.projectId },
           })
         "
@@ -71,7 +71,7 @@ import globalMixin from '../globalMixin.js'
 
 export default {
   mixins: [globalMixin],
-  name: 'viewHIT',
+  name: 'SingleHITView',
   components: {
     modalEliminazione,
     cardPlain,
@@ -162,13 +162,13 @@ export default {
       }
     },
     /**
-     * Goes to the HITlist route if user hits Esc button.
+     * Goes to the HITListView route if user hits Esc button.
      * @param  {Object} event  keyboard event
      */
     keyboardEvent(event) {
       if (event.code == 'Escape') {
         this.$router.push({
-          name: 'HITlist',
+          name: 'HITListView',
           params: { projectId: this.$route.params.projectId },
         })
       }
@@ -214,7 +214,7 @@ export default {
           console.error(err.message)
           this.$emit('snackbar', 'Error. ' + err.message)
           this.$router.push({
-            name: 'HITlist',
+            name: 'HITListView',
             params: { projectId: this.$route.params.projectId },
           })
         })
@@ -224,7 +224,7 @@ export default {
      */
     createCardArrays() {
       //payments card, once again the content is slightly different based on the current route
-      if (this.$route.name == 'viewHIT') {
+      if (this.$route.name == 'SingleHITView') {
         this.arrayCardPayment = [
           this.project.reward + '$',
           this.project.workers,

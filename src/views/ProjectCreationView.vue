@@ -495,7 +495,7 @@
       <button
         type="submit"
         class="ripple mr-1 hover:bg-primaryDark bg-primary py-2 px-4 rounded transition-colors duration-100 ease-out text-white"
-        v-if="mode == 'edit'"
+        v-if="mode == 'EditProjectView'"
       >
         <svg
           :class="loading ? 'animate-spin mr-1 fill-current' : 'hidden'"
@@ -547,7 +547,7 @@ import globalMixin from '../globalMixin.js'
 
 export default {
   mixins: [globalMixin],
-  name: 'creazioneProgetto',
+  name: 'ProjectCreationView',
   components: { textBarLarge },
   data() {
     return {
@@ -575,7 +575,7 @@ export default {
       max1: 23,
       max2: 364,
       max3: 364,
-      mode: 'new',
+      mode: 'NewProjectView',
       loading: false,
       status: 0,
       disableBtn: true,
@@ -723,7 +723,7 @@ export default {
           this.loadingPage2 = false
         })
         .then(() => {
-          if (this.$route.name == 'edit') {
+          if (this.$route.name == 'EditProjectView') {
             this.getDatiPrj()
           }
         })
@@ -740,6 +740,7 @@ export default {
         .get('?action=testLayout&layout_id=' + this.layout_id)
         .then((res) => {
           this.downloadID = false
+          console.log(res.data)
           this.params_fields = res.data.params_fields
           this.params = parseInt(res.data.examples_per_hit)
         })
@@ -817,7 +818,7 @@ export default {
         this.expiry_send = this.getTimeRev(this.expiry, this.selectExpiry)
         this.auto_approve_send = this.getTimeRev(this.auto_approve, this.selectAutoApprove)
         var url = '?action=addProject'
-        if (this.mode == 'edit') {
+        if (this.mode == 'EditProjectView') {
           url = url + '&id=' + this.id
         }
         this.API()
@@ -846,21 +847,39 @@ export default {
             this.loading = false
             if (response.data.result == 'OK') {
               var msg
-              if (this.mode == 'edit') {
+              if (this.mode == 'EditProjectView') {
                 msg = 'Edit successful'
               } else {
                 msg = 'Project created'
               }
-              this.$router.push({ path: '/', name: 'Home' })
+              this.$router.push({ path: '/', name: 'HomeView' })
             } else {
               console.error('Errore')
               msg = 'Error. Try Again: ' + response.data.error
             }
             this.emitSnackbar(msg)
           })
-          .catch(() => {
+          .catch((err) => {
             this.loading = false
             var msg = 'Error. Try Again'
+            console.log({
+              name: this.name,
+              title: this.title,
+              description: this.description,
+              keywords: this.keywords,
+              reward: this.reward,
+              workers: this.workers,
+              max_time: this.max_time_send,
+              expiry: this.expiry_send,
+              auto_approve: this.auto_approve_send,
+              layout_id: this.layout_id,
+              params: this.params,
+              params_fields: this.params_fields,
+              countries: this.selectedCodes,
+              adult: this.qualificationAdult,
+              master: this.qualificationMaster,
+            })
+            console.log(err)
             this.emitSnackbar(msg)
           })
       } else {

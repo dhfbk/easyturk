@@ -74,7 +74,7 @@
     <div class="w-full flex justify-start -mt-4" v-if="dati.type == 'HIT'">
       <router-link
         :to="{
-          name: 'HITlist',
+          name: 'HITListView',
           params: {
             projectId: dati.idPrj,
           },

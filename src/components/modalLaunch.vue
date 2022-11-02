@@ -120,7 +120,7 @@ export default {
   created() {
     this.hitMax = parseInt(this.hitsTotal) - parseInt(this.hitsSubmitted)
     this.calculatePrice()
-    if (this.$route.name == 'Home') {
+    if (this.$route.name == 'HomeView') {
       this.API()
         .get('?action=getProjectInfo&id=' + this.id)
         .then((res) => {

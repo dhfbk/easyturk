@@ -19,7 +19,7 @@
               class="px-2 py-1 ripple bg-gray-200 transition-colors duration-100 ease-out hover:bg-gray-300 rounded"
               @click="
                 $router.push({
-                  name: 'csv',
+                  name: 'CSVDataView',
                   params: { projectId: projectData.id, type: 'data' },
                 })
               "
@@ -104,7 +104,7 @@
               class="px-2 py-1 ripple bg-gray-200 transition-colors duration-100 ease-out hover:bg-gray-300 rounded"
               @click="
                 $router.push({
-                  name: 'csv',
+                  name: 'CSVDataView',
                   params: { projectId: projectData.id, type: 'gold' },
                 })
               "
