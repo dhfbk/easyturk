@@ -181,12 +181,12 @@
 <script>
 import projectListItem from '../components/projectListItem.vue'
 //import tabellaWorker from '../components/tabellaWorker.vue'
-import modalEliminazione from '../components/modalEliminazione.vue'
-import modalUpload from '../components/modalUpload.vue'
-import modalHit from '../components/modalHIT.vue'
-import modalLayout from '../components/modalLayout.vue'
+import modalEliminazione from '../components/modal/modalEliminazione.vue'
+import modalUpload from '../components/modal/modalUpload.vue'
+import modalHit from '../components/modal/modalHIT.vue'
+import modalLayout from '../components/modal/modalLayout.vue'
 import loader from '../components/loader.vue'
-import modalLaunch from '../components/modalLaunch.vue'
+import modalLaunch from '../components/modal/modalLaunch.vue'
 
 import globalMixin from '../globalMixin.js'
 

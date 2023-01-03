@@ -153,8 +153,9 @@
               style="width: 24px; height: 24px"
               viewBox="0 0 24 24"
             >
-              <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" /></svg
-            >Proceed
+              <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+            </svg>
+            Proceed
           </button>
           <button
             class="ripple transition-colors duration-100 ease-out mt-2 xs2:mt-0 xs2:ml-2 hover:bg-gray-300 bg-transparent text-gray-800 py-2 px-4 rounded"
@@ -172,7 +173,7 @@
 import { required, minValue } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 const notEmpty = (value) => value != ''
-import globalMixin from '../globalMixin.js'
+import globalMixin from '../../globalMixin.js'
 
 export default {
   mixins: [globalMixin],

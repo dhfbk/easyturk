@@ -4,8 +4,30 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
 
+:root {
+  --scrollbarBGLight: #ffffff;
+  --thumbBGLight: #c2c2c2;
+  --thumbBGDark: #949494;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--scrollbarBGLight);
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBGLight);
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--thumbBGDark);
+}
 * {
   font-family: "Roboto", sans-serif !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--thumbBGLight) var(--scrollbarBGLight);
 }
 
 @media (max-width: 640px) {
@@ -13,30 +35,6 @@
     writing-mode: vertical-lr;
     padding: 10px 5px;
   }
-}
-
-.slide-toggle-enter-active {
-  transition: max-height 0.25s !important;
-}
-
-.slide-toggle-leave-active {
-  transition: max-height 0.2s !important;
-}
-
-.slide-toggle-enter-active {
-  max-height: 200px;
-  overflow: hidden;
-}
-
-.slide-toggle-enter,
-.slide-toggle-leave-active {
-  max-height: 0;
-  overflow: hidden;
-}
-
-.slide-toggle-leave {
-  max-height: 200px;
-  overflow: hidden;
 }
 
 .ripple {
@@ -59,7 +57,7 @@
   background-position: 50%;
   transform: scale(10, 10);
   opacity: 0;
-  transition: transform 0.5s, opacity 1s;
+  transition: transform 0.1s, opacity 0.5s;
 }
 
 .ripple:active:after {

@@ -112,7 +112,7 @@
           v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
           type="submit"
           :class="{ 'cursor-not-allowed': hitsSubmitted == hitsTotal }"
-          class="md:block ripple transition-colors ease-out duration-100 bg-primary hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded text-white"
+          class="hidden md:block ripple transition-colors duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white"
         >
           <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
             <path
@@ -127,7 +127,7 @@
           :content="'Publish project'"
           v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
           type="submit"
-          class="md:block ripple bg-primary transition-colors duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded text-white"
+          class="hidden md:block ripple transition-colors duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white"
         >
           <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
             <path
@@ -142,7 +142,7 @@
           :content="'Set layout'"
           v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
           type="submit"
-          class="md:block ripple bg-primary transition-colors duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded text-white"
+          class="hidden md:block ripple transition-colors duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white"
         >
           <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
             <path
@@ -158,7 +158,7 @@
           :content="'Create HITs'"
           v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
           type="submit"
-          class="md:block ripple bg-primary transition-colors duration-100 ease-out hover:bg-blue-600 flex flex-row items-center py-2 px-4 border-2 border-solid border-primary hover:border-blue-600 bg-transparent rounded text-white"
+          class="hidden md:block ripple transition-colors duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white"
         >
           <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
             <path
@@ -176,7 +176,7 @@
           :content="'Revert HIT settings'"
           v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
           type="submit"
-          class="md:block ripple transition-colors duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white"
+          class="hidden md:block ripple transition-colors duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white"
         >
           <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
             <path
@@ -191,7 +191,7 @@
           :content="'Edit'"
           v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
           type="submit"
-          class="md:block ripple transition-colors duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white"
+          class="hidden md:block ripple transition-colors duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white"
         >
           <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
             <path
@@ -206,7 +206,7 @@
           :content="'Delete'"
           v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"
           type="submit"
-          class="md:block ripple transition-colors duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white"
+          class="hidden md:block ripple transition-colors duration-100 ease-out flex flex-row hover:bg-primary items-center py-2 px-4 bg-transparent rounded border-2 border-solid border-primary hover:text-white"
         >
           <svg style="width: 24px" class="fill-current" viewBox="0 0 24 24">
             <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -221,7 +221,6 @@
           >
             <svg
               class="transition-transform duration-100 ease-out fill-current"
-              :class="{ 'transform  rotate-180': dropdownOpen }"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="black"
@@ -234,41 +233,46 @@
             </svg>
             <span class="sr-only">Open dropdown</span>
           </button>
-          <transition name="slide-toggle">
-            <div v-show="dropdownOpen" class="absolute bottom-1 right-0 mt-2 w-56 bg-white rounded-md shadow-xl z-20">
+          <transition name="slidedown" mode="out-in">
+            <div v-show="dropdownOpen" class="absolute top-0 right-0 mt-12 w-56 bg-white rounded-md shadow-md z-20">
               <a
                 v-if="project.status >= 2 && hitsSubmitted == 0"
                 @click="toggleModal('launch')"
-                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition-colors duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                >Launch project</a
+                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition-colors duration-100 ease-out hover:bg-primaryDark rounded-t-md hover:text-gray-100"
+                >Publish project</a
               >
               <a
-                v-else
+                v-if="project.status == 3"
                 @click="toggleModal('launch')"
-                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition-colors duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                :class="project.status == 3 && !$store.state.isSandbox ? 'rounded-b-md' : ''"
+                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition-colors duration-100 ease-out hover:bg-primaryDark rounded-t-md hover:text-gray-100"
                 >Launch other HITs</a
               >
               <a
                 @click="toggleModal('hit')"
                 v-if="project.status == 0"
-                class="block md:hidden cursor-pointer px-4 py-2 text-sm capitalize text-gray-800 transition-colors duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
-                >Set HITs</a
+                class="block md:hidden cursor-pointer px-4 py-2 text-sm capitalize text-gray-800 transition-colors duration-100 ease-out hover:bg-primaryDark rounded-t-md hover:text-gray-100"
+                >Create HITs</a
               >
               <a
                 @click="toggleModal('layout')"
                 v-if="project.status == 1"
-                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition-colors duration-100 ease-out hover:bg-primary rounded-t-md hover:text-gray-100"
+                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition-colors duration-100 ease-out hover:bg-primaryDark rounded-t-md hover:text-gray-100"
                 >Set layout</a
               >
               <a
-                v-if="project.status >= 1 && project.status != 3"
+                v-if="
+                  (project.status >= 1 && project.status != 3) ||
+                  (project.status == 3 && $store.state.isSandbox == true)
+                "
                 @click="toggleModal('revert')"
-                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition-colors duration-100 ease-out hover:bg-primary hover:text-gray-100"
+                :class="project.status == 3 && $store.state.isSandbox ? 'rounded-b-md' : ''"
+                class="block md:hidden cursor-pointer px-4 py-2 text-sm text-gray-800 transition-colors duration-100 ease-out hover:bg-primaryDark hover:text-gray-100"
                 >Revert HIT settings</a
               >
               <a
                 v-if="project.status != 3"
-                class="cursor-pointer block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition-colors duration-100 ease-out hover:bg-primary hover:text-gray-100"
+                class="cursor-pointer block md:hidden px-4 py-2 text-sm capitalize text-gray-800 transition-colors duration-100 ease-out hover:bg-primaryDark hover:text-gray-100"
                 @click="toggleModal('delete')"
                 >Delete</a
               >
@@ -277,8 +281,8 @@
                   name: 'EditProjectView',
                   params: { projectId: id },
                 }"
-                :class="project.status >= 0 && project.status != 3 ? '' : 'rounded-b-md'"
-                class="block md:hidden cursor-pointer px-4 py-2 text-sm capitalize text-gray-800 transition-colors duration-100 ease-out hover:bg-primary hover:text-gray-100"
+                v-if="project.status != 3"
+                class="block md:hidden cursor-pointer rounded-b-md px-4 py-2 text-sm capitalize text-gray-800 transition-colors duration-100 ease-out hover:bg-primaryDark hover:text-gray-100"
                 >Edit</router-link
               >
             </div>
@@ -385,23 +389,23 @@
 
 <script>
 import { directive } from 'vue3-click-away'
-import modalEliminazione from '../components/modalEliminazione.vue'
-import cardPlain from '../components/cardPlain.vue'
-import cardBehavior from '../components/cardBehavior.vue'
-import cardWorkers from '../components/cardWorkers.vue'
-import cardProjectTable from '../components/cardProjectTable.vue'
-import cardCsv from '../components/cardCsv.vue'
-import cardStatus from '../components/cardStatus.vue'
+import modalEliminazione from '../components/modal/modalEliminazione.vue'
+import cardPlain from '../components/card/cardPlain.vue'
+import cardBehavior from '../components/card/cardBehavior.vue'
+import cardWorkers from '../components/card/cardWorkers.vue'
+import cardProjectTable from '../components/card/cardProjectTable.vue'
+import cardCsv from '../components/card/cardCsv.vue'
+import cardStatus from '../components/card/cardStatus.vue'
 //import cardAnalytics from '../components/cardAnalyticsProjectView.vue'
-import modalUpload from '../components/modalUpload.vue'
-import modalHIT from '../components/modalHIT.vue'
-import modalRevert from '../components/modalRevert.vue'
-import modalLayout from '../components/modalLayout.vue'
-import modalLaunch from '../components/modalLaunch.vue'
-import modalEditBehavior from '../components/modalEditBehavior.vue'
+import modalUpload from '../components/modal/modalUpload.vue'
+import modalHIT from '../components/modal/modalHIT.vue'
+import modalRevert from '../components/modal/modalRevert.vue'
+import modalLayout from '../components/modal/modalLayout.vue'
+import modalLaunch from '../components/modal/modalLaunch.vue'
+import modalEditBehavior from '../components/modal/modalEditBehavior.vue'
 import loader from '../components/loader.vue'
-import modalInstructions from '../components/modalInstructions.vue'
-import modalCsvEliminazione from '../components/modalCsvEliminazione.vue'
+import modalInstructions from '../components/modal/modalInstructions.vue'
+import modalCsvEliminazione from '../components/modal/modalCsvEliminazione.vue'
 import progressBar from '../components/progressBar'
 
 import globalMixin from '../globalMixin.js'
@@ -755,5 +759,22 @@ export default {
   .customFlex {
     flex-direction: column;
   }
+}
+
+.slidedown-enter-active,
+.slidedown-leave-active {
+  transition: max-height 0.2s ease-out;
+}
+
+.slidedown-enter-to,
+.slidedown-leave-from {
+  overflow: hidden;
+  max-height: 200px;
+}
+
+.slidedown-enter-from,
+.slidedown-leave-to {
+  overflow: hidden;
+  max-height: 0;
 }
 </style>

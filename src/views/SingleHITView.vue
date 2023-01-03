@@ -32,7 +32,11 @@
             :projectData="[project.title, project.description, project.keywords, project.created_at]"
             :titles="['Title', 'Description', 'Keywords', 'Creation date']"
           />
-          <cardTable :tableData="assignmentData" :emptyText="'No data to display'" />
+          <cardAssignments
+            :assignmentData="assignmentData"
+            :emptyText="'No data to display'"
+            @rejected="assignmentRejected"
+          />
           <cardTable :tableData="tableData" :emptyText="'No data to display'" />
         </div>
       </div>
@@ -61,11 +65,12 @@
 </template>
 
 <script>
-import modalEliminazione from '../components/modalEliminazione.vue'
-import cardPlain from '../components/cardPlain.vue'
-import cardAnalytics from '../components/cardAnalyticsVisualizzaProgetto.vue'
+import modalEliminazione from '../components/modal/modalEliminazione.vue'
+import cardPlain from '../components/card/cardPlain.vue'
+import cardAnalytics from '../components/card/cardAnalyticsVisualizzaProgetto.vue'
+import cardAssignments from '../components/card/cardAssignments.vue'
 import loader from '../components/loader.vue'
-import cardTable from '../components/cardTable.vue'
+import cardTable from '../components/card/cardTable.vue'
 
 import globalMixin from '../globalMixin.js'
 
@@ -78,6 +83,7 @@ export default {
     cardAnalytics,
     cardTable,
     loader,
+    cardAssignments,
   },
   data() {
     return {
@@ -148,6 +154,18 @@ export default {
     },
   },
   methods: {
+    /**
+     * Reloads data if assignment is rejected correctly, emit snackbar otherwise
+     * @param  {String} msg  message for snackbar (if empty no snackbar is shown)
+     */
+    assignmentRejected(msg) {
+      if (msg == '') {
+        this.getData()
+      } else {
+        this.$emit('snackbar', msg)
+        this.getData()
+      }
+    },
     /**
      * Truncates string in order to fit it in a card with 3 dots at the end
      * @param  {String} str  starting string
@@ -231,9 +249,8 @@ export default {
           this.time(parseInt(this.project.max_time)),
           "<span class='flex flex-col xs:flex-row justify-between content-center items-center mb-1'>" +
             this.project.expiry +
-            "<button :content='Edit expiry' v-tippy='" +
-            "{ placement: 'bottom', arrow: false, theme: 'google' }" +
-            "' class='ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button>",
+            `<button :content='Edit expiry' v-tippy="{ placement: 'bottom', arrow: false, theme: 'google' }"` +
+            " class='ripple bg-gray-200 hover:bg-gray-300 text-gray-900 rounded h-10 w-10  flex items-center justify-center'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='width:24px; height:24px;'><path fill='rgba(26, 32, 44, 1)' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z'/></g></svg><span class='sr-only'>Edit expiry date</span></button>",
           this.time(parseInt(this.project.auto_approve)),
           this.project.hit_group_id,
         ]
