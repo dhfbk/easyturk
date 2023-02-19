@@ -39,6 +39,17 @@ export default {
     modal() {
       this.$emit('modal')
     },
+    keyboardEvent(event) {
+      if (event.code == 'Escape') {
+        this.modal()
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener('keydown', this.keyboardEvent)
+  },
+  beforeUnmount() {
+    window.removeEventListener('keydown', this.keyboardEvent)
   },
   created() {
     switch (this.status) {

@@ -136,6 +136,9 @@ export default {
     window.addEventListener('keydown', this.keyboardEvent)
     document.getElementById('modal').focus()
   },
+  beforeUnmount() {
+    window.removeEventListener('keydown', this.keyboardEvent)
+  },
   validations() {
     return {
       hitNum: {
